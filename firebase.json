@@ -5,9 +5,15 @@
                                    "firebase.json",
                                    ".firebaserc",
                                    "**/.*",
+                                   "**/.*/**",
                                    "**/node_modules/**",
                                    "functions/**",
-                                   "*.md"
+                                   "*.md",
+                                   "firestore.rules",
+                                   "firestore.indexes.json",
+                                   "*.zip",
+                                   "package.json",
+                                   "package-lock.json"
                                ],
                     "rewrites":  [
                                      {
