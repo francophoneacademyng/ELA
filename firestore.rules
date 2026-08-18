@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default: deny all client access.
+    // Rules will be opened collection-by-collection
+    // when the corresponding ELA features are implemented.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Learn Language Academy — One Academy. Five Languages.</title>
+  <meta name="description" content="Learn German, Arabic, Mandarin, Russian or Professional English with real teachers, live classes and certificates. E-Learn Language Academy (ELA), Nigeria.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/ela-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oranienbaum&family=Quattrocento+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <!-- Announcement bar -->
+  <div class="announce" id="announce">
+    <span data-i18n="announce.text">Germanophone Academy — now enrolling. Four more languages open soon.</span>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <a href="#/" class="nav-brand" aria-label="E-Learn Language Academy — home">
+      <span class="nav-logo" id="nav-logo"></span>
+      <span class="nav-name">E-Learn <em>Language Academy</em></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#/" data-nav="home" data-i18n="nav.home">Home</a>
+      <a href="#/academies" data-nav="academies" data-i18n="nav.academies">Academies</a>
+      <a href="#/pricing" data-nav="pricing" data-i18n="nav.pricing">Pricing</a>
+      <a href="#/login" data-nav="login" data-i18n="nav.login">Sign in</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Interface language">
+        <button type="button" data-lang="en" class="lang-btn">EN</button>
+        <button type="button" data-lang="fr" class="lang-btn">FR</button>
+        <button type="button" data-lang="ar" class="lang-btn">عربي</button>
+      </div>
+      <a href="#/register" class="btn btn-solid btn-nav" data-i18n="nav.cta">Start free</a>
+    </div>
+  </header>
+
+  <!-- App root: pages are rendered here by js/app.js -->
+  <main id="app" tabindex="-1"></main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="nav-logo footer-logo" id="footer-logo"></span>
+        <p class="footer-tag" data-i18n="footer.tag">One account. Five languages. One goal: your international future.</p>
+        <p class="footer-domain">elearnlanguage.ng</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.academies">Academies</h4>
+        <a href="#/academies">Germanophone — Deutsch</a>
+        <a href="#/academies">Sinophone — 中文</a>
+        <a href="#/academies">Anglophone Pro — English</a>
+        <a href="#/academies">Arabophone — العربية</a>
+        <a href="#/academies">Russophone — Русский</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.platform">Platform</h4>
+        <a href="#/pricing" data-i18n="nav.pricing">Pricing</a>
+        <a href="#/register" data-i18n="footer.freeLesson">Free first lesson</a>
+        <a href="#/login" data-i18n="nav.login">Sign in</a>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer.contact">Contact</h4>
+        <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+        <a href="mailto:contact@elearnlanguage.ng">contact@elearnlanguage.ng</a>
+      </div>
+    </div>
+    <div class="footer-legal">
+      <span>© 2026 E-Learn Language Academy (ELA) — Nigeria</span>
+      <span data-i18n="footer.by">By the founder of Francophone Academy</span>
+    </div>
+  </footer>
+
+  <!-- Firebase (public config — filled in js/firebase-config.js on your PC) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js" defer></script>
+  <script src="js/firebase-config.js" defer></script>
+  <script src="js/i18n.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

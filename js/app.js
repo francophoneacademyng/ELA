@@ -1,0 +1,357 @@
+/* ============================================================
+   ELA — App router + pages (hash routing, vanilla JS)
+   Routes: #/  #/academies  #/pricing  #/register  #/login
+   ============================================================ */
+
+(function () {
+  var app = document.getElementById('app');
+  var t = function (k) { return ELA_I18N.t(k); };
+
+  /* ---------- Brand logo (inline SVG, emerald emblem) ---------- */
+  var LOGO_SVG =
+    '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ELA logo">' +
+    '<rect x="6" y="6" width="188" height="188" rx="38" fill="#0B6B4F"/>' +
+    '<text x="100" y="118" text-anchor="middle" font-family="Archivo Black, Arial Black, sans-serif" font-size="72" fill="#FAF6EC" letter-spacing="2">ELA</text>' +
+    '<rect x="66" y="142" width="68" height="7" fill="#C9A227"/></svg>';
+
+  var ARROW_SVG =
+    '<svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  var CHECK_SVG =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B6B4F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke="#C9A227"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>';
+
+  /* ---------- Academies data ---------- */
+  var ACADEMIES = [
+    { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true  },
+    { key: 'mandarin', native: '中文',      accent: 'var(--accent-mandarin)', open: false },
+    { key: 'english',  native: 'English',  accent: 'var(--accent-english)',  open: false },
+    { key: 'arabic',   native: 'العربية',   accent: 'var(--accent-arabic)',   open: false },
+    { key: 'russian',  native: 'Русский',  accent: 'var(--accent-russian)',  open: false }
+  ];
+
+  function academyRow(a, i) {
+    var status = a.open
+      ? '<span class="academy-status status-open">' + t('academies.open') + '</span>'
+      : '<span class="academy-status status-soon">' + t('academies.soon') + '</span>';
+    return '' +
+      '<a class="academy-row reveal" href="#/register" style="transition-delay:' + (i * 60) + 'ms">' +
+        '<span class="academy-num">0' + (i + 1) + '</span>' +
+        '<span class="academy-name">' + t('academies.' + a.key + '.name') +
+          '<span class="native">' + a.native + '</span></span>' +
+        '<span class="academy-desc">' + t('academies.' + a.key + '.desc') + '</span>' +
+        status +
+        '<span class="academy-bar" style="background:' + a.accent + '"></span>' +
+      '</a>';
+  }
+
+  /* ---------- Pages ---------- */
+
+  function renderHome() {
+    var rows = ACADEMIES.map(academyRow).join('');
+    app.innerHTML = '' +
+      '<section class="hero">' +
+        '<div class="reveal">' +
+          '<p class="hero-kicker">' + t('hero.kicker') + '</p>' +
+          '<h1>' + t('hero.title.1') + '<br><em>' + t('hero.title.2') + '</em></h1>' +
+          '<div class="hero-langs">' +
+            '<span>Deutsch</span><span class="sep">·</span>' +
+            '<span>中文</span><span class="sep">·</span>' +
+            '<span>English</span><span class="sep">·</span>' +
+            '<span>العربية</span><span class="sep">·</span>' +
+            '<span>Русский</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="hero-side reveal" style="transition-delay:120ms">' +
+          '<p>' + t('hero.lead') + '</p>' +
+          '<div class="hero-actions">' +
+            '<a class="btn btn-solid" href="#/register">' + t('hero.cta.primary') + ARROW_SVG + '</a>' +
+            '<a class="btn btn-outline" href="#/pricing">' + t('hero.cta.secondary') + '</a>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="section academies" id="academies">' +
+        '<p class="section-label reveal">' + t('academies.label') + '</p>' +
+        '<h2 class="section-title reveal" style="margin-bottom:2.5rem">' +
+          t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
+        rows +
+      '</section>' +
+
+      '<section class="section mission">' +
+        '<div class="reveal">' +
+          '<p class="section-label">' + t('mission.label') + '</p>' +
+          '<h2 class="section-title">' + t('mission.title.1') + '<br><em>' + t('mission.title.2') + '</em></h2>' +
+        '</div>' +
+        '<div class="mission-body reveal" style="transition-delay:120ms">' +
+          '<p>' + t('mission.p1') + '</p>' +
+          '<p>' + t('mission.p2') + '</p>' +
+          '<ul class="mission-list">' +
+            '<li>' + CHECK_SVG + t('mission.li.1') + '</li>' +
+            '<li>' + CHECK_SVG + t('mission.li.2') + '</li>' +
+            '<li>' + CHECK_SVG + t('mission.li.3') + '</li>' +
+            '<li>' + CHECK_SVG + t('mission.li.4') + '</li>' +
+          '</ul>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="section">' +
+        '<p class="section-label reveal">' + t('steps.label') + '</p>' +
+        '<h2 class="section-title reveal">' + t('steps.title') + '</h2>' +
+        '<div class="steps">' +
+          '<div class="step reveal"><span class="step-num">01</span><h3>' + t('steps.1.title') + '</h3><p>' + t('steps.1.desc') + '</p></div>' +
+          '<div class="step reveal" style="transition-delay:100ms"><span class="step-num">02</span><h3>' + t('steps.2.title') + '</h3><p>' + t('steps.2.desc') + '</p></div>' +
+          '<div class="step reveal" style="transition-delay:200ms"><span class="step-num">03</span><h3>' + t('steps.3.title') + '</h3><p>' + t('steps.3.desc') + '</p></div>' +
+        '</div>' +
+      '</section>' +
+
+      '<section class="referral"><div class="section">' +
+        '<div class="reveal">' +
+          '<h2 class="section-title">' + t('referral.title.1') + '<br><em>' + t('referral.title.2') + '</em></h2>' +
+          '<p>' + t('referral.p') + '</p>' +
+        '</div>' +
+        '<div class="referral-figure reveal" style="transition-delay:120ms">' +
+          t('referral.figure') + '<small>' + t('referral.figure.sub') + '</small>' +
+        '</div>' +
+      '</div></section>';
+    afterRender('home');
+  }
+
+  function renderAcademies() {
+    var rows = ACADEMIES.map(academyRow).join('');
+    app.innerHTML = '' +
+      '<section class="section academies">' +
+        '<p class="section-label reveal">' + t('academies.label') + '</p>' +
+        '<h2 class="section-title reveal" style="margin-bottom:2.5rem">' +
+          t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
+        rows +
+      '</section>';
+    afterRender('academies');
+  }
+
+  function priceCell(amount, save) {
+    var saveHtml = save ? '<span class="price-save">' + t('pricing.youSave') + ' ₦' + save.toLocaleString('en-NG') + '</span>' : '';
+    return '<span class="price-amount">₦' + amount.toLocaleString('en-NG') + (save ? '' : '<small>' + t('pricing.perMonth') + '</small>') + '</span><br>' + saveHtml;
+  }
+
+  function priceRow(tierKey, m1, m3, s3, m6, s6, popular) {
+    return '' +
+      '<tr class="' + (popular ? 'price-row-popular' : '') + '">' +
+        '<td><span class="price-tier">' + t('pricing.' + tierKey) +
+          (popular ? '<span class="price-popular-tag">' + t('pricing.popular') + '</span>' : '') +
+          '<small>' + t('pricing.' + tierKey + '.sub') + '</small></span></td>' +
+        '<td>' + priceCell(m1, 0) + '</td>' +
+        '<td>' + priceCell(m3, s3) + '</td>' +
+        '<td>' + priceCell(m6, s6) + '</td>' +
+      '</tr>';
+  }
+
+  function renderPricing() {
+    app.innerHTML = '' +
+      '<section class="section">' +
+        '<div class="pricing-head">' +
+          '<div class="reveal">' +
+            '<p class="section-label">' + t('pricing.label') + '</p>' +
+            '<h2 class="section-title">' + t('pricing.title.1') + '<br><em>' + t('pricing.title.2') + '</em></h2>' +
+          '</div>' +
+          '<p class="reveal" style="color:var(--muted);max-width:36ch">' + t('pricing.lead') + '</p>' +
+        '</div>' +
+        '<div class="price-scroll reveal">' +
+          '<table class="price-table">' +
+            '<thead><tr>' +
+              '<th>' + t('pricing.table.tier') + '</th>' +
+              '<th>' + t('pricing.table.month1') + '</th>' +
+              '<th>' + t('pricing.table.month3') + '</th>' +
+              '<th>' + t('pricing.table.month6') + '</th>' +
+            '</tr></thead>' +
+            '<tbody>' +
+              priceRow('general', 75000, 200000, 25000, 405000, 45000, false) +
+              priceRow('premium', 120000, 320000, 40000, 648000, 72000, true) +
+              priceRow('business', 150000, 420000, 30000, 840000, 60000, false) +
+            '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<div class="pricing-note reveal">' +
+          '<p>' + t('pricing.note') + '</p>' +
+          '<a class="btn btn-gold" href="#/register">' + t('pricing.cta') + ARROW_SVG + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('pricing');
+  }
+
+  /* ---------- Register: 3-step wizard ---------- */
+  var registerState = { step: 1, interfaceLang: null, academy: null };
+
+  function renderRegister() {
+    var s = registerState;
+    var stepsBar = '<div class="auth-steps">' +
+      '<span class="' + (s.step >= 1 ? 'done' : '') + '"></span>' +
+      '<span class="' + (s.step >= 2 ? 'done' : '') + '"></span>' +
+      '<span class="' + (s.step >= 3 ? 'done' : '') + '"></span></div>';
+
+    var body = '';
+    if (s.step === 1) {
+      body = '' +
+        '<h3 class="auth-title" style="font-size:1.8rem">' + t('register.step1') + '</h3>' +
+        '<div class="choice-grid">' +
+          '<button type="button" class="choice" data-choice-lang="en"><span class="choice-name">English</span><span class="choice-tag">EN</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="fr"><span class="choice-name">Français</span><span class="choice-tag">FR</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="ar"><span class="choice-name">العربية</span><span class="choice-tag">AR</span></button>' +
+        '</div>';
+    } else if (s.step === 2) {
+      body = '<h3 class="auth-title" style="font-size:1.8rem">' + t('register.step2') + '</h3>' +
+        '<div class="choice-grid">' +
+        ACADEMIES.map(function (a) {
+          return '<button type="button" class="choice' + (a.open ? '' : ' disabled') + '" data-choice-academy="' + a.key + '"' + (a.open ? '' : ' disabled') + '>' +
+            '<span class="choice-name">' + t('academies.' + a.key + '.name') + ' <span style="color:var(--muted);font-size:0.7em">' + a.native + '</span></span>' +
+            '<span class="choice-tag' + (a.open ? ' open' : '') + '">' + (a.open ? t('academies.open') : t('academies.soon')) + '</span></button>';
+        }).join('') + '</div>' +
+        '<button type="button" class="btn btn-outline" id="reg-back">' + t('common.back') + '</button>';
+    } else {
+      var setupBanner = window.ELA_FIREBASE_READY ? '' : '<div class="setup-banner">' + t('register.setup') + '</div>';
+      body = '' +
+        '<h3 class="auth-title" style="font-size:1.8rem">' + t('register.step3') + '</h3>' +
+        setupBanner +
+        '<form id="register-form">' +
+          '<div class="field"><label for="reg-name">' + t('register.field.name') + '</label><input id="reg-name" type="text" required autocomplete="name"></div>' +
+          '<div class="field"><label for="reg-email">' + t('register.field.email') + '</label><input id="reg-email" type="email" required autocomplete="email"></div>' +
+          '<div class="field"><label for="reg-password">' + t('register.field.password') + '</label><input id="reg-password" type="password" minlength="8" required autocomplete="new-password"></div>' +
+          '<div class="field"><label for="reg-referral">' + t('register.field.referral') + '</label><input id="reg-referral" type="text" autocomplete="off"></div>' +
+          '<p class="form-error" id="reg-error">' + t('register.error') + '</p>' +
+          '<button class="btn btn-solid" type="submit">' + t('register.submit') + ARROW_SVG + '</button>' +
+        '</form>' +
+        '<p class="auth-alt">' + t('register.have') + ' <a href="#/login">' + t('register.loginLink') + '</a></p>';
+    }
+
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('register.title') + '</h1>' +
+        '<p class="auth-sub">' + t('register.sub') + '</p>' +
+        stepsBar + body +
+      '</section>';
+
+    bindRegister();
+    afterRender('register');
+  }
+
+  function bindRegister() {
+    document.querySelectorAll('[data-choice-lang]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        registerState.interfaceLang = btn.getAttribute('data-choice-lang');
+        ELA_I18N.setLang(registerState.interfaceLang).then(function () {
+          registerState.step = 2;
+          renderRegister();
+        });
+      });
+    });
+    document.querySelectorAll('[data-choice-academy]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        registerState.academy = btn.getAttribute('data-choice-academy');
+        registerState.step = 3;
+        renderRegister();
+      });
+    });
+    var back = document.getElementById('reg-back');
+    if (back) back.addEventListener('click', function () { registerState.step = 1; renderRegister(); });
+
+    var form = document.getElementById('register-form');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!window.ELA_FIREBASE_READY) return;
+        var name = document.getElementById('reg-name').value.trim();
+        var email = document.getElementById('reg-email').value.trim();
+        var password = document.getElementById('reg-password').value;
+        var referral = document.getElementById('reg-referral').value.trim();
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(function (cred) {
+            return firebase.firestore().collection('users').doc(cred.user.uid).set({
+              displayName: name,
+              email: email,
+              role: 'student',
+              interfaceLang: registerState.interfaceLang || ELA_I18N.getLang(),
+              academies: [registerState.academy || 'german'],
+              referralCodeUsed: referral || null,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          })
+          .then(function () { alert(t('register.success')); window.location.hash = '#/'; })
+          .catch(function () { document.getElementById('reg-error').classList.add('show'); });
+      });
+    }
+  }
+
+  /* ---------- Login ---------- */
+  function renderLogin() {
+    var setupBanner = window.ELA_FIREBASE_READY ? '' : '<div class="setup-banner">' + t('register.setup') + '</div>';
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('login.title') + '</h1>' +
+        '<p class="auth-sub">' + t('login.sub') + '</p>' +
+        setupBanner +
+        '<form id="login-form">' +
+          '<div class="field"><label for="login-email">' + t('register.field.email') + '</label><input id="login-email" type="email" required autocomplete="email"></div>' +
+          '<div class="field"><label for="login-password">' + t('register.field.password') + '</label><input id="login-password" type="password" required autocomplete="current-password"></div>' +
+          '<p class="form-error" id="login-error">' + t('login.error') + '</p>' +
+          '<button class="btn btn-solid" type="submit">' + t('login.submit') + ARROW_SVG + '</button>' +
+        '</form>' +
+        '<p class="auth-alt">' + t('login.no') + ' <a href="#/register">' + t('login.registerLink') + '</a></p>' +
+      '</section>';
+
+    var form = document.getElementById('login-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!window.ELA_FIREBASE_READY) return;
+      var email = document.getElementById('login-email').value.trim();
+      var password = document.getElementById('login-password').value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function () { window.location.hash = '#/'; })
+        .catch(function () { document.getElementById('login-error').classList.add('show'); });
+    });
+    afterRender('login');
+  }
+
+  /* ---------- Shared after-render ---------- */
+  function afterRender(route) {
+    document.querySelectorAll('.nav-links a').forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('data-nav') === route);
+    });
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('visible'); observer.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { observer.observe(el); });
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- Router ---------- */
+  var ROUTES = {
+    '': renderHome,
+    '/': renderHome,
+    '/academies': renderAcademies,
+    '/pricing': renderPricing,
+    '/register': renderRegister,
+    '/login': renderLogin
+  };
+
+  function route() {
+    var hash = window.location.hash.replace(/^#/, '') || '/';
+    (ROUTES[hash] || renderHome)();
+  }
+
+  /* ---------- Boot ---------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('nav-logo').innerHTML = LOGO_SVG;
+    document.getElementById('footer-logo').innerHTML = LOGO_SVG;
+
+    if (window.ELA_FIREBASE_READY && window.firebase) {
+      firebase.initializeApp(window.ELA_FIREBASE_CONFIG);
+    }
+
+    ELA_I18N.init().then(function () {
+      route();
+      window.addEventListener('hashchange', route);
+    });
+    ELA_I18N.onChange(function () { route(); });
+  });
+})();
