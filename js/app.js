@@ -29,6 +29,14 @@
     { key: 'russian',  native: 'Русский',  accent: 'var(--accent-russian)',  open: false }
   ];
 
+  /* Grille tarifaire (affichage + checkout). La source de vérité des montants
+     reste le serveur (functions/index.js), qui recalcule toujours le montant. */
+  var PRICING = {
+    general:  { 1: 75000,  3: 200000, 6: 405000 },
+    premium:  { 1: 120000, 3: 320000, 6: 648000 },
+    business: { 1: 150000, 3: 420000, 6: 840000 }
+  };
+
   function academyRow(a, i) {
     var status = a.open
       ? '<span class="academy-status status-open">' + t('academies.open') + '</span>'
@@ -172,10 +180,186 @@
         '</div>' +
         '<div class="pricing-note reveal">' +
           '<p>' + t('pricing.note') + '</p>' +
-          '<a class="btn btn-gold" href="#/register">' + t('pricing.cta') + ARROW_SVG + '</a>' +
+          '<div class="hero-actions">' +
+            '<a class="btn btn-gold" href="#/register">' + t('pricing.cta') + ARROW_SVG + '</a>' +
+            '<a class="btn btn-solid" href="#/checkout">' + t('pricing.subscribe') + '</a>' +
+          '</div>' +
         '</div>' +
       '</section>';
     afterRender('pricing');
+  }
+
+  /* ---------- Checkout (Paystack) ---------- */
+  var checkoutState = { plan: null, duration: null };
+
+  function checkoutTotal() {
+    var plan = checkoutState.plan;
+    var duration = checkoutState.duration;
+    if (!plan || !duration || !PRICING[plan] || !PRICING[plan][duration]) return null;
+    return PRICING[plan][duration];
+  }
+
+  function renderCheckout() {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap">' +
+          '<h1 class="auth-title">' + t('checkout.title') + '</h1>' +
+          '<div class="setup-banner">' + t('register.setup') + '</div>' +
+        '</section>';
+      afterRender('pricing');
+      return;
+    }
+
+    var user = firebase.auth().currentUser;
+    if (!user) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap">' +
+          '<h1 class="auth-title">' + t('checkout.title') + '</h1>' +
+          '<p class="auth-sub">' + t('checkout.signInRequired') + '</p>' +
+          '<div class="hero-actions">' +
+            '<a class="btn btn-solid" href="#/login">' + t('checkout.signInLink') + '</a>' +
+            '<a class="btn btn-outline" href="#/register">' + t('login.registerLink') + '</a>' +
+          '</div>' +
+        '</section>';
+      afterRender('pricing');
+      return;
+    }
+
+    var plans = ['general', 'premium', 'business'];
+    var durations = [1, 3, 6];
+
+    var planBtns = plans.map(function (p) {
+      return '<button type="button" class="choice' + (checkoutState.plan === p ? ' selected' : '') + '" data-plan="' + p + '">' +
+        '<span class="choice-name">' + t('pricing.' + p) +
+          '<span style="color:var(--muted);font-size:0.7em"> — ' + t('pricing.' + p + '.sub') + '</span></span>' +
+        '<span class="choice-tag">' + t('checkout.month.' + 1) + ' ₦' + PRICING[p][1].toLocaleString('en-NG') + '</span>' +
+      '</button>';
+    }).join('');
+
+    var selPlan = checkoutState.plan || 'general';
+    var durBtns = durations.map(function (d) {
+      return '<button type="button" class="choice' + (checkoutState.duration === d ? ' selected' : '') + '" data-duration="' + d + '">' +
+        '<span class="choice-name">' + t('checkout.month.' + d) + '</span>' +
+        '<span class="choice-tag">₦' + PRICING[selPlan][d].toLocaleString('en-NG') + '</span>' +
+      '</button>';
+    }).join('');
+
+    var total = checkoutTotal();
+    var totalHtml = total
+      ? '<div class="pricing-note">' +
+          '<p>' + t('checkout.total') + ' <strong>₦' + total.toLocaleString('en-NG') + '</strong></p>' +
+          '<button type="button" class="btn btn-gold" id="checkout-pay">' + t('checkout.pay') + ARROW_SVG + '</button>' +
+        '</div>'
+      : '';
+
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('checkout.title') + '</h1>' +
+        '<p class="auth-sub">' + t('checkout.sub') + '</p>' +
+        '<div class="field"><label>' + t('checkout.planLabel') + '</label></div>' +
+        '<div class="choice-grid">' + planBtns + '</div>' +
+        '<div class="field"><label>' + t('checkout.durationLabel') + '</label></div>' +
+        '<div class="choice-grid">' + durBtns + '</div>' +
+        '<p class="form-error" id="checkout-error">' + t('checkout.error') + '</p>' +
+        totalHtml +
+        '<p class="auth-alt"><a href="#/pricing">' + t('common.back') + '</a></p>' +
+      '</section>';
+
+    document.querySelectorAll('[data-plan]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        checkoutState.plan = b.getAttribute('data-plan');
+        renderCheckout();
+      });
+    });
+    document.querySelectorAll('[data-duration]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        checkoutState.duration = parseInt(b.getAttribute('data-duration'), 10);
+        renderCheckout();
+      });
+    });
+
+    var pay = document.getElementById('checkout-pay');
+    if (pay) {
+      pay.addEventListener('click', function () {
+        var err = document.getElementById('checkout-error');
+        if (!checkoutState.plan || !checkoutState.duration) {
+          err.classList.add('show');
+          return;
+        }
+        pay.disabled = true;
+        var init = firebase.functions().httpsCallable('initializePayment');
+        init({ plan: checkoutState.plan, duration: checkoutState.duration })
+          .then(function (r) {
+            if (r.data && r.data.authorizationUrl) {
+              window.location.href = r.data.authorizationUrl;
+            } else {
+              err.classList.add('show');
+              pay.disabled = false;
+            }
+          })
+          .catch(function () { err.classList.add('show'); pay.disabled = false; });
+      });
+    }
+
+    afterRender('pricing');
+  }
+
+  /* ---------- Payment result ---------- */
+  function getPaymentReference() {
+    var sp = new URLSearchParams(window.location.search);
+    var ref = sp.get('reference') || sp.get('trxref');
+    if (ref) return ref;
+    var hash = window.location.hash || '';
+    var qi = hash.indexOf('?');
+    if (qi >= 0) {
+      var hp = new URLSearchParams(hash.slice(qi + 1));
+      ref = hp.get('reference') || hp.get('trxref');
+    }
+    return ref || null;
+  }
+
+  function renderPaymentResult() {
+    var reference = getPaymentReference();
+
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.functions || !reference) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap">' +
+          '<h1 class="auth-title">' + t('payment.result.title.fail') + '</h1>' +
+          '<p class="auth-sub">' + t('payment.result.msg.fail') + '</p>' +
+          '<div class="hero-actions"><a class="btn btn-solid" href="#/">' + t('payment.result.backHome') + '</a></div>' +
+        '</section>';
+      afterRender('pricing');
+      return;
+    }
+
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('payment.result.title.success') + '</h1>' +
+        '<p class="auth-sub">' + t('payment.result.verifying') + '</p>' +
+      '</section>';
+    afterRender('pricing');
+
+    var verify = firebase.functions().httpsCallable('verifyPaystackPayment');
+    verify({ reference: reference })
+      .then(function (r) {
+        var ok = r.data && r.data.status === 'success';
+        app.innerHTML = '' +
+          '<section class="auth-wrap">' +
+            '<h1 class="auth-title">' + t(ok ? 'payment.result.title.success' : 'payment.result.title.fail') + '</h1>' +
+            '<p class="auth-sub">' + t(ok ? 'payment.result.msg.success' : 'payment.result.msg.fail') + '</p>' +
+            '<div class="hero-actions"><a class="btn btn-solid" href="#/">' + t('payment.result.backHome') + '</a></div>' +
+          '</section>';
+        afterRender('pricing');
+      })
+      .catch(function () {
+        app.innerHTML = '' +
+          '<section class="auth-wrap">' +
+            '<h1 class="auth-title">' + t('payment.result.title.fail') + '</h1>' +
+            '<p class="auth-sub">' + t('payment.result.msg.fail') + '</p>' +
+            '<div class="hero-actions"><a class="btn btn-solid" href="#/">' + t('payment.result.backHome') + '</a></div>' +
+          '</section>';
+        afterRender('pricing');
+      });
   }
 
   /* ---------- Register: 3-step wizard ---------- */
@@ -330,13 +514,17 @@
     '/': renderHome,
     '/academies': renderAcademies,
     '/pricing': renderPricing,
+    '/checkout': renderCheckout,
+    '/payment/result': renderPaymentResult,
     '/register': renderRegister,
     '/login': renderLogin
   };
 
   function route() {
     var hash = window.location.hash.replace(/^#/, '') || '/';
-    (ROUTES[hash] || renderHome)();
+    var qi = hash.indexOf('?');
+    var path = qi >= 0 ? hash.slice(0, qi) : hash;
+    (ROUTES[path] || renderHome)();
   }
 
   /* ---------- Boot ---------- */

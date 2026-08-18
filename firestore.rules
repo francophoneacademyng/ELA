@@ -13,6 +13,21 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Abonnements : lecture seule côté client (l'écriture passe par
+    // l'Admin SDK dans les Cloud Functions, jamais par le client).
+    match /subscriptions/{uid} {
+      allow read: if request.auth != null
+                  && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Transactions : lecture par le propriétaire uniquement.
+    match /transactions/{reference} {
+      allow read: if request.auth != null
+                  && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

@@ -73,6 +73,7 @@
   "pricing.youSave": "توفر",
   "pricing.note": "<strong>رمز الإحالة:</strong> شهرك الأول بخصم ₦15,000 عندما يحيلك طالب — ويحصل المحيل على ₦10,000 رصيد أكاديمي. الدرس الأول مجاني دائماً.",
   "pricing.cta": "ابدأ بدرس مجاني",
+  "pricing.subscribe": "اشترك الآن",
 
   "referral.title.1": "تعلّموا معاً،",
   "referral.title.2": "وادفعوا أقل.",
@@ -102,6 +103,25 @@
   "login.no": "لا تملك حساباً بعد؟",
   "login.registerLink": "ابدأ مجاناً",
   "login.error": "فشل تسجيل الدخول. تحقق من بريدك الإلكتروني وكلمة المرور.",
+
+  "checkout.title": "اختر خطتك",
+  "checkout.sub": "اختر مسارك ومدتك — ستدفع بأمان عبر Paystack.",
+  "checkout.planLabel": "المسار",
+  "checkout.durationLabel": "المدة",
+  "checkout.month.1": "شهر واحد",
+  "checkout.month.3": "3 أشهر",
+  "checkout.month.6": "6 أشهر",
+  "checkout.total": "الإجمالي:",
+  "checkout.pay": "ادفع عبر Paystack",
+  "checkout.signInRequired": "سجّل الدخول لاختيار خطتك والاشتراك.",
+  "checkout.signInLink": "تسجيل الدخول",
+  "checkout.error": "تعذر بدء الدفع. حاول مجدداً.",
+  "payment.result.title.success": "تم تأكيد الدفع",
+  "payment.result.title.fail": "لم يكتمل الدفع",
+  "payment.result.msg.success": "اشتراكك نشط الآن. مرحباً بك في ELA.",
+  "payment.result.msg.fail": "تعذر تأكيد دفعتك. إذا تم خصم المبلغ، يرجى التواصل مع الدعم.",
+  "payment.result.verifying": "جارٍ التحقق من دفعتك...",
+  "payment.result.backHome": "العودة للرئيسية",
 
   "common.next": "متابعة",
   "common.back": "رجوع"

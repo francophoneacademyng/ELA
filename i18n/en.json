@@ -73,6 +73,7 @@
   "pricing.youSave": "You save",
   "pricing.note": "<strong>Referral code:</strong> your first month is ₦15,000 off when a student refers you — and your referrer earns ₦10,000 of academic credit. The first lesson is always free.",
   "pricing.cta": "Start with a free lesson",
+  "pricing.subscribe": "Subscribe now",
 
   "referral.title.1": "Learn together,",
   "referral.title.2": "pay less.",
@@ -102,6 +103,25 @@
   "login.no": "No account yet?",
   "login.registerLink": "Start free",
   "login.error": "Sign-in failed. Check your email and password.",
+
+  "checkout.title": "Choose your plan",
+  "checkout.sub": "Pick your path and duration — you pay securely with Paystack.",
+  "checkout.planLabel": "Path",
+  "checkout.durationLabel": "Duration",
+  "checkout.month.1": "1 month",
+  "checkout.month.3": "3 months",
+  "checkout.month.6": "6 months",
+  "checkout.total": "Total:",
+  "checkout.pay": "Pay with Paystack",
+  "checkout.signInRequired": "Sign in to choose your plan and subscribe.",
+  "checkout.signInLink": "Sign in",
+  "checkout.error": "Could not start the payment. Please try again.",
+  "payment.result.title.success": "Payment confirmed",
+  "payment.result.title.fail": "Payment not completed",
+  "payment.result.msg.success": "Your subscription is now active. Welcome to ELA.",
+  "payment.result.msg.fail": "We could not confirm your payment. If you were charged, please contact support.",
+  "payment.result.verifying": "Verifying your payment...",
+  "payment.result.backHome": "Back to home",
 
   "common.next": "Continue",
   "common.back": "Back"

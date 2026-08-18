@@ -73,6 +73,7 @@
   "pricing.youSave": "Tu économises",
   "pricing.note": "<strong>Code de parrainage :</strong> ton premier mois est réduit de ₦15,000 quand un étudiant te parraine — et ton parrain gagne ₦10,000 de crédit académique. La première leçon est toujours gratuite.",
   "pricing.cta": "Commencer par une leçon gratuite",
+  "pricing.subscribe": "S'abonner maintenant",
 
   "referral.title.1": "Apprenez ensemble,",
   "referral.title.2": "payez moins.",
@@ -102,6 +103,25 @@
   "login.no": "Pas encore de compte ?",
   "login.registerLink": "Commencer gratuitement",
   "login.error": "Échec de connexion. Vérifie ton email et ton mot de passe.",
+
+  "checkout.title": "Choisis ton parcours",
+  "checkout.sub": "Choisis ton parcours et ta durée — le paiement se fait en toute sécurité via Paystack.",
+  "checkout.planLabel": "Parcours",
+  "checkout.durationLabel": "Durée",
+  "checkout.month.1": "1 mois",
+  "checkout.month.3": "3 mois",
+  "checkout.month.6": "6 mois",
+  "checkout.total": "Total :",
+  "checkout.pay": "Payer avec Paystack",
+  "checkout.signInRequired": "Connecte-toi pour choisir ton parcours et t'abonner.",
+  "checkout.signInLink": "Connexion",
+  "checkout.error": "Impossible de lancer le paiement. Réessaie.",
+  "payment.result.title.success": "Paiement confirmé",
+  "payment.result.title.fail": "Paiement non terminé",
+  "payment.result.msg.success": "Ton abonnement est maintenant actif. Bienvenue à ELA.",
+  "payment.result.msg.fail": "Impossible de confirmer ton paiement. Si tu as été débité, contacte le support.",
+  "payment.result.verifying": "Vérification de ton paiement...",
+  "payment.result.backHome": "Retour à l'accueil",
 
   "common.next": "Continuer",
   "common.back": "Retour"
