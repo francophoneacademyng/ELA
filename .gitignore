@@ -1,4 +1,9 @@
 node_modules/
 functions/.env
+functions/.env.local
+functions/.env.*.local
 *.zip
 .firebase/
+firestore-debug.log
+firebase-debug.log
+ui-debug.log

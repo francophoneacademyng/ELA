@@ -126,7 +126,7 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
     plan,
     duration,
     status: 'pending',
-    createdAt: admin.firestore.FieldValue.serverTimestamp()
+    createdAt: new Date()
   });
 
   return {
@@ -210,11 +210,11 @@ async function grantSubscription({ uid, plan, duration, amount, reference }) {
       plan,
       duration,
       status: 'active',
-      startDate: admin.firestore.Timestamp.fromDate(start),
-      endDate: admin.firestore.Timestamp.fromDate(end),
+      startDate: start,
+      endDate: end,
       amount,
       reference,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp()
+      updatedAt: new Date()
     }, { merge: true });
 
     t.set(txRef, {
@@ -223,7 +223,7 @@ async function grantSubscription({ uid, plan, duration, amount, reference }) {
       duration,
       amount,
       status: 'success',
-      paidAt: admin.firestore.FieldValue.serverTimestamp()
+      paidAt: new Date()
     }, { merge: true });
   });
 }
