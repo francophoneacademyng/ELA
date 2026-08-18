@@ -123,6 +123,16 @@
   "payment.result.verifying": "Verifying your payment...",
   "payment.result.backHome": "Back to home",
 
+  "assistant.title": "Learning Assistant",
+  "assistant.sub": "Practice between lessons with your language tutor, day or night.",
+  "assistant.placeholder": "Type a question or a sentence to practice...",
+  "assistant.send": "Send",
+  "assistant.signInRequired": "Sign in to use the Learning Assistant.",
+  "assistant.subscriptionRequired": "An active subscription is required to use the Learning Assistant.",
+  "assistant.limitReached": "Daily message limit reached. Come back tomorrow.",
+  "assistant.degraded": "The Learning Assistant is not available yet. Please try again later.",
+  "assistant.error": "Something went wrong. Please try again.",
+
   "common.next": "Continue",
   "common.back": "Back"
 }

@@ -123,6 +123,16 @@
   "payment.result.verifying": "Vérification de ton paiement...",
   "payment.result.backHome": "Retour à l'accueil",
 
+  "assistant.title": "Learning Assistant",
+  "assistant.sub": "Entraîne-toi entre les leçons avec ton tuteur de langue, jour et nuit.",
+  "assistant.placeholder": "Écris une question ou une phrase à pratiquer...",
+  "assistant.send": "Envoyer",
+  "assistant.signInRequired": "Connecte-toi pour utiliser le Learning Assistant.",
+  "assistant.subscriptionRequired": "Un abonnement actif est requis pour utiliser le Learning Assistant.",
+  "assistant.limitReached": "Limite de messages quotidienne atteinte. Reviens demain.",
+  "assistant.degraded": "Le Learning Assistant n'est pas encore disponible. Réessaie plus tard.",
+  "assistant.error": "Une erreur est survenue. Réessaie.",
+
   "common.next": "Continuer",
   "common.back": "Retour"
 }

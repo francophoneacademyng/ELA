@@ -275,3 +275,130 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
 
   res.status(200).send('received');
 });
+
+/* ============================================================
+   JALON 3 — Learning Assistant (OpenRouter, côté serveur)
+   ============================================================ */
+const OPENROUTER_BASE = 'https://openrouter.ai/api/v1';
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini';
+const ASSISTANT_DAILY_LIMIT = parseInt(process.env.ASSISTANT_DAILY_LIMIT || '50', 10);
+const ASSISTANT_TIMEOUT_MS = 30000;
+const ASSISTANT_MAX_HISTORY = 20;
+const ASSISTANT_MAX_LEN = 2000;
+
+/** Prompts système par académie (le tuteur s'adapte au niveau de l'élève).
+    Aucun terme "AI" n'apparaît : c'est un tuteur de langue bienveillant. */
+const ACADEMY_PROMPTS = {
+  german: 'You are a warm, patient and encouraging German tutor for the Germanophone academy of E-Learn Language Academy. Help learners progress from A1 to B2 and prepare the Goethe-Zertifikat and daily life in Germany. Adapt vocabulary, grammar and pace to the level the learner signals. Correct mistakes kindly, give short clear examples, and end by inviting the learner to continue in German. Never claim to be a human teacher: you are the academy Learning Assistant.',
+  mandarin: 'You are a warm, patient and encouraging Mandarin tutor for the Sinophone academy of E-Learn Language Academy. Help learners progress from HSK 1 to HSK 6, with a focus on business Chinese, import-export vocabulary and supplier negotiation. Adapt to the level the learner signals. Correct tones and mistakes kindly, give short examples, and invite the learner to continue in Chinese. Never claim to be a human teacher: you are the academy Learning Assistant.',
+  english: 'You are a warm, patient and encouraging English tutor for the Anglophone Pro academy of E-Learn Language Academy. Help learners improve professional English and prepare IELTS for the UK, Canada and international careers. Adapt to the level the learner signals. Correct mistakes kindly, give short examples, and invite the learner to continue in English. Never claim to be a human teacher: you are the academy Learning Assistant.',
+  arabic: 'You are a warm, patient and encouraging Arabic tutor for the Arabophone academy of E-Learn Language Academy. Help learners with Quranic Arabic and Gulf business Arabic — understanding, speaking and working with confidence. Adapt to the level the learner signals. Correct mistakes kindly, give short examples, and invite the learner to continue in Arabic. Never claim to be a human teacher: you are the academy Learning Assistant.',
+  russian: 'You are a warm, patient and encouraging Russian tutor for the Russophone academy of E-Learn Language Academy. Help learners prepare TORFL and study medicine or engineering in Russia on government scholarships. Adapt to the level the learner signals. Correct mistakes kindly, give short examples, and invite the learner to continue in Russian. Never claim to be a human teacher: you are the academy Learning Assistant.'
+};
+
+const LANG_NAMES = { en: 'English', fr: 'French', ar: 'Arabic' };
+
+function sanitizeHistory(history) {
+  const out = [];
+  if (Array.isArray(history)) {
+    for (const m of history) {
+      if (out.length >= ASSISTANT_MAX_HISTORY) break;
+      if (!m || (m.role !== 'user' && m.role !== 'assistant')) continue;
+      const content = String(m.content || '').slice(0, ASSISTANT_MAX_LEN);
+      if (!content) continue;
+      out.push({ role: m.role, content });
+    }
+  }
+  return out;
+}
+
+async function hasActiveSubscription(uid) {
+  const snap = await db.collection('subscriptions').doc(uid).get();
+  if (!snap.exists) return false;
+  const s = snap.data();
+  if (s.status !== 'active' || !s.endDate) return false;
+  const end = s.endDate && s.endDate.toDate ? s.endDate.toDate() : new Date(s.endDate);
+  return end > new Date();
+}
+
+exports.learningAssistant = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+
+  const active = await hasActiveSubscription(uid);
+  if (!active) {
+    throw new HttpsError('failed-precondition', 'active-subscription-required');
+  }
+
+  const message = String((request.data && request.data.message) || '').trim().slice(0, ASSISTANT_MAX_LEN);
+  if (!message) {
+    throw new HttpsError('invalid-argument', 'empty-message');
+  }
+
+  // Garde-fou : 50 messages/jour/utilisateur (compteur Firestore transactionnel)
+  const now = new Date();
+  const day = now.toISOString().slice(0, 10);
+  const usageRef = db.collection('assistantUsage').doc(`${uid}_${day}`);
+  const usage = await db.runTransaction(async (t) => {
+    const d = await t.get(usageRef);
+    const count = d.exists ? (d.data().count || 0) : 0;
+    if (count >= ASSISTANT_DAILY_LIMIT) return null;
+    t.set(usageRef, { uid, day, count: count + 1, updatedAt: new Date() }, { merge: true });
+    return count + 1;
+  });
+  if (usage === null) {
+    throw new HttpsError('resource-exhausted', 'daily-limit-reached');
+  }
+
+  const history = sanitizeHistory(request.data && request.data.history);
+
+  let academy = 'german';
+  let interfaceLang = 'en';
+  const userSnap = await db.collection('users').doc(uid).get();
+  if (userSnap.exists) {
+    const u = userSnap.data();
+    if (Array.isArray(u.academies) && u.academies.length && ACADEMY_PROMPTS[u.academies[0]]) academy = u.academies[0];
+    if (u.interfaceLang && LANG_NAMES[u.interfaceLang]) interfaceLang = u.interfaceLang;
+  }
+
+  const systemPrompt = ACADEMY_PROMPTS[academy]
+    + ' Respond in ' + LANG_NAMES[interfaceLang]
+    + ', at the learner\'s level, and keep answers concise and encouraging.';
+
+  const key = process.env.OPENROUTER_KEY;
+  if (!key) {
+    // Mode dégradé propre : pas de crash, message clair côté client.
+    return { reply: '', degraded: true };
+  }
+
+  const messages = [{ role: 'system', content: systemPrompt }]
+    .concat(history)
+    .concat([{ role: 'user', content: message }]);
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ASSISTANT_TIMEOUT_MS);
+  try {
+    const resp = await fetch(`${OPENROUTER_BASE}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${key}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ model: OPENROUTER_MODEL, messages }),
+      signal: controller.signal
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      throw new Error('openrouter ' + resp.status);
+    }
+    const reply = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || '';
+    return { reply, degraded: false };
+  } catch (err) {
+    console.error('learningAssistant error', err && err.message);
+    throw new HttpsError('internal', 'assistant-error');
+  } finally {
+    clearTimeout(timer);
+  }
+});

@@ -362,6 +362,115 @@
       });
   }
 
+  /* ---------- Learning Assistant (Jalon 3) ---------- */
+  var assistantHistory = [];
+  var assistantBusy = false;
+
+  var LOADER_SVG =
+    '<svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3a9 9 0 1 0 9 9"/></svg>';
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function assistantChatHtml() {
+    var html = assistantHistory.map(function (m) {
+      var cls = m.role === 'user' ? 'user' : 'assistant';
+      return '<div class="msg ' + cls + '">' + escapeHtml(m.content) + '</div>';
+    }).join('');
+    if (assistantBusy) html += '<div class="msg assistant typing">' + LOADER_SVG + '</div>';
+    return html;
+  }
+
+  function renderAssistantLog() {
+    var log = document.getElementById('chat-log');
+    if (log) { log.innerHTML = assistantChatHtml(); log.scrollTop = log.scrollHeight; }
+  }
+
+  function renderAssistant() {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap">' +
+          '<h1 class="auth-title">' + t('assistant.title') + '</h1>' +
+          '<div class="setup-banner">' + t('register.setup') + '</div>' +
+        '</section>';
+      afterRender('');
+      return;
+    }
+
+    var user = firebase.auth().currentUser;
+    if (!user) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap">' +
+          '<h1 class="auth-title">' + t('assistant.title') + '</h1>' +
+          '<p class="auth-sub">' + t('assistant.signInRequired') + '</p>' +
+          '<div class="hero-actions">' +
+            '<a class="btn btn-solid" href="#/login">' + t('login.submit') + '</a>' +
+            '<a class="btn btn-outline" href="#/register">' + t('login.registerLink') + '</a>' +
+          '</div>' +
+        '</section>';
+      afterRender('');
+      return;
+    }
+
+    app.innerHTML = '' +
+      '<section class="auth-wrap assistant-wrap">' +
+        '<h1 class="auth-title">' + t('assistant.title') + '</h1>' +
+        '<p class="auth-sub">' + t('assistant.sub') + '</p>' +
+        '<div class="chat" id="chat-log">' + assistantChatHtml() + '</div>' +
+        '<form id="chat-form" class="chat-input">' +
+          '<input id="chat-msg" type="text" maxlength="2000" autocomplete="off" aria-label="' + t('assistant.placeholder') + '" placeholder="' + t('assistant.placeholder') + '">' +
+          '<button class="btn btn-solid" type="submit">' + t('assistant.send') + '</button>' +
+        '</form>' +
+        '<p class="form-error" id="chat-error"></p>' +
+      '</section>';
+
+    var form = document.getElementById('chat-form');
+    var input = document.getElementById('chat-msg');
+    var err = document.getElementById('chat-error');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (assistantBusy) return;
+      var msg = input.value.trim();
+      if (!msg) return;
+      err.classList.remove('show');
+      input.value = '';
+      assistantHistory.push({ role: 'user', content: msg });
+      assistantBusy = true;
+      renderAssistantLog();
+
+      var call = firebase.functions().httpsCallable('learningAssistant');
+      call({ message: msg, history: assistantHistory.slice(0, -1).slice(-20) })
+        .then(function (r) {
+          assistantBusy = false;
+          var d = r.data || {};
+          assistantHistory.push({ role: 'assistant', content: d.degraded ? t('assistant.degraded') : (d.reply || t('assistant.error')) });
+          renderAssistantLog();
+        })
+        .catch(function (e2) {
+          assistantBusy = false;
+          renderAssistantLog();
+          var code = (e2 && e2.code ? String(e2.code) : '').replace('functions/', '');
+          if (code === 'failed-precondition') {
+            err.textContent = t('assistant.subscriptionRequired');
+            err.classList.add('show');
+          } else if (code === 'resource-exhausted') {
+            err.textContent = t('assistant.limitReached');
+            err.classList.add('show');
+          } else if (code === 'unauthenticated') {
+            window.location.hash = '#/login';
+          } else {
+            err.textContent = t('assistant.error');
+            err.classList.add('show');
+          }
+        });
+    });
+
+    afterRender('');
+  }
+
   /* ---------- Register: 3-step wizard ---------- */
   var registerState = { step: 1, interfaceLang: null, academy: null };
 
@@ -516,6 +625,7 @@
     '/pricing': renderPricing,
     '/checkout': renderCheckout,
     '/payment/result': renderPaymentResult,
+    '/assistant': renderAssistant,
     '/register': renderRegister,
     '/login': renderLogin
   };

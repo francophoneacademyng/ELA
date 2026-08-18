@@ -123,6 +123,16 @@
   "payment.result.verifying": "جارٍ التحقق من دفعتك...",
   "payment.result.backHome": "العودة للرئيسية",
 
+  "assistant.title": "مساعد التعلّم",
+  "assistant.sub": "تدرب بين الدروس مع مدرّسك اللغوي، ليلاً ونهاراً.",
+  "assistant.placeholder": "اكتب سؤالاً أو جملة للتدرب...",
+  "assistant.send": "إرسال",
+  "assistant.signInRequired": "سجّل الدخول لاستخدام مساعد التعلّم.",
+  "assistant.subscriptionRequired": "يلزم اشتراك نشط لاستخدام مساعد التعلّم.",
+  "assistant.limitReached": "تم الوصول إلى الحد اليومي للرسائل. عد غداً.",
+  "assistant.degraded": "مساعد التعلّم غير متاح بعد. حاول مجدداً لاحقاً.",
+  "assistant.error": "حدث خطأ ما. حاول مجدداً.",
+
   "common.next": "متابعة",
   "common.back": "رجوع"
 }
