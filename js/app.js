@@ -190,13 +190,51 @@
   }
 
   /* ---------- Checkout (Paystack) ---------- */
-  var checkoutState = { plan: null, duration: null };
+  var checkoutState = { plan: null, duration: null, referralCode: '', preview: null, loading: false };
+  var checkoutDebounce = null;
 
-  function checkoutTotal() {
-    var plan = checkoutState.plan;
-    var duration = checkoutState.duration;
-    if (!plan || !duration || !PRICING[plan] || !PRICING[plan][duration]) return null;
-    return PRICING[plan][duration];
+  function renderCheckoutSummary() {
+    var line = document.getElementById('checkout-price-line');
+    var pay = document.getElementById('checkout-pay');
+    var p = checkoutState.preview;
+    if (!line) return;
+    if (checkoutState.loading) {
+      line.innerHTML = t('checkout.calculating');
+      if (pay) pay.disabled = true;
+      return;
+    }
+    if (!p) { line.innerHTML = ''; if (pay) pay.disabled = true; return; }
+
+    var parts = '<span>' + t('checkout.base') + ' <strong>₦' + p.base.toLocaleString('en-NG') + '</strong></span>';
+    if (p.discount > 0) parts += '<br><span style="color:var(--emerald)">' + t('checkout.referralDiscount') + ' −₦' + p.discount.toLocaleString('en-NG') + '</span>';
+    if (p.creditUsed > 0) parts += '<br><span style="color:var(--emerald)">' + t('checkout.creditUsed') + ' −₦' + p.creditUsed.toLocaleString('en-NG') + '</span>';
+    parts += '<br><span style="font-size:1.1rem">' + t('checkout.total') + ' <strong>₦' + p.total.toLocaleString('en-NG') + '</strong></span>';
+    if (p.error === 'invalid-referral-code') parts += '<br><span style="color:#B3261E">' + t('checkout.invalidCode') + '</span>';
+    if (p.error === 'self-referral-not-allowed') parts += '<br><span style="color:#B3261E">' + t('checkout.selfReferral') + '</span>';
+    line.innerHTML = parts;
+    if (pay) pay.disabled = false;
+  }
+
+  function refreshCheckoutPreview() {
+    if (!checkoutState.plan || !checkoutState.duration) {
+      checkoutState.preview = null;
+      renderCheckoutSummary();
+      return;
+    }
+    checkoutState.loading = true;
+    renderCheckoutSummary();
+    var prev = firebase.functions().httpsCallable('previewPayment');
+    prev({ plan: checkoutState.plan, duration: checkoutState.duration, referralCode: checkoutState.referralCode })
+      .then(function (r) {
+        checkoutState.preview = r.data;
+        checkoutState.loading = false;
+        renderCheckoutSummary();
+      })
+      .catch(function () {
+        checkoutState.preview = null;
+        checkoutState.loading = false;
+        renderCheckoutSummary();
+      });
   }
 
   function renderCheckout() {
@@ -244,14 +282,6 @@
       '</button>';
     }).join('');
 
-    var total = checkoutTotal();
-    var totalHtml = total
-      ? '<div class="pricing-note">' +
-          '<p>' + t('checkout.total') + ' <strong>₦' + total.toLocaleString('en-NG') + '</strong></p>' +
-          '<button type="button" class="btn btn-gold" id="checkout-pay">' + t('checkout.pay') + ARROW_SVG + '</button>' +
-        '</div>'
-      : '';
-
     app.innerHTML = '' +
       '<section class="auth-wrap">' +
         '<h1 class="auth-title">' + t('checkout.title') + '</h1>' +
@@ -260,10 +290,26 @@
         '<div class="choice-grid">' + planBtns + '</div>' +
         '<div class="field"><label>' + t('checkout.durationLabel') + '</label></div>' +
         '<div class="choice-grid">' + durBtns + '</div>' +
+        '<div class="field"><label>' + t('checkout.referralLabel') + '</label>' +
+          '<input id="checkout-referral" type="text" maxlength="16" autocomplete="off" placeholder="' + t('checkout.referralPlaceholder') + '">' +
+        '</div>' +
+        '<div class="pricing-note">' +
+          '<p id="checkout-price-line">' + t('checkout.calculating') + '</p>' +
+          '<button type="button" class="btn btn-gold" id="checkout-pay" disabled>' + t('checkout.pay') + ARROW_SVG + '</button>' +
+        '</div>' +
         '<p class="form-error" id="checkout-error">' + t('checkout.error') + '</p>' +
-        totalHtml +
         '<p class="auth-alt"><a href="#/pricing">' + t('common.back') + '</a></p>' +
       '</section>';
+
+    var refInput = document.getElementById('checkout-referral');
+    if (refInput) {
+      refInput.value = checkoutState.referralCode;
+      refInput.addEventListener('input', function () {
+        checkoutState.referralCode = refInput.value.trim();
+        clearTimeout(checkoutDebounce);
+        checkoutDebounce = setTimeout(refreshCheckoutPreview, 400);
+      });
+    }
 
     document.querySelectorAll('[data-plan]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -288,7 +334,7 @@
         }
         pay.disabled = true;
         var init = firebase.functions().httpsCallable('initializePayment');
-        init({ plan: checkoutState.plan, duration: checkoutState.duration })
+        init({ plan: checkoutState.plan, duration: checkoutState.duration, referralCode: checkoutState.referralCode })
           .then(function (r) {
             if (r.data && r.data.authorizationUrl) {
               window.location.href = r.data.authorizationUrl;
@@ -297,11 +343,23 @@
               pay.disabled = false;
             }
           })
-          .catch(function () { err.classList.add('show'); pay.disabled = false; });
+          .catch(function (e2) {
+            var code = (e2 && e2.code ? String(e2.code) : '').replace('functions/', '');
+            if (code === 'invalid-argument' && e2.message && e2.message.indexOf('self-referral') >= 0) {
+              err.textContent = t('checkout.selfReferral');
+            } else if (code === 'invalid-argument' && e2.message && e2.message.indexOf('referral') >= 0) {
+              err.textContent = t('checkout.invalidCode');
+            } else {
+              err.textContent = t('checkout.error');
+            }
+            err.classList.add('show');
+            pay.disabled = false;
+          });
       });
     }
 
     afterRender('pricing');
+    refreshCheckoutPreview();
   }
 
   /* ---------- Payment result ---------- */
@@ -563,7 +621,9 @@
               role: 'student',
               interfaceLang: registerState.interfaceLang || ELA_I18N.getLang(),
               academies: [registerState.academy || 'german'],
+              referralCode: 'ELA-' + cred.user.uid.slice(0, 6).toUpperCase(),
               referralCodeUsed: referral || null,
+              referralCredit: 0,
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           })

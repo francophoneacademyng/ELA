@@ -38,6 +38,12 @@ function charge(uid, plan, duration, ref) {
   };
 }
 
+async function seedTx(ref, uid, plan, duration) {
+  await db.collection('transactions').doc(ref).set({
+    uid, plan, duration, amount: PRICE[plan][duration], status: 'pending', createdAt: new Date()
+  });
+}
+
 async function clean(paths) {
   for (const p of paths) { try { await db.doc(p).delete(); } catch (e) {} }
 }
@@ -46,7 +52,7 @@ async function waitReady() {
   for (let i = 0; i < 60; i++) {
     try {
       const r = await fetch(WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
-      if (r.status === 400 || r.status === 401 || r.status === 500) return; // répond
+      if (r.status === 400 || r.status === 401 || r.status === 500) return;
     } catch (e) { /* pas encore prêt */ }
     await new Promise((res) => setTimeout(res, 1000));
   }
@@ -63,14 +69,15 @@ async function waitReady() {
   else bad('T1 missing signature', r);
 
   // T2 : signature invalide -> 401 + aucune écriture
-  await clean(['transactions/ref-bad', 'subscriptions/u-bad']);
+  await clean(['transactions/ref-bad', 'subscriptions/u-bad', 'users/u-bad']);
   r = await postWebhook(charge('u-bad', 'general', 1, 'ref-bad'), 'deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef');
   const badSub = await db.collection('subscriptions').doc('u-bad').get();
   if (r.status === 401 && /invalid signature/.test(r.text) && !badSub.exists) ok('T2 invalid signature -> 401 + no write');
   else bad('T2 invalid signature', { r, exists: badSub.exists });
 
   // T3 : HMAC valide -> 200 + abonnement actif + transaction success
-  await clean(['transactions/ref-ok', 'subscriptions/u-ok']);
+  await clean(['transactions/ref-ok', 'subscriptions/u-ok', 'users/u-ok']);
+  await seedTx('ref-ok', 'u-ok', 'general', 1);
   const evOk = charge('u-ok', 'general', 1, 'ref-ok');
   r = await postWebhook(evOk, hmac(JSON.stringify(evOk)));
   const subOkSnap = await db.collection('subscriptions').doc('u-ok').get();
@@ -89,6 +96,7 @@ async function waitReady() {
 
   // T5 : extension d'un abonnement actif (+3 mois depuis endDate)
   await clean(['transactions/ref-ext']);
+  await seedTx('ref-ext', 'u-ok', 'premium', 3);
   const evExt = charge('u-ok', 'premium', 3, 'ref-ext');
   r = await postWebhook(evExt, hmac(JSON.stringify(evExt)));
   const subExt = (await db.collection('subscriptions').doc('u-ok').get()).data();
@@ -106,7 +114,8 @@ async function waitReady() {
     for (const duration of [1, 3, 6]) {
       const uid = `u-${plan}-${duration}`;
       const ref = `ref-${plan}-${duration}`;
-      await clean([`transactions/${ref}`, `subscriptions/${uid}`]);
+      await clean([`transactions/${ref}`, `subscriptions/${uid}`, `users/${uid}`]);
+      await seedTx(ref, uid, plan, duration);
       const ev = charge(uid, plan, duration, ref);
       const rr = await postWebhook(ev, hmac(JSON.stringify(ev)));
       const s = await db.collection('subscriptions').doc(uid).get();
@@ -115,6 +124,8 @@ async function waitReady() {
       }
       // montant faux (off by 100 kobo) sur un uid frais -> ne doit PAS écrire
       const wUid = uid + '-w';
+      await clean([`transactions/${ref}-w`, `subscriptions/${wUid}`, `users/${wUid}`]);
+      await seedTx(ref + '-w', wUid, plan, duration);
       const wrong = charge(wUid, plan, duration, ref + '-w');
       wrong.data.amount = PRICE[plan][duration] * 100 - 100;
       const rw = await postWebhook(wrong, hmac(JSON.stringify(wrong)));
@@ -122,7 +133,7 @@ async function waitReady() {
       if (rw.status !== 200 || sw.exists) {
         t6ok = false; console.log(`  FAIL wrong-amount ${plan}/${duration} -> wrote despite wrong amount`);
       }
-      await clean([`subscriptions/${wUid}`, `transactions/${ref}-w`]);
+      await clean([`subscriptions/${wUid}`, `users/${wUid}`]);
     }
   }
   if (t6ok) ok('T6 9 combos kobo corrects + montant faux rejeté');

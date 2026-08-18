@@ -57,6 +57,60 @@ function paystackSecret() {
   return secret;
 }
 
+/* ============================================================
+   JALON 4 — Parrainage
+   - filleul : -15000 NGN sur son PREMIER paiement (jamais sous 0)
+   - parrain : +10000 NGN de crédit académique (referralCredit)
+   - crédit utilisé en priorité sur les paiements suivants
+   ============================================================ */
+const REFERRAL_DISCOUNT = 15000;
+const REFERRAL_CREDIT = 10000;
+
+async function findUserByReferralCode(code) {
+  const snap = await db.collection('users').where('referralCode', '==', code).limit(1).get();
+  if (snap.empty) return null;
+  const doc = snap.docs[0];
+  return { uid: doc.id, data: doc.data() };
+}
+
+async function computePricing(uid, plan, duration, referralCode) {
+  const base = getAmountNaira(plan, duration);
+  if (!base) return null;
+
+  const userSnap = await db.collection('users').doc(uid).get();
+  const user = userSnap.exists ? userSnap.data() : {};
+
+  const firstPayment = !user.firstPaymentDone;
+  const credit = user.referralCredit || 0;
+
+  let discount = 0;
+  let creditUsed = 0;
+  let referrerUid = null;
+  let codeValid = null;
+  let error = null;
+
+  const code = String(referralCode || user.referralCodeUsed || '').trim();
+  if (code && firstPayment) {
+    const referrer = await findUserByReferralCode(code);
+    if (!referrer) {
+      error = 'invalid-referral-code';
+    } else if (referrer.uid === uid) {
+      error = 'self-referral-not-allowed';
+    } else {
+      codeValid = true;
+      referrerUid = referrer.uid;
+      discount = REFERRAL_DISCOUNT;
+    }
+  }
+
+  if (!firstPayment && credit > 0) {
+    creditUsed = Math.min(credit, Math.max(0, base - discount));
+  }
+
+  const total = Math.max(0, base - discount - creditUsed);
+  return { base, discount, creditUsed, total, firstPayment, credit, referrerUid, codeValid, error };
+}
+
 /** Health check — vérifier que les fonctions répondent après déploiement */
 exports.healthCheck = onRequest((req, res) => {
   res.json({
@@ -80,9 +134,12 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
   const plan = data.plan;
   const duration = Number(data.duration);
 
-  const amount = getAmountNaira(plan, duration);
-  if (!amount) {
+  const pricing = await computePricing(uid, plan, duration, data.referralCode);
+  if (!pricing) {
     throw new HttpsError('invalid-argument', 'Invalid plan or duration.');
+  }
+  if (pricing.error) {
+    throw new HttpsError('invalid-argument', pricing.error);
   }
 
   let email = request.auth.token && request.auth.token.email;
@@ -106,11 +163,11 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
     },
     body: JSON.stringify({
       email,
-      amount: amount * 100,
+      amount: pricing.total * 100,
       currency: 'NGN',
       reference,
       callback_url: callbackUrl,
-      metadata: { uid, plan, duration, amount }
+      metadata: { uid, plan, duration, amount: pricing.total }
     })
   });
 
@@ -122,16 +179,50 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
   await db.collection('transactions').doc(reference).set({
     uid,
     email,
-    amount,
     plan,
     duration,
+    amount: pricing.total,
+    baseAmount: pricing.base,
+    discount: pricing.discount,
+    creditUsed: pricing.creditUsed,
+    referrerUid: pricing.referrerUid,
     status: 'pending',
     createdAt: new Date()
   });
 
   return {
     authorizationUrl: initData.data.authorization_url,
-    reference
+    reference,
+    amount: pricing.total,
+    discount: pricing.discount,
+    creditUsed: pricing.creditUsed
+  };
+});
+
+/**
+ * Aperçu du prix (callable — auth requis) : renvoie le montant final calculé
+ * côté serveur (prix - remise parrainage - crédit utilisé) SANS initialiser
+ * de paiement. Utilisé par la page de checkout pour afficher la remise.
+ */
+exports.previewPayment = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const data = request.data || {};
+  const pricing = await computePricing(uid, data.plan, Number(data.duration), data.referralCode);
+  if (!pricing) {
+    throw new HttpsError('invalid-argument', 'Invalid plan or duration.');
+  }
+  return {
+    base: pricing.base,
+    discount: pricing.discount,
+    creditUsed: pricing.creditUsed,
+    total: pricing.total,
+    firstPayment: pricing.firstPayment,
+    credit: pricing.credit,
+    codeValid: pricing.codeValid,
+    error: pricing.error
   };
 });
 
@@ -149,6 +240,15 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('invalid-argument', 'Missing payment reference.');
   }
 
+  const txSnap = await db.collection('transactions').doc(reference).get();
+  if (!txSnap.exists) {
+    throw new HttpsError('not-found', 'Unknown payment reference.');
+  }
+  const txDoc = txSnap.data();
+  if (txDoc.uid !== uid) {
+    throw new HttpsError('permission-denied', 'This payment does not belong to you.');
+  }
+
   const secret = paystackSecret();
   const verifyResp = await fetch(`${PAYSTACK_BASE}/transaction/verify/${encodeURIComponent(reference)}`, {
     headers: { Authorization: `Bearer ${secret}` }
@@ -159,23 +259,24 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
   }
 
   const tx = verifyData.data;
-  const meta = tx.metadata || {};
-  const plan = meta.plan;
-  const duration = Number(meta.duration);
   const paidAmount = Math.round((tx.amount || 0) / 100);
-  const expectedAmount = getAmountNaira(plan, duration);
 
   if (tx.status !== 'success') {
     return { status: 'failed', reference };
   }
-  if (!expectedAmount || paidAmount !== expectedAmount) {
-    throw new HttpsError('invalid-argument', 'Payment amount does not match the selected plan.');
-  }
-  if (meta.uid && meta.uid !== uid) {
-    throw new HttpsError('permission-denied', 'This payment does not belong to you.');
+  if (paidAmount !== txDoc.amount) {
+    throw new HttpsError('invalid-argument', 'Payment amount does not match.');
   }
 
-  await grantSubscription({ uid, plan, duration, amount: paidAmount, reference });
+  await grantSubscription({
+    uid,
+    plan: txDoc.plan,
+    duration: txDoc.duration,
+    amount: paidAmount,
+    reference,
+    referrerUid: txDoc.referrerUid || null,
+    creditUsed: txDoc.creditUsed || 0
+  });
   return { status: 'success', reference };
 });
 
@@ -184,19 +285,24 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
  * Écrit via l'Admin SDK (contourne les règles client — le client ne peut pas
  * forger un abonnement actif).
  */
-async function grantSubscription({ uid, plan, duration, amount, reference }) {
+async function grantSubscription({ uid, plan, duration, amount, reference, referrerUid, creditUsed }) {
   const txRef = db.collection('transactions').doc(reference);
   const subRef = db.collection('subscriptions').doc(uid);
+  const userRef = db.collection('users').doc(uid);
+  const referrerRef = referrerUid ? db.collection('users').doc(referrerUid) : null;
 
   await db.runTransaction(async (t) => {
+    // Toutes les lectures AVANT toutes les écritures (règle Firestore).
     const txDoc = await t.get(txRef);
     if (txDoc.exists && txDoc.data().status === 'success') {
       return; // déjà accordé — idempotent
     }
+    const subDoc = await t.get(subRef);
+    const refDoc = referrerRef ? await t.get(referrerRef) : null;
+    const uDoc = await t.get(userRef);
 
     const now = new Date();
     let start = now;
-    const subDoc = await t.get(subRef);
     if (subDoc.exists) {
       const existing = subDoc.data();
       if (existing.status === 'active' && existing.endDate && existing.endDate.toDate() > now) {
@@ -225,6 +331,21 @@ async function grantSubscription({ uid, plan, duration, amount, reference }) {
       status: 'success',
       paidAt: new Date()
     }, { merge: true });
+
+    // Parrainage : crédite le parrain (+10000 NGN) au premier paiement du filleul.
+    if (referrerRef) {
+      const current = refDoc && refDoc.exists ? (refDoc.data().referralCredit || 0) : 0;
+      t.set(referrerRef, { referralCredit: current + REFERRAL_CREDIT }, { merge: true });
+    }
+
+    // Marque le 1er paiement effectué + consomme le crédit éventuel.
+    const uData = uDoc.exists ? uDoc.data() : {};
+    const patch = { firstPaymentDone: true };
+    if (referrerRef) patch.referralDiscountApplied = true;
+    if (creditUsed && creditUsed > 0) {
+      patch.referralCredit = Math.max(0, (uData.referralCredit || 0) - creditUsed);
+    }
+    t.set(userRef, patch, { merge: true });
   });
 }
 
@@ -255,20 +376,29 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
   const event = req.body;
   if (event && event.event === 'charge.success') {
     const data = event.data || {};
-    const meta = data.metadata || {};
-    const uid = meta.uid;
-    const plan = meta.plan;
-    const duration = Number(meta.duration);
-    const amount = Math.round((data.amount || 0) / 100);
-    const expected = getAmountNaira(plan, duration);
-
-    if (uid && expected && amount === expected && data.reference) {
-      try {
-        await grantSubscription({ uid, plan, duration, amount, reference: data.reference });
-      } catch (err) {
-        console.error('webhook grant failed', err);
-        res.status(500).send('grant failed');
-        return;
+    const reference = data.reference;
+    if (reference) {
+      const txSnap = await db.collection('transactions').doc(reference).get();
+      if (txSnap.exists) {
+        const txDoc = txSnap.data();
+        const paidAmount = Math.round((data.amount || 0) / 100);
+        if (paidAmount === txDoc.amount) {
+          try {
+            await grantSubscription({
+              uid: txDoc.uid,
+              plan: txDoc.plan,
+              duration: txDoc.duration,
+              amount: paidAmount,
+              reference,
+              referrerUid: txDoc.referrerUid || null,
+              creditUsed: txDoc.creditUsed || 0
+            });
+          } catch (err) {
+            console.error('webhook grant failed', err);
+            res.status(500).send('grant failed');
+            return;
+          }
+        }
       }
     }
   }
