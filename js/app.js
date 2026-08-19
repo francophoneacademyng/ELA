@@ -28,11 +28,11 @@
 
   /* ---------- Academies data ---------- */
   var ACADEMIES = [
-    { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true  },
-    { key: 'mandarin', native: '中文',      accent: 'var(--accent-mandarin)', open: false },
-    { key: 'english',  native: 'English',  accent: 'var(--accent-english)',  open: false },
-    { key: 'arabic',   native: 'العربية',   accent: 'var(--accent-arabic)',   open: false },
-    { key: 'russian',  native: 'Русский',  accent: 'var(--accent-russian)',  open: false }
+    { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true },
+    { key: 'mandarin', native: '中文',      accent: 'var(--accent-mandarin)', open: true },
+    { key: 'english',  native: 'English',  accent: 'var(--accent-english)',  open: true },
+    { key: 'arabic',   native: 'العربية',   accent: 'var(--accent-arabic)',   open: true },
+    { key: 'russian',  native: 'Русский',  accent: 'var(--accent-russian)',  open: true }
   ];
 
   /* Grille tarifaire (affichage + checkout). La source de vérité des montants
