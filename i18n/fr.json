@@ -141,6 +141,25 @@
   "assistant.degraded": "Le Learning Assistant n'est pas encore disponible. Réessaie plus tard.",
   "assistant.error": "Une erreur est survenue. Réessaie.",
 
+  "dashboard.title": "Mon tableau de bord",
+  "dashboard.signInRequired": "Connecte-toi pour voir ton tableau de bord.",
+  "dashboard.loading": "Chargement de ton compte...",
+  "dashboard.error": "Impossible de charger ton tableau de bord. Réessaie.",
+  "dashboard.subscription": "Abonnement",
+  "dashboard.status.active": "Actif",
+  "dashboard.status.expired": "Expiré",
+  "dashboard.status.none": "Aucun abonnement actif pour le moment.",
+  "dashboard.daysRemaining": "jours restants",
+  "dashboard.renew": "Renouveler",
+  "dashboard.referralCode": "Ton code de parrainage",
+  "dashboard.referralCredit": "Crédit de parrainage",
+  "dashboard.assistant": "Ouvrir le Learning Assistant",
+  "dashboard.transactions": "Historique des paiements",
+  "dashboard.noTransactions": "Aucun paiement pour le moment.",
+  "dashboard.tx.success": "Payé",
+  "dashboard.tx.pending": "En attente",
+  "dashboard.tx.failed": "Échoué",
+
   "common.next": "Continuer",
   "common.back": "Retour"
 }

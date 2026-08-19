@@ -141,6 +141,25 @@
   "assistant.degraded": "مساعد التعلّم غير متاح بعد. حاول مجدداً لاحقاً.",
   "assistant.error": "حدث خطأ ما. حاول مجدداً.",
 
+  "dashboard.title": "لوحة التحكم",
+  "dashboard.signInRequired": "سجّل الدخول لعرض لوحة التحكم.",
+  "dashboard.loading": "جارٍ تحميل حسابك...",
+  "dashboard.error": "تعذر تحميل لوحة التحكم. حاول مجدداً.",
+  "dashboard.subscription": "الاشتراك",
+  "dashboard.status.active": "نشط",
+  "dashboard.status.expired": "منتهي",
+  "dashboard.status.none": "لا يوجد اشتراك نشط بعد.",
+  "dashboard.daysRemaining": "يوم متبقٍ",
+  "dashboard.renew": "تجديد",
+  "dashboard.referralCode": "رمز الإحالة الخاص بك",
+  "dashboard.referralCredit": "رصيد الإحالة",
+  "dashboard.assistant": "افتح مساعد التعلّم",
+  "dashboard.transactions": "سجل المدفوعات",
+  "dashboard.noTransactions": "لا توجد مدفوعات بعد.",
+  "dashboard.tx.success": "مدفوع",
+  "dashboard.tx.pending": "قيد الانتظار",
+  "dashboard.tx.failed": "فشل",
+
   "common.next": "متابعة",
   "common.back": "رجوع"
 }

@@ -141,6 +141,25 @@
   "assistant.degraded": "The Learning Assistant is not available yet. Please try again later.",
   "assistant.error": "Something went wrong. Please try again.",
 
+  "dashboard.title": "My dashboard",
+  "dashboard.signInRequired": "Sign in to view your dashboard.",
+  "dashboard.loading": "Loading your account...",
+  "dashboard.error": "Could not load your dashboard. Please try again.",
+  "dashboard.subscription": "Subscription",
+  "dashboard.status.active": "Active",
+  "dashboard.status.expired": "Expired",
+  "dashboard.status.none": "No active subscription yet.",
+  "dashboard.daysRemaining": "days remaining",
+  "dashboard.renew": "Renew",
+  "dashboard.referralCode": "Your referral code",
+  "dashboard.referralCredit": "Referral credit",
+  "dashboard.assistant": "Open Learning Assistant",
+  "dashboard.transactions": "Payment history",
+  "dashboard.noTransactions": "No payments yet.",
+  "dashboard.tx.success": "Paid",
+  "dashboard.tx.pending": "Pending",
+  "dashboard.tx.failed": "Failed",
+
   "common.next": "Continue",
   "common.back": "Back"
 }

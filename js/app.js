@@ -405,7 +405,10 @@
           '<section class="auth-wrap">' +
             '<h1 class="auth-title">' + t(ok ? 'payment.result.title.success' : 'payment.result.title.fail') + '</h1>' +
             '<p class="auth-sub">' + t(ok ? 'payment.result.msg.success' : 'payment.result.msg.fail') + '</p>' +
-            '<div class="hero-actions"><a class="btn btn-solid" href="#/">' + t('payment.result.backHome') + '</a></div>' +
+            '<div class="hero-actions">' +
+              '<a class="btn btn-solid" href="#/dashboard">' + t('dashboard.title') + '</a>' +
+              '<a class="btn btn-outline" href="#/">' + t('payment.result.backHome') + '</a>' +
+            '</div>' +
           '</section>';
         afterRender('pricing');
       })
@@ -529,6 +532,99 @@
     afterRender('');
   }
 
+  /* ---------- Dashboard (Jalon 5) ---------- */
+  function fmtNaira(n) { return '₦' + Number(n || 0).toLocaleString('en-NG'); }
+
+  function dashboardSignIn() {
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
+        '<p class="auth-sub">' + t('dashboard.signInRequired') + '</p>' +
+        '<div class="hero-actions">' +
+          '<a class="btn btn-solid" href="#/login">' + t('login.submit') + '</a>' +
+          '<a class="btn btn-outline" href="#/register">' + t('login.registerLink') + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('');
+  }
+
+  function buildDashboard(d) {
+    var sub = d.subscription;
+    var now = Date.now();
+
+    var subHtml;
+    if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
+      var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
+      subHtml = '<div class="pricing-note"><p>' +
+        '<span class="academy-status status-open">' + t('dashboard.status.active') + '</span> ' +
+        t('pricing.' + (sub.plan || 'general')) + ' · ' + t('checkout.month.' + (sub.duration || 1)) +
+        '<br><span style="color:var(--muted)">' + days + ' ' + t('dashboard.daysRemaining') + '</span></p>' +
+        '<a class="btn btn-outline" href="#/checkout">' + t('dashboard.renew') + '</a></div>';
+    } else if (sub && sub.status === 'expired') {
+      subHtml = '<div class="pricing-note"><p>' +
+        '<span class="academy-status status-soon">' + t('dashboard.status.expired') + '</span> ' +
+        t('pricing.' + (sub.plan || 'general')) + '</p>' +
+        '<a class="btn btn-gold" href="#/checkout">' + t('dashboard.renew') + '</a></div>';
+    } else {
+      subHtml = '<div class="pricing-note"><p>' + t('dashboard.status.none') + '</p>' +
+        '<a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div>';
+    }
+
+    var refHtml = '<div class="pricing-note"><p>' +
+      '<span style="color:var(--muted)">' + t('dashboard.referralCode') + ':</span> <strong>' + (d.user.referralCode || '—') + '</strong>' +
+      '<br><span style="color:var(--muted)">' + t('dashboard.referralCredit') + ':</span> <strong>' + fmtNaira(d.user.referralCredit) + '</strong></p>' +
+      '<a class="btn btn-outline" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
+
+    var txRows = (d.transactions || []).map(function (tx) {
+      var date = tx.createdAt ? new Date(tx.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '';
+      var pill = tx.status === 'success'
+        ? '<span class="academy-status status-open">' + t('dashboard.tx.success') + '</span>'
+        : '<span class="academy-status status-soon">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
+      return '<li><span>' + t('pricing.' + (tx.plan || 'general')) + ' · ' + t('checkout.month.' + (tx.duration || 1)) + '</span>' +
+        '<span style="color:var(--muted)">' + date + '</span>' +
+        '<span>' + fmtNaira(tx.amount) + '</span>' + pill + '</li>';
+    }).join('');
+
+    var txHtml = '<h3 class="auth-title" style="font-size:1.3rem;margin-top:2rem">' + t('dashboard.transactions') + '</h3>' +
+      '<ul class="tx-list">' + (txRows || '<li>' + t('dashboard.noTransactions') + '</li>') + '</ul>';
+
+    return '' +
+      '<section class="auth-wrap assistant-wrap">' +
+        '<h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
+        '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('dashboard.subscription') + '</h3>' + subHtml +
+        refHtml + txHtml +
+      '</section>';
+  }
+
+  function renderDashboard() {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.functions) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap"><h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
+        '<div class="setup-banner">' + t('register.setup') + '</div></section>';
+      afterRender('');
+      return;
+    }
+    var user = firebase.auth().currentUser;
+    if (!user) { dashboardSignIn(); return; }
+
+    app.innerHTML = '' +
+      '<section class="auth-wrap assistant-wrap">' +
+        '<h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
+        '<p class="auth-sub">' + t('dashboard.loading') + '</p>' +
+      '</section>';
+    afterRender('');
+
+    var get = firebase.functions().httpsCallable('getDashboardData');
+    get()
+      .then(function (r) { app.innerHTML = buildDashboard(r.data); afterRender(''); })
+      .catch(function () {
+        app.innerHTML = '' +
+          '<section class="auth-wrap"><h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
+          '<p class="auth-sub">' + t('dashboard.error') + '</p></section>';
+        afterRender('');
+      });
+  }
+
   /* ---------- Register: 3-step wizard ---------- */
   var registerState = { step: 1, interfaceLang: null, academy: null };
 
@@ -627,7 +723,7 @@
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           })
-          .then(function () { alert(t('register.success')); window.location.hash = '#/'; })
+          .then(function () { alert(t('register.success')); window.location.hash = '#/dashboard'; })
           .catch(function () { document.getElementById('reg-error').classList.add('show'); });
       });
     }
@@ -657,7 +753,7 @@
       var email = document.getElementById('login-email').value.trim();
       var password = document.getElementById('login-password').value;
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function () { window.location.hash = '#/'; })
+        .then(function () { window.location.hash = '#/dashboard'; })
         .catch(function () { document.getElementById('login-error').classList.add('show'); });
     });
     afterRender('login');
@@ -686,6 +782,7 @@
     '/checkout': renderCheckout,
     '/payment/result': renderPaymentResult,
     '/assistant': renderAssistant,
+    '/dashboard': renderDashboard,
     '/register': renderRegister,
     '/login': renderLogin
   };

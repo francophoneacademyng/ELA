@@ -24,6 +24,7 @@
  */
 
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
+const { onSchedule } = require('firebase-functions/v2/scheduler');
 const crypto = require('crypto');
 const admin = require('firebase-admin');
 
@@ -268,7 +269,7 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('invalid-argument', 'Payment amount does not match.');
   }
 
-  await grantSubscription({
+  const granted = await grantSubscription({
     uid,
     plan: txDoc.plan,
     duration: txDoc.duration,
@@ -277,6 +278,12 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
     referrerUid: txDoc.referrerUid || null,
     creditUsed: txDoc.creditUsed || 0
   });
+  if (granted) {
+    await sendPaymentConfirmation({
+      to: txDoc.email, plan: txDoc.plan, duration: txDoc.duration,
+      amount: paidAmount, reference
+    }).catch(() => {});
+  }
   return { status: 'success', reference };
 });
 
@@ -291,11 +298,11 @@ async function grantSubscription({ uid, plan, duration, amount, reference, refer
   const userRef = db.collection('users').doc(uid);
   const referrerRef = referrerUid ? db.collection('users').doc(referrerUid) : null;
 
-  await db.runTransaction(async (t) => {
+  return db.runTransaction(async (t) => {
     // Toutes les lectures AVANT toutes les écritures (règle Firestore).
     const txDoc = await t.get(txRef);
     if (txDoc.exists && txDoc.data().status === 'success') {
-      return; // déjà accordé — idempotent
+      return false; // déjà accordé — idempotent
     }
     const subDoc = await t.get(subRef);
     const refDoc = referrerRef ? await t.get(referrerRef) : null;
@@ -346,6 +353,7 @@ async function grantSubscription({ uid, plan, duration, amount, reference, refer
       patch.referralCredit = Math.max(0, (uData.referralCredit || 0) - creditUsed);
     }
     t.set(userRef, patch, { merge: true });
+    return true;
   });
 }
 
@@ -384,7 +392,7 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
         const paidAmount = Math.round((data.amount || 0) / 100);
         if (paidAmount === txDoc.amount) {
           try {
-            await grantSubscription({
+            const granted = await grantSubscription({
               uid: txDoc.uid,
               plan: txDoc.plan,
               duration: txDoc.duration,
@@ -393,6 +401,12 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
               referrerUid: txDoc.referrerUid || null,
               creditUsed: txDoc.creditUsed || 0
             });
+            if (granted) {
+              await sendPaymentConfirmation({
+                to: txDoc.email, plan: txDoc.plan, duration: txDoc.duration,
+                amount: paidAmount, reference
+              }).catch(() => {});
+            }
           } catch (err) {
             console.error('webhook grant failed', err);
             res.status(500).send('grant failed');
@@ -531,4 +545,142 @@ exports.learningAssistant = onCall({ region: REGION }, async (request) => {
   } finally {
     clearTimeout(timer);
   }
+});
+
+/* ============================================================
+   JALON 5 — Expiration + notifications + tableau de bord
+   ============================================================ */
+function ts(v) {
+  if (!v) return null;
+  if (v.toMillis) return v.toMillis();
+  if (v instanceof Date) return v.getTime();
+  return v;
+}
+
+async function sendEmail({ to, subject, text }) {
+  const key = process.env.SENDGRID_API_KEY;
+  if (!key) {
+    console.log(`[email:log] to=${to} subject="${subject}"`);
+    return;
+  }
+  const from = process.env.SENDGRID_FROM || 'noreply@elearnlanguage.ng';
+  try {
+    const resp = await fetch('https://api.sendgrid.com/v3/mail/send', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: to }] }],
+        from: { email: from },
+        subject,
+        content: [{ type: 'text/plain', value: text }]
+      })
+    });
+    if (!resp.ok) console.error('sendgrid error', resp.status);
+  } catch (err) {
+    console.error('sendgrid send failed', err && err.message);
+  }
+}
+
+function planLabel(plan) {
+  const labels = { general: 'General Path', premium: 'Premium Path', business: 'Business Language' };
+  return labels[plan] || plan;
+}
+
+async function sendPaymentConfirmation({ to, plan, duration, amount, reference }) {
+  const text =
+    'E-Learn Language Academy (ELA)\n\n' +
+    'Thank you for your payment.\n\n' +
+    'Plan: ' + planLabel(plan) + '\n' +
+    'Duration: ' + duration + ' month(s)\n' +
+    'Amount: NGN ' + Number(amount).toLocaleString('en-NG') + '\n' +
+    'Reference: ' + reference + '\n\n' +
+    'Your subscription is now active. Welcome to ELA.\n\n' +
+    'E-Learn Language Academy — One Academy. Five Languages.';
+  await sendEmail({ to, subject: 'ELA — Payment confirmed', text });
+}
+
+async function emailForUser(uid) {
+  const u = await db.collection('users').doc(uid).get();
+  return u.exists ? (u.data().email || null) : null;
+}
+
+/**
+ * Vérifie quotidiennement les abonnements : expire ceux dont la date est
+ * passée, et envoie un rappel J-7 (log-only si SENDGRID_API_KEY absente).
+ */
+exports.checkSubscriptionExpiry = onSchedule({ region: REGION, schedule: 'every day 00:00', timeZone: 'Africa/Lagos' }, async () => {
+  const now = new Date();
+  const in7 = new Date(now);
+  in7.setDate(in7.getDate() + 7);
+
+  const activeSnap = await db.collection('subscriptions').where('status', '==', 'active').get();
+  let expired = 0, reminded = 0;
+
+  for (const doc of activeSnap.docs) {
+    const s = doc.data();
+    const end = s.endDate && s.endDate.toDate ? s.endDate.toDate() : null;
+    if (!end) continue;
+
+    if (end <= now) {
+      await doc.ref.set({ status: 'expired' }, { merge: true });
+      expired++;
+      const to = await emailForUser(doc.id);
+      if (to) {
+        await sendEmail({
+          to, subject: 'ELA — Subscription expired',
+          text: 'E-Learn Language Academy (ELA)\n\nYour subscription has expired. Renew to keep learning.\n\nE-Learn Language Academy — One Academy. Five Languages.'
+        }).catch(() => {});
+      }
+    } else if (end <= in7 && !s.reminderSent) {
+      await doc.ref.set({ reminderSent: true }, { merge: true });
+      reminded++;
+      const to = await emailForUser(doc.id);
+      if (to) {
+        await sendEmail({
+          to, subject: 'ELA — Your subscription renews soon',
+          text: 'E-Learn Language Academy (ELA)\n\nYour subscription renews in 7 days or less. Keep your learning uninterrupted.\n\nE-Learn Language Academy — One Academy. Five Languages.'
+        }).catch(() => {});
+      }
+    }
+  }
+
+  console.log(`checkSubscriptionExpiry done: expired=${expired} reminded=${reminded}`);
+  return { expired, reminded };
+});
+
+/** Données du tableau de bord (callable — auth requis). */
+exports.getDashboardData = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+
+  const subSnap = await db.collection('subscriptions').doc(uid).get();
+  const userSnap = await db.collection('users').doc(uid).get();
+  const txSnap = await db.collection('transactions').where('uid', '==', uid).limit(20).get();
+
+  const subscription = subSnap.exists ? {
+    plan: subSnap.data().plan,
+    duration: subSnap.data().duration,
+    status: subSnap.data().status,
+    amount: subSnap.data().amount,
+    startDate: ts(subSnap.data().startDate),
+    endDate: ts(subSnap.data().endDate)
+  } : null;
+
+  const user = userSnap.exists ? {
+    referralCode: userSnap.data().referralCode || null,
+    referralCredit: userSnap.data().referralCredit || 0
+  } : { referralCode: null, referralCredit: 0 };
+
+  const transactions = txSnap.docs.map((d) => ({
+    id: d.id,
+    plan: d.data().plan,
+    duration: d.data().duration,
+    amount: d.data().amount,
+    status: d.data().status,
+    createdAt: ts(d.data().createdAt)
+  })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  return { subscription, user, transactions };
 });

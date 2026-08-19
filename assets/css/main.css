@@ -334,3 +334,11 @@ body {
   .msg { max-width: 92%; }
   .chat-input { flex-direction: column; }
 }
+
+/* ---------- Dashboard ---------- */
+.tx-list { list-style: none; margin-top: 0.8rem; }
+.tx-list li {
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center;
+  padding: 0.8rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem;
+}
+.tx-list li span:first-child { flex: 1 1 12rem; }
