@@ -684,3 +684,48 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
 
   return { subscription, user, transactions };
 });
+
+/* ============================================================
+   MISSION ENSEIGNANT — Attribution des rôles (admin only)
+   ============================================================ */
+const VALID_ROLES = ['student', 'teacher', 'admin'];
+const VALID_ACADEMIES = ['german', 'mandarin', 'english', 'arabic', 'russian'];
+
+/**
+ * Attribue un rôle à un utilisateur (student/teacher/admin). Réservé à l'admin.
+ * Un rôle "teacher" exige une académie valide (obligatoire).
+ */
+exports.setUserRole = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const callerUid = request.auth.uid;
+
+  const callerSnap = await db.collection('users').doc(callerUid).get();
+  if (!callerSnap.exists || callerSnap.data().role !== 'admin') {
+    throw new HttpsError('permission-denied', 'admin-only');
+  }
+
+  const data = request.data || {};
+  const uid = data.uid;
+  const role = data.role;
+  const academy = data.academy;
+
+  if (!uid) {
+    throw new HttpsError('invalid-argument', 'missing-uid');
+  }
+  if (!VALID_ROLES.includes(role)) {
+    throw new HttpsError('invalid-argument', 'invalid-role');
+  }
+
+  const patch = { role };
+  if (role === 'teacher') {
+    if (!VALID_ACADEMIES.includes(academy)) {
+      throw new HttpsError('invalid-argument', 'teacher-requires-valid-academy');
+    }
+    patch.academy = academy;
+  }
+
+  await db.collection('users').doc(uid).set(patch, { merge: true });
+  return { ok: true, uid, role };
+});

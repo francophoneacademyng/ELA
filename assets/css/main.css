@@ -361,3 +361,21 @@ body {
 .footer-legal-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
 .footer-legal-links a { color: var(--emerald); text-decoration: none; }
 .footer-legal-links a:hover { color: var(--forest); }
+
+/* ---------- Teacher area ---------- */
+.teacher-wrap { max-width: 760px; }
+.teacher-card { border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.5rem 1.6rem; margin-bottom: 1.5rem; }
+.teacher-card-title { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--forest); margin-bottom: 1rem; }
+.field textarea, .field select {
+  width: 100%; border: 1.5px solid var(--line); border-radius: var(--radius);
+  background: #fff; padding: 0.9rem 1.1rem; font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+}
+.field textarea:focus, .field select:focus { outline: none; border-color: var(--emerald); }
+.quiz-q { border: 1px solid var(--line); border-radius: var(--radius); padding: 1rem 1.2rem; margin-bottom: 1rem; }
+.quiz-q label { display: block; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0.5rem 0 0.35rem; }
+.quiz-q input, .quiz-q select {
+  width: 100%; border: 1.5px solid var(--line); border-radius: var(--radius);
+  background: #fff; padding: 0.6rem 0.8rem; font-family: var(--font-body); font-size: 0.95rem; color: var(--ink);
+}
+.q-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+@media (max-width: 720px) { .q-opts { grid-template-columns: 1fr; } }

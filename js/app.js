@@ -753,6 +753,205 @@
     afterRender('');
   }
 
+  /* ---------- Teacher area (mission 1) ---------- */
+  var teacherAcademy = null;
+
+  function renderTeacher() {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.firestore) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+        '<div class="setup-banner">' + t('register.setup') + '</div></section>';
+      afterRender('teacher');
+      return;
+    }
+    var user = firebase.auth().currentUser;
+    if (!user) {
+      app.innerHTML = '' +
+        '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+        '<p class="auth-sub">' + t('assistant.signInRequired') + '</p>' +
+        '<div class="hero-actions"><a class="btn btn-solid" href="#/login">' + t('login.submit') + '</a></div></section>';
+      afterRender('teacher');
+      return;
+    }
+    app.innerHTML = '' +
+      '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+      '<p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    afterRender('teacher');
+
+    firebase.firestore().collection('users').doc(user.uid).get()
+      .then(function (snap) {
+        var d = snap.exists ? snap.data() : {};
+        var role = d.role;
+        if (role !== 'teacher' && role !== 'admin') {
+          app.innerHTML = '' +
+            '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+            '<p class="auth-sub">' + t('teacher.notTeacher') + '</p></section>';
+          afterRender('teacher');
+          return;
+        }
+        teacherAcademy = d.academy || null;
+        renderTeacherDashboard(user.uid, teacherAcademy);
+      })
+      .catch(function () {
+        app.innerHTML = '' +
+          '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+          '<p class="auth-sub">' + t('teacher.error') + '</p></section>';
+        afterRender('teacher');
+      });
+  }
+
+  function quizQuestionCardHtml(index) {
+    return '<div class="quiz-q">' +
+      '<label>' + t('teacher.quiz.question') + ' ' + (index + 1) + '</label>' +
+      '<input class="q-text" type="text" placeholder="' + t('teacher.quiz.question') + '">' +
+      '<label>' + t('teacher.quiz.options') + '</label>' +
+      '<div class="q-opts">' +
+        '<input class="q-opt" type="text" placeholder="1"><input class="q-opt" type="text" placeholder="2">' +
+        '<input class="q-opt" type="text" placeholder="3"><input class="q-opt" type="text" placeholder="4">' +
+      '</div>' +
+      '<label>' + t('teacher.quiz.correct') + '</label>' +
+      '<select class="q-correct"><option value="0">1</option><option value="1">2</option><option value="2">3</option><option value="3">4</option></select>' +
+    '</div>';
+  }
+
+  function renderTeacherDashboard(uid, academy) {
+    var academyLabel = t('academies.' + (academy || 'german') + '.name');
+    app.innerHTML = '' +
+      '<section class="auth-wrap teacher-wrap">' +
+        '<h1 class="auth-title">' + t('teacher.title') + '</h1>' +
+        '<p class="auth-sub">' + t('teacher.academy') + ' <strong>' + academyLabel + '</strong></p>' +
+
+        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.lesson.title') + '</h3>' +
+          '<div class="field"><label>' + t('teacher.lesson.field.title') + '</label><input id="tls-title" type="text"></div>' +
+          '<div class="field"><label>' + t('teacher.lesson.field.description') + '</label><input id="tls-desc" type="text"></div>' +
+          '<div class="field"><label>' + t('teacher.lesson.field.content') + '</label><textarea id="tls-content" rows="6"></textarea></div>' +
+          '<div class="field"><label>' + t('teacher.lesson.field.level') + '</label>' +
+            '<select id="tls-level"><option value="beginner">' + t('teacher.level.beginner') + '</option><option value="intermediate">' + t('teacher.level.intermediate') + '</option><option value="advanced">' + t('teacher.level.advanced') + '</option></select></div>' +
+          '<p class="form-error" id="tls-error">' + t('teacher.error') + '</p>' +
+          '<button type="button" class="btn btn-solid" id="tls-submit">' + t('teacher.lesson.submit') + '</button>' +
+        '</div>' +
+
+        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.quiz.title') + '</h3>' +
+          '<div class="field"><label>' + t('teacher.quiz.field.title') + '</label><input id="tqz-title" type="text"></div>' +
+          '<div id="tqz-questions"></div>' +
+          '<button type="button" class="btn btn-outline" id="tqz-add">' + t('teacher.quiz.addQuestion') + '</button>' +
+          '<p class="form-error" id="tqz-error">' + t('teacher.error') + '</p>' +
+          '<button type="button" class="btn btn-solid" id="tqz-submit">' + t('teacher.quiz.submit') + '</button>' +
+        '</div>' +
+
+        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.live.title') + '</h3>' +
+          '<div class="field"><label>' + t('teacher.live.field.title') + '</label><input id="tlv-title" type="text"></div>' +
+          '<div class="field"><label>' + t('teacher.live.field.datetime') + '</label><input id="tlv-datetime" type="datetime-local"></div>' +
+          '<div class="field"><label>' + t('teacher.live.field.link') + '</label><input id="tlv-link" type="url"></div>' +
+          '<p class="form-error" id="tlv-error">' + t('teacher.error') + '</p>' +
+          '<button type="button" class="btn btn-solid" id="tlv-submit">' + t('teacher.live.submit') + '</button>' +
+        '</div>' +
+
+        '<h3 class="auth-title" style="font-size:1.3rem;margin-top:2rem">' + t('teacher.content') + '</h3>' +
+        '<ul class="tx-list" id="teacher-content"><li>' + t('dashboard.loading') + '</li></ul>' +
+      '</section>';
+
+    document.getElementById('tqz-questions').insertAdjacentHTML('beforeend', quizQuestionCardHtml(0));
+    bindTeacher(uid, academy);
+    loadTeacherContent(uid);
+    afterRender('teacher');
+  }
+
+  function bindTeacher(uid, academy) {
+    var db = firebase.firestore();
+    var ts = function () { return firebase.firestore.FieldValue.serverTimestamp(); };
+
+    document.getElementById('tls-submit').addEventListener('click', function () {
+      var title = document.getElementById('tls-title').value.trim();
+      var desc = document.getElementById('tls-desc').value.trim();
+      var content = document.getElementById('tls-content').value.trim();
+      var level = document.getElementById('tls-level').value;
+      var err = document.getElementById('tls-error');
+      if (!title || !content) { err.classList.add('show'); return; }
+      db.collection('lessons').add({
+        title: title, description: desc, content: content, level: level,
+        academy: academy, teacherUid: uid, status: 'pending', createdAt: ts()
+      }).then(function () {
+        alert(t('teacher.success'));
+        document.getElementById('tls-title').value = '';
+        document.getElementById('tls-desc').value = '';
+        document.getElementById('tls-content').value = '';
+        loadTeacherContent(uid);
+      }).catch(function () { err.classList.add('show'); });
+    });
+
+    document.getElementById('tqz-add').addEventListener('click', function () {
+      var c = document.getElementById('tqz-questions');
+      c.insertAdjacentHTML('beforeend', quizQuestionCardHtml(c.querySelectorAll('.quiz-q').length));
+    });
+
+    document.getElementById('tqz-submit').addEventListener('click', function () {
+      var title = document.getElementById('tqz-title').value.trim();
+      var err = document.getElementById('tqz-error');
+      var questions = [];
+      document.querySelectorAll('#tqz-questions .quiz-q').forEach(function (card) {
+        var text = card.querySelector('.q-text').value.trim();
+        var opts = Array.prototype.map.call(card.querySelectorAll('.q-opt'), function (o) { return o.value.trim(); });
+        var correct = parseInt(card.querySelector('.q-correct').value, 10);
+        if (text && opts.every(function (o) { return o; })) questions.push({ text: text, options: opts, correctIndex: correct });
+      });
+      if (!title || !questions.length) { err.classList.add('show'); return; }
+      db.collection('quizzes').add({
+        title: title, questions: questions, academy: academy, teacherUid: uid, status: 'pending', createdAt: ts()
+      }).then(function () {
+        alert(t('teacher.success'));
+        document.getElementById('tqz-title').value = '';
+        document.getElementById('tqz-questions').innerHTML = '';
+        document.getElementById('tqz-questions').insertAdjacentHTML('beforeend', quizQuestionCardHtml(0));
+        loadTeacherContent(uid);
+      }).catch(function () { err.classList.add('show'); });
+    });
+
+    document.getElementById('tlv-submit').addEventListener('click', function () {
+      var title = document.getElementById('tlv-title').value.trim();
+      var datetime = document.getElementById('tlv-datetime').value;
+      var link = document.getElementById('tlv-link').value.trim();
+      var err = document.getElementById('tlv-error');
+      if (!title || !datetime || !link) { err.classList.add('show'); return; }
+      db.collection('liveClasses').add({
+        title: title, scheduledAt: new Date(datetime), meetingLink: link,
+        academy: academy, teacherUid: uid, status: 'pending', createdAt: ts()
+      }).then(function () {
+        alert(t('teacher.success'));
+        document.getElementById('tlv-title').value = '';
+        document.getElementById('tlv-datetime').value = '';
+        document.getElementById('tlv-link').value = '';
+        loadTeacherContent(uid);
+      }).catch(function () { err.classList.add('show'); });
+    });
+  }
+
+  function loadTeacherContent(uid) {
+    var el = document.getElementById('teacher-content');
+    if (!el) return;
+    var db = firebase.firestore();
+    Promise.all([
+      db.collection('lessons').where('teacherUid', '==', uid).get(),
+      db.collection('quizzes').where('teacherUid', '==', uid).get(),
+      db.collection('liveClasses').where('teacherUid', '==', uid).get()
+    ]).then(function (results) {
+      var items = [];
+      results[0].forEach(function (d) { items.push({ type: t('teacher.type.lesson'), title: d.data().title, createdAt: d.data().createdAt }); });
+      results[1].forEach(function (d) { items.push({ type: t('teacher.type.quiz'), title: d.data().title, createdAt: d.data().createdAt }); });
+      results[2].forEach(function (d) { items.push({ type: t('teacher.type.live'), title: d.data().title, createdAt: d.data().createdAt }); });
+      items.sort(function (a, b) {
+        var at = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+        var bt = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+        return bt - at;
+      });
+      if (!items.length) { el.innerHTML = '<li>' + t('teacher.content.empty') + '</li>'; return; }
+      el.innerHTML = items.map(function (it) {
+        return '<li><span>' + escapeHtml(it.type + ' — ' + it.title) + '</span>' +
+          '<span class="academy-status status-soon">' + t('teacher.status.pending') + '</span></li>';
+      }).join('');
+    }).catch(function () { el.innerHTML = '<li>' + t('teacher.error') + '</li>'; });
+  }
+
   /* ---------- Register: 3-step wizard ---------- */
   var registerState = { step: 1, interfaceLang: null, academy: null };
 
@@ -914,6 +1113,7 @@
     '/terms': renderTerms,
     '/privacy': renderPrivacy,
     '/refund': renderRefund,
+    '/teacher': renderTeacher,
     '/register': renderRegister,
     '/login': renderLogin
   };
@@ -926,16 +1126,32 @@
   }
 
   /* ---------- Boot ---------- */
+  function updateTeacherNav() {
+    var link = document.querySelector('.teacher-nav');
+    if (!link) return;
+    if (!window.firebase || !firebase.auth) { link.style.display = 'none'; return; }
+    var user = firebase.auth().currentUser;
+    if (!user) { link.style.display = 'none'; return; }
+    firebase.firestore().collection('users').doc(user.uid).get()
+      .then(function (snap) {
+        var role = snap.exists ? snap.data().role : null;
+        link.style.display = (role === 'teacher' || role === 'admin') ? '' : 'none';
+      })
+      .catch(function () { link.style.display = 'none'; });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('nav-logo').innerHTML = LOGO_SVG;
     document.getElementById('footer-logo').innerHTML = LOGO_SVG;
 
     if (window.ELA_FIREBASE_READY && window.firebase) {
       firebase.initializeApp(window.ELA_FIREBASE_CONFIG);
+      firebase.auth().onAuthStateChanged(function () { updateTeacherNav(); });
     }
 
     ELA_I18N.init().then(function () {
       route();
+      updateTeacherNav();
       window.addEventListener('hashchange', route);
     });
     ELA_I18N.onChange(function () { route(); });
