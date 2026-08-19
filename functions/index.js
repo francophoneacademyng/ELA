@@ -608,7 +608,7 @@ async function emailForUser(uid) {
  * Vérifie quotidiennement les abonnements : expire ceux dont la date est
  * passée, et envoie un rappel J-7 (log-only si SENDGRID_API_KEY absente).
  */
-exports.checkSubscriptionExpiry = onSchedule({ region: REGION, schedule: 'every day 00:00', timeZone: 'Africa/Lagos' }, async () => {
+exports.checkSubscriptionExpiry = onSchedule({ region: 'europe-west1', schedule: 'every day 00:00', timeZone: 'Africa/Lagos' }, async () => {
   const now = new Date();
   const in7 = new Date(now);
   in7.setDate(in7.getDate() + 7);

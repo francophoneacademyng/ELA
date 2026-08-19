@@ -11,10 +11,11 @@
                                    "*.md",
                                    "firestore.rules",
                                    "firestore.indexes.json",
-                                   "*.zip",
-                                   "package.json",
-                                   "package-lock.json"
-                               ],
+                                    "*.zip",
+                                    "package.json",
+                                    "package-lock.json",
+                                    "*-debug.log"
+                                ],
                     "rewrites":  [
                                      {
                                          "source":  "**",
