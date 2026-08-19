@@ -19,11 +19,25 @@ service cloud.firestore {
       return isSignedIn() && currentUserRole() == 'teacher';
     }
 
+    function hasActiveSubscription() {
+      return exists(/databases/$(database)/documents/subscriptions/$(request.auth.uid))
+        && get(/databases/$(database)/documents/subscriptions/$(request.auth.uid)).data.status == 'active'
+        && get(/databases/$(database)/documents/subscriptions/$(request.auth.uid)).data.endDate > request.time;
+    }
+
     function canCreateContent() {
       return isTeacher()
         && request.resource.data.teacherUid == request.auth.uid
         && request.resource.data.academy == currentUserAcademy()
         && request.resource.data.status == 'pending';
+    }
+
+    // Élève : lit le contenu approuvé de SON académie, uniquement avec abonnement actif.
+    function canStudentReadContent() {
+      return isSignedIn()
+        && resource.data.status == 'approved'
+        && resource.data.academy == currentUserAcademy()
+        && hasActiveSubscription();
     }
 
     match /users/{uid} {
@@ -56,26 +70,38 @@ service cloud.firestore {
 
     match /lessons/{id} {
       allow create: if canCreateContent();
-      allow read: if isSignedIn() && resource.data.teacherUid == request.auth.uid;
-      allow read: if isSignedIn() && resource.data.status != 'pending';
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
     match /quizzes/{id} {
       allow create: if canCreateContent();
-      allow read: if isSignedIn() && resource.data.teacherUid == request.auth.uid;
-      allow read: if isSignedIn() && resource.data.status != 'pending';
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
     match /liveClasses/{id} {
       allow create: if canCreateContent();
-      allow read: if isSignedIn() && resource.data.teacherUid == request.auth.uid;
-      allow read: if isSignedIn() && resource.data.status != 'pending';
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+    }
+
+    // Progression de l'élève : un document par élève.
+    match /progress/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Scores de quizz : l'élève n'écrit que ses propres scores.
+    match /quizScores/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow delete: if false;
     }
 
     match /{document=**} {

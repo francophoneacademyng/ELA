@@ -682,7 +682,89 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     createdAt: ts(d.data().createdAt)
   })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  return { subscription, user, transactions };
+  // --- Enrichissement élève (phase 2) ---
+  const userData = userSnap.exists ? userSnap.data() : {};
+  const academy = userData.academy || (Array.isArray(userData.academies) && userData.academies[0]) || null;
+
+  let totalLessons = 0;
+  if (academy) {
+    const lessonsSnap = await db.collection('lessons').where('academy', '==', academy).where('status', '==', 'approved').get();
+    totalLessons = lessonsSnap.size;
+  }
+  const progSnap = await db.collection('progress').doc(uid).get();
+  const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
+
+  const qsSnap = await db.collection('quizScores').where('uid', '==', uid).get();
+  const bestQuizScores = qsSnap.docs.map((d) => ({
+    quizId: d.data().quizId,
+    title: d.data().title,
+    bestScore: d.data().bestScore,
+    total: d.data().total
+  }));
+
+  let nextLiveClass = null;
+  if (academy) {
+    const lcSnap = await db.collection('liveClasses').where('academy', '==', academy).where('status', '==', 'approved').get();
+    const nowMs = Date.now();
+    const upcoming = lcSnap.docs
+      .map((d) => ({ id: d.id, title: d.data().title, scheduledAt: ts(d.data().scheduledAt) }))
+      .filter((l) => l.scheduledAt && l.scheduledAt > nowMs)
+      .sort((a, b) => a.scheduledAt - b.scheduledAt);
+    if (upcoming.length) nextLiveClass = upcoming[0];
+  }
+
+  return {
+    subscription,
+    user,
+    transactions,
+    progress: { completed: completedLessons.length, total: totalLessons },
+    bestQuizScores,
+    nextLiveClass
+  };
+});
+
+/**
+ * Lien de réunion (Zoom/Meet) — visible uniquement aux abonnés actifs de la
+ * même académie, à partir de 15 minutes avant le début du cours.
+ */
+exports.getLiveMeetingLink = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const liveClassId = request.data && request.data.liveClassId;
+  if (!liveClassId) {
+    throw new HttpsError('invalid-argument', 'missing-live-class-id');
+  }
+
+  const subSnap = await db.collection('subscriptions').doc(uid).get();
+  const sub = subSnap.exists ? subSnap.data() : null;
+  const active = sub && sub.status === 'active' && sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > new Date();
+  if (!active) {
+    throw new HttpsError('failed-precondition', 'active-subscription-required');
+  }
+
+  const lcSnap = await db.collection('liveClasses').doc(liveClassId).get();
+  if (!lcSnap.exists) {
+    throw new HttpsError('not-found', 'not-found');
+  }
+  const lc = lcSnap.data();
+
+  const userSnap = await db.collection('users').doc(uid).get();
+  const academy = userSnap.exists ? userSnap.data().academy : null;
+  if (lc.academy !== academy) {
+    throw new HttpsError('permission-denied', 'academy-mismatch');
+  }
+
+  const scheduledAt = lc.scheduledAt && lc.scheduledAt.toDate ? lc.scheduledAt.toDate() : new Date(lc.scheduledAt);
+  const now = new Date();
+  const gateStart = new Date(scheduledAt.getTime() - 15 * 60000);
+  const gateEnd = new Date(scheduledAt.getTime() + 4 * 3600000);
+  if (now < gateStart || now > gateEnd) {
+    throw new HttpsError('failed-precondition', 'class-not-open');
+  }
+
+  return { meetingLink: lc.meetingLink, title: lc.title, scheduledAt: scheduledAt.getTime() };
 });
 
 /* ============================================================
