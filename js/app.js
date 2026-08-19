@@ -1328,7 +1328,7 @@
     document.querySelectorAll('[data-join]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var liveId = decodeURIComponent(btn.getAttribute('data-join'));
-        var call = firebase.functions().httpsCallable('getLiveMeetingLink');
+        var call = callable('getLiveMeetingLink');
         call({ liveClassId: liveId }).then(function (r) {
           if (r.data && r.data.meetingLink) window.open(r.data.meetingLink, '_blank');
         }).catch(function () {
