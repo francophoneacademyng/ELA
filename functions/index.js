@@ -28,7 +28,7 @@ const { onSchedule } = require('firebase-functions/v2/scheduler');
 const crypto = require('crypto');
 const admin = require('firebase-admin');
 
-admin.initializeApp();
+admin.initializeApp({ projectId: process.env.GCLOUD_PROJECT || 'ela-academy-7f868' });
 const db = admin.firestore();
 
 const REGION = 'africa-south1';
