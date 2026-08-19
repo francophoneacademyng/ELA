@@ -160,6 +160,13 @@
   "dashboard.tx.pending": "Pending",
   "dashboard.tx.failed": "Failed",
 
+  "footer.terms": "Terms and Conditions",
+  "footer.privacy": "Privacy Policy",
+  "footer.refund": "Refunds",
+  "footer.refundPolicy": "Refund Policy",
+  "checkout.termsNotice": "By paying, you accept our",
+  "common.and": "and",
+
   "common.next": "Continue",
   "common.back": "Back"
 }

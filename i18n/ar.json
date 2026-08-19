@@ -160,6 +160,13 @@
   "dashboard.tx.pending": "قيد الانتظار",
   "dashboard.tx.failed": "فشل",
 
+  "footer.terms": "الشروط والأحكام",
+  "footer.privacy": "سياسة الخصوصية",
+  "footer.refund": "الاسترداد",
+  "footer.refundPolicy": "سياسة الاسترداد",
+  "checkout.termsNotice": "بالدفع، أنت توافق على",
+  "common.and": "و",
+
   "common.next": "متابعة",
   "common.back": "رجوع"
 }
