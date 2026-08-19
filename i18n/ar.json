@@ -227,6 +227,21 @@
   "dashboard.bestScores": "أفضل نتائج الاختبارات",
   "dashboard.nextLive": "الحصة المباشرة القادمة",
 
+  "nav.admin": "الإدارة",
+  "admin.title": "مراجعة المحتوى",
+  "admin.empty": "لا يوجد محتوى قيد المراجعة.",
+  "admin.approve": "موافقة",
+  "admin.reject": "رفض",
+  "admin.rejectReason": "سبب الرفض",
+  "admin.confirm": "تأكيد",
+  "admin.cancel": "إلغاء",
+  "admin.teacher": "المعلم",
+  "admin.submitted": "تاريخ الإرسال",
+  "admin.questions": "أسئلة",
+  "admin.liveAt": "مقرر في",
+  "teacher.status.approved": "معتمد",
+  "teacher.status.rejected": "مرفوض",
+
   "common.next": "متابعة",
   "common.back": "رجوع"
 }

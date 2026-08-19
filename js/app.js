@@ -960,9 +960,9 @@
       db.collection('liveClasses').where('teacherUid', '==', uid).get()
     ]).then(function (results) {
       var items = [];
-      results[0].forEach(function (d) { items.push({ type: t('teacher.type.lesson'), title: d.data().title, createdAt: d.data().createdAt }); });
-      results[1].forEach(function (d) { items.push({ type: t('teacher.type.quiz'), title: d.data().title, createdAt: d.data().createdAt }); });
-      results[2].forEach(function (d) { items.push({ type: t('teacher.type.live'), title: d.data().title, createdAt: d.data().createdAt }); });
+      results[0].forEach(function (d) { items.push({ type: t('teacher.type.lesson'), title: d.data().title, status: d.data().status, rejectReason: d.data().rejectReason, createdAt: d.data().createdAt }); });
+      results[1].forEach(function (d) { items.push({ type: t('teacher.type.quiz'), title: d.data().title, status: d.data().status, rejectReason: d.data().rejectReason, createdAt: d.data().createdAt }); });
+      results[2].forEach(function (d) { items.push({ type: t('teacher.type.live'), title: d.data().title, status: d.data().status, rejectReason: d.data().rejectReason, createdAt: d.data().createdAt }); });
       items.sort(function (a, b) {
         var at = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
         var bt = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
@@ -970,8 +970,12 @@
       });
       if (!items.length) { el.innerHTML = '<li>' + t('teacher.content.empty') + '</li>'; return; }
       el.innerHTML = items.map(function (it) {
-        return '<li><span>' + escapeHtml(it.type + ' — ' + it.title) + '</span>' +
-          '<span class="academy-status status-soon">' + t('teacher.status.pending') + '</span></li>';
+        var badge;
+        if (it.status === 'approved') badge = '<span class="academy-status status-open">' + t('teacher.status.approved') + '</span>';
+        else if (it.status === 'rejected') badge = '<span class="academy-status status-soon">' + t('teacher.status.rejected') + '</span>';
+        else badge = '<span class="academy-status status-soon">' + t('teacher.status.pending') + '</span>';
+        var reason = (it.status === 'rejected' && it.rejectReason) ? ' — ' + escapeHtml(it.rejectReason) : '';
+        return '<li><span>' + escapeHtml(it.type + ' — ' + it.title) + reason + '</span>' + badge + '</li>';
       }).join('');
     }).catch(function () { el.innerHTML = '<li>' + t('teacher.error') + '</li>'; });
   }
@@ -1338,6 +1342,114 @@
     });
   }
 
+  /* ---------- Admin validation ---------- */
+  var adminState = { items: [], rejectingId: null };
+
+  function renderAdmin() {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.firestore) {
+      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><div class="setup-banner">' + t('register.setup') + '</div></section>';
+      afterRender('admin');
+      return;
+    }
+    var user = firebase.auth().currentUser;
+    if (!user) { studentSignInRequired(t('admin.title')); return; }
+
+    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    afterRender('admin');
+
+    firebase.firestore().collection('users').doc(user.uid).get().then(function (snap) {
+      var role = snap.exists ? snap.data().role : null;
+      if (role !== 'admin') {
+        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.notTeacher') + '</p></section>';
+        afterRender('admin');
+        return;
+      }
+      loadAdminQueue();
+    }).catch(function () {
+      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.error') + '</p></section>';
+      afterRender('admin');
+    });
+  }
+
+  function adminPreviewHtml(it) {
+    var p = it.preview || {};
+    if (p.kind === 'lesson') return '<p>' + escapeHtml(p.description || p.content || '') + '</p>';
+    if (p.kind === 'quiz') return '<p>' + (p.questionCount || 0) + ' ' + t('admin.questions') + '</p>';
+    if (p.kind === 'live') return '<p>' + t('admin.liveAt') + ': ' + (p.scheduledAt ? new Date(p.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—') + '</p>';
+    return '';
+  }
+
+  function renderAdminList() {
+    var items = adminState.items;
+    if (!items.length) {
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><div class="pricing-note"><p>' + t('admin.empty') + '</p></div></section>';
+      afterRender('admin');
+      return;
+    }
+    var html = items.map(function (it) {
+      var typeLabel = t('teacher.type.' + (it.collection === 'lessons' ? 'lesson' : it.collection === 'quizzes' ? 'quiz' : 'live'));
+      var academyLabel = t('academies.' + (it.academy || 'german') + '.name');
+      var date = it.submittedAt ? new Date(it.submittedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
+      var rejecting = adminState.rejectingId === it.id;
+      var actions = rejecting
+        ? '<div class="field"><input id="reject-reason" type="text" placeholder="' + t('admin.rejectReason') + '"></div>' +
+          '<div class="hero-actions"><button type="button" class="btn btn-gold" data-confirm-reject="' + encodeURIComponent(it.id) + '">' + t('admin.confirm') + '</button>' +
+          '<button type="button" class="btn btn-outline" data-cancel-reject>' + t('admin.cancel') + '</button></div>'
+        : '<div class="hero-actions"><button type="button" class="btn btn-solid" data-approve="' + encodeURIComponent(it.id) + '">' + t('admin.approve') + '</button>' +
+          '<button type="button" class="btn btn-outline" data-reject="' + encodeURIComponent(it.id) + '">' + t('admin.reject') + '</button></div>';
+      return '<div class="teacher-card">' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.5rem">' +
+          '<span class="academy-status status-open">' + typeLabel + '</span>' +
+          '<strong>' + escapeHtml(it.title) + '</strong>' +
+          '<span style="color:var(--muted)">' + academyLabel + '</span>' +
+        '</div>' +
+        '<p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.6rem">' +
+          t('admin.teacher') + ': ' + escapeHtml(it.teacherName || '—') + ' · ' + t('admin.submitted') + ' ' + date + '</p>' +
+        adminPreviewHtml(it) + actions +
+      '</div>';
+    }).join('');
+
+    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1>' + html + '</section>';
+    afterRender('admin');
+
+    document.querySelectorAll('[data-approve]').forEach(function (b) {
+      b.addEventListener('click', function () { adminReview(decodeURIComponent(b.getAttribute('data-approve')), 'approve', ''); });
+    });
+    document.querySelectorAll('[data-reject]').forEach(function (b) {
+      b.addEventListener('click', function () { adminState.rejectingId = decodeURIComponent(b.getAttribute('data-reject')); renderAdminList(); });
+    });
+    document.querySelectorAll('[data-confirm-reject]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = decodeURIComponent(b.getAttribute('data-confirm-reject'));
+        var reason = document.getElementById('reject-reason').value.trim();
+        if (!reason) { alert(t('admin.rejectReason')); return; }
+        adminReview(id, 'reject', reason);
+      });
+    });
+    document.querySelectorAll('[data-cancel-reject]').forEach(function (b) {
+      b.addEventListener('click', function () { adminState.rejectingId = null; renderAdminList(); });
+    });
+  }
+
+  function adminReview(id, decision, reason) {
+    var item = adminState.items.filter(function (x) { return x.id === id; })[0];
+    if (!item) return;
+    callable('reviewContent')({ collection: item.collection, docId: item.id, decision: decision, reason: reason })
+      .then(function () { adminState.rejectingId = null; loadAdminQueue(); })
+      .catch(function () { alert(t('teacher.error')); });
+  }
+
+  function loadAdminQueue() {
+    callable('getAdminQueue')().then(function (r) {
+      adminState.items = (r.data && r.data.items) || [];
+      adminState.rejectingId = null;
+      renderAdminList();
+    }).catch(function () {
+      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.error') + '</p></section>';
+      afterRender('admin');
+    });
+  }
+
   /* ---------- Register: 3-step wizard ---------- */
   var registerState = { step: 1, interfaceLang: null, academy: null };
 
@@ -1501,6 +1613,7 @@
     '/privacy': renderPrivacy,
     '/refund': renderRefund,
     '/teacher': renderTeacher,
+    '/admin': renderAdmin,
     '/courses': renderCourses,
     '/lesson': renderLesson,
     '/quiz': renderQuiz,
@@ -1518,17 +1631,19 @@
 
   /* ---------- Boot ---------- */
   function updateTeacherNav() {
-    var link = document.querySelector('.teacher-nav');
-    if (!link) return;
-    if (!window.firebase || !firebase.auth) { link.style.display = 'none'; return; }
+    var tLink = document.querySelector('.teacher-nav');
+    var aLink = document.querySelector('.admin-nav');
+    var hide = function () { if (tLink) tLink.style.display = 'none'; if (aLink) aLink.style.display = 'none'; };
+    if (!window.firebase || !firebase.auth) { hide(); return; }
     var user = firebase.auth().currentUser;
-    if (!user) { link.style.display = 'none'; return; }
+    if (!user) { hide(); return; }
     firebase.firestore().collection('users').doc(user.uid).get()
       .then(function (snap) {
         var role = snap.exists ? snap.data().role : null;
-        link.style.display = (role === 'teacher' || role === 'admin') ? '' : 'none';
+        if (tLink) tLink.style.display = (role === 'teacher' || role === 'admin') ? '' : 'none';
+        if (aLink) aLink.style.display = (role === 'admin') ? '' : 'none';
       })
-      .catch(function () { link.style.display = 'none'; });
+      .catch(hide);
   }
 
   document.addEventListener('DOMContentLoaded', function () {

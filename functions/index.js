@@ -811,3 +811,95 @@ exports.setUserRole = onCall({ region: REGION }, async (request) => {
   await db.collection('users').doc(uid).set(patch, { merge: true });
   return { ok: true, uid, role };
 });
+
+/* ============================================================
+   INTERFACE ADMIN — validation du contenu
+   ============================================================ */
+const CONTENT_COLLECTIONS = ['lessons', 'quizzes', 'liveClasses'];
+
+function previewFor(collection, d) {
+  if (collection === 'lessons') {
+    return { kind: 'lesson', description: d.description || '', content: d.content || '', level: d.level || '' };
+  }
+  if (collection === 'quizzes') {
+    return { kind: 'quiz', questionCount: (d.questions || []).length, questions: (d.questions || []).map((q) => q.text) };
+  }
+  if (collection === 'liveClasses') {
+    return { kind: 'live', scheduledAt: ts(d.scheduledAt), meetingLink: d.meetingLink || '' };
+  }
+  return {};
+}
+
+/** File d'attente de validation (admin only) : tout le contenu "pending". */
+exports.getAdminQueue = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const caller = await db.collection('users').doc(request.auth.uid).get();
+  if (!caller.exists || caller.data().role !== 'admin') {
+    throw new HttpsError('permission-denied', 'admin-only');
+  }
+
+  const items = [];
+  for (const c of CONTENT_COLLECTIONS) {
+    const snap = await db.collection(c).where('status', '==', 'pending').get();
+    for (const doc of snap.docs) {
+      const d = doc.data();
+      let teacherName = null;
+      if (d.teacherUid) {
+        const tu = await db.collection('users').doc(d.teacherUid).get();
+        teacherName = tu.exists ? (tu.data().displayName || tu.data().email || null) : null;
+      }
+      items.push({
+        collection: c,
+        id: doc.id,
+        title: d.title,
+        academy: d.academy,
+        teacherName: teacherName,
+        submittedAt: ts(d.createdAt),
+        preview: previewFor(c, d)
+      });
+    }
+  }
+  items.sort((a, b) => (a.submittedAt || 0) - (b.submittedAt || 0));
+  return { items };
+});
+
+/** Approuve ou rejette un contenu (admin only). */
+exports.reviewContent = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const caller = await db.collection('users').doc(request.auth.uid).get();
+  if (!caller.exists || caller.data().role !== 'admin') {
+    throw new HttpsError('permission-denied', 'admin-only');
+  }
+
+  const data = request.data || {};
+  const collection = data.collection;
+  const docId = data.docId;
+  const decision = data.decision;
+  const reason = String(data.reason || '').trim();
+
+  if (!CONTENT_COLLECTIONS.includes(collection)) {
+    throw new HttpsError('invalid-argument', 'invalid-collection');
+  }
+  if (!docId) {
+    throw new HttpsError('invalid-argument', 'missing-doc-id');
+  }
+  if (decision !== 'approve' && decision !== 'reject') {
+    throw new HttpsError('invalid-argument', 'invalid-decision');
+  }
+  if (decision === 'reject' && !reason) {
+    throw new HttpsError('invalid-argument', 'reason-required');
+  }
+
+  const patch = {
+    status: decision === 'approve' ? 'approved' : 'rejected',
+    reviewedAt: new Date()
+  };
+  if (decision === 'reject') patch.rejectReason = reason;
+
+  await db.collection(collection).doc(docId).set(patch, { merge: true });
+  return { ok: true, docId, status: patch.status };
+});

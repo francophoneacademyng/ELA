@@ -227,6 +227,21 @@
   "dashboard.bestScores": "Meilleurs scores de quizz",
   "dashboard.nextLive": "Prochain cours live",
 
+  "nav.admin": "Admin",
+  "admin.title": "Validation du contenu",
+  "admin.empty": "Aucun contenu en attente de validation.",
+  "admin.approve": "Approuver",
+  "admin.reject": "Rejeter",
+  "admin.rejectReason": "Motif du rejet",
+  "admin.confirm": "Confirmer",
+  "admin.cancel": "Annuler",
+  "admin.teacher": "Enseignant",
+  "admin.submitted": "Soumis le",
+  "admin.questions": "questions",
+  "admin.liveAt": "Prévu le",
+  "teacher.status.approved": "Approuvé",
+  "teacher.status.rejected": "Rejeté",
+
   "common.next": "Continuer",
   "common.back": "Retour"
 }

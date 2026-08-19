@@ -72,7 +72,8 @@ service cloud.firestore {
       allow create: if canCreateContent();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow read: if canStudentReadContent();
-      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
@@ -80,7 +81,8 @@ service cloud.firestore {
       allow create: if canCreateContent();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow read: if canStudentReadContent();
-      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
@@ -88,7 +90,8 @@ service cloud.firestore {
       allow create: if canCreateContent();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow read: if canStudentReadContent();
-      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
