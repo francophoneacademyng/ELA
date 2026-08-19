@@ -7,6 +7,12 @@
   var app = document.getElementById('app');
   var t = function (k) { return ELA_I18N.t(k); };
 
+  /* Callables : forcés sur africa-south1 (les fonctions y sont déployées).
+     Sans région, le SDK compat cible us-central1 → erreur CORS. */
+  function callable(name) {
+    return firebase.app().functions('africa-south1').httpsCallable(name);
+  }
+
   /* ---------- Brand logo (inline SVG, emerald emblem) ---------- */
   var LOGO_SVG =
     '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ELA logo">' +
@@ -223,7 +229,7 @@
     }
     checkoutState.loading = true;
     renderCheckoutSummary();
-    var prev = firebase.functions().httpsCallable('previewPayment');
+    var prev = callable('previewPayment');
     prev({ plan: checkoutState.plan, duration: checkoutState.duration, referralCode: checkoutState.referralCode })
       .then(function (r) {
         checkoutState.preview = r.data;
@@ -333,7 +339,7 @@
           return;
         }
         pay.disabled = true;
-        var init = firebase.functions().httpsCallable('initializePayment');
+        var init = callable('initializePayment');
         init({ plan: checkoutState.plan, duration: checkoutState.duration, referralCode: checkoutState.referralCode })
           .then(function (r) {
             if (r.data && r.data.authorizationUrl) {
@@ -397,7 +403,7 @@
       '</section>';
     afterRender('pricing');
 
-    var verify = firebase.functions().httpsCallable('verifyPaystackPayment');
+    var verify = callable('verifyPaystackPayment');
     verify({ reference: reference })
       .then(function (r) {
         var ok = r.data && r.data.status === 'success';
@@ -502,7 +508,7 @@
       assistantBusy = true;
       renderAssistantLog();
 
-      var call = firebase.functions().httpsCallable('learningAssistant');
+      var call = callable('learningAssistant');
       call({ message: msg, history: assistantHistory.slice(0, -1).slice(-20) })
         .then(function (r) {
           assistantBusy = false;
@@ -614,7 +620,7 @@
       '</section>';
     afterRender('');
 
-    var get = firebase.functions().httpsCallable('getDashboardData');
+    var get = callable('getDashboardData');
     get()
       .then(function (r) { app.innerHTML = buildDashboard(r.data); afterRender(''); })
       .catch(function () {
