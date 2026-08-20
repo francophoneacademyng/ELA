@@ -239,8 +239,18 @@
   "admin.submitted": "Soumis le",
   "admin.questions": "questions",
   "admin.liveAt": "Prévu le",
+  "admin.seed": "Injecter le programme",
+  "admin.seeded": "Programme injecté :",
   "teacher.status.approved": "Approuvé",
   "teacher.status.rejected": "Rejeté",
+
+  "course.outcomes": "Ce que tu vas apprendre",
+  "lesson.objectives": "Objectifs",
+  "lesson.vocabulary": "Vocabulaire",
+  "lesson.grammar": "Grammaire",
+  "lesson.exercises": "Exercices",
+  "lesson.content": "Leçon",
+  "lesson.takeQuiz": "Faire le quizz",
 
   "common.next": "Continuer",
   "common.back": "Retour"

@@ -387,3 +387,7 @@ body {
   padding: 1.2rem 1.4rem; margin: 1rem 0 1.5rem;
 }
 .quiz-q .q-label { text-transform: none; letter-spacing: 0; font-size: 1.05rem; color: var(--ink); }
+
+/* ---------- Course / lesson (réplique FA) ---------- */
+.lesson-video { margin: 1rem 0 1.5rem; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+.lesson-video video { width: 100%; display: block; aspect-ratio: 16/9; background: #000; }

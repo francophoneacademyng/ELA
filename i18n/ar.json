@@ -239,8 +239,18 @@
   "admin.submitted": "تاريخ الإرسال",
   "admin.questions": "أسئلة",
   "admin.liveAt": "مقرر في",
+  "admin.seed": "توليد المنهج",
+  "admin.seeded": "تم توليد المنهج:",
   "teacher.status.approved": "معتمد",
   "teacher.status.rejected": "مرفوض",
+
+  "course.outcomes": "ماذا ستتعلم",
+  "lesson.objectives": "الأهداف",
+  "lesson.vocabulary": "المفردات",
+  "lesson.grammar": "القواعد",
+  "lesson.exercises": "التمارين",
+  "lesson.content": "الدرس",
+  "lesson.takeQuiz": "أداء الاختبار",
 
   "common.next": "متابعة",
   "common.back": "رجوع"

@@ -239,8 +239,18 @@
   "admin.submitted": "Submitted",
   "admin.questions": "questions",
   "admin.liveAt": "Scheduled",
+  "admin.seed": "Seed curriculum",
+  "admin.seeded": "Curriculum seeded:",
   "teacher.status.approved": "Approved",
   "teacher.status.rejected": "Rejected",
+
+  "course.outcomes": "What you will learn",
+  "lesson.objectives": "Objectives",
+  "lesson.vocabulary": "Vocabulary",
+  "lesson.grammar": "Grammar",
+  "lesson.exercises": "Exercises",
+  "lesson.content": "Lesson",
+  "lesson.takeQuiz": "Take the quiz",
 
   "common.next": "Continue",
   "common.back": "Back"

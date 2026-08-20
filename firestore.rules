@@ -95,6 +95,13 @@ service cloud.firestore {
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
+    // Cours (contenu propriétaire, status="approved") : lecture par l'élève
+    // abonné de l'académie. Aucune écriture côté client (seed + admin serveur).
+    match /courses/{id} {
+      allow read: if canStudentReadContent();
+      allow create, update, delete: if false;
+    }
+
     // Progression de l'élève : un document par élève.
     match /progress/{uid} {
       allow read, write: if isSignedIn() && request.auth.uid == uid;
@@ -105,6 +112,12 @@ service cloud.firestore {
       allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
       allow create, update: if isSignedIn() && request.resource.data.uid == request.auth.uid;
       allow delete: if false;
+    }
+
+    // Certificats : générés côté serveur ; lecture par le titulaire uniquement.
+    match /certificates/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create, update, delete: if false;
     }
 
     match /{document=**} {

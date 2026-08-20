@@ -25,6 +25,7 @@
 
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
+const { onDocumentWritten } = require('firebase-functions/v2/firestore');
 const crypto = require('crypto');
 const admin = require('firebase-admin');
 
@@ -902,4 +903,205 @@ exports.reviewContent = onCall({ region: REGION }, async (request) => {
 
   await db.collection(collection).doc(docId).set(patch, { merge: true });
   return { ok: true, docId, status: patch.status };
+});
+
+/* ============================================================
+   CURRICULUM — seed + catalogue + cours (réplique FA)
+   ============================================================ */
+function slugify(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+async function requireAdmin(uid) {
+  const caller = await db.collection('users').doc(uid).get();
+  if (!caller.exists || caller.data().role !== 'admin') {
+    throw new HttpsError('permission-denied', 'admin-only');
+  }
+}
+
+async function academyAndSubscription(uid) {
+  const userSnap = await db.collection('users').doc(uid).get();
+  const academy = userSnap.exists ? userSnap.data().academy : null;
+  const subSnap = await db.collection('subscriptions').doc(uid).get();
+  const sub = subSnap.exists ? subSnap.data() : null;
+  const active = sub && sub.status === 'active' && sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > new Date();
+  return { academy, active };
+}
+
+/** Seed du curriculum (admin only, idempotent : IDs déterministes). */
+exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  await requireAdmin(request.auth.uid);
+
+  const curriculum = require('./curriculum');
+  const quizzes = require('./curriculum-quizzes');
+  let nCourses = 0, nLessons = 0, nQuizzes = 0;
+
+  for (const course of curriculum) {
+    const courseId = slugify(course.academy + '-' + course.title);
+    await db.collection('courses').doc(courseId).set({
+      academy: course.academy, level: course.level, title: course.title,
+      description: course.description, category: course.category,
+      learningOutcomes: course.learningOutcomes || [], order: course.order || 1,
+      status: 'approved', createdAt: new Date()
+    });
+    nCourses++;
+
+    for (let i = 0; i < course.lessons.length; i++) {
+      const lesson = course.lessons[i];
+      const lessonId = courseId + '-l' + (i + 1);
+      const quizId = lessonId + '-quiz';
+
+      const quizKey = course.academy + '|' + lesson.title;
+      const quiz = quizzes[quizKey];
+
+      await db.collection('lessons').doc(lessonId).set({
+        courseId: courseId, academy: course.academy, level: course.level,
+        order: i + 1, title: lesson.title, objectives: lesson.objectives || [],
+        content: lesson.content, vocabulary: lesson.vocabulary || [],
+        grammar: lesson.grammar || [], exercises: lesson.exercises || [],
+        videoUrl: lesson.videoUrl || '', quizId: quiz ? quizId : null,
+        teacherUid: null, status: 'approved', createdAt: new Date()
+      });
+      nLessons++;
+
+      if (quiz && quiz.questions && quiz.questions.length) {
+        await db.collection('quizzes').doc(quizId).set({
+          lessonId: lessonId, courseId: courseId, academy: course.academy,
+          level: course.level, title: lesson.title + ' — Quiz',
+          questions: quiz.questions, teacherUid: null, status: 'approved', createdAt: new Date()
+        });
+        nQuizzes++;
+      }
+    }
+  }
+
+  return { courses: nCourses, lessons: nLessons, quizzes: nQuizzes };
+});
+
+/** Catalogue des cours de l'académie de l'élève (abonné). */
+exports.getCatalog = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const { academy, active } = await academyAndSubscription(request.auth.uid);
+  if (!active) {
+    throw new HttpsError('failed-precondition', 'active-subscription-required');
+  }
+  if (!academy) return { courses: [] };
+
+  const snap = await db.collection('courses').where('academy', '==', academy).where('status', '==', 'approved').get();
+  const courses = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, description: d.data().description, category: d.data().category, learningOutcomes: d.data().learningOutcomes || [], order: d.data().order || 0 }))
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+  return { courses };
+});
+
+/** Détail d'un cours : leçons (liste légère) + progression + quizz associés. */
+exports.getCourse = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const courseId = request.data && request.data.courseId;
+  if (!courseId) {
+    throw new HttpsError('invalid-argument', 'missing-course-id');
+  }
+
+  const { academy, active } = await academyAndSubscription(uid);
+  if (!active) {
+    throw new HttpsError('failed-precondition', 'active-subscription-required');
+  }
+
+  const courseSnap = await db.collection('courses').doc(courseId).get();
+  if (!courseSnap.exists) {
+    throw new HttpsError('not-found', 'course-not-found');
+  }
+  const course = { id: courseId, ...courseSnap.data() };
+  if (course.academy !== academy) {
+    throw new HttpsError('permission-denied', 'academy-mismatch');
+  }
+
+  const lessonsSnap = await db.collection('lessons').where('courseId', '==', courseId).get();
+  const lessons = lessonsSnap.docs.map((d) => ({ id: d.id, title: d.data().title, order: d.data().order || 0, objectives: d.data().objectives || [], quizId: d.data().quizId || null }))
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  const progSnap = await db.collection('progress').doc(uid).get();
+  const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
+
+  return { course, lessons, completedLessons, total: lessons.length };
+});
+
+/* ============================================================
+   CERTIFICATS — génération PDF (pdfkit) à 80 % de réussite
+   ============================================================ */
+exports.generateCertificate = onDocumentWritten('quizScores/{docId}', async (event) => {
+  const data = event.data.after.data();
+  if (!data) return;
+  const uid = data.uid;
+  const quizId = data.quizId;
+  const total = data.total || 1;
+  const bestScore = data.bestScore || 0;
+  if (!uid || !quizId || bestScore / total < 0.8) return;
+
+  // Idempotence : un seul certificat par quizz.
+  const existing = await db.collection('certificates').where('userId', '==', uid).where('quizId', '==', quizId).limit(1).get();
+  if (!existing.empty) return;
+
+  const quizSnap = await db.collection('quizzes').doc(quizId).get();
+  const quiz = quizSnap.exists ? quizSnap.data() : null;
+  const userSnap = await db.collection('users').doc(uid).get();
+  const studentName = userSnap.exists ? (userSnap.data().displayName || 'Student') : 'Student';
+  const academy = quiz ? (quiz.academy || '') : '';
+  const courseId = quiz ? (quiz.courseId || '') : '';
+  const verificationCode = 'ELA-' + (academy || 'XX').toUpperCase().slice(0, 4) + '-' + Math.floor(10000 + Math.random() * 90000);
+
+  let pdfUrl = null;
+  try {
+    const PDFDocument = require('pdfkit');
+    const pdfBuffer = await new Promise((resolve, reject) => {
+      const doc = new PDFDocument({ layout: 'landscape', size: 'A4', margin: 0 });
+      const chunks = [];
+      doc.on('data', (c) => chunks.push(c));
+      doc.on('end', () => resolve(Buffer.concat(chunks)));
+      doc.on('error', reject);
+
+      const W = 841.89, H = 595.28;
+      doc.rect(0, 0, W, H).fill('#063D2C');
+      doc.lineWidth(2).rect(24, 24, W - 48, H - 48).stroke('#C9A227');
+      doc.lineWidth(0.5).rect(30, 30, W - 60, H - 60).stroke('#C9A227');
+      doc.fillColor('#C9A227').fontSize(16).font('Times-Bold').text('E-LEARN LANGUAGE ACADEMY', 0, 70, { align: 'center' });
+      doc.fillColor('#FAF6EC').fontSize(34).text('Certificate of Achievement', 0, 110, { align: 'center' });
+      doc.fillColor('#8ea79b').fontSize(12).font('Helvetica').text('This certifies that', 0, 175, { align: 'center' });
+      doc.fillColor('#FAF6EC').fontSize(26).font('Times-Bold').text(studentName, 0, 200, { align: 'center' });
+      doc.fillColor('#8ea79b').fontSize(12).font('Helvetica').text('has successfully completed the assessment', 0, 242, { align: 'center' });
+      doc.fillColor('#C9A227').fontSize(18).font('Times-Bold').text((quiz ? quiz.title : 'Assessment'), 0, 266, { align: 'center' });
+      doc.fillColor('#FAF6EC').fontSize(13).font('Helvetica').text('Level ' + (quiz ? quiz.level : '') + '  —  Score ' + Math.round((bestScore / total) * 100) + '%', 0, 300, { align: 'center' });
+      doc.fillColor('#8ea79b').fontSize(10).text('Issued: ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), 60, H - 80);
+      doc.fillColor('#C9A227').font('Courier-Bold').text('Code: ' + verificationCode, 60, H - 62);
+      doc.fillColor('#8ea79b').font('Helvetica').text('E-Learn Language Academy — One Academy. Five Languages.', W - 60, H - 62, { align: 'right' });
+      doc.end();
+    });
+
+    const bucket = admin.storage().bucket();
+    const filePath = 'certificates/' + uid + '/' + verificationCode + '.pdf';
+    const file = bucket.file(filePath);
+    await file.save(pdfBuffer, { contentType: 'application/pdf' });
+    await file.makePublic();
+    pdfUrl = 'https://storage.googleapis.com/' + bucket.name + '/' + filePath;
+  } catch (err) {
+    console.error('[Certificate] PDF/Storage failed (metadata only):', err && err.message);
+  }
+
+  await db.collection('certificates').add({
+    userId: uid, quizId: quizId, quizTitle: quiz ? quiz.title : 'Assessment',
+    academy: academy, courseId: courseId, level: quiz ? quiz.level : '',
+    score: bestScore, total: total, percentage: Math.round((bestScore / total) * 100),
+    studentName: studentName, pdfUrl: pdfUrl, verificationCode: verificationCode,
+    issuedAt: new Date()
+  });
+
+  console.log('[Certificate] generated:', verificationCode);
+  return null;
 });
