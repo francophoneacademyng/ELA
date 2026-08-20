@@ -69,15 +69,13 @@ async function clean(paths) { for (const p of paths) { try { await db.doc(p).del
     ok('T1 seedCurriculum -> 5 cours, 32 leçons, 32 quizz');
   else bad('T1', r.body);
 
-  // T2 : élève abonné (german) lit le catalogue -> 1 cours
+  // T2 : catalogue public -> 5 cours (toutes académies)
   r = await callFn('getCatalog', aTok, {});
   const courses = (r.body && r.body.result && r.body.result.courses) || [];
-  if (r.body && r.body.result && courses.length === 1 && courses[0].academy === undefined) {
-    // courses[0].academy n'est pas retourné ; vérifier title
-    if (courses[0].title.indexOf('German') === 0) ok('T2 getCatalog (abonné german) -> 1 cours German');
-    else bad('T2', courses[0]);
-  } else bad('T2', r.body);
-  const courseId = courses.length ? courses[0].id : null;
+  if (r.body && r.body.result && courses.length === 5) ok('T2 getCatalog (public) -> 5 cours');
+  else bad('T2', { n: courses.length });
+  const germanCourse = courses.filter(function (c) { return c.academy === 'german'; })[0] || courses[0];
+  const courseId = germanCourse ? germanCourse.id : null;
 
   // T3 : getCourse -> leçons + quizz
   r = await callFn('getCourse', aTok, { courseId: courseId });
@@ -110,9 +108,9 @@ async function clean(paths) { for (const p of paths) { try { await db.doc(p).del
   if (st === 200) ok('T7 progression mise à jour -> OK');
   else bad('T7', { status: st });
 
-  // T8 : non-abonné -> REFUSÉ
-  r = await callFn('getCatalog', bTok, {});
-  if (r.body && r.body.error && r.body.error.status === 'FAILED_PRECONDITION') ok('T8 non-abonné -> REFUSÉ');
+  // T8 : non-abonné tente d'ouvrir un cours -> REFUSÉ (abonnement requis)
+  r = await callFn('getCourse', bTok, { courseId: courseId });
+  if (r.body && r.body.error && r.body.error.status === 'FAILED_PRECONDITION') ok('T8 non-abonné ouvre un cours -> REFUSÉ');
   else bad('T8', r.body);
 
   // T9 : isolation entre académies (mandarin tente un cours german) -> REFUSÉ
