@@ -114,7 +114,7 @@ async function computePricing(uid, plan, duration, referralCode) {
 }
 
 /** Health check — vérifier que les fonctions répondent après déploiement */
-exports.healthCheck = onRequest((req, res) => {
+exports.healthCheck = onRequest({ region: REGION }, (req, res) => {
   res.json({
     status: 'ok',
     project: 'E-Learn Language Academy',
@@ -1049,7 +1049,7 @@ exports.getCourse = onCall({ region: REGION }, async (request) => {
 /* ============================================================
    CERTIFICATS — génération PDF (pdfkit) à 80 % de réussite
    ============================================================ */
-exports.generateCertificate = onDocumentWritten('quizScores/{docId}', async (event) => {
+exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'quizScores/{docId}' }, async (event) => {
   const data = event.data.after.data();
   if (!data) return;
   const uid = data.uid;
