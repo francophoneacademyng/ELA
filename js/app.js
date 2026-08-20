@@ -1023,44 +1023,45 @@
 
   /* ----- Courses catalog ----- */
   function renderCourses() {
-    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.functions) {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.functions) {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="setup-banner">' + t('register.setup') + '</div></section>';
-      afterRender('');
+      afterRender('courses');
       return;
     }
-    if (!firebase.auth().currentUser) { studentSignInRequired(t('courses.title')); return; }
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
-    afterRender('');
+    afterRender('courses');
 
     callable('getCatalog')().then(function (r) {
       renderCatalog((r.data && r.data.courses) || []);
     }).catch(function () {
-      app.innerHTML = '' +
-        '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
-        '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
-        '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div></section>';
-      afterRender('');
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+      afterRender('courses');
     });
   }
 
   function renderCatalog(courses) {
     if (!courses.length) {
       app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
-      afterRender('');
+      afterRender('courses');
       return;
     }
-    var html = courses.map(function (c) {
-      return '<a class="teacher-card" href="#/course?id=' + encodeURIComponent(c.id) + '" style="display:block;text-decoration:none;color:inherit">' +
-        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.4rem">' +
-          '<span class="academy-status status-open">' + escapeHtml(c.level) + '</span>' +
-          '<strong>' + escapeHtml(c.title) + '</strong>' +
-        '</div>' +
-        '<p style="color:var(--muted);font-size:0.9rem;margin:0">' + escapeHtml(c.description) + '</p>' +
-      '</a>';
+    var byAcademy = {};
+    courses.forEach(function (c) { var a = c.academy || 'german'; (byAcademy[a] = byAcademy[a] || []).push(c); });
+    var html = Object.keys(byAcademy).map(function (a) {
+      var cards = byAcademy[a].map(function (c) {
+        return '<a class="teacher-card" href="#/course?id=' + encodeURIComponent(c.id) + '" style="display:block;text-decoration:none;color:inherit">' +
+          '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.4rem">' +
+            '<span class="academy-status status-open">' + escapeHtml(c.level) + '</span>' +
+            '<strong>' + escapeHtml(c.title) + '</strong>' +
+          '</div>' +
+          '<p style="color:var(--muted);font-size:0.9rem;margin:0">' + escapeHtml(c.description) + '</p>' +
+        '</a>';
+      }).join('');
+      return '<h3 class="auth-title" style="font-size:1.25rem;margin-top:1.5rem">' + t('academies.' + a + '.name') + '</h3>' + cards;
     }).join('');
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1>' + html + '</section>';
-    afterRender('');
+    afterRender('courses');
   }
 
   function renderCourse() {
@@ -1206,15 +1207,16 @@
 
   function renderQuiz() {
     var id = getHashParam('id');
-    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.firestore || !id) {
-      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.quizzes') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-      afterRender('');
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.firestore) {
+      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="setup-banner">' + t('register.setup') + '</div></section>';
+      afterRender('quiz');
       return;
     }
+    if (!id) { renderQuizCatalog(); return; }
     if (!firebase.auth().currentUser) { studentSignInRequired(t('courses.quizzes')); return; }
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
-    afterRender('');
+    afterRender('quiz');
 
     var db = firebase.firestore();
     hasActiveSubscription().then(function (active) {
@@ -1223,13 +1225,13 @@
           '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
           '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
           '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div></section>';
-        afterRender('');
+        afterRender('quiz');
         return;
       }
       db.collection('quizzes').doc(id).get().then(function (snap) {
         if (!snap.exists || !snap.data().questions || !snap.data().questions.length) {
           app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.quizzes') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-          afterRender('');
+          afterRender('quiz');
           return;
         }
         quizState.quiz = { id: id, data: snap.data() };
@@ -1238,8 +1240,36 @@
         renderQuizQuestion();
       }).catch(function () {
         app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1><p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p></section>';
-        afterRender('');
+        afterRender('quiz');
       });
+    });
+  }
+
+  function renderQuizCatalog() {
+    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    afterRender('quiz');
+    callable('getQuizCatalog')().then(function (r) {
+      var quizzes = (r.data && r.data.quizzes) || [];
+      if (!quizzes.length) {
+        app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+        afterRender('quiz');
+        return;
+      }
+      var byAcademy = {};
+      quizzes.forEach(function (q) { var a = q.academy || 'german'; (byAcademy[a] = byAcademy[a] || []).push(q); });
+      var html = Object.keys(byAcademy).map(function (a) {
+        var cards = byAcademy[a].map(function (q) {
+          return '<a class="choice" href="#/quiz?id=' + encodeURIComponent(q.id) + '">' +
+            '<span class="choice-name">' + escapeHtml(q.title) + '</span>' +
+            '<span class="choice-tag">' + escapeHtml(q.level) + '</span></a>';
+        }).join('');
+        return '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('academies.' + a + '.name') + '</h3><div class="choice-grid">' + cards + '</div>';
+      }).join('');
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1>' + html + '</section>';
+      afterRender('quiz');
+    }).catch(function () {
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+      afterRender('quiz');
     });
   }
 
@@ -1324,48 +1354,40 @@
 
   /* ----- Live classes ----- */
   function renderLive() {
-    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.firestore) {
+    if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.functions) {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('live.title') + '</h1><div class="setup-banner">' + t('register.setup') + '</div></section>';
-      afterRender('');
+      afterRender('live');
       return;
     }
-    if (!firebase.auth().currentUser) { studentSignInRequired(t('live.title')); return; }
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('live.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
-    afterRender('');
+    afterRender('live');
 
-    var db = firebase.firestore();
-    getCurrentAcademy().then(function (academy) {
-      if (!academy) { renderLiveContent([]); return; }
-      db.collection('liveClasses').where('academy', '==', academy).where('status', '==', 'approved').get()
-        .then(function (res) {
-          var classes = [];
-          res.forEach(function (d) { classes.push({ id: d.id, data: d.data() }); });
-          renderLiveContent(classes);
-        })
-        .catch(function () { renderLiveContent([]); });
-    });
+    callable('getLiveCatalog')().then(function (r) {
+      renderLiveContent((r.data && r.data.classes) || []);
+    }).catch(function () { renderLiveContent([]); });
   }
 
   function renderLiveContent(classes) {
     var now = Date.now();
-    var sorted = classes.slice().sort(function (a, b) {
-      var at = a.data.scheduledAt && a.data.scheduledAt.toDate ? a.data.scheduledAt.toDate().getTime() : 0;
-      var bt = b.data.scheduledAt && b.data.scheduledAt.toDate ? b.data.scheduledAt.toDate().getTime() : 0;
-      return at - bt;
-    });
+    var signedIn = !!firebase.auth().currentUser;
+    var sorted = classes.slice().sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
     var html = sorted.map(function (c) {
-      var d = c.data;
-      var t0 = d.scheduledAt && d.scheduledAt.toDate ? d.scheduledAt.toDate() : new Date(d.scheduledAt);
+      var t0 = new Date(c.scheduledAt);
       var when = t0.toLocaleString(ELA_I18N.getLang());
       var gateStart = t0.getTime() - 15 * 60000;
       var joinable = now >= gateStart;
-      var joinHtml = joinable
-        ? '<button type="button" class="btn btn-gold" data-join="' + encodeURIComponent(c.id) + '">' + t('live.join') + '</button>'
-        : '<span class="academy-status status-soon">' + t('live.joinSoon') + '</span>';
+      var joinHtml;
+      if (!signedIn) {
+        joinHtml = '<a class="btn btn-outline" href="#/login">' + t('live.joinSignIn') + '</a>';
+      } else if (joinable) {
+        joinHtml = '<button type="button" class="btn btn-gold" data-join="' + encodeURIComponent(c.id) + '">' + t('live.join') + '</button>';
+      } else {
+        joinHtml = '<span class="academy-status status-soon">' + t('live.joinSoon') + '</span>';
+      }
       return '<div class="teacher-card">' +
-        '<h3 class="teacher-card-title">' + escapeHtml(d.title) + '</h3>' +
-        '<p style="color:var(--muted);margin-bottom:0.6rem">' + when + '</p>' +
+        '<h3 class="teacher-card-title">' + escapeHtml(c.title) + '</h3>' +
+        '<p style="color:var(--muted);margin-bottom:0.6rem">' + escapeHtml(t('academies.' + (c.academy || 'german') + '.name')) + ' · ' + when + '</p>' +
         joinHtml +
         '</div>';
     }).join('');
@@ -1374,9 +1396,9 @@
       '<section class="auth-wrap teacher-wrap">' +
         '<h1 class="auth-title">' + t('live.title') + '</h1>' +
         (sorted.length ? html : '<div class="pricing-note"><p>' + t('live.empty') + '</p></div>') +
-        '<p class="auth-alt"><a href="#/dashboard">' + t('common.back') + '</a></p>' +
+        '<p class="auth-alt"><a href="#/">' + t('common.back') + '</a></p>' +
       '</section>';
-    afterRender('');
+    afterRender('live');
 
     document.querySelectorAll('[data-join]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -1708,7 +1730,7 @@
     firebase.firestore().collection('users').doc(user.uid).get()
       .then(function (snap) {
         var role = snap.exists ? snap.data().role : null;
-        if (tLink) tLink.style.display = (role === 'teacher' || role === 'admin') ? '' : 'none';
+        if (tLink) tLink.style.display = (role === 'teacher') ? '' : 'none';
         if (aLink) aLink.style.display = (role === 'admin') ? '' : 'none';
       })
       .catch(hide);

@@ -982,20 +982,33 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
 });
 
 /** Catalogue des cours de l'académie de l'élève (abonné). */
-exports.getCatalog = onCall({ region: REGION }, async (request) => {
-  if (!request.auth || !request.auth.uid) {
-    throw new HttpsError('unauthenticated', 'You must be signed in.');
-  }
-  const { academy, active } = await academyAndSubscription(request.auth.uid);
-  if (!active) {
-    throw new HttpsError('failed-precondition', 'active-subscription-required');
-  }
-  if (!academy) return { courses: [] };
-
-  const snap = await db.collection('courses').where('academy', '==', academy).where('status', '==', 'approved').get();
-  const courses = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, description: d.data().description, category: d.data().category, learningOutcomes: d.data().learningOutcomes || [], order: d.data().order || 0 }))
+/** Catalogue public des cours (toutes académies) — sans auth, sans abonnement.
+    Seules les métadonnées (titre/niveau/description) sont exposées ;
+    le contenu des leçons reste derrière abonnement (getCourse + règles). */
+exports.getCatalog = onCall({ region: REGION }, async () => {
+  const snap = await db.collection('courses').where('status', '==', 'approved').get();
+  const courses = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, description: d.data().description, category: d.data().category, academy: d.data().academy, learningOutcomes: d.data().learningOutcomes || [], order: d.data().order || 0 }))
     .sort((a, b) => (a.order || 0) - (b.order || 0));
   return { courses };
+});
+
+/** Liste publique des quizz (métadonnées seules, sans les questions). */
+exports.getQuizCatalog = onCall({ region: REGION }, async () => {
+  const snap = await db.collection('quizzes').where('status', '==', 'approved').get();
+  const quizzes = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, academy: d.data().academy }))
+    .sort((a, b) => String(a.academy).localeCompare(String(b.academy)) || String(a.level).localeCompare(String(b.level)));
+  return { quizzes };
+});
+
+/** Liste publique des cours live à venir (sans le lien de réunion). */
+exports.getLiveCatalog = onCall({ region: REGION }, async () => {
+  const snap = await db.collection('liveClasses').where('status', '==', 'approved').get();
+  const now = Date.now();
+  const classes = snap.docs
+    .map((d) => ({ id: d.id, title: d.data().title, scheduledAt: ts(d.data().scheduledAt), academy: d.data().academy }))
+    .filter((c) => c.scheduledAt && c.scheduledAt > now)
+    .sort((a, b) => a.scheduledAt - b.scheduledAt);
+  return { classes };
 });
 
 /** Détail d'un cours : leçons (liste légère) + progression + quizz associés. */

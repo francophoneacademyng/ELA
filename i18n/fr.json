@@ -218,6 +218,7 @@
   "live.title": "Cours live",
   "live.empty": "Aucun cours live planifié pour le moment.",
   "live.join": "Rejoindre",
+  "live.joinSignIn": "Connecte-toi pour rejoindre",
   "live.joinSoon": "Ouvre 15 min avant",
   "live.joinError": "Le lien n'est pas encore disponible. Il s'ouvre 15 minutes avant le début.",
   "dashboard.learning": "Ton apprentissage",
@@ -228,6 +229,9 @@
   "dashboard.nextLive": "Prochain cours live",
 
   "nav.admin": "Admin",
+  "nav.courses": "Cours",
+  "nav.quiz": "Quizz",
+  "nav.live": "Cours live",
   "admin.title": "Validation du contenu",
   "admin.empty": "Aucun contenu en attente de validation.",
   "admin.approve": "Approuver",

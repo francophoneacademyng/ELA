@@ -218,6 +218,7 @@
   "live.title": "Live classes",
   "live.empty": "No live classes scheduled yet.",
   "live.join": "Join class",
+  "live.joinSignIn": "Sign in to join",
   "live.joinSoon": "Opens 15 min before",
   "live.joinError": "The class link is not available yet. It opens 15 minutes before the start.",
   "dashboard.learning": "Your learning",
@@ -228,6 +229,9 @@
   "dashboard.nextLive": "Next live class",
 
   "nav.admin": "Admin",
+  "nav.courses": "Courses",
+  "nav.quiz": "Quiz",
+  "nav.live": "Live classes",
   "admin.title": "Content validation",
   "admin.empty": "No content pending review.",
   "admin.approve": "Approve",

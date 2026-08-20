@@ -218,6 +218,7 @@
   "live.title": "الحصص المباشرة",
   "live.empty": "لا توجد حصص مباشرة مجدولة بعد.",
   "live.join": "انضم إلى الحصة",
+  "live.joinSignIn": "سجّل الدخول للانضمام",
   "live.joinSoon": "يفتح قبل 15 دقيقة",
   "live.joinError": "الرابط غير متاح بعد. يفتح قبل 15 دقيقة من البداية.",
   "dashboard.learning": "تعلمك",
@@ -228,6 +229,9 @@
   "dashboard.nextLive": "الحصة المباشرة القادمة",
 
   "nav.admin": "الإدارة",
+  "nav.courses": "الدورات",
+  "nav.quiz": "الاختبارات",
+  "nav.live": "الحصص المباشرة",
   "admin.title": "مراجعة المحتوى",
   "admin.empty": "لا يوجد محتوى قيد المراجعة.",
   "admin.approve": "موافقة",
