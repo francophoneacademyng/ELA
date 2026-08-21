@@ -386,7 +386,7 @@ body {
 
 /* ---------- Teacher area ---------- */
 .teacher-wrap { max-width: 760px; }
-.teacher-card { border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.5rem 1.6rem; margin-bottom: 1.5rem; }
+.teacher-card { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 1.5rem 1.6rem; margin-bottom: 1.2rem; }
 .teacher-card-title { font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; color: var(--forest); margin-bottom: 1rem; }
 .field textarea, .field select {
   width: 100%; border: 1.5px solid var(--line); border-radius: var(--radius);

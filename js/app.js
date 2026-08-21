@@ -191,8 +191,29 @@
             '<a class="btn btn-solid" href="#/checkout">' + t('pricing.subscribe') + '</a>' +
           '</div>' +
         '</div>' +
+
+        '<div style="margin-top:4rem" class="reveal">' +
+          '<p class="section-label">' + t('faq.label') + '</p>' +
+          '<h2 class="section-title" style="font-size:clamp(2rem,4.5vw,3rem);margin-bottom:2rem">' + t('faq.title') + '</h2>' +
+          '<div class="faq-item"><button type="button" class="faq-q">' + t('faq.q1') + '<span class="chev">▼</span></button><div class="faq-a">' + t('faq.a1') + '</div></div>' +
+          '<div class="faq-item"><button type="button" class="faq-q">' + t('faq.q2') + '<span class="chev">▼</span></button><div class="faq-a">' + t('faq.a2') + '</div></div>' +
+          '<div class="faq-item"><button type="button" class="faq-q">' + t('faq.q3') + '<span class="chev">▼</span></button><div class="faq-a">' + t('faq.a3') + '</div></div>' +
+          '<div class="faq-item"><button type="button" class="faq-q">' + t('faq.q4') + '<span class="chev">▼</span></button><div class="faq-a">' + t('faq.a4') + '</div></div>' +
+        '</div>' +
       '</section>';
     afterRender('pricing');
+    bindFaq();
+  }
+
+  function bindFaq() {
+    document.querySelectorAll('.faq-q').forEach(function (q) {
+      q.addEventListener('click', function () {
+        var item = q.parentElement;
+        var wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function (i) { i.classList.remove('open'); });
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
   }
 
   /* ---------- Checkout (Paystack) ---------- */
@@ -1099,10 +1120,10 @@
     courses.forEach(function (c) { var a = c.academy || 'german'; (byAcademy[a] = byAcademy[a] || []).push(c); });
     var html = Object.keys(byAcademy).map(function (a) {
       var cards = byAcademy[a].map(function (c) {
-        return '<a class="teacher-card" href="#/course?id=' + encodeURIComponent(c.id) + '" style="display:block;text-decoration:none;color:inherit">' +
-          '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.4rem">' +
-            '<span class="academy-status status-open">' + escapeHtml(c.level) + '</span>' +
-            '<strong>' + escapeHtml(c.title) + '</strong>' +
+        return '<a class="card card-hover" href="#/course?id=' + encodeURIComponent(c.id) + '" style="display:block;text-decoration:none;color:inherit;margin-bottom:0.9rem">' +
+          '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:center;margin-bottom:0.5rem">' +
+            '<span class="badge badge-emerald">' + escapeHtml(c.level) + '</span>' +
+            '<strong style="font-size:1.05rem;color:var(--forest)">' + escapeHtml(c.title) + '</strong>' +
           '</div>' +
           '<p style="color:var(--muted);font-size:0.9rem;margin:0">' + escapeHtml(c.description) + '</p>' +
         '</a>';
@@ -1134,27 +1155,34 @@
 
   function renderCourseContent(d) {
     var course = d.course, lessons = d.lessons || [], completed = d.completedLessons || [], total = d.total || 0;
+    var pct = total ? Math.round((completed.length / total) * 100) : 0;
     var lessonItems = lessons.map(function (l) {
       var done = completed.indexOf(l.id) !== -1;
-      var trialBadge = l.isTrial ? '<span class="academy-status status-open">' + t('lesson.trial') + '</span>' : '';
-      return '<div class="teacher-card" style="margin-bottom:0.7rem">' +
+      var trialBadge = l.isTrial ? '<span class="badge badge-gold">' + t('lesson.trial') + '</span>' : '';
+      return '<div class="card" style="margin-bottom:0.7rem">' +
         '<div style="display:flex;flex-wrap:wrap;gap:0.6rem 1rem;align-items:center">' +
-          '<span style="color:var(--muted)">' + l.order + '.</span>' +
+          '<span style="color:var(--muted);font-family:var(--font-brand);font-size:0.9rem">' + (l.order < 10 ? '0' : '') + l.order + '</span>' +
           '<a href="#/lesson?id=' + encodeURIComponent(l.id) + '" style="flex:1;color:var(--forest);text-decoration:none;font-weight:700">' + escapeHtml(l.title) + '</a>' +
           trialBadge +
-          (done ? '<span class="academy-status status-open">' + t('lesson.completed') + '</span>' : '') +
-          (l.quizId ? '<a class="btn btn-outline" style="padding:0.3rem 0.9rem;font-size:0.8rem" href="#/quiz?id=' + encodeURIComponent(l.quizId) + '">' + t('courses.quiz') + '</a>' : '') +
+          (done ? '<span class="badge badge-emerald">' + t('lesson.completed') + '</span>' : '') +
+          (l.quizId ? '<a class="btn btn-outline btn-sm" href="#/quiz?id=' + encodeURIComponent(l.quizId) + '">' + t('courses.quiz') + '</a>' : '') +
         '</div></div>';
     }).join('');
     var outcomes = (course.learningOutcomes || []).map(function (o) { return '<li>' + escapeHtml(o) + '</li>'; }).join('');
 
     app.innerHTML = '' +
       '<section class="auth-wrap teacher-wrap">' +
-        '<p class="section-label">' + escapeHtml(course.level) + '</p>' +
-        '<h1 class="auth-title">' + escapeHtml(course.title) + '</h1>' +
-        '<p class="auth-sub">' + escapeHtml(course.description) + '</p>' +
-        '<div class="pricing-note"><p>' + t('dashboard.progress') + ': <strong>' + completed.length + ' / ' + total + '</strong></p></div>' +
-        (outcomes ? '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.2rem">' + t('course.outcomes') + '</h3><ul class="tx-list">' + outcomes + '</ul>' : '') +
+        '<div class="card" style="margin-bottom:1.4rem">' +
+          '<span class="badge badge-emerald">' + escapeHtml(course.level) + '</span>' +
+          '<h1 class="auth-title" style="margin:0.6rem 0 0.4rem">' + escapeHtml(course.title) + '</h1>' +
+          '<p class="auth-sub" style="margin:0">' + escapeHtml(course.description) + '</p>' +
+          '<div style="margin-top:1.1rem;display:flex;align-items:center;gap:0.8rem">' +
+            '<span style="font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap">' + t('dashboard.progress') + '</span>' +
+            '<div class="progress-track" style="flex:1"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<strong style="font-family:var(--font-brand);font-size:0.85rem;color:var(--forest)">' + completed.length + '/' + total + '</strong>' +
+          '</div>' +
+        '</div>' +
+        (outcomes ? '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.2rem">' + t('course.outcomes') + '</h3><div class="card"><ul class="tx-list" style="margin:0">' + outcomes + '</ul></div>' : '') +
         '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.2rem">' + t('courses.lessons') + '</h3>' + lessonItems +
         '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p>' +
       '</section>';
@@ -1211,15 +1239,18 @@
 
       app.innerHTML = '' +
         '<section class="auth-wrap teacher-wrap">' +
-          '<p class="section-label">' + escapeHtml(lesson.level || '') + (lesson.isTrial ? ' · ' + t('lesson.trial') : '') + '</p>' +
-          '<h1 class="auth-title">' + escapeHtml(lesson.title) + '</h1>' +
+          '<div class="card" style="margin-bottom:1.4rem">' +
+            '<span class="badge badge-emerald">' + escapeHtml(lesson.level || '') + '</span>' +
+            (lesson.isTrial ? ' <span class="badge badge-gold">' + t('lesson.trial') + '</span>' : '') +
+            '<h1 class="auth-title" style="margin:0.6rem 0 0">' + escapeHtml(lesson.title) + '</h1>' +
+          '</div>' +
           (lesson.videoUrl ? '<div class="lesson-video"><video src="' + escapeHtml(lesson.videoUrl) + '" controls playsinline></video></div>' : '') +
-          (objectives ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.objectives') + '</h3><ul class="tx-list">' + objectives + '</ul>' : '') +
-          '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.content') + '</h3>' +
-          '<div class="lesson-content">' + escapeHtml(lesson.content || '') + '</div>' +
-          (vocab ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.vocabulary') + '</h3><ul class="tx-list">' + vocab + '</ul>' : '') +
-          (grammar ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.grammar') + '</h3><ul class="tx-list">' + grammar + '</ul>' : '') +
-          (exercises ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.exercises') + '</h3><ul class="tx-list">' + exercises + '</ul>' : '') +
+          (objectives ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.objectives') + '</h3><ul class="tx-list" style="margin:0">' + objectives + '</ul></div>' : '') +
+          '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.content') + '</h3>' +
+          '<div class="lesson-content" style="margin:0">' + escapeHtml(lesson.content || '') + '</div></div>' +
+          (vocab ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.vocabulary') + '</h3><ul class="tx-list" style="margin:0">' + vocab + '</ul></div>' : '') +
+          (grammar ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.grammar') + '</h3><ul class="tx-list" style="margin:0">' + grammar + '</ul></div>' : '') +
+          (exercises ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.exercises') + '</h3><ul class="tx-list" style="margin:0">' + exercises + '</ul></div>' : '') +
           (lesson.quizId ? '<div class="hero-actions" style="margin-top:1.5rem"><a class="btn btn-gold" href="#/quiz?id=' + encodeURIComponent(lesson.quizId) + '">' + t('lesson.takeQuiz') + '</a></div>' : '') +
           (uid ? '<div class="hero-actions" style="margin-top:1.2rem">' +
             '<button type="button" class="btn btn-solid" id="mark-complete" ' + (isDone ? 'disabled' : '') + '>' +
@@ -1307,11 +1338,11 @@
       quizzes.forEach(function (q) { var a = q.academy || 'german'; (byAcademy[a] = byAcademy[a] || []).push(q); });
       var html = Object.keys(byAcademy).map(function (a) {
         var cards = byAcademy[a].map(function (q) {
-          return '<a class="choice" href="#/quiz?id=' + encodeURIComponent(q.id) + '">' +
-            '<span class="choice-name">' + escapeHtml(q.title) + '</span>' +
-            '<span class="choice-tag">' + escapeHtml(q.level) + '</span></a>';
+          return '<a class="card card-hover" href="#/quiz?id=' + encodeURIComponent(q.id) + '" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;text-decoration:none;color:inherit;margin-bottom:0.9rem">' +
+            '<span style="font-weight:700;color:var(--forest)">' + escapeHtml(q.title) + '</span>' +
+            '<span class="badge badge-muted">' + escapeHtml(q.level) + '</span></a>';
         }).join('');
-        return '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('academies.' + a + '.name') + '</h3><div class="choice-grid">' + cards + '</div>';
+        return '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('academies.' + a + '.name') + '</h3>' + cards;
       }).join('');
       app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1>' + html + '</section>';
       afterRender('quiz');
@@ -1441,9 +1472,12 @@
       } else {
         joinHtml = '<span class="academy-status status-soon">' + t('live.joinSoon') + '</span>';
       }
-      return '<div class="teacher-card">' +
-        '<h3 class="teacher-card-title">' + escapeHtml(c.title) + '</h3>' +
-        '<p style="color:var(--muted);margin-bottom:0.6rem">' + escapeHtml(t('academies.' + (c.academy || 'german') + '.name')) + ' · ' + when + '</p>' +
+      return '<div class="card" style="margin-bottom:0.9rem">' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.5rem">' +
+          '<span class="badge badge-forest">' + escapeHtml(t('academies.' + (c.academy || 'german') + '.name')) + '</span>' +
+          '<h3 class="teacher-card-title" style="margin:0">' + escapeHtml(c.title) + '</h3>' +
+        '</div>' +
+        '<p style="color:var(--muted);margin-bottom:0.9rem;font-size:0.9rem">' + when + '</p>' +
         joinHtml +
         '</div>';
     }).join('');
