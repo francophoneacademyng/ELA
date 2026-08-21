@@ -1722,15 +1722,15 @@
   function updateTeacherNav() {
     var tLink = document.querySelector('.teacher-nav');
     var aLink = document.querySelector('.admin-nav');
-    var hide = function () { if (tLink) tLink.style.display = 'none'; if (aLink) aLink.style.display = 'none'; };
+    var hide = function () { if (tLink) tLink.hidden = true; if (aLink) aLink.hidden = true; };
     if (!window.firebase || !firebase.auth) { hide(); return; }
     var user = firebase.auth().currentUser;
     if (!user) { hide(); return; }
     firebase.firestore().collection('users').doc(user.uid).get()
       .then(function (snap) {
         var role = snap.exists ? snap.data().role : null;
-        if (tLink) tLink.style.display = (role === 'teacher') ? '' : 'none';
-        if (aLink) aLink.style.display = (role === 'admin') ? '' : 'none';
+        if (tLink) tLink.hidden = (role !== 'teacher');
+        if (aLink) aLink.hidden = (role !== 'admin');
       })
       .catch(hide);
   }
