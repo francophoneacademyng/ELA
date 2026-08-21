@@ -677,7 +677,10 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
   }
   const user = {
     referralCode: referralCode || null,
-    referralCredit: (userSnap.exists ? userSnap.data().referralCredit : 0) || 0
+    referralCredit: (userSnap.exists ? userSnap.data().referralCredit : 0) || 0,
+    displayName: userSnap.exists ? (userSnap.data().displayName || '') : '',
+    role: userSnap.exists ? (userSnap.data().role || 'student') : 'student',
+    academy: userSnap.exists ? (userSnap.data().academy || null) : null
   };
 
   const transactions = txSnap.docs.map((d) => ({

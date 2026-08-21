@@ -562,73 +562,104 @@
   function buildDashboard(d) {
     var sub = d.subscription;
     var now = Date.now();
+    var firstName = ((d.user && d.user.displayName) || '').split(' ')[0];
 
+    // --- En-tête : salutation ---
+    var greetingHtml = '<h1 class="greeting">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '</h1>';
+
+    // --- Carte abonnement premium ---
     var subHtml;
     if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
       var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
-      subHtml = '<div class="pricing-note"><p>' +
-        '<span class="academy-status status-open">' + t('dashboard.status.active') + '</span> ' +
-        t('pricing.' + (sub.plan || 'general')) + ' · ' + t('checkout.month.' + (sub.duration || 1)) +
-        '<br><span style="color:var(--muted)">' + days + ' ' + t('dashboard.daysRemaining') + '</span></p>' +
-        '<a class="btn btn-outline" href="#/checkout">' + t('dashboard.renew') + '</a></div>';
+      var total = sub.startDate ? (sub.endDate - sub.startDate) : (sub.duration || 1) * 30 * 86400000;
+      var pct = Math.max(0, Math.min(100, Math.round(((sub.endDate - now) / total) * 100)));
+      subHtml = '<div class="card card-gold">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
+          '<div><span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
+          '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + ' · ' + t('checkout.month.' + (sub.duration || 1)) + '</span></div>' +
+          '<a class="btn btn-outline btn-sm" href="#/checkout">' + t('dashboard.renew') + '</a>' +
+        '</div>' +
+        '<p style="font-size:2rem;font-family:var(--font-brand);color:var(--forest);margin:0.6rem 0 0.2rem">' + days + ' <span style="font-size:0.9rem;color:var(--muted);font-family:var(--font-body)">' + t('dashboard.daysRemaining') + '</span></p>' +
+        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>';
     } else if (sub && sub.status === 'expired') {
-      subHtml = '<div class="pricing-note"><p>' +
-        '<span class="academy-status status-soon">' + t('dashboard.status.expired') + '</span> ' +
-        t('pricing.' + (sub.plan || 'general')) + '</p>' +
-        '<a class="btn btn-gold" href="#/checkout">' + t('dashboard.renew') + '</a></div>';
+      subHtml = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
+        '<div><span class="badge badge-red">' + t('dashboard.status.expired') + '</span>' +
+        '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + '</span></div>' +
+        '<a class="btn btn-gold btn-sm" href="#/checkout">' + t('dashboard.renew') + '</a></div></div>';
     } else {
-      subHtml = '<div class="pricing-note"><p>' + t('dashboard.status.none') + '</p>' +
-        '<a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div>';
+      subHtml = '<div class="card card-hover"><p style="color:var(--muted)">' + t('dashboard.status.none') + '</p>' +
+        '<a class="btn btn-gold" href="#/checkout" style="margin-top:0.8rem">' + t('pricing.subscribe') + '</a></div>';
     }
 
-    var refHtml = '<div class="pricing-note"><p>' +
-      '<span style="color:var(--muted)">' + t('dashboard.referralCode') + ':</span> <strong>' + (d.user.referralCode || '—') + '</strong>' +
-      '<br><span style="color:var(--muted)">' + t('dashboard.referralCredit') + ':</span> <strong>' + fmtNaira(d.user.referralCredit) + '</strong></p>' +
-      '<a class="btn btn-outline" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
-
+    // --- Statistiques ---
     var prog = d.progress || { completed: 0, total: 0 };
     var scores = d.bestQuizScores || [];
     var nxt = d.nextLiveClass;
+    var statHtml = '<div class="stat-grid">' +
+      '<div class="stat-card"><div class="stat-value">' + prog.completed + '/' + prog.total + '</div><div class="stat-label">' + t('dashboard.progress') + '</div></div>' +
+      '<div class="stat-card"><div class="stat-value gold">' + scores.length + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
+      (nxt ? '<div class="stat-card"><div class="stat-value" style="font-size:1.1rem">' + new Date(nxt.scheduledAt).toLocaleDateString(ELA_I18N.getLang()) + '</div><div class="stat-label">' + t('dashboard.nextLive') + '</div></div>' : '') +
+    '</div>';
 
-    var learningHtml = '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('dashboard.learning') + '</h3>' +
-      '<div class="hero-actions" style="margin:0.8rem 0 1rem">' +
-        '<a class="btn btn-solid" href="#/courses">' + t('dashboard.courses') + '</a>' +
-        '<a class="btn btn-outline" href="#/live">' + t('dashboard.live') + '</a>' +
+    // --- Reprendre ---
+    var resumeHtml = '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
+      '<p class="section-label">' + t('dashboard.learning') + '</p>' +
+      '<h3>' + t('dashboard.resume') + '</h3>' +
+      '<p>' + t('dashboard.resumeSub') + '</p>' +
+    '</a>';
+
+    // --- Parrainage ---
+    var refHtml = '<div class="card" style="margin-top:1.2rem">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
+        '<span class="badge badge-gold">' + t('dashboard.referralCode') + '</span>' +
+        '<span style="color:var(--muted)">' + t('dashboard.referralCredit') + ': <strong>' + fmtNaira(d.user.referralCredit) + '</strong></span>' +
       '</div>' +
-      '<div class="pricing-note"><p>' +
-        '<span style="color:var(--muted)">' + t('dashboard.progress') + ':</span> <strong>' + prog.completed + ' / ' + prog.total + '</strong>' +
-      '</p></div>' +
-      (nxt
-        ? '<div class="pricing-note"><p>' + t('dashboard.nextLive') + ': <strong>' + escapeHtml(nxt.title) + '</strong><br>' +
-          '<span style="color:var(--muted)">' + new Date(nxt.scheduledAt).toLocaleString(ELA_I18N.getLang()) + '</span></p>' +
-          '<a class="btn btn-outline" href="#/live">' + t('dashboard.live') + '</a></div>'
-        : '') +
-      (scores.length
-        ? '<div class="pricing-note"><p>' + t('dashboard.bestScores') + '</p><ul class="tx-list">' +
-          scores.map(function (s) {
-            return '<li><span>' + escapeHtml(s.title) + '</span><span><strong>' + s.bestScore + '/' + s.total + '</strong></span></li>';
-          }).join('') + '</ul></div>'
-        : '');
+      '<div class="referral-code">' +
+        '<span class="code">' + escapeHtml(d.user.referralCode || '—') + '</span>' +
+        '<button type="button" class="btn btn-solid btn-sm" id="copy-code">' + t('dashboard.copy') + '</button>' +
+      '</div></div>';
 
+    // --- Meilleurs scores ---
+    var scoresHtml = scores.length
+      ? '<div class="card" style="margin-top:1.2rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.5rem">' + t('dashboard.bestScores') + '</div>' +
+        '<ul class="tx-list" style="margin-top:0">' +
+        scores.map(function (s) {
+          return '<li><span>' + escapeHtml(s.title) + '</span><span class="badge badge-emerald">' + s.bestScore + '/' + s.total + '</span></li>';
+        }).join('') + '</ul></div>'
+      : '';
+
+    // --- Assistant ---
+    var assistantHtml = '<div class="card" style="margin-top:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
+      '<div><div style="font-weight:700;color:var(--forest)">' + t('dashboard.assistant') + '</div>' +
+      '<div style="font-size:0.85rem;color:var(--muted)">' + t('assistant.sub') + '</div></div>' +
+      '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
+
+    // --- Historique ---
     var txRows = (d.transactions || []).map(function (tx) {
       var date = tx.createdAt ? new Date(tx.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '';
       var pill = tx.status === 'success'
-        ? '<span class="academy-status status-open">' + t('dashboard.tx.success') + '</span>'
-        : '<span class="academy-status status-soon">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
+        ? '<span class="badge badge-emerald">' + t('dashboard.tx.success') + '</span>'
+        : '<span class="badge badge-muted">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
       return '<li><span>' + t('pricing.' + (tx.plan || 'general')) + ' · ' + t('checkout.month.' + (tx.duration || 1)) + '</span>' +
         '<span style="color:var(--muted)">' + date + '</span>' +
         '<span>' + fmtNaira(tx.amount) + '</span>' + pill + '</li>';
     }).join('');
-
-    var txHtml = '<h3 class="auth-title" style="font-size:1.3rem;margin-top:2rem">' + t('dashboard.transactions') + '</h3>' +
-      '<ul class="tx-list">' + (txRows || '<li>' + t('dashboard.noTransactions') + '</li>') + '</ul>';
+    var txHtml = '<div class="card" style="margin-top:1.2rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.5rem">' + t('dashboard.transactions') + '</div>' +
+      '<ul class="tx-list" style="margin-top:0">' + (txRows || '<li>' + t('dashboard.noTransactions') + '</li>') + '</ul></div>';
 
     return '' +
       '<section class="auth-wrap assistant-wrap">' +
-        '<h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
-        '<h3 class="auth-title" style="font-size:1.2rem;margin-top:1.5rem">' + t('dashboard.subscription') + '</h3>' + subHtml +
-        refHtml + learningHtml + txHtml +
+        greetingHtml +
+        '<div class="dash-grid">' + subHtml + '</div>' +
+        '<div class="dash-grid" style="margin-top:1.2rem">' +
+          '<div>' + resumeHtml + statHtml + '</div>' +
+          '<div>' + refHtml + scoresHtml + assistantHtml + '</div>' +
+        '</div>' +
+        txHtml +
       '</section>';
+
+    // (copy-code binding is done in renderDashboard after render)
   }
 
   function renderDashboard() {
@@ -651,13 +682,31 @@
 
     var get = callable('getDashboardData');
     get()
-      .then(function (r) { app.innerHTML = buildDashboard(r.data); afterRender(''); })
+      .then(function (r) { app.innerHTML = buildDashboard(r.data); afterRender(''); bindDashboardCopy(); })
       .catch(function () {
         app.innerHTML = '' +
           '<section class="auth-wrap"><h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
           '<p class="auth-sub">' + t('dashboard.error') + '</p></section>';
         afterRender('');
       });
+  }
+
+  function bindDashboardCopy() {
+    var btn = document.getElementById('copy-code');
+    if (!btn) return;
+    var code = document.querySelector('.referral-code .code');
+    btn.addEventListener('click', function () {
+      if (!code) return;
+      var text = code.textContent.trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          btn.textContent = t('dashboard.copied');
+          setTimeout(function () { btn.textContent = t('dashboard.copy'); }, 2000);
+        });
+      } else {
+        btn.textContent = text;
+      }
+    });
   }
 
   /* ---------- Legal pages ---------- */
@@ -1276,17 +1325,21 @@
     var qz = quizState.quiz;
     var total = qz.data.questions.length;
     var q = qz.data.questions[quizState.current];
+    var letters = ['A', 'B', 'C', 'D'];
     var opts = q.options.map(function (opt, i) {
       var sel = quizState.answers[quizState.current] === i;
-      return '<button type="button" class="choice' + (sel ? ' selected' : '') + '" data-opt="' + i + '">' +
-        '<span class="choice-name">' + escapeHtml(opt) + '</span></button>';
+      return '<button type="button" class="quiz-opt' + (sel ? ' selected' : '') + '" data-opt="' + i + '">' +
+        '<span class="letter">' + letters[i] + '</span><span>' + escapeHtml(opt) + '</span></button>';
     }).join('');
 
     app.innerHTML = '' +
       '<section class="auth-wrap teacher-wrap">' +
         '<h1 class="auth-title">' + escapeHtml(qz.data.title) + '</h1>' +
-        '<p class="auth-sub">' + t('quiz.question') + ' ' + (quizState.current + 1) + ' / ' + total + '</p>' +
-        '<div class="quiz-q" style="margin-bottom:1rem"><label>' + escapeHtml(q.text) + '</label></div>' +
+        '<div class="quiz-progress">' +
+          '<span class="count">' + t('quiz.question') + ' ' + (quizState.current + 1) + ' / ' + total + '</span>' +
+          '<div class="progress-track" style="flex:1"><div class="progress-fill" style="width:' + Math.round(((quizState.current) / total) * 100) + '%"></div></div>' +
+        '</div>' +
+        '<div class="card quiz-q" style="margin-bottom:1rem;padding:1.2rem 1.4rem"><div class="q-label">' + escapeHtml(q.text) + '</div></div>' +
         '<div class="choice-grid">' + opts + '</div>' +
         '<div class="hero-actions" style="margin-top:1.2rem">' +
           (quizState.current === total - 1
@@ -1295,7 +1348,7 @@
           '<a class="btn btn-outline" href="#/courses">' + t('common.back') + '</a>' +
         '</div>' +
       '</section>';
-    afterRender('');
+    afterRender('quiz');
 
     document.querySelectorAll('[data-opt]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -1333,17 +1386,21 @@
 
   function renderQuizResult(correct, total, best) {
     var pct = Math.round((correct / total) * 100);
+    var passed = pct >= 80;
+    var ringPct = pct;
     app.innerHTML = '' +
-      '<section class="auth-wrap teacher-wrap">' +
+      '<section class="auth-wrap teacher-wrap" style="text-align:center">' +
         '<h1 class="auth-title">' + escapeHtml(quizState.quiz.data.title) + '</h1>' +
-        '<p class="section-title" style="font-size:3rem;color:var(--emerald)">' + correct + ' / ' + total + '</p>' +
-        '<p class="auth-sub">' + pct + '% — ' + t('quiz.best') + ' ' + best + '/' + total + '</p>' +
-        '<div class="hero-actions">' +
+        '<div class="quiz-result-score"><div class="score">' + correct + '<span> / ' + total + '</span></div></div>' +
+        '<p class="auth-sub" style="font-size:1.1rem;margin-top:0.8rem">' + pct + '% — ' + t('quiz.best') + ' ' + best + '/' + total + '</p>' +
+        '<div class="card" style="margin-top:1rem"><p style="font-size:1.05rem;color:var(--forest)">' +
+          (passed ? t('quiz.passed') : t('quiz.tryAgainMsg')) + '</p></div>' +
+        '<div class="hero-actions" style="margin-top:1.2rem;justify-content:center">' +
           '<button type="button" class="btn btn-solid" id="quiz-retry">' + t('quiz.retry') + '</button>' +
           '<a class="btn btn-outline" href="#/courses">' + t('common.back') + '</a>' +
         '</div>' +
       '</section>';
-    afterRender('');
+    afterRender('quiz');
     document.getElementById('quiz-retry').addEventListener('click', function () {
       quizState.current = 0;
       quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
@@ -1742,6 +1799,13 @@
     if (window.ELA_FIREBASE_READY && window.firebase) {
       firebase.initializeApp(window.ELA_FIREBASE_CONFIG);
       firebase.auth().onAuthStateChanged(function () { updateTeacherNav(); });
+    }
+
+    var nav = document.querySelector('.nav');
+    if (nav) {
+      window.addEventListener('scroll', function () {
+        nav.classList.toggle('scrolled', window.scrollY > 8);
+      }, { passive: true });
     }
 
     ELA_I18N.init().then(function () {

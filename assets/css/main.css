@@ -7,22 +7,43 @@
 :root {
   --emerald: #0B6B4F;
   --emerald-deep: #095540;
+  --emerald-50: #EDF5F1;
+  --emerald-100: #D7E9E0;
+  --emerald-200: #A9D2C0;
+  --emerald-600: #0B6B4F;
+  --emerald-700: #095540;
+  --emerald-800: #07402F;
   --forest: #063D2C;
+  --forest-deep: #042B1F;
   --cream: #FAF6EC;
   --cream-soft: #F3EEDC;
+  --cream-warm: #FBF7EF;
   --gold: #C9A227;
+  --gold-soft: #E8D48A;
+  --gold-deep: #A9851B;
   --ink: #122019;
+  --ink-soft: #22362D;
   --muted: #5A6B62;
+  --muted-2: #7C8B83;
   --line: rgba(6, 61, 44, 0.14);
+  --line-soft: rgba(6, 61, 44, 0.08);
   --accent-german: #C9A227;
   --accent-mandarin: #C0372F;
   --accent-english: #1E3A5F;
   --accent-arabic: #0F766E;
   --accent-russian: #2D4F8F;
   --radius: 10px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --font-display: 'Oranienbaum', 'Noto Sans Arabic', serif;
   --font-brand: 'Archivo Black', 'Noto Sans Arabic', sans-serif;
   --font-body: 'Quattrocento Sans', 'Noto Sans Arabic', 'Noto Sans SC', sans-serif;
+  /* Ombres douces multicouches */
+  --shadow-sm: 0 1px 2px rgba(6, 61, 44, 0.06), 0 2px 8px rgba(6, 61, 44, 0.05);
+  --shadow-md: 0 2px 4px rgba(6, 61, 44, 0.06), 0 8px 24px rgba(6, 61, 44, 0.08);
+  --shadow-lg: 0 4px 8px rgba(6, 61, 44, 0.08), 0 16px 40px rgba(6, 61, 44, 0.12);
+  --shadow-gold: 0 6px 20px rgba(201, 162, 39, 0.28);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -392,3 +413,166 @@ body {
 /* ---------- Course / lesson (réplique FA) ---------- */
 .lesson-video { margin: 1rem 0 1.5rem; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
 .lesson-video video { width: 100%; display: block; aspect-ratio: 16/9; background: #000; }
+
+/* ============================================================
+   PREMIUM LAYER � �l�vation du design system
+   ============================================================ */
+
+/* ---------- Accessibilit� : focus visible ---------- */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Cartes ---------- */
+.card {
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.6rem 1.7rem;
+}
+.card-hover { transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease); }
+.card-hover:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.card-gold { border: 1.5px solid var(--gold); box-shadow: var(--shadow-gold); }
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+  padding: 0.28rem 0.8rem; border-radius: 999px; white-space: nowrap;
+}
+.badge-emerald { background: var(--emerald-100); color: var(--emerald-800); }
+.badge-gold { background: rgba(201, 162, 39, 0.16); color: var(--gold-deep); }
+.badge-red { background: rgba(179, 38, 30, 0.1); color: #B3261E; }
+.badge-muted { background: var(--cream-soft); color: var(--muted); }
+.badge-forest { background: var(--forest); color: var(--cream); }
+
+/* ---------- Champs premium (focus ring dor�) ---------- */
+.field input, .field textarea, .field select, .chat-input input, .quiz-q input, .quiz-q select {
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.field input:focus, .field textarea:focus, .field select:focus,
+.chat-input input:focus, .quiz-q input:focus, .quiz-q select:focus {
+  outline: none; border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+}
+
+/* ---------- Skeleton de chargement ---------- */
+.skeleton {
+  background: linear-gradient(90deg, var(--cream-soft) 25%, #fff 50%, var(--cream-soft) 75%);
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+  border-radius: var(--radius); min-height: 1rem;
+}
+.skeleton-card { height: 120px; border-radius: var(--radius-lg); }
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ---------- Barre de progression ---------- */
+.progress-track { height: 8px; border-radius: 999px; background: var(--cream-soft); overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--emerald), var(--gold)); transition: width 0.4s var(--ease); }
+
+/* ---------- Anneau de progression (acad�mie) ---------- */
+.ring {
+  --p: 0; --sz: 74px;
+  width: var(--sz); height: var(--sz); border-radius: 50%;
+  background: conic-gradient(var(--gold) calc(var(--p) * 1%), var(--cream-soft) 0);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.ring::before { content: ""; width: calc(var(--sz) - 14px); height: calc(var(--sz) - 14px); border-radius: 50%; background: #fff; }
+.ring span { position: absolute; font-family: var(--font-brand); font-size: 0.82rem; color: var(--forest); }
+.ring-wrap { position: relative; display: inline-grid; place-items: center; }
+
+/* ---------- Dashboard : grille + stats ---------- */
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.9rem; }
+.stat-card { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 1.1rem 1.2rem; text-align: center; }
+.stat-value { font-family: var(--font-brand); font-size: 1.5rem; color: var(--forest); line-height: 1; }
+.stat-value.gold { color: var(--gold-deep); }
+.stat-label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
+
+/* ---------- En-t�te dashboard ---------- */
+.greeting { font-family: var(--font-display); font-weight: 400; font-size: clamp(2rem, 4.5vw, 3rem); color: var(--forest); line-height: 1.08; }
+.greeting em { font-style: italic; color: var(--emerald); }
+
+/* ---------- Carte � Reprendre � ---------- */
+.resume-card {
+  position: relative; overflow: hidden; color: var(--cream);
+  background: linear-gradient(135deg, var(--forest) 0%, var(--emerald) 100%);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 1.7rem 1.8rem;
+}
+.resume-card .section-label { color: var(--gold-soft); margin-bottom: 0.6rem; }
+.resume-card h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.5rem; color: var(--cream); }
+.resume-card p { color: rgba(250, 246, 236, 0.82); margin-top: 0.4rem; }
+
+/* ---------- Code de parrainage ---------- */
+.referral-code {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+  background: var(--cream-soft); border: 1px dashed var(--gold);
+  border-radius: var(--radius-lg); padding: 0.9rem 1.1rem;
+}
+.referral-code .code { font-family: var(--font-brand); font-size: 1.3rem; letter-spacing: 0.06em; color: var(--forest); }
+
+/* ---------- �tats vides ---------- */
+.empty-state { text-align: center; padding: 2.4rem 1.2rem; }
+.empty-state .icon { color: var(--gold); margin-bottom: 0.8rem; }
+.empty-state h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; color: var(--forest); }
+.empty-state p { color: var(--muted); margin: 0.4rem auto 1.2rem; max-width: 40ch; }
+
+/* ---------- Quiz : progression + options + r�sultat ---------- */
+.quiz-progress { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.quiz-progress .count { font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.quiz-opt {
+  display: flex; align-items: center; gap: 0.9rem; width: 100%;
+  border: 1.5px solid var(--line); border-radius: var(--radius-lg);
+  background: #fff; padding: 1rem 1.2rem; cursor: pointer; text-align: start;
+  font-family: var(--font-body); font-size: 1rem; color: var(--ink);
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.quiz-opt:hover { border-color: var(--emerald); box-shadow: var(--shadow-sm); }
+.quiz-opt .letter {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--cream-soft); color: var(--forest);
+  font-weight: 700; font-size: 0.85rem;
+}
+.quiz-opt.selected { border-color: var(--gold); background: rgba(201, 162, 39, 0.08); }
+.quiz-opt.selected .letter { background: var(--gold); color: var(--forest); }
+.quiz-opt.correct { border-color: var(--emerald); background: var(--emerald-50); }
+.quiz-opt.correct .letter { background: var(--emerald); color: var(--cream); }
+.quiz-opt.incorrect { border-color: #E2B4B0; background: rgba(179, 38, 30, 0.06); }
+.quiz-opt.incorrect .letter { background: #B3261E; color: #fff; }
+
+.quiz-result-score {
+  font-family: var(--font-brand); font-size: clamp(3.5rem, 9vw, 6rem);
+  line-height: 1; color: var(--forest); text-align: center; margin: 0.6rem 0;
+}
+.quiz-result-score.gold { color: var(--gold-deep); }
+.quiz-result-score .score span { font-size: 0.35em; color: var(--muted); letter-spacing: 0.02em; font-family: var(--font-body); }
+
+/* ---------- Navigation : �l�vation au scroll ---------- */
+.nav { transition: box-shadow 0.25s var(--ease), background 0.25s var(--ease); }
+.nav.scrolled { box-shadow: var(--shadow-md); background: rgba(250, 246, 236, 0.96); }
+
+/* ---------- Cartes acad�mies ---------- */
+.academy-card {
+  display: block; text-decoration: none; color: inherit;
+  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); padding: 1.5rem 1.6rem;
+  transition: box-shadow 0.22s var(--ease), transform 0.22s var(--ease);
+}
+.academy-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.academy-card .top { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; margin-bottom: 0.5rem; }
+.academy-card .native { font-size: 0.8rem; color: var(--muted); margin-inline-start: 0.5rem; }
+
+/* ---------- FAQ accord�on ---------- */
+.faq-item { border: 1px solid var(--line-soft); border-radius: var(--radius-lg); background: #fff; margin-bottom: 0.8rem; overflow: hidden; }
+.faq-q { width: 100%; text-align: start; background: none; border: none; cursor: pointer; padding: 1.1rem 1.3rem; font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: var(--forest); display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.faq-a { padding: 0 1.3rem 1.1rem; color: var(--muted); font-size: 0.95rem; display: none; }
+.faq-item.open .faq-a { display: block; }
+.faq-q .chev { transition: transform 0.2s var(--ease); color: var(--gold); }
+.faq-item.open .chev { transform: rotate(180deg); }
+
+/* ---------- Boutons : �tats ---------- */
+.btn:active { transform: translateY(0) scale(0.98); }
+.btn[disabled] { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+.btn-sm { padding: 0.5rem 1.1rem; font-size: 0.85rem; }
+
+/* ---------- RTL : ic�nes directionnelles ---------- */
+[dir="rtl"] .btn .arrow { transform: scaleX(-1); }
+[dir="rtl"] .quiz-opt .letter, [dir="rtl"] .ring span { direction: ltr; }
