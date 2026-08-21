@@ -1194,14 +1194,14 @@
     callable('getCatalog')().then(function (r) {
       renderCatalog((r.data && r.data.courses) || []);
     }).catch(function () {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
       afterRender('courses');
     });
   }
 
   function renderCatalog(courses) {
     if (!courses.length) {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
       afterRender('courses');
       return;
     }
@@ -1442,7 +1442,7 @@
     callable('getQuizCatalog')().then(function (r) {
       var quizzes = (r.data && r.data.quizzes) || [];
       if (!quizzes.length) {
-        app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+        app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
         afterRender('quiz');
         return;
       }
@@ -1459,7 +1459,7 @@
       app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1>' + html + '</section>';
       afterRender('quiz');
     }).catch(function () {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="pricing-note"><p>' + t('courses.empty') + '</p></div></section>';
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
       afterRender('quiz');
     });
   }
@@ -1485,6 +1485,7 @@
         '<div class="card quiz-q" style="margin-bottom:1rem;padding:1.2rem 1.4rem"><div class="q-label">' + escapeHtml(q.text) + '</div></div>' +
         '<div class="choice-grid">' + opts + '</div>' +
         '<div class="hero-actions" style="margin-top:1.2rem">' +
+          (quizState.current > 0 ? '<button type="button" class="btn btn-outline" id="quiz-prev">' + t('quiz.previous') + '</button>' : '') +
           (quizState.current === total - 1
             ? '<button type="button" class="btn btn-solid" id="quiz-submit">' + t('quiz.submit') + '</button>'
             : '<button type="button" class="btn btn-solid" id="quiz-next">' + t('quiz.next') + '</button>') +
@@ -1499,6 +1500,8 @@
         renderQuizQuestion();
       });
     });
+    var prev = document.getElementById('quiz-prev');
+    if (prev) prev.addEventListener('click', function () { quizState.current--; renderQuizQuestion(); });
     var next = document.getElementById('quiz-next');
     if (next) next.addEventListener('click', function () { quizState.current++; renderQuizQuestion(); });
     var sub = document.getElementById('quiz-submit');
@@ -1621,7 +1624,7 @@
     app.innerHTML = '' +
       '<section class="auth-wrap teacher-wrap">' +
         '<h1 class="auth-title">' + t('live.title') + '</h1>' +
-        (sorted.length ? html : '<div class="pricing-note"><p>' + t('live.empty') + '</p></div>') +
+        (sorted.length ? html : '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('live.empty') + '</p></div></div>') +
         '<p class="auth-alt"><a href="#/">' + t('common.back') + '</a></p>' +
       '</section>';
     afterRender('live');

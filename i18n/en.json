@@ -224,6 +224,7 @@
   "lesson.completed": "Completed",
   "quiz.question": "Question",
   "quiz.next": "Next",
+  "quiz.previous": "Previous",
   "quiz.submit": "Submit",
   "quiz.best": "Best score:",
   "quiz.retry": "Try again",

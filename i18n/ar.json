@@ -224,6 +224,7 @@
   "lesson.completed": "مكتمل",
   "quiz.question": "سؤال",
   "quiz.next": "التالي",
+  "quiz.previous": "السابق",
   "quiz.submit": "إرسال",
   "quiz.best": "أفضل نتيجة:",
   "quiz.retry": "إعادة المحاولة",

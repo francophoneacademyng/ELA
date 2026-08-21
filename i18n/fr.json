@@ -224,6 +224,7 @@
   "lesson.completed": "Terminée",
   "quiz.question": "Question",
   "quiz.next": "Suivant",
+  "quiz.previous": "Précédent",
   "quiz.submit": "Valider",
   "quiz.best": "Meilleur score :",
   "quiz.retry": "Réessayer",
