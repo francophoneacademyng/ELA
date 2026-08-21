@@ -1000,10 +1000,11 @@
     var academyLabel = t('academies.' + (academy || 'german') + '.name');
     app.innerHTML = '' +
       '<section class="auth-wrap teacher-wrap">' +
-        '<h1 class="auth-title">' + t('teacher.title') + '</h1>' +
-        '<p class="auth-sub">' + t('teacher.academy') + ' <strong>' + academyLabel + '</strong></p>' +
+        '<p class="section-label">' + t('nav.teacher') + '</p>' +
+        '<h1 class="auth-title" style="margin-bottom:0.4rem">' + t('teacher.title') + '</h1>' +
+        '<p class="auth-sub" style="margin-bottom:2rem">' + t('teacher.academy') + ' <span class="badge badge-forest">' + academyLabel + '</span></p>' +
 
-        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.lesson.title') + '</h3>' +
+        '<div class="card"><div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem"><span class="badge badge-emerald">' + t('teacher.lesson.title') + '</span></div>' +
           '<div class="field"><label>' + t('teacher.lesson.field.title') + '</label><input id="tls-title" type="text"></div>' +
           '<div class="field"><label>' + t('teacher.lesson.field.description') + '</label><input id="tls-desc" type="text"></div>' +
           '<div class="field"><label>' + t('teacher.lesson.field.content') + '</label><textarea id="tls-content" rows="6"></textarea></div>' +
@@ -1013,7 +1014,7 @@
           '<button type="button" class="btn btn-solid" id="tls-submit">' + t('teacher.lesson.submit') + '</button>' +
         '</div>' +
 
-        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.quiz.title') + '</h3>' +
+        '<div class="card" style="margin-top:1.2rem"><div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem"><span class="badge badge-gold">' + t('teacher.quiz.title') + '</span></div>' +
           '<div class="field"><label>' + t('teacher.quiz.field.title') + '</label><input id="tqz-title" type="text"></div>' +
           '<div id="tqz-questions"></div>' +
           '<button type="button" class="btn btn-outline" id="tqz-add">' + t('teacher.quiz.addQuestion') + '</button>' +
@@ -1021,7 +1022,7 @@
           '<button type="button" class="btn btn-solid" id="tqz-submit">' + t('teacher.quiz.submit') + '</button>' +
         '</div>' +
 
-        '<div class="teacher-card"><h3 class="teacher-card-title">' + t('teacher.live.title') + '</h3>' +
+        '<div class="card" style="margin-top:1.2rem"><div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem"><span class="badge badge-forest">' + t('teacher.live.title') + '</span></div>' +
           '<div class="field"><label>' + t('teacher.live.field.title') + '</label><input id="tlv-title" type="text"></div>' +
           '<div class="field"><label>' + t('teacher.live.field.datetime') + '</label><input id="tlv-datetime" type="datetime-local"></div>' +
           '<div class="field"><label>' + t('teacher.live.field.link') + '</label><input id="tlv-link" type="url"></div>' +
@@ -1029,8 +1030,8 @@
           '<button type="button" class="btn btn-solid" id="tlv-submit">' + t('teacher.live.submit') + '</button>' +
         '</div>' +
 
-        '<h3 class="auth-title" style="font-size:1.3rem;margin-top:2rem">' + t('teacher.content') + '</h3>' +
-        '<ul class="tx-list" id="teacher-content"><li>' + t('dashboard.loading') + '</li></ul>' +
+        '<div class="card" style="margin-top:1.8rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.6rem">' + t('teacher.content') + '</div>' +
+        '<ul class="tx-list" id="teacher-content" style="margin:0"><li>' + t('dashboard.loading') + '</li></ul></div>' +
       '</section>';
 
     document.getElementById('tqz-questions').insertAdjacentHTML('beforeend', quizQuestionCardHtml(0));
@@ -1129,11 +1130,11 @@
       if (!items.length) { el.innerHTML = '<li>' + t('teacher.content.empty') + '</li>'; return; }
       el.innerHTML = items.map(function (it) {
         var badge;
-        if (it.status === 'approved') badge = '<span class="academy-status status-open">' + t('teacher.status.approved') + '</span>';
-        else if (it.status === 'rejected') badge = '<span class="academy-status status-soon">' + t('teacher.status.rejected') + '</span>';
-        else badge = '<span class="academy-status status-soon">' + t('teacher.status.pending') + '</span>';
+        if (it.status === 'approved') badge = '<span class="badge badge-emerald">' + t('teacher.status.approved') + '</span>';
+        else if (it.status === 'rejected') badge = '<span class="badge badge-red">' + t('teacher.status.rejected') + '</span>';
+        else badge = '<span class="badge badge-muted">' + t('teacher.status.pending') + '</span>';
         var reason = (it.status === 'rejected' && it.rejectReason) ? ' — ' + escapeHtml(it.rejectReason) : '';
-        return '<li><span>' + escapeHtml(it.type + ' — ' + it.title) + reason + '</span>' + badge + '</li>';
+        return '<li><span>' + escapeHtml(it.title) + '<span style="display:block;font-size:0.78rem;color:var(--muted)">' + escapeHtml(it.type) + reason + '</span></span>' + badge + '</li>';
       }).join('');
     }).catch(function () { el.innerHTML = '<li>' + t('teacher.error') + '</li>'; });
   }
@@ -1678,9 +1679,9 @@
   function renderAdminList() {
     var items = adminState.items;
     if (!items.length) {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1>' +
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><p class="section-label">' + t('nav.admin') + '</p><h1 class="auth-title">' + t('admin.title') + '</h1>' +
         '<div class="hero-actions" style="margin-bottom:1rem"><button type="button" class="btn btn-solid" id="admin-seed">' + t('admin.seed') + '</button></div>' +
-        '<div class="pricing-note"><p>' + t('admin.empty') + '</p></div></section>';
+        '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('admin.empty') + '</p></div></div></section>';
       afterRender('admin');
       bindAdminSeed();
       return;
@@ -1696,11 +1697,11 @@
           '<button type="button" class="btn btn-outline" data-cancel-reject>' + t('admin.cancel') + '</button></div>'
         : '<div class="hero-actions"><button type="button" class="btn btn-solid" data-approve="' + encodeURIComponent(it.id) + '">' + t('admin.approve') + '</button>' +
           '<button type="button" class="btn btn-outline" data-reject="' + encodeURIComponent(it.id) + '">' + t('admin.reject') + '</button></div>';
-      return '<div class="teacher-card">' +
-        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:baseline;margin-bottom:0.5rem">' +
-          '<span class="academy-status status-open">' + typeLabel + '</span>' +
-          '<strong>' + escapeHtml(it.title) + '</strong>' +
-          '<span style="color:var(--muted)">' + academyLabel + '</span>' +
+      return '<div class="card" style="margin-bottom:1rem">' +
+        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:center;margin-bottom:0.5rem">' +
+          '<span class="badge badge-forest">' + typeLabel + '</span>' +
+          '<strong style="font-size:1.05rem;color:var(--forest)">' + escapeHtml(it.title) + '</strong>' +
+          '<span class="badge badge-muted">' + academyLabel + '</span>' +
         '</div>' +
         '<p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.6rem">' +
           t('admin.teacher') + ': ' + escapeHtml(it.teacherName || '—') + ' · ' + t('admin.submitted') + ' ' + date + '</p>' +
@@ -1708,7 +1709,7 @@
       '</div>';
     }).join('');
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1>' +
+    app.innerHTML = '<section class="auth-wrap teacher-wrap"><p class="section-label">' + t('nav.admin') + '</p><h1 class="auth-title">' + t('admin.title') + '</h1>' +
       '<div class="hero-actions" style="margin-bottom:1rem"><button type="button" class="btn btn-solid" id="admin-seed">' + t('admin.seed') + '</button></div>' + html + '</section>';
     afterRender('admin');
 
