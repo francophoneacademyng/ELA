@@ -822,9 +822,9 @@
   function legalPage(title, body) {
     return '' +
       '<section class="section legal">' +
-        '<p class="section-label">Legal</p>' +
+        '<p class="section-label">' + t('legal.label') + '</p>' +
         '<h2 class="section-title">' + title + '</h2>' +
-        '<p class="legal-meta">Last updated: 19 August 2026</p>' +
+        '<p class="legal-meta">' + t('legal.updated') + ': 19 August 2026</p>' +
         '<div class="legal-body">' + body + '</div>' +
       '</section>';
   }
