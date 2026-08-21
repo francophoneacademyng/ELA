@@ -471,13 +471,14 @@ body {
 /* ---------- Anneau de progression (acad�mie) ---------- */
 .ring {
   --p: 0; --sz: 74px;
+  position: relative;
   width: var(--sz); height: var(--sz); border-radius: 50%;
   background: conic-gradient(var(--gold) calc(var(--p) * 1%), var(--cream-soft) 0);
   display: grid; place-items: center; flex: 0 0 auto;
 }
-.ring::before { content: ""; width: calc(var(--sz) - 14px); height: calc(var(--sz) - 14px); border-radius: 50%; background: #fff; }
-.ring span { position: absolute; font-family: var(--font-brand); font-size: 0.82rem; color: var(--forest); }
-.ring-wrap { position: relative; display: inline-grid; place-items: center; }
+.ring::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: #fff; }
+.ring span { position: relative; z-index: 1; font-family: var(--font-brand); font-size: 0.82rem; color: var(--forest); }
+.ring-wrap { display: inline-grid; place-items: center; }
 
 /* ---------- Dashboard : grille + stats ---------- */
 .dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; margin-top: 1.6rem; }

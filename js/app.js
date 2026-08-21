@@ -596,7 +596,17 @@
     var prog = d.progress || { completed: 0, total: 0 };
     var scores = d.bestQuizScores || [];
     var nxt = d.nextLiveClass;
+    var qstats = d.quizStats || { taken: 0, avg: 0, streak: 0 };
+    var certificates = d.certificates || [];
     var progPct = prog.total ? Math.round((prog.completed / prog.total) * 100) : 0;
+
+    // --- Badges (dérivés côté client) ---
+    var badges = [];
+    if (qstats.taken >= 1) badges.push(t('dashboard.badge.firstQuiz'));
+    if (prog.completed >= 5) badges.push(t('dashboard.badge.fiveLessons'));
+    if (qstats.streak >= 3) badges.push(t('dashboard.badge.streak'));
+    if (certificates.length >= 1) badges.push(t('dashboard.badge.certified'));
+    if (prog.total > 0 && prog.completed >= prog.total) badges.push(t('dashboard.badge.complete'));
 
     // --- En-tête : salutation + anneau de progression global ---
     var greetingHtml = '<div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
@@ -633,18 +643,40 @@
         '<a class="btn btn-gold" href="#/checkout" style="margin-top:0.8rem">' + t('pricing.subscribe') + '</a></div>';
     }
 
-    // --- Statistiques ---
-    var statHtml = '<div class="stat-grid">' +
+    // --- Reprendre mon apprentissage (prochaine leçon) ---
+    var resumeHtml = d.nextLesson
+      ? '<a class="resume-card" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '" style="display:block;text-decoration:none;margin-top:1.2rem">' +
+          '<p class="section-label">' + t('dashboard.learning') + '</p>' +
+          '<h3>' + escapeHtml(d.nextLesson.title) + '</h3>' +
+          '<p>' + t('dashboard.resumeSub') + '</p>' +
+        '</a>'
+      : '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
+          '<p class="section-label">' + t('dashboard.learning') + '</p>' +
+          '<h3>' + t('dashboard.resumeDone') + '</h3>' +
+          '<p>' + t('dashboard.resumeSub') + '</p>' +
+        '</a>';
+
+    // --- Statistiques (streak / quiz / moyenne / leçons) ---
+    var statHtml = '<div class="stat-grid" style="margin-top:1.2rem">' +
+      '<div class="stat-card"><div class="stat-value gold">' + qstats.streak + '</div><div class="stat-label">' + t('dashboard.streak') + '</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + qstats.taken + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + qstats.avg + '%</div><div class="stat-label">' + t('dashboard.avgScore') + '</div></div>' +
       '<div class="stat-card"><div class="stat-value">' + prog.completed + '/' + prog.total + '</div><div class="stat-label">' + t('dashboard.progress') + '</div></div>' +
-      '<div class="stat-card"><div class="stat-value gold">' + scores.length + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
     '</div>';
 
-    // --- Reprendre ---
-    var resumeHtml = '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
-      '<p class="section-label">' + t('dashboard.learning') + '</p>' +
-      '<h3>' + t('dashboard.resume') + '</h3>' +
-      '<p>' + t('dashboard.resumeSub') + '</p>' +
-    '</a>';
+    // --- Progression par académie (anneaux %) ---
+    var academyHtml = (d.academyProgress && d.academyProgress.length)
+      ? '<div class="card" style="margin-top:1.2rem">' +
+          '<div style="font-weight:700;color:var(--forest);margin-bottom:0.9rem">' + t('dashboard.academies') + '</div>' +
+          d.academyProgress.map(function (a) {
+            return '<div style="display:flex;align-items:center;gap:0.9rem;padding:0.55rem 0">' +
+              '<div class="ring-wrap"><div class="ring" style="--p:' + a.pct + ';--sz:54px"><span style="font-size:0.66rem">' + a.pct + '%</span></div></div>' +
+              '<div style="flex:1"><div style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</div>' +
+              '<div style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</div></div>' +
+            '</div>';
+          }).join('') +
+        '</div>'
+      : '';
 
     // --- Prochaine classe en direct ---
     var liveHtml = nxt
@@ -669,6 +701,37 @@
         '<button type="button" class="btn btn-solid btn-sm" id="copy-code">' + t('dashboard.copy') + '</button>' +
       '</div></div>';
 
+    // --- Assistant ---
+    var assistantHtml = '<div class="card" style="margin-top:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
+      '<div><div style="font-weight:700;color:var(--forest)">' + t('dashboard.assistant') + '</div>' +
+      '<div style="font-size:0.85rem;color:var(--muted)">' + t('assistant.sub') + '</div></div>' +
+      '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
+
+    // --- Badges + certificats (réalisations) ---
+    var badgePills = badges.map(function (b) {
+      return '<span class="badge badge-gold" style="padding:0.5rem 1rem;font-size:0.78rem">' + b + '</span>';
+    }).join('');
+    var certItems = certificates.map(function (c) {
+      var date = c.issuedAt ? new Date(c.issuedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
+      var meta = [];
+      if (c.academy) meta.push(t('academies.' + c.academy + '.name'));
+      if (c.percentage != null) meta.push(c.percentage + '%');
+      if (date) meta.push(date);
+      return '<div style="display:flex;align-items:center;gap:0.8rem;padding:0.6rem 0;border-top:1px solid var(--line-soft)">' +
+        '<div style="flex:1"><div style="font-weight:700;color:var(--forest)">' + escapeHtml(c.title) + '</div>' +
+        '<div style="font-size:0.8rem;color:var(--muted)">' + escapeHtml(meta.join(' · ')) + '</div></div>' +
+        (c.pdfUrl ? '<a class="btn btn-outline btn-sm" href="' + escapeHtml(c.pdfUrl) + '" target="_blank" rel="noopener">' + t('dashboard.download') + '</a>' : '') +
+      '</div>';
+    }).join('');
+    var achievementsHtml = '<div class="card" style="margin-top:1.2rem">' +
+      '<div style="font-weight:700;color:var(--forest);margin-bottom:0.8rem">' + t('dashboard.achievements') + '</div>' +
+      (badgePills ? '<div style="display:flex;flex-wrap:wrap;gap:0.5rem">' + badgePills + '</div>' : '') +
+      (certItems ? '<div style="margin-top:0.6rem">' + certItems + '</div>' : '') +
+      (!badgePills && !certItems
+        ? '<div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('dashboard.achievementsEmpty') + '</p></div>'
+        : '') +
+    '</div>';
+
     // --- Meilleurs scores ---
     var scoresHtml = scores.length
       ? '<div class="card" style="margin-top:1.2rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.5rem">' + t('dashboard.bestScores') + '</div>' +
@@ -677,12 +740,6 @@
           return '<li><span>' + escapeHtml(s.title) + '</span><span class="badge badge-emerald">' + s.bestScore + '/' + s.total + '</span></li>';
         }).join('') + '</ul></div>'
       : '';
-
-    // --- Assistant ---
-    var assistantHtml = '<div class="card" style="margin-top:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
-      '<div><div style="font-weight:700;color:var(--forest)">' + t('dashboard.assistant') + '</div>' +
-      '<div style="font-size:0.85rem;color:var(--muted)">' + t('assistant.sub') + '</div></div>' +
-      '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
 
     // --- Historique ---
     var txRows = (d.transactions || []).map(function (tx) {
@@ -702,9 +759,11 @@
         greetingHtml +
         '<div class="dash-grid" style="margin-top:0.6rem">' + subHtml + '</div>' +
         '<div class="dash-grid" style="margin-top:1.2rem">' +
-          '<div>' + resumeHtml + statHtml + liveHtml + '</div>' +
-          '<div>' + refHtml + scoresHtml + assistantHtml + '</div>' +
+          '<div>' + resumeHtml + statHtml + academyHtml + '</div>' +
+          '<div>' + liveHtml + refHtml + assistantHtml + '</div>' +
         '</div>' +
+        achievementsHtml +
+        scoresHtml +
         txHtml +
       '</section>';
 

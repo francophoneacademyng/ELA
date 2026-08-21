@@ -694,11 +694,65 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
 
   // --- Enrichissement élève ---
   // Total sur TOUTES les académies (l'abonnement ouvre le plan entier).
+  const ACADEMY_ORDER = ['german', 'mandarin', 'english', 'arabic', 'russian'];
   const allLessonsSnap = await db.collection('lessons').where('status', '==', 'approved').get();
   const totalLessons = allLessonsSnap.size;
+
+  const lessonMap = {};
+  allLessonsSnap.forEach((d) => {
+    lessonMap[d.id] = {
+      academy: d.data().academy || 'german',
+      order: d.data().order || 0,
+      courseId: d.data().courseId || '',
+      title: d.data().title || '',
+      level: d.data().level || ''
+    };
+  });
+
   const progSnap = await db.collection('progress').doc(uid).get();
   const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
+  const completedSet = {};
+  completedLessons.forEach((id) => { completedSet[id] = true; });
 
+  // Progression par académie (anneaux %).
+  const academyTotals = {};
+  allLessonsSnap.forEach((d) => {
+    const a = d.data().academy || 'german';
+    academyTotals[a] = (academyTotals[a] || 0) + 1;
+  });
+  const academyDone = {};
+  completedLessons.forEach((id) => {
+    const l = lessonMap[id];
+    if (l) academyDone[l.academy] = (academyDone[l.academy] || 0) + 1;
+  });
+  const academyProgress = ACADEMY_ORDER.filter((a) => academyTotals[a]).map((a) => ({
+    academy: a,
+    completed: academyDone[a] || 0,
+    total: academyTotals[a] || 0,
+    pct: academyTotals[a] ? Math.round(((academyDone[a] || 0) / academyTotals[a]) * 100) : 0
+  }));
+
+  // Prochaine leçon à reprendre (première leçon approuvée non terminée).
+  let nextLesson = null;
+  {
+    const sorted = allLessonsSnap.docs
+      .map((d) => {
+        const m = lessonMap[d.id];
+        return { id: d.id, academy: m.academy, order: m.order, courseId: m.courseId, title: m.title, level: m.level };
+      })
+      .sort((a, b) => {
+        const ao = ACADEMY_ORDER.indexOf(a.academy);
+        const bo = ACADEMY_ORDER.indexOf(b.academy);
+        if (ao !== bo) return ao - bo;
+        if (a.courseId !== b.courseId) return a.courseId.localeCompare(b.courseId);
+        return (a.order || 0) - (b.order || 0);
+      });
+    for (const l of sorted) {
+      if (!completedSet[l.id]) { nextLesson = l; break; }
+    }
+  }
+
+  // Quiz : meilleurs scores, moyennes et série (streak).
   const qsSnap = await db.collection('quizScores').where('uid', '==', uid).get();
   const bestQuizScores = qsSnap.docs.map((d) => ({
     quizId: d.data().quizId,
@@ -706,6 +760,46 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     bestScore: d.data().bestScore,
     total: d.data().total
   }));
+  const quizzesTaken = qsSnap.size;
+  let avgScore = 0;
+  if (quizzesTaken) {
+    let sum = 0, cnt = 0;
+    qsSnap.docs.forEach((d) => {
+      const t = d.data().total, b = d.data().bestScore;
+      if (t) { sum += (b || 0) / t; cnt++; }
+    });
+    avgScore = cnt ? Math.round((sum / cnt) * 100) : 0;
+  }
+  let streak = 0;
+  {
+    const dayKey = (dt) => dt.getFullYear() + '-' + dt.getMonth() + '-' + dt.getDate();
+    const days = new Set();
+    qsSnap.docs.forEach((d) => {
+      const u = d.data().updatedAt;
+      if (!u) return;
+      const dt = u.toDate ? u.toDate() : new Date(u);
+      days.add(dayKey(dt));
+    });
+    const today = new Date();
+    let cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    if (!days.has(dayKey(cursor))) cursor = new Date(cursor.getTime() - 86400000);
+    while (days.has(dayKey(cursor))) {
+      streak++;
+      cursor = new Date(cursor.getTime() - 86400000);
+    }
+  }
+
+  // Certificats délivrés.
+  const certSnap = await db.collection('certificates').where('userId', '==', uid).get();
+  const certificates = certSnap.docs.map((d) => ({
+    id: d.id,
+    title: d.data().quizTitle,
+    academy: d.data().academy,
+    level: d.data().level,
+    percentage: d.data().percentage,
+    pdfUrl: d.data().pdfUrl,
+    issuedAt: ts(d.data().issuedAt)
+  })).sort((a, b) => (b.issuedAt || 0) - (a.issuedAt || 0));
 
   let nextLiveClass = null;
   {
@@ -723,7 +817,11 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     user,
     transactions,
     progress: { completed: completedLessons.length, total: totalLessons },
+    academyProgress,
+    nextLesson,
+    quizStats: { taken: quizzesTaken, avg: avgScore, streak: streak },
     bestQuizScores,
+    certificates,
     nextLiveClass
   };
 });
