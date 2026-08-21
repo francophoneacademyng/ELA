@@ -1068,22 +1068,18 @@
     var id = getHashParam('id');
     if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.functions || !id) {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-      afterRender('');
+      afterRender('courses');
       return;
     }
-    if (!firebase.auth().currentUser) { studentSignInRequired(t('courses.title')); return; }
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
-    afterRender('');
+    afterRender('courses');
 
     callable('getCourse')({ courseId: id }).then(function (r) {
       renderCourseContent(r.data);
     }).catch(function () {
-      app.innerHTML = '' +
-        '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
-        '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
-        '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div></section>';
-      afterRender('');
+      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
+      afterRender('courses');
     });
   }
 
@@ -1091,10 +1087,12 @@
     var course = d.course, lessons = d.lessons || [], completed = d.completedLessons || [], total = d.total || 0;
     var lessonItems = lessons.map(function (l) {
       var done = completed.indexOf(l.id) !== -1;
+      var trialBadge = l.isTrial ? '<span class="academy-status status-open">' + t('lesson.trial') + '</span>' : '';
       return '<div class="teacher-card" style="margin-bottom:0.7rem">' +
         '<div style="display:flex;flex-wrap:wrap;gap:0.6rem 1rem;align-items:center">' +
           '<span style="color:var(--muted)">' + l.order + '.</span>' +
           '<a href="#/lesson?id=' + encodeURIComponent(l.id) + '" style="flex:1;color:var(--forest);text-decoration:none;font-weight:700">' + escapeHtml(l.title) + '</a>' +
+          trialBadge +
           (done ? '<span class="academy-status status-open">' + t('lesson.completed') + '</span>' : '') +
           (l.quizId ? '<a class="btn btn-outline" style="padding:0.3rem 0.9rem;font-size:0.8rem" href="#/quiz?id=' + encodeURIComponent(l.quizId) + '">' + t('courses.quiz') + '</a>' : '') +
         '</div></div>';
@@ -1119,45 +1117,42 @@
     var id = getHashParam('id');
     if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.firestore || !id) {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.lessons') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-      afterRender('');
+      afterRender('courses');
       return;
     }
-    if (!firebase.auth().currentUser) { studentSignInRequired(t('courses.lessons')); return; }
+    var user = firebase.auth().currentUser;
+    var uid = user ? user.uid : null;
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
-    afterRender('');
+    afterRender('courses');
 
     var db = firebase.firestore();
-    var uid = firebase.auth().currentUser.uid;
-    hasActiveSubscription().then(function (active) {
-      if (!active) {
+    // Lecture directe : les règles décident (trial → public, sinon admin/teacher/abonné).
+    db.collection('lessons').doc(id).get().then(function (snap) {
+      if (!snap.exists) {
+        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.lessons') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
+        afterRender('courses');
+        return;
+      }
+      renderLessonContent(id, uid, snap.data());
+    }).catch(function () {
+      if (!user) {
+        studentSignInRequired(t('courses.lessons'));
+      } else {
         app.innerHTML = '' +
           '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
           '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
-          '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div></section>';
-        afterRender('');
-        return;
+          '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div>' +
+          '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p></section>';
+        afterRender('courses');
       }
-      db.collection('lessons').doc(id).get().then(function (snap) {
-        if (!snap.exists) {
-          app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.lessons') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-          afterRender('');
-          return;
-        }
-        renderLessonContent(id, uid, snap.data());
-      }).catch(function () {
-        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1><p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p></section>';
-        afterRender('');
-      });
     });
   }
 
   function renderLessonContent(id, uid, lesson) {
     var isDone = false;
     var db = firebase.firestore();
-    db.collection('progress').doc(uid).get().then(function (p) {
-      if (p.exists && (p.data().completedLessons || []).indexOf(id) !== -1) isDone = true;
-
+    function build() {
       var objectives = (lesson.objectives || []).map(function (o) { return '<li>' + escapeHtml(o) + '</li>'; }).join('');
       var vocab = (lesson.vocabulary || []).map(function (v) {
         return '<li><span><strong>' + escapeHtml(v.term) + '</strong> — ' + escapeHtml(v.meaning) + '</span></li>';
@@ -1167,7 +1162,7 @@
 
       app.innerHTML = '' +
         '<section class="auth-wrap teacher-wrap">' +
-          '<p class="section-label">' + escapeHtml(lesson.level || '') + '</p>' +
+          '<p class="section-label">' + escapeHtml(lesson.level || '') + (lesson.isTrial ? ' · ' + t('lesson.trial') : '') + '</p>' +
           '<h1 class="auth-title">' + escapeHtml(lesson.title) + '</h1>' +
           (lesson.videoUrl ? '<div class="lesson-video"><video src="' + escapeHtml(lesson.videoUrl) + '" controls playsinline></video></div>' : '') +
           (objectives ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.objectives') + '</h3><ul class="tx-list">' + objectives + '</ul>' : '') +
@@ -1177,16 +1172,15 @@
           (grammar ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.grammar') + '</h3><ul class="tx-list">' + grammar + '</ul>' : '') +
           (exercises ? '<h3 class="auth-title" style="font-size:1.15rem;margin-top:1.4rem">' + t('lesson.exercises') + '</h3><ul class="tx-list">' + exercises + '</ul>' : '') +
           (lesson.quizId ? '<div class="hero-actions" style="margin-top:1.5rem"><a class="btn btn-gold" href="#/quiz?id=' + encodeURIComponent(lesson.quizId) + '">' + t('lesson.takeQuiz') + '</a></div>' : '') +
-          '<div class="hero-actions" style="margin-top:1.2rem">' +
+          (uid ? '<div class="hero-actions" style="margin-top:1.2rem">' +
             '<button type="button" class="btn btn-solid" id="mark-complete" ' + (isDone ? 'disabled' : '') + '>' +
-              (isDone ? t('lesson.completed') : t('lesson.markComplete')) + '</button>' +
-          '</div>' +
+              (isDone ? t('lesson.completed') : t('lesson.markComplete')) + '</button></div>' : '') +
           '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p>' +
         '</section>';
-      afterRender('');
+      afterRender('courses');
 
       var btn = document.getElementById('mark-complete');
-      if (btn && !isDone) {
+      if (btn && uid && !isDone) {
         btn.addEventListener('click', function () {
           var ref = db.collection('progress').doc(uid);
           ref.get().then(function (p) {
@@ -1199,7 +1193,13 @@
           }).catch(function () {});
         });
       }
-    });
+    }
+
+    if (!uid) { build(); return; }
+    db.collection('progress').doc(uid).get().then(function (p) {
+      if (p.exists && (p.data().completedLessons || []).indexOf(id) !== -1) isDone = true;
+      build();
+    }).catch(function () { build(); });
   }
 
   /* ----- Quiz engine ----- */
@@ -1213,35 +1213,34 @@
       return;
     }
     if (!id) { renderQuizCatalog(); return; }
-    if (!firebase.auth().currentUser) { studentSignInRequired(t('courses.quizzes')); return; }
+    var user = firebase.auth().currentUser;
 
     app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
     afterRender('quiz');
 
     var db = firebase.firestore();
-    hasActiveSubscription().then(function (active) {
-      if (!active) {
-        app.innerHTML = '' +
-          '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
-          '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
-          '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div></section>';
+    // Lecture directe : les règles décident (trial → public, sinon admin/teacher/abonné).
+    db.collection('quizzes').doc(id).get().then(function (snap) {
+      if (!snap.exists || !snap.data().questions || !snap.data().questions.length) {
+        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.quizzes') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
         afterRender('quiz');
         return;
       }
-      db.collection('quizzes').doc(id).get().then(function (snap) {
-        if (!snap.exists || !snap.data().questions || !snap.data().questions.length) {
-          app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.quizzes') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
-          afterRender('quiz');
-          return;
-        }
-        quizState.quiz = { id: id, data: snap.data() };
-        quizState.current = 0;
-        quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
-        renderQuizQuestion();
-      }).catch(function () {
-        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1><p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p></section>';
+      quizState.quiz = { id: id, data: snap.data() };
+      quizState.current = 0;
+      quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
+      renderQuizQuestion();
+    }).catch(function () {
+      if (!user) {
+        studentSignInRequired(t('courses.quizzes'));
+      } else {
+        app.innerHTML = '' +
+          '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.subscribeRequired') + '</h1>' +
+          '<p class="auth-sub">' + t('lesson.subscribeRequiredSub') + '</p>' +
+          '<div class="hero-actions"><a class="btn btn-gold" href="#/checkout">' + t('pricing.subscribe') + '</a></div>' +
+          '<p class="auth-alt"><a href="#/quiz">' + t('common.back') + '</a></p></section>';
         afterRender('quiz');
-      });
+      }
     });
   }
 

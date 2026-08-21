@@ -19,6 +19,10 @@ service cloud.firestore {
       return isSignedIn() && currentUserRole() == 'teacher';
     }
 
+    function isAdmin() {
+      return isSignedIn() && currentUserRole() == 'admin';
+    }
+
     function hasActiveSubscription() {
       return exists(/databases/$(database)/documents/subscriptions/$(request.auth.uid))
         && get(/databases/$(database)/documents/subscriptions/$(request.auth.uid)).data.status == 'active'
@@ -32,11 +36,11 @@ service cloud.firestore {
         && request.resource.data.status == 'pending';
     }
 
-    // Élève : lit le contenu approuvé de SON académie, uniquement avec abonnement actif.
+    // Abonné actif : lit le contenu approuvé, SANS contrôle d'académie bloquant
+    // (l'abonnement ouvre le plan entier, comme Francophone).
     function canStudentReadContent() {
       return isSignedIn()
         && resource.data.status == 'approved'
-        && resource.data.academy == currentUserAcademy()
         && hasActiveSubscription();
     }
 
@@ -70,7 +74,10 @@ service cloud.firestore {
 
     match /lessons/{id} {
       allow create: if canCreateContent();
+      allow read: if isAdmin();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
       allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
                     && request.resource.data.status == resource.data.status;
@@ -79,7 +86,10 @@ service cloud.firestore {
 
     match /quizzes/{id} {
       allow create: if canCreateContent();
+      allow read: if isAdmin();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
       allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
                     && request.resource.data.status == resource.data.status;
@@ -88,16 +98,21 @@ service cloud.firestore {
 
     match /liveClasses/{id} {
       allow create: if canCreateContent();
+      allow read: if isAdmin();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
       allow read: if canStudentReadContent();
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
                     && request.resource.data.status == resource.data.status;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
     }
 
-    // Cours (contenu propriétaire, status="approved") : lecture par l'élève
-    // abonné de l'académie. Aucune écriture côté client (seed + admin serveur).
+    // Cours (contenu propriétaire, status="approved").
     match /courses/{id} {
+      allow read: if isAdmin();
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
       allow read: if canStudentReadContent();
       allow create, update, delete: if false;
     }

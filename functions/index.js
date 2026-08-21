@@ -669,10 +669,16 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     endDate: ts(subSnap.data().endDate)
   } : null;
 
-  const user = userSnap.exists ? {
-    referralCode: userSnap.data().referralCode || null,
-    referralCredit: userSnap.data().referralCredit || 0
-  } : { referralCode: null, referralCredit: 0 };
+  // Code de parrainage : généré côté serveur s'il est absent (logique Francophone).
+  let referralCode = userSnap.exists ? userSnap.data().referralCode : null;
+  if (userSnap.exists && !referralCode) {
+    referralCode = 'ELA-' + uid.slice(0, 6).toUpperCase();
+    await db.collection('users').doc(uid).set({ referralCode }, { merge: true });
+  }
+  const user = {
+    referralCode: referralCode || null,
+    referralCredit: (userSnap.exists ? userSnap.data().referralCredit : 0) || 0
+  };
 
   const transactions = txSnap.docs.map((d) => ({
     id: d.id,
@@ -683,15 +689,10 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     createdAt: ts(d.data().createdAt)
   })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  // --- Enrichissement élève (phase 2) ---
-  const userData = userSnap.exists ? userSnap.data() : {};
-  const academy = userData.academy || (Array.isArray(userData.academies) && userData.academies[0]) || null;
-
-  let totalLessons = 0;
-  if (academy) {
-    const lessonsSnap = await db.collection('lessons').where('academy', '==', academy).where('status', '==', 'approved').get();
-    totalLessons = lessonsSnap.size;
-  }
+  // --- Enrichissement élève ---
+  // Total sur TOUTES les académies (l'abonnement ouvre le plan entier).
+  const allLessonsSnap = await db.collection('lessons').where('status', '==', 'approved').get();
+  const totalLessons = allLessonsSnap.size;
   const progSnap = await db.collection('progress').doc(uid).get();
   const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
 
@@ -704,8 +705,8 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
   }));
 
   let nextLiveClass = null;
-  if (academy) {
-    const lcSnap = await db.collection('liveClasses').where('academy', '==', academy).where('status', '==', 'approved').get();
+  {
+    const lcSnap = await db.collection('liveClasses').where('status', '==', 'approved').get();
     const nowMs = Date.now();
     const upcoming = lcSnap.docs
       .map((d) => ({ id: d.id, title: d.data().title, scheduledAt: ts(d.data().scheduledAt) }))
@@ -738,23 +739,15 @@ exports.getLiveMeetingLink = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('invalid-argument', 'missing-live-class-id');
   }
 
-  const subSnap = await db.collection('subscriptions').doc(uid).get();
-  const sub = subSnap.exists ? subSnap.data() : null;
-  const active = sub && sub.status === 'active' && sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > new Date();
-  if (!active) {
-    throw new HttpsError('failed-precondition', 'active-subscription-required');
-  }
-
   const lcSnap = await db.collection('liveClasses').doc(liveClassId).get();
   if (!lcSnap.exists) {
     throw new HttpsError('not-found', 'not-found');
   }
   const lc = lcSnap.data();
 
-  const userSnap = await db.collection('users').doc(uid).get();
-  const academy = userSnap.exists ? userSnap.data().academy : null;
-  if (lc.academy !== academy) {
-    throw new HttpsError('permission-denied', 'academy-mismatch');
+  const access = await academyAndSubscription(uid);
+  if (!canAccess(access, lc)) {
+    throw new HttpsError('failed-precondition', 'active-subscription-required');
   }
 
   const scheduledAt = lc.scheduledAt && lc.scheduledAt.toDate ? lc.scheduledAt.toDate() : new Date(lc.scheduledAt);
@@ -921,11 +914,24 @@ async function requireAdmin(uid) {
 
 async function academyAndSubscription(uid) {
   const userSnap = await db.collection('users').doc(uid).get();
-  const academy = userSnap.exists ? userSnap.data().academy : null;
+  const u = userSnap.exists ? userSnap.data() : {};
+  const academy = u.academy || (Array.isArray(u.academies) && u.academies[0]) || null;
+  const role = u.role || 'student';
   const subSnap = await db.collection('subscriptions').doc(uid).get();
   const sub = subSnap.exists ? subSnap.data() : null;
   const active = sub && sub.status === 'active' && sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > new Date();
-  return { academy, active };
+  return { academy, role, active };
+}
+
+/** Règle d'accès (modèle Francophone) :
+    admin → total ; teacher → son académie ; abonné actif → total ;
+    compte gratuit/trial → contenu trial uniquement ; sinon refus. */
+function canAccess(access, content) {
+  if (!access) return false;
+  if (access.role === 'admin') return true;
+  if (access.role === 'teacher') return !content || content.academy === access.academy;
+  if (content && content.isTrial) return true;
+  return !!access.active;
 }
 
 /** Seed du curriculum (admin only, idempotent : IDs déterministes). */
@@ -953,6 +959,7 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
       const lesson = course.lessons[i];
       const lessonId = courseId + '-l' + (i + 1);
       const quizId = lessonId + '-quiz';
+      const isTrial = i === 0; // 1re leçon de chaque académie = essai gratuit
 
       const quizKey = course.academy + '|' + lesson.title;
       const quiz = quizzes[quizKey];
@@ -963,6 +970,7 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
         content: lesson.content, vocabulary: lesson.vocabulary || [],
         grammar: lesson.grammar || [], exercises: lesson.exercises || [],
         videoUrl: lesson.videoUrl || '', quizId: quiz ? quizId : null,
+        isTrial: isTrial,
         teacherUid: null, status: 'approved', createdAt: new Date()
       });
       nLessons++;
@@ -971,7 +979,8 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
         await db.collection('quizzes').doc(quizId).set({
           lessonId: lessonId, courseId: courseId, academy: course.academy,
           level: course.level, title: lesson.title + ' — Quiz',
-          questions: quiz.questions, teacherUid: null, status: 'approved', createdAt: new Date()
+          questions: quiz.questions, isTrial: isTrial,
+          teacherUid: null, status: 'approved', createdAt: new Date()
         });
         nQuizzes++;
       }
@@ -1011,37 +1020,36 @@ exports.getLiveCatalog = onCall({ region: REGION }, async () => {
   return { classes };
 });
 
-/** Détail d'un cours : leçons (liste légère) + progression + quizz associés. */
+/** Détail d'un cours : leçons (liste légère, public) + progression + quizz associés.
+    Le contenu des leçons/quizz reste géré par les règles Firestore. */
 exports.getCourse = onCall({ region: REGION }, async (request) => {
-  if (!request.auth || !request.auth.uid) {
-    throw new HttpsError('unauthenticated', 'You must be signed in.');
-  }
-  const uid = request.auth.uid;
   const courseId = request.data && request.data.courseId;
   if (!courseId) {
     throw new HttpsError('invalid-argument', 'missing-course-id');
-  }
-
-  const { academy, active } = await academyAndSubscription(uid);
-  if (!active) {
-    throw new HttpsError('failed-precondition', 'active-subscription-required');
   }
 
   const courseSnap = await db.collection('courses').doc(courseId).get();
   if (!courseSnap.exists) {
     throw new HttpsError('not-found', 'course-not-found');
   }
-  const course = { id: courseId, ...courseSnap.data() };
-  if (course.academy !== academy) {
-    throw new HttpsError('permission-denied', 'academy-mismatch');
-  }
+  const c = courseSnap.data();
+  const course = {
+    id: courseId, title: c.title, level: c.level, description: c.description,
+    category: c.category, academy: c.academy, learningOutcomes: c.learningOutcomes || []
+  };
 
   const lessonsSnap = await db.collection('lessons').where('courseId', '==', courseId).get();
-  const lessons = lessonsSnap.docs.map((d) => ({ id: d.id, title: d.data().title, order: d.data().order || 0, objectives: d.data().objectives || [], quizId: d.data().quizId || null }))
-    .sort((a, b) => (a.order || 0) - (b.order || 0));
+  const lessons = lessonsSnap.docs.map((d) => ({
+    id: d.id, title: d.data().title, order: d.data().order || 0,
+    objectives: d.data().objectives || [], quizId: d.data().quizId || null,
+    isTrial: d.data().isTrial === true
+  })).sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  const progSnap = await db.collection('progress').doc(uid).get();
-  const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
+  let completedLessons = [];
+  if (request.auth && request.auth.uid) {
+    const progSnap = await db.collection('progress').doc(request.auth.uid).get();
+    completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
+  }
 
   return { course, lessons, completedLessons, total: lessons.length };
 });
