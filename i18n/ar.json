@@ -227,6 +227,8 @@
   "quiz.retry": "إعادة المحاولة",
   "quiz.passed": "أحسنت! لقد أتقنت هذا الدرس.",
   "quiz.tryAgainMsg": "واصل — راجع الدرس وحاول مجدداً.",
+  "quiz.review": "مراجعة إجاباتك",
+  "quiz.correct": "صحيح",
   "live.title": "الحصص المباشرة",
   "live.empty": "لا توجد حصص مباشرة مجدولة بعد.",
   "live.join": "انضم إلى الحصة",
@@ -274,6 +276,8 @@
   "lesson.content": "الدرس",
   "lesson.takeQuiz": "أداء الاختبار",
   "lesson.trial": "تجربة مجانية",
+  "lesson.previous": "الدرس السابق",
+  "lesson.next": "الدرس التالي",
 
   "common.next": "متابعة",
   "common.back": "رجوع"

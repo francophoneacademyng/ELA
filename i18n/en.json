@@ -227,6 +227,8 @@
   "quiz.retry": "Try again",
   "quiz.passed": "Well done! You've mastered this lesson.",
   "quiz.tryAgainMsg": "Keep going — review the lesson and try again.",
+  "quiz.review": "Review your answers",
+  "quiz.correct": "Correct",
   "live.title": "Live classes",
   "live.empty": "No live classes scheduled yet.",
   "live.join": "Join class",
@@ -274,6 +276,8 @@
   "lesson.content": "Lesson",
   "lesson.takeQuiz": "Take the quiz",
   "lesson.trial": "Free trial",
+  "lesson.previous": "Previous lesson",
+  "lesson.next": "Next lesson",
 
   "common.next": "Continue",
   "common.back": "Back"

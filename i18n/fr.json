@@ -227,6 +227,8 @@
   "quiz.retry": "Réessayer",
   "quiz.passed": "Bravo ! Tu as maîtrisé cette leçon.",
   "quiz.tryAgainMsg": "Continue — révise la leçon et réessaie.",
+  "quiz.review": "Voir la correction",
+  "quiz.correct": "Bonne réponse",
   "live.title": "Cours live",
   "live.empty": "Aucun cours live planifié pour le moment.",
   "live.join": "Rejoindre",
@@ -274,6 +276,8 @@
   "lesson.content": "Leçon",
   "lesson.takeQuiz": "Faire le quizz",
   "lesson.trial": "Essai gratuit",
+  "lesson.previous": "Leçon précédente",
+  "lesson.next": "Leçon suivante",
 
   "common.next": "Continuer",
   "common.back": "Retour"

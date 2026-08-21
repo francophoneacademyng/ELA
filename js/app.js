@@ -567,6 +567,15 @@
   /* ---------- Dashboard (Jalon 5) ---------- */
   function fmtNaira(n) { return '₦' + Number(n || 0).toLocaleString('en-NG'); }
 
+  function skeletonLoading() {
+    return '' +
+      '<section class="auth-wrap teacher-wrap">' +
+        '<div class="skeleton" style="height:2.4rem;width:55%;margin-bottom:1.6rem"></div>' +
+        '<div class="skeleton skeleton-card" style="margin-bottom:1rem"></div>' +
+        '<div class="skeleton skeleton-card"></div>' +
+      '</section>';
+  }
+
   function dashboardSignIn() {
     app.innerHTML = '' +
       '<section class="auth-wrap">' +
@@ -584,9 +593,20 @@
     var sub = d.subscription;
     var now = Date.now();
     var firstName = ((d.user && d.user.displayName) || '').split(' ')[0];
+    var prog = d.progress || { completed: 0, total: 0 };
+    var scores = d.bestQuizScores || [];
+    var nxt = d.nextLiveClass;
+    var progPct = prog.total ? Math.round((prog.completed / prog.total) * 100) : 0;
 
-    // --- En-tête : salutation ---
-    var greetingHtml = '<h1 class="greeting">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '</h1>';
+    // --- En-tête : salutation + anneau de progression global ---
+    var greetingHtml = '<div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
+      '<h1 class="greeting" style="margin:0">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '</h1>' +
+      (prog.total
+        ? '<div class="ring-wrap" title="' + t('dashboard.progress') + '">' +
+            '<div class="ring" style="--p:' + progPct + '"><span>' + progPct + '%</span></div>' +
+          '</div>'
+        : '') +
+    '</div>';
 
     // --- Carte abonnement premium ---
     var subHtml;
@@ -614,13 +634,9 @@
     }
 
     // --- Statistiques ---
-    var prog = d.progress || { completed: 0, total: 0 };
-    var scores = d.bestQuizScores || [];
-    var nxt = d.nextLiveClass;
     var statHtml = '<div class="stat-grid">' +
       '<div class="stat-card"><div class="stat-value">' + prog.completed + '/' + prog.total + '</div><div class="stat-label">' + t('dashboard.progress') + '</div></div>' +
       '<div class="stat-card"><div class="stat-value gold">' + scores.length + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
-      (nxt ? '<div class="stat-card"><div class="stat-value" style="font-size:1.1rem">' + new Date(nxt.scheduledAt).toLocaleDateString(ELA_I18N.getLang()) + '</div><div class="stat-label">' + t('dashboard.nextLive') + '</div></div>' : '') +
     '</div>';
 
     // --- Reprendre ---
@@ -629,6 +645,18 @@
       '<h3>' + t('dashboard.resume') + '</h3>' +
       '<p>' + t('dashboard.resumeSub') + '</p>' +
     '</a>';
+
+    // --- Prochaine classe en direct ---
+    var liveHtml = nxt
+      ? '<div class="card card-hover" style="margin-top:1.2rem">' +
+          '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:0.4rem">' +
+            '<span class="badge badge-forest">' + t('dashboard.nextLive') + '</span>' +
+            '<span style="font-size:0.82rem;color:var(--muted)">' + new Date(nxt.scheduledAt).toLocaleString(ELA_I18N.getLang()) + '</span>' +
+          '</div>' +
+          '<h3 style="font-family:var(--font-display);font-weight:400;font-size:1.35rem;color:var(--forest);margin:0.2rem 0 0.8rem">' + escapeHtml(nxt.title) + '</h3>' +
+          '<a class="btn btn-solid btn-sm" href="#/live">' + t('live.join') + '</a>' +
+        '</div>'
+      : '';
 
     // --- Parrainage ---
     var refHtml = '<div class="card" style="margin-top:1.2rem">' +
@@ -672,9 +700,9 @@
     return '' +
       '<section class="auth-wrap assistant-wrap">' +
         greetingHtml +
-        '<div class="dash-grid">' + subHtml + '</div>' +
+        '<div class="dash-grid" style="margin-top:0.6rem">' + subHtml + '</div>' +
         '<div class="dash-grid" style="margin-top:1.2rem">' +
-          '<div>' + resumeHtml + statHtml + '</div>' +
+          '<div>' + resumeHtml + statHtml + liveHtml + '</div>' +
           '<div>' + refHtml + scoresHtml + assistantHtml + '</div>' +
         '</div>' +
         txHtml +
@@ -696,8 +724,9 @@
 
     app.innerHTML = '' +
       '<section class="auth-wrap assistant-wrap">' +
-        '<h1 class="auth-title">' + t('dashboard.title') + '</h1>' +
-        '<p class="auth-sub">' + t('dashboard.loading') + '</p>' +
+        '<div class="skeleton" style="height:2.4rem;width:55%;margin-bottom:1.4rem"></div>' +
+        '<div class="dash-grid"><div class="skeleton skeleton-card"></div></div>' +
+        '<div class="dash-grid" style="margin-top:1.2rem"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div>' +
       '</section>';
     afterRender('');
 
@@ -1099,7 +1128,7 @@
       return;
     }
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('courses');
 
     callable('getCatalog')().then(function (r) {
@@ -1142,7 +1171,7 @@
       return;
     }
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('courses');
 
     callable('getCourse')({ courseId: id }).then(function (r) {
@@ -1200,7 +1229,7 @@
     var user = firebase.auth().currentUser;
     var uid = user ? user.uid : null;
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('courses');
 
     var db = firebase.firestore();
@@ -1211,7 +1240,17 @@
         afterRender('courses');
         return;
       }
-      renderLessonContent(id, uid, snap.data());
+      var lesson = snap.data();
+      var courseId = lesson.courseId;
+      if (courseId && window.firebase && firebase.functions) {
+        callable('getCourse')({ courseId: courseId }).then(function (r) {
+          renderLessonContent(id, uid, lesson, (r.data && r.data.lessons) || []);
+        }).catch(function () {
+          renderLessonContent(id, uid, lesson, []);
+        });
+      } else {
+        renderLessonContent(id, uid, lesson, []);
+      }
     }).catch(function () {
       if (!user) {
         studentSignInRequired(t('courses.lessons'));
@@ -1226,9 +1265,21 @@
     });
   }
 
-  function renderLessonContent(id, uid, lesson) {
+  function renderLessonContent(id, uid, lesson, siblings) {
     var isDone = false;
     var db = firebase.firestore();
+    var sib = siblings || [];
+    var sibIdx = -1;
+    sib.forEach(function (l, i) { if (l.id === id) sibIdx = i; });
+    var prev = sibIdx > 0 ? sib[sibIdx - 1] : null;
+    var next = sibIdx >= 0 && sibIdx < sib.length - 1 ? sib[sibIdx + 1] : null;
+    var navHtml = (prev || next)
+      ? '<div style="display:flex;justify-content:space-between;gap:0.8rem;margin-top:1.5rem;flex-wrap:wrap">' +
+          (prev ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(prev.id) + '">← ' + t('lesson.previous') + '</a>' : '<span></span>') +
+          (next ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(next.id) + '">' + t('lesson.next') + ' →</a>' : '') +
+        '</div>'
+      : '';
+
     function build() {
       var objectives = (lesson.objectives || []).map(function (o) { return '<li>' + escapeHtml(o) + '</li>'; }).join('');
       var vocab = (lesson.vocabulary || []).map(function (v) {
@@ -1255,6 +1306,7 @@
           (uid ? '<div class="hero-actions" style="margin-top:1.2rem">' +
             '<button type="button" class="btn btn-solid" id="mark-complete" ' + (isDone ? 'disabled' : '') + '>' +
               (isDone ? t('lesson.completed') : t('lesson.markComplete')) + '</button></div>' : '') +
+          navHtml +
           '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p>' +
         '</section>';
       afterRender('courses');
@@ -1295,7 +1347,7 @@
     if (!id) { renderQuizCatalog(); return; }
     var user = firebase.auth().currentUser;
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('dashboard.loading') + '</h1></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('quiz');
 
     var db = firebase.firestore();
@@ -1325,7 +1377,7 @@
   }
 
   function renderQuizCatalog() {
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('nav.quiz') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('quiz');
     callable('getQuizCatalog')().then(function (r) {
       var quizzes = (r.data && r.data.quizzes) || [];
@@ -1418,18 +1470,42 @@
   function renderQuizResult(correct, total, best) {
     var pct = Math.round((correct / total) * 100);
     var passed = pct >= 80;
-    var ringPct = pct;
+    var letters = ['A', 'B', 'C', 'D'];
+
+    // --- Revue des réponses (correction) ---
+    var reviewHtml = '<h3 class="auth-title" style="font-size:1.3rem;margin-top:2rem">' + t('quiz.review') + '</h3>' +
+      quizState.quiz.data.questions.map(function (q, i) {
+        var given = quizState.answers[i];
+        var opts = q.options.map(function (opt, oi) {
+          var cls = '';
+          var mark = '';
+          if (oi === q.correctIndex) { cls = ' correct'; mark = '<span style="margin-inline-start:auto;color:var(--emerald);font-weight:700">' + t('quiz.correct') + '</span>'; }
+          else if (given === oi) { cls = ' incorrect'; }
+          return '<button type="button" class="quiz-opt' + cls + '" disabled>' +
+            '<span class="letter">' + letters[oi] + '</span><span>' + escapeHtml(opt) + '</span>' + mark + '</button>';
+        }).join('');
+        var ok = given === q.correctIndex;
+        return '<div class="card" style="margin-bottom:1rem">' +
+          '<div style="display:flex;gap:0.8rem;align-items:center;margin-bottom:0.7rem">' +
+            '<span class="badge ' + (ok ? 'badge-emerald' : 'badge-red') + '">' + (ok ? '✓' : '✕') + '</span>' +
+            '<strong style="color:var(--forest)">' + escapeHtml(q.text) + '</strong>' +
+          '</div>' +
+          '<div style="display:grid;gap:0.6rem">' + opts + '</div>' +
+        '</div>';
+      }).join('');
+
     app.innerHTML = '' +
-      '<section class="auth-wrap teacher-wrap" style="text-align:center">' +
-        '<h1 class="auth-title">' + escapeHtml(quizState.quiz.data.title) + '</h1>' +
+      '<section class="auth-wrap teacher-wrap">' +
+        '<h1 class="auth-title" style="text-align:center">' + escapeHtml(quizState.quiz.data.title) + '</h1>' +
         '<div class="quiz-result-score"><div class="score">' + correct + '<span> / ' + total + '</span></div></div>' +
-        '<p class="auth-sub" style="font-size:1.1rem;margin-top:0.8rem">' + pct + '% — ' + t('quiz.best') + ' ' + best + '/' + total + '</p>' +
-        '<div class="card" style="margin-top:1rem"><p style="font-size:1.05rem;color:var(--forest)">' +
+        '<p class="auth-sub" style="font-size:1.1rem;margin-top:0.8rem;text-align:center">' + pct + '% — ' + t('quiz.best') + ' ' + best + '/' + total + '</p>' +
+        '<div class="card" style="margin-top:1rem;text-align:center"><p style="font-size:1.05rem;color:var(--forest)">' +
           (passed ? t('quiz.passed') : t('quiz.tryAgainMsg')) + '</p></div>' +
         '<div class="hero-actions" style="margin-top:1.2rem;justify-content:center">' +
           '<button type="button" class="btn btn-solid" id="quiz-retry">' + t('quiz.retry') + '</button>' +
           '<a class="btn btn-outline" href="#/courses">' + t('common.back') + '</a>' +
         '</div>' +
+        reviewHtml +
       '</section>';
     afterRender('quiz');
     document.getElementById('quiz-retry').addEventListener('click', function () {
@@ -1447,7 +1523,7 @@
       return;
     }
 
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('live.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
+    app.innerHTML = skeletonLoading();
     afterRender('live');
 
     callable('getLiveCatalog')().then(function (r) {
