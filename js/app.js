@@ -26,6 +26,15 @@
   var CHECK_SVG =
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B6B4F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" stroke="#C9A227"/><path d="M8 12.5l2.6 2.6L16 9.5"/></svg>';
 
+  var ICON_CHECK =
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 6.5"/></svg>';
+
+  var ICON_CROSS =
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
+  var ARROW_LEFT_SVG =
+    '<svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
+
   /* ---------- Academies data ---------- */
   var ACADEMIES = [
     { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true },
@@ -866,7 +875,7 @@
       '<p>These Terms are governed by the laws of the Federal Republic of Nigeria. Disputes will first be addressed through good-faith negotiation with our support team.</p>' +
       '<h3>13. Contact</h3>' +
       '<p>languageacademyelearn@gmail.com</p>';
-    app.innerHTML = legalPage('Terms and Conditions', body);
+    app.innerHTML = legalPage(t('footer.terms'), body);
     afterRender('');
   }
 
@@ -907,7 +916,7 @@
       '<p>We may update this policy; material changes will be announced on the website or by email.</p>' +
       '<h3>9. Contact</h3>' +
       '<p>languageacademyelearn@gmail.com</p>';
-    app.innerHTML = legalPage('Privacy Policy', body);
+    app.innerHTML = legalPage(t('footer.privacy'), body);
     afterRender('');
   }
 
@@ -931,7 +940,7 @@
       '</ul>' +
       '<h3>3. Contact</h3>' +
       '<p>languageacademyelearn@gmail.com</p>';
-    app.innerHTML = legalPage('Refund & Referral Policy', body);
+    app.innerHTML = legalPage(t('footer.refundPolicy'), body);
     afterRender('');
   }
 
@@ -1335,8 +1344,8 @@
     var next = sibIdx >= 0 && sibIdx < sib.length - 1 ? sib[sibIdx + 1] : null;
     var navHtml = (prev || next)
       ? '<div style="display:flex;justify-content:space-between;gap:0.8rem;margin-top:1.5rem;flex-wrap:wrap">' +
-          (prev ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(prev.id) + '">← ' + t('lesson.previous') + '</a>' : '<span></span>') +
-          (next ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(next.id) + '">' + t('lesson.next') + ' →</a>' : '') +
+          (prev ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(prev.id) + '">' + ARROW_LEFT_SVG + t('lesson.previous') + '</a>' : '<span></span>') +
+          (next ? '<a class="btn btn-outline btn-sm" href="#/lesson?id=' + encodeURIComponent(next.id) + '">' + t('lesson.next') + ARROW_SVG + '</a>' : '') +
         '</div>'
       : '';
 
@@ -1550,7 +1559,7 @@
         var ok = given === q.correctIndex;
         return '<div class="card" style="margin-bottom:1rem">' +
           '<div style="display:flex;gap:0.8rem;align-items:center;margin-bottom:0.7rem">' +
-            '<span class="badge ' + (ok ? 'badge-emerald' : 'badge-red') + '">' + (ok ? '✓' : '✕') + '</span>' +
+            '<span class="badge ' + (ok ? 'badge-emerald' : 'badge-red') + '" style="gap:0.35rem">' + (ok ? ICON_CHECK : ICON_CROSS) + '</span>' +
             '<strong style="color:var(--forest)">' + escapeHtml(q.text) + '</strong>' +
           '</div>' +
           '<div style="display:grid;gap:0.6rem">' + opts + '</div>' +
