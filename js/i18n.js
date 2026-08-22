@@ -20,6 +20,10 @@ window.ELA_I18N = (function () {
       var key = el.getAttribute('data-i18n');
       if (dict[key]) el.textContent = dict[key];
     });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+      var key = el.getAttribute('data-i18n-aria');
+      if (dict[key]) el.setAttribute('aria-label', dict[key]);
+    });
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === current);
     });
