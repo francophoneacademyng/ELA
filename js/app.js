@@ -1950,10 +1950,31 @@
     '/login': renderLogin
   };
 
+  var PAGE_TITLES = {
+    '': 'nav.home', '/': 'nav.home',
+    '/academies': 'nav.academies', '/pricing': 'nav.pricing',
+    '/courses': 'nav.courses', '/course': 'nav.courses', '/lesson': 'nav.courses',
+    '/quiz': 'nav.quiz', '/live': 'nav.live',
+    '/dashboard': 'dashboard.title', '/assistant': 'assistant.title',
+    '/teacher': 'nav.teacher', '/admin': 'nav.admin',
+    '/checkout': 'checkout.title', '/register': 'nav.cta', '/login': 'nav.login',
+    '/terms': 'footer.terms', '/privacy': 'footer.privacy', '/refund': 'footer.refundPolicy'
+  };
+
+  function updateMeta(path) {
+    var title = t(PAGE_TITLES[path] || 'nav.home');
+    document.title = title + ' — E-Learn Language Academy';
+    var meta = document.querySelector('meta[name="description"]');
+    if (meta && t('meta.description') !== 'meta.description') {
+      meta.setAttribute('content', t('meta.description'));
+    }
+  }
+
   function route() {
     var hash = window.location.hash.replace(/^#/, '') || '/';
     var qi = hash.indexOf('?');
     var path = qi >= 0 ? hash.slice(0, qi) : hash;
+    updateMeta(path);
     (ROUTES[path] || renderHome)();
   }
 
