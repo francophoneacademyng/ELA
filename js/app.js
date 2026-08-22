@@ -2036,6 +2036,13 @@
       window.addEventListener('scroll', function () {
         nav.classList.toggle('scrolled', window.scrollY > 8);
       }, { passive: true });
+      var toggle = document.querySelector('.nav-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function () {
+          var open = nav.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      }
     }
 
     ELA_I18N.init().then(function () {

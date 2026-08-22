@@ -99,6 +99,7 @@ body {
 }
 .nav-links a:hover, .nav-links a.active { color: var(--emerald); border-bottom-color: var(--gold); }
 .nav-links a[hidden] { display: none !important; }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--forest); padding: 0.4rem; }
 .nav-right { display: flex; align-items: center; gap: 1rem; }
 .lang-switch { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
 .lang-btn {
@@ -325,7 +326,20 @@ body {
   .academy-status { justify-self: start; }
 }
 @media (max-width: 720px) {
-  .nav-links { display: none; }
+  .nav { flex-wrap: wrap; }
+  .nav-brand { flex: 1 1 auto; }
+  .nav-toggle { display: inline-flex; }
+  .nav-right { margin-inline-start: auto; }
+  .nav-links {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .nav.open .nav-links { display: flex; }
+  .nav-links a { padding: 0.55rem 0; }
   .price-scroll { overflow-x: auto; }
   .price-table { min-width: 640px; }
 }
