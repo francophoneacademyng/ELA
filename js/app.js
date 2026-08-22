@@ -1950,19 +1950,46 @@
 
   /* ---------- Boot ---------- */
   function updateTeacherNav() {
-    var tLink = document.querySelector('.teacher-nav');
-    var aLink = document.querySelector('.admin-nav');
-    var hide = function () { if (tLink) tLink.hidden = true; if (aLink) aLink.hidden = true; };
-    if (!window.firebase || !firebase.auth) { hide(); return; }
+    var container = document.querySelector('.nav-links');
+    if (!container) return;
+    var removeRoleLinks = function () {
+      var tEl = document.querySelector('.teacher-nav');
+      var aEl = document.querySelector('.admin-nav');
+      if (tEl) tEl.remove();
+      if (aEl) aEl.remove();
+    };
+    removeRoleLinks();
+    if (!window.firebase || !firebase.auth || !firebase.firestore) return;
     var user = firebase.auth().currentUser;
-    if (!user) { hide(); return; }
+    if (!user) return;
     firebase.firestore().collection('users').doc(user.uid).get()
       .then(function (snap) {
         var role = snap.exists ? snap.data().role : null;
-        if (tLink) tLink.hidden = (role !== 'teacher');
-        if (aLink) aLink.hidden = (role !== 'admin');
+        var loginLink = container.querySelector('a[data-nav="login"]');
+        var insertBefore = function (el) {
+          if (loginLink) container.insertBefore(el, loginLink);
+          else container.appendChild(el);
+        };
+        if (role === 'teacher' || role === 'admin') {
+          var tLink = document.createElement('a');
+          tLink.href = '#/teacher';
+          tLink.className = 'teacher-nav';
+          tLink.setAttribute('data-nav', 'teacher');
+          tLink.setAttribute('data-i18n', 'nav.teacher');
+          tLink.textContent = t('nav.teacher');
+          insertBefore(tLink);
+        }
+        if (role === 'admin') {
+          var aLink = document.createElement('a');
+          aLink.href = '#/admin';
+          aLink.className = 'admin-nav';
+          aLink.setAttribute('data-nav', 'admin');
+          aLink.setAttribute('data-i18n', 'nav.admin');
+          aLink.textContent = t('nav.admin');
+          insertBefore(aLink);
+        }
       })
-      .catch(hide);
+      .catch(function () { removeRoleLinks(); });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
