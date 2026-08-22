@@ -24,6 +24,11 @@ window.ELA_I18N = (function () {
       var key = el.getAttribute('data-i18n-aria');
       if (dict[key]) el.setAttribute('aria-label', dict[key]);
     });
+    document.querySelectorAll('[data-wa-text]').forEach(function (el) {
+      var key = el.getAttribute('data-wa-text');
+      var base = el.getAttribute('data-wa-base');
+      if (dict[key] && base) el.setAttribute('href', base + '?text=' + encodeURIComponent(dict[key]));
+    });
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === current);
     });
