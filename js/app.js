@@ -35,6 +35,32 @@
   var ARROW_LEFT_SVG =
     '<svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
 
+  /* ---- Icônes dashboard (stroke currentColor, style FA) ---- */
+  var ICON_FLAME =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>';
+  var ICON_GLOBE =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
+  var ICON_TROPHY =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>';
+  var ICON_BOOK =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg>';
+  var ICON_CLOCK =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+  var ICON_AWARD =
+    '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13 17 22l-5-3-5 3 1.5-9"/></svg>';
+  var ICON_PLAY =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>';
+  var ICON_VIDEO =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>';
+  var ICON_STAR =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  var ICON_CHAT =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+  var ICON_QUIZ =
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+  var ICON_CALENDAR =
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+
   /* ---------- Academies data ---------- */
   var ACADEMIES = [
     { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true },
@@ -649,7 +675,7 @@
     afterRender('');
   }
 
-  function buildDashboard(d) {
+    function buildDashboard(d) {
     var sub = d.subscription;
     var now = Date.now();
     var firstName = ((d.user && d.user.displayName) || '').split(' ')[0];
@@ -659,122 +685,138 @@
     var qstats = d.quizStats || { taken: 0, avg: 0, streak: 0 };
     var certificates = d.certificates || [];
     var progPct = prog.total ? Math.round((prog.completed / prog.total) * 100) : 0;
+    var isActive = !!(sub && sub.status === 'active' && sub.endDate && sub.endDate > now);
 
-    // --- Badges (dérivés côté client) ---
-    var badges = [];
-    if (qstats.taken >= 1) badges.push(t('dashboard.badge.firstQuiz'));
-    if (prog.completed >= 5) badges.push(t('dashboard.badge.fiveLessons'));
-    if (qstats.streak >= 3) badges.push(t('dashboard.badge.streak'));
-    if (certificates.length >= 1) badges.push(t('dashboard.badge.certified'));
-    if (prog.total > 0 && prog.completed >= prog.total) badges.push(t('dashboard.badge.complete'));
-
-    // --- En-tête : salutation + anneau de progression global ---
-    var greetingHtml = '<div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
-      '<h1 class="greeting" style="margin:0">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '</h1>' +
-      (prog.total
-        ? '<div class="ring-wrap" title="' + t('dashboard.progress') + '">' +
-            '<div class="ring" style="--p:' + progPct + '"><span>' + progPct + '%</span></div>' +
-          '</div>'
-        : '') +
+    // --- En-tête : salutation + pills ---
+    var academyName = d.user && d.user.academy ? t('academies.' + d.user.academy + '.name') : '';
+    var headerHtml = '<div class="dash-header-row">' +
+      '<div>' +
+        '<h1 class="greeting">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '!</h1>' +
+        '<p class="dash-subtitle">' + t('dashboard.subtitle') + '</p>' +
+      '</div>' +
+      '<div class="dash-pills">' +
+        '<div class="dash-pill">' + ICON_FLAME + '<span><strong>' + (qstats.streak || 0) + '</strong> ' + t('dashboard.streak') + '</span></div>' +
+        (academyName ? '<div class="dash-pill">' + ICON_GLOBE + '<span>' + escapeHtml(academyName) + '</span></div>' : '') +
+      '</div>' +
     '</div>';
 
-    // --- Carte abonnement premium ---
-    var subHtml;
-    if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
+    // --- Stat cards (4 tuiles icône) ---
+    var statsHtml = '<div class="dash-stats-grid">' +
+      '<div class="dash-stat-card"><div class="dash-stat-icon tint-emerald">' + ICON_TROPHY + '</div>' +
+        '<div class="dash-stat-label">' + t('dashboard.overallProgress') + '</div>' +
+        '<div class="dash-stat-value">' + progPct + '%</div>' +
+        '<div class="progress-track"><div class="progress-fill" style="width:' + progPct + '%"></div></div></div>' +
+      '<div class="dash-stat-card"><div class="dash-stat-icon tint-forest">' + ICON_BOOK + '</div>' +
+        '<div class="dash-stat-label">' + t('dashboard.lessonsCompleted') + '</div>' +
+        '<div class="dash-stat-value">' + prog.completed + '</div>' +
+        '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
+      '<div class="dash-stat-card"><div class="dash-stat-icon tint-muted">' + ICON_QUIZ + '</div>' +
+        '<div class="dash-stat-label">' + t('dashboard.quizzes') + '</div>' +
+        '<div class="dash-stat-value">' + qstats.taken + '</div>' +
+        '<div class="dash-stat-hint">' + (qstats.avg ? t('dashboard.avgScore') + ' ' + qstats.avg + '%' : '') + '</div></div>' +
+      '<div class="dash-stat-card"><div class="dash-stat-icon tint-gold">' + ICON_FLAME + '</div>' +
+        '<div class="dash-stat-label">' + t('dashboard.streak') + '</div>' +
+        '<div class="dash-stat-value">' + (qstats.streak || 0) + '</div>' +
+        '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
+    '</div>';
+
+    // --- Ligne abonnement / bandeau upgrade ---
+    var planLine = '';
+    if (isActive) {
       var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
       var expiry = new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
-      subHtml = '<div class="card card-gold">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
-          '<div><span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
-          '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + '</span></div>' +
-          '<a class="btn btn-outline btn-sm" href="#/checkout">' + t('dashboard.renew') + '</a>' +
-        '</div>' +
-        '<p style="font-size:2rem;font-family:var(--font-brand);color:var(--forest);margin:0.6rem 0 0.2rem">' + days + ' <span style="font-size:0.9rem;color:var(--muted);font-family:var(--font-body)">' + t('dashboard.daysRemaining') + '</span></p>' +
-        '<p style="font-size:0.82rem;color:var(--muted)">' + t('dashboard.expiresOn') + ' ' + expiry + '</p>' +
+      planLine = '<div class="dash-plan-line">' +
+        '<span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
+        '<span>' + t('pricing.' + (sub.plan || 'general')) + '</span>' +
+        '<span>— ' + days + ' ' + t('dashboard.daysRemaining') + '</span>' +
+        '<span>· ' + t('dashboard.expiresOn') + ' ' + expiry + '</span>' +
+        '<a href="#/checkout" class="dashboard-section-link" style="margin-inline-start:auto">' + t('dashboard.renew') + '</a>' +
       '</div>';
-    } else if (sub && sub.status === 'expired') {
-      subHtml = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
-        '<div><span class="badge badge-red">' + t('dashboard.status.expired') + '</span>' +
-        '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + '</span></div>' +
-        '<a class="btn btn-gold btn-sm" href="#/checkout">' + t('dashboard.renew') + '</a></div></div>';
-    } else {
-      subHtml = '<div class="card card-hover"><p style="color:var(--muted)">' + t('dashboard.status.none') + '</p>' +
-        '<a class="btn btn-gold" href="#/checkout" style="margin-top:0.8rem">' + t('pricing.subscribe') + '</a></div>';
     }
+    var upgradeBanner = (!isActive)
+      ? '<div class="upgrade-banner">' +
+          '<div><h3>' + t('dashboard.unlockPath') + '</h3>' +
+          '<p>' + t('dashboard.unlockPathSub') + '</p></div>' +
+          '<a class="btn btn-gold-vivid" href="#/pricing">' + t('dashboard.viewPlans') + '</a>' +
+        '</div>'
+      : '';
 
-    // --- Reprendre mon apprentissage (prochaine leçon) ---
-    var resumeHtml;
+    // --- Continue Learning (carte hero) ---
+    var continueHtml;
     if (d.nextLesson) {
       var isStart = prog.completed === 0;
-      resumeHtml = '<a class="resume-card" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '" style="display:block;text-decoration:none;margin-top:1.2rem">' +
-        '<p class="section-label">' + t('dashboard.learning') + '</p>' +
-        '<h3>' + (isStart ? t('dashboard.firstLesson') : t('dashboard.resume')) + '</h3>' +
-        '<p>' + (isStart ? (t('dashboard.startWith') + ' ' + escapeHtml(d.nextLesson.title)) : t('dashboard.resumeSub')) + '</p>' +
-      '</a>';
+      continueHtml = '<div class="continue-hero">' +
+        '<div class="continue-thumb"><span class="continue-play">' + ICON_PLAY + '</span></div>' +
+        '<div class="continue-body">' +
+          '<span class="badge badge-emerald">' + progPct + '% ' + t('dashboard.overallProgress') + '</span>' +
+          '<h4>' + (isStart ? t('dashboard.firstLesson') : escapeHtml(d.nextLesson.title)) + '</h4>' +
+          '<p>' + (isStart ? (t('dashboard.startWith') + ' ' + escapeHtml(d.nextLesson.title)) : t('dashboard.resumeSub')) + '</p>' +
+          '<div class="progress-track"><div class="progress-fill" style="width:' + progPct + '%"></div></div>' +
+          '<a class="btn btn-solid btn-sm" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '">' + (isStart ? t('hero.cta.primary') : t('dashboard.resume')) + '</a>' +
+        '</div>' +
+      '</div>';
     } else {
-      resumeHtml = '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
-        '<p class="section-label">' + t('dashboard.learning') + '</p>' +
-        '<h3>' + t('dashboard.resumeDone') + '</h3>' +
-        '<p>' + t('dashboard.resumeSub') + '</p>' +
-      '</a>';
+      continueHtml = '<div class="continue-hero continue-empty">' +
+        '<div class="continue-thumb">' + ICON_BOOK + '</div>' +
+        '<div class="continue-body">' +
+          '<h4>' + t('dashboard.resumeDone') + '</h4>' +
+          '<p>' + t('dashboard.resumeSub') + '</p>' +
+          '<a class="btn btn-solid btn-sm" href="#/courses">' + t('dashboard.goToCourses') + ARROW_SVG + '</a>' +
+        '</div>' +
+      '</div>';
     }
-
-    // --- Statistiques (streak / quiz / moyenne / leçons) ---
-    var statHtml = '<div class="stat-grid" style="margin-top:1.2rem">' +
-      '<div class="stat-card"><div class="stat-value gold">' + (qstats.streak || '—') + '</div><div class="stat-label">' + t('dashboard.streak') + '</div></div>' +
-      '<div class="stat-card"><div class="stat-value">' + qstats.taken + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
-      '<div class="stat-card"><div class="stat-value">' + (qstats.avg ? qstats.avg + '%' : '—') + '</div><div class="stat-label">' + t('dashboard.avgScore') + '</div></div>' +
-      '<div class="stat-card"><div class="stat-value">' + prog.completed + '/' + prog.total + '</div><div class="stat-label">' + t('dashboard.progress') + '</div></div>' +
+    var continueSection = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header">' +
+        '<h3 class="dashboard-section-title">' + t('dashboard.continueLearning') + '</h3>' +
+        '<a class="dashboard-section-link" href="#/courses">' + t('dashboard.goToCourses') + ARROW_SVG + '</a>' +
+      '</div>' + continueHtml +
     '</div>';
 
-    // --- Progression par académie (barres %) ---
-    var academyHtml = (d.academyProgress && d.academyProgress.length)
-      ? '<div class="card" style="margin-top:1.2rem">' +
-          '<div style="font-weight:700;color:var(--forest);margin-bottom:0.6rem">' + t('dashboard.academies') + '</div>' +
-          d.academyProgress.map(function (a) {
-            return '<a href="#/courses" style="display:block;text-decoration:none;color:inherit;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
-              '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.8rem;margin-bottom:0.4rem">' +
-                '<span style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</span>' +
-                '<span style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</span>' +
-              '</div>' +
-              '<div class="progress-track"><div class="progress-fill" style="width:' + (a.pct || 0) + '%"></div></div>' +
-            '</a>';
-          }).join('') +
-        '</div>'
-      : '';
-
-    // --- Prochaine classe en direct ---
-    var liveHtml = nxt
-      ? '<div class="card card-hover" style="margin-top:1.2rem">' +
-          '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:0.4rem">' +
-            '<span class="badge badge-forest">' + t('dashboard.nextLive') + '</span>' +
-            '<span style="font-size:0.82rem;color:var(--muted)">' + new Date(nxt.scheduledAt).toLocaleString(ELA_I18N.getLang()) + '</span>' +
+    // --- Live class mini carte ---
+    var liveCard;
+    if (nxt) {
+      var d0 = new Date(nxt.scheduledAt);
+      var mNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      liveCard = '<div class="live-mini">' +
+        '<div class="live-mini-top">' +
+          '<div class="live-date"><span class="live-date-day">' + d0.getDate() + '</span><span class="live-date-month">' + mNames[d0.getMonth()] + '</span></div>' +
+          '<div class="live-info">' +
+            '<span class="badge badge-gold"><span class="live-dot" style="margin-inline-end:0.4rem"></span>' + t('dashboard.liveSoon') + '</span>' +
+            '<h4>' + escapeHtml(nxt.title) + '</h4>' +
+            '<p>' + ICON_CALENDAR + ' ' + d0.toLocaleString(ELA_I18N.getLang()) + '</p>' +
           '</div>' +
-          '<h3 style="font-family:var(--font-display);font-weight:400;font-size:1.35rem;color:var(--forest);margin:0.2rem 0 0.8rem">' + escapeHtml(nxt.title) + '</h3>' +
-          '<a class="btn btn-solid btn-sm" href="#/live">' + t('live.join') + '</a>' +
-        '</div>'
-      : '';
+        '</div>' +
+        '<a class="btn btn-solid btn-sm btn-full" href="#/live">' + ICON_VIDEO + ' ' + t('dashboard.joinLive') + '</a>' +
+      '</div>';
+    } else {
+      liveCard = '<div class="live-mini live-mini-empty">' +
+        '<div class="dash-stat-icon tint-muted">' + ICON_VIDEO + '</div>' +
+        '<p>' + t('dashboard.noLive') + '</p>' +
+        '<a class="btn btn-outline btn-sm" style="margin-top:0.8rem" href="#/live">' + t('dashboard.viewAll') + '</a>' +
+      '</div>';
+    }
+    var liveSection = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header">' +
+        '<h3 class="dashboard-section-title">' + t('dashboard.upcomingLive') + '</h3>' +
+        '<a class="dashboard-section-link" href="#/live">' + t('dashboard.viewAll') + '</a>' +
+      '</div>' + liveCard +
+    '</div>';
 
-    // --- Parrainage ---
-    var refHtml = '<div class="card" style="margin-top:1.2rem">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
-        '<span class="badge badge-gold">' + t('dashboard.referralCode') + '</span>' +
-        '<span style="color:var(--muted)">' + t('dashboard.referralCredit') + ': <strong>' + fmtNaira(d.user.referralCredit) + '</strong></span>' +
-      '</div>' +
-      '<div class="referral-code">' +
-        '<span class="code">' + escapeHtml(d.user.referralCode || '—') + '</span>' +
-        '<button type="button" class="btn btn-solid btn-sm" id="copy-code">' + t('dashboard.copy') + '</button>' +
-      '</div></div>';
-
-    // --- Assistant ---
-    var assistantHtml = '<div class="card" style="margin-top:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
-      '<div><div style="font-weight:700;color:var(--forest)">' + t('dashboard.assistant') + '</div>' +
-      '<div style="font-size:0.85rem;color:var(--muted)">' + t('assistant.sub') + '</div></div>' +
-      '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a></div>';
-
-    // --- Badges + certificats (réalisations) ---
-    var badgePills = badges.map(function (b) {
-      return '<span class="badge badge-gold" style="padding:0.5rem 1rem;font-size:0.78rem">' + b + '</span>';
+    // --- Achievements : grille de badges + certificats ---
+    var ICONS = { quiz: ICON_QUIZ, book: ICON_BOOK, flame: ICON_FLAME, award: ICON_AWARD, trophy: ICON_TROPHY };
+    var badgeDefs = [
+      { icon: 'quiz', tint: 'tint-emerald', name: 'dashboard.badge.firstQuiz', desc: 'dashboard.badge.firstQuiz.desc', ok: qstats.taken >= 1 },
+      { icon: 'book', tint: 'tint-forest', name: 'dashboard.badge.fiveLessons', desc: 'dashboard.badge.fiveLessons.desc', ok: prog.completed >= 5 },
+      { icon: 'flame', tint: 'tint-gold', name: 'dashboard.badge.streak', desc: 'dashboard.badge.streak.desc', ok: qstats.streak >= 3 },
+      { icon: 'award', tint: 'tint-gold', name: 'dashboard.badge.certified', desc: 'dashboard.badge.certified.desc', ok: certificates.length >= 1 },
+      { icon: 'trophy', tint: 'tint-emerald', name: 'dashboard.badge.complete', desc: 'dashboard.badge.complete.desc', ok: prog.total > 0 && prog.completed >= prog.total }
+    ];
+    var achCells = badgeDefs.map(function (b) {
+      return '<div class="ach-badge ' + (b.ok ? 'ach-on' : 'ach-off') + '">' +
+        '<div class="dash-stat-icon ' + b.tint + '">' + ICONS[b.icon] + '</div>' +
+        '<strong>' + t(b.name) + '</strong>' +
+        '<small>' + t(b.desc) + '</small>' +
+      '</div>';
     }).join('');
     var certItems = certificates.map(function (c) {
       var date = c.issuedAt ? new Date(c.issuedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
@@ -788,25 +830,68 @@
         (c.pdfUrl ? '<a class="btn btn-outline btn-sm" href="' + escapeHtml(c.pdfUrl) + '" target="_blank" rel="noopener">' + t('dashboard.download') + '</a>' : '') +
       '</div>';
     }).join('');
-    var achievementsHtml = '<div class="card" style="margin-top:1.2rem">' +
-      '<div style="font-weight:700;color:var(--forest);margin-bottom:0.8rem">' + t('dashboard.achievements') + '</div>' +
-      (badgePills ? '<div style="display:flex;flex-wrap:wrap;gap:0.5rem">' + badgePills + '</div>' : '') +
-      (certItems ? '<div style="margin-top:0.6rem">' + certItems + '</div>' : '') +
-      (!badgePills && !certItems
-        ? '<div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('dashboard.achievementsEmpty') + '</p></div>'
-        : '') +
+    var achievementsSection = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.achievements') + '</h3></div>' +
+      '<div class="ach-grid">' + achCells + '</div>' +
+      (certItems ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem">' + certItems + '</div>' : '') +
     '</div>';
 
-    // --- Meilleurs scores ---
-    var scoresHtml = scores.length
-      ? '<div class="card" style="margin-top:1.2rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.5rem">' + t('dashboard.bestScores') + '</div>' +
-        '<ul class="tx-list" style="margin-top:0">' +
-        scores.map(function (s) {
-          return '<li><span>' + escapeHtml(s.title) + '</span><span class="badge badge-emerald">' + s.bestScore + '/' + s.total + '</span></li>';
-        }).join('') + '</ul></div>'
+    // --- Progression par académie ---
+    var academyHtml = (d.academyProgress && d.academyProgress.length)
+      ? '<div class="dashboard-section">' +
+          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.academies') + '</h3></div>' +
+          '<div class="card" style="margin-top:0;padding:1rem 1.3rem">' +
+          d.academyProgress.map(function (a) {
+            return '<a href="#/courses" style="display:block;text-decoration:none;color:inherit;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
+              '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.8rem;margin-bottom:0.4rem">' +
+                '<span style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</span>' +
+                '<span style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</span>' +
+              '</div>' +
+              '<div class="progress-track"><div class="progress-fill" style="width:' + (a.pct || 0) + '%"></div></div>' +
+            '</a>';
+          }).join('') +
+          '</div></div>'
       : '';
 
-    // --- Historique ---
+    // --- Parrainage + Assistant ---
+    var refHtml = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.referralCode') + '</h3></div>' +
+      '<div class="card" style="margin-top:0">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
+          '<span style="color:var(--muted)">' + t('dashboard.referralCredit') + ': <strong>' + fmtNaira(d.user.referralCredit) + '</strong></span>' +
+        '</div>' +
+        '<div class="referral-code">' +
+          '<span class="code">' + escapeHtml(d.user.referralCode || '—') + '</span>' +
+          '<button type="button" class="btn btn-solid btn-sm" id="copy-code">' + t('dashboard.copy') + '</button>' +
+        '</div>' +
+      '</div></div>';
+
+    var assistantHtml = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.assistant') + '</h3></div>' +
+      '<div class="card" style="margin-top:0;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
+        '<div><div style="font-weight:700;color:var(--forest)">' + t('assistant.sub') + '</div></div>' +
+        '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a>' +
+      '</div></div>';
+
+    // --- Quiz récents (tableau) ---
+    var quizRows = scores.map(function (s) {
+      var p = s.total ? Math.round((s.bestScore / s.total) * 100) : 0;
+      return '<tr><td>' + escapeHtml(s.title) + '</td>' +
+        '<td><span class="badge ' + (p >= 80 ? 'badge-emerald' : 'badge-gold') + '">' + s.bestScore + '/' + s.total + '</span></td></tr>';
+    }).join('');
+    var quizSection = scores.length
+      ? '<div class="dashboard-section">' +
+          '<div class="dashboard-section-header">' +
+            '<h3 class="dashboard-section-title">' + t('dashboard.bestScores') + '</h3>' +
+            '<a class="dashboard-section-link" href="#/quiz">' + t('dashboard.viewAll') + '</a>' +
+          '</div>' +
+          '<div class="dash-table-wrap"><table class="dash-table"><thead><tr>' +
+            '<th>' + t('dashboard.assessment') + '</th><th>' + t('dashboard.score') + '</th>' +
+          '</tr></thead><tbody>' + quizRows + '</tbody></table></div>' +
+        '</div>'
+      : '';
+
+    // --- Historique paiements ---
     var txRows = (d.transactions || []).slice().sort(function (a, b) {
       return (b.createdAt || 0) - (a.createdAt || 0);
     }).map(function (tx) {
@@ -815,27 +900,42 @@
       if (tx.status === 'success') pill = '<span class="badge badge-emerald">' + t('dashboard.tx.success') + '</span>';
       else if (tx.status === 'failed') pill = '<span class="badge badge-red">' + t('dashboard.tx.failed') + '</span>';
       else pill = '<span class="badge badge-gold">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
-      return '<li><span>' + t('pricing.' + (tx.plan || 'general')) + ' · ' + t('checkout.month.' + (tx.duration || 1)) + '</span>' +
-        '<span style="color:var(--muted)">' + date + '</span>' +
-        '<span>' + fmtNaira(tx.amount) + '</span>' + pill + '</li>';
+      return '<tr><td>' + t('pricing.' + (tx.plan || 'general')) + ' · ' + t('checkout.month.' + (tx.duration || 1)) + '</td>' +
+        '<td>' + date + '</td>' +
+        '<td>' + fmtNaira(tx.amount) + '</td>' +
+        '<td>' + pill + '</td></tr>';
     }).join('');
-    var txHtml = '<div class="card" style="margin-top:1.2rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.5rem">' + t('dashboard.transactions') + '</div>' +
-      '<ul class="tx-list" style="margin-top:0">' + (txRows || '<li>' + t('dashboard.noTransactions') + '</li>') + '</ul></div>';
+    var txHtml = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.transactions') + '</h3></div>' +
+      (txRows
+        ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('dashboard.plan') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('dashboard.amount') + '</th><th>' + t('dashboard.status') + '</th></tr></thead><tbody>' + txRows + '</tbody></table></div>'
+        : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('dashboard.noTransactions') + '</p></div></div>') +
+    '</div>';
+
+    // --- Quick actions ---
+    var quickActions = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.quickActions') + '</h3></div>' +
+      '<div class="quick-grid">' +
+        '<a class="action-tile" href="#/courses"><div class="dash-stat-icon tint-emerald">' + ICON_BOOK + '</div><div class="action-title">' + t('nav.courses') + '</div><div class="action-sub">' + t('dashboard.coursesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/quiz"><div class="dash-stat-icon tint-gold">' + ICON_QUIZ + '</div><div class="action-title">' + t('nav.quiz') + '</div><div class="action-sub">' + t('dashboard.takeQuizSub') + '</div></a>' +
+        '<a class="action-tile" href="#/live"><div class="dash-stat-icon tint-forest">' + ICON_VIDEO + '</div><div class="action-title">' + t('nav.live') + '</div><div class="action-sub">' + t('dashboard.liveClassesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/assistant"><div class="dash-stat-icon tint-muted">' + ICON_CHAT + '</div><div class="action-title">' + t('dashboard.assistant') + '</div><div class="action-sub">' + t('dashboard.assistantSub') + '</div></a>' +
+      '</div>' +
+    '</div>';
 
     return '' +
       '<section class="auth-wrap assistant-wrap">' +
-        greetingHtml +
-        '<div class="dash-grid" style="margin-top:0.6rem">' + subHtml + '</div>' +
-        '<div class="dash-grid" style="margin-top:1.2rem">' +
-          '<div>' + resumeHtml + statHtml + academyHtml + '</div>' +
-          '<div>' + liveHtml + refHtml + assistantHtml + '</div>' +
-        '</div>' +
-        achievementsHtml +
-        scoresHtml +
+        headerHtml +
+        statsHtml +
+        planLine +
+        upgradeBanner +
+        '<div class="dash-two-col">' + continueSection + liveSection + '</div>' +
+        '<div class="dash-two-col">' + achievementsSection + academyHtml + '</div>' +
+        '<div class="dash-two-col">' + refHtml + assistantHtml + '</div>' +
+        quizSection +
         txHtml +
+        quickActions +
       '</section>';
-
-    // (copy-code binding is done in renderDashboard after render)
   }
 
   function renderDashboard() {
