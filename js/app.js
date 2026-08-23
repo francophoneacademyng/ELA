@@ -682,16 +682,15 @@
     var subHtml;
     if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
       var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
-      var total = sub.startDate ? (sub.endDate - sub.startDate) : (sub.duration || 1) * 30 * 86400000;
-      var pct = Math.max(0, Math.min(100, Math.round(((sub.endDate - now) / total) * 100)));
+      var expiry = new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
       subHtml = '<div class="card card-gold">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
           '<div><span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
-          '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + ' · ' + t('checkout.month.' + (sub.duration || 1)) + '</span></div>' +
+          '<span style="font-size:0.85rem;color:var(--muted);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + '</span></div>' +
           '<a class="btn btn-outline btn-sm" href="#/checkout">' + t('dashboard.renew') + '</a>' +
         '</div>' +
         '<p style="font-size:2rem;font-family:var(--font-brand);color:var(--forest);margin:0.6rem 0 0.2rem">' + days + ' <span style="font-size:0.9rem;color:var(--muted);font-family:var(--font-body)">' + t('dashboard.daysRemaining') + '</span></p>' +
-        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        '<p style="font-size:0.82rem;color:var(--muted)">' + t('dashboard.expiresOn') + ' ' + expiry + '</p>' +
       '</div>';
     } else if (sub && sub.status === 'expired') {
       subHtml = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
@@ -704,36 +703,42 @@
     }
 
     // --- Reprendre mon apprentissage (prochaine leçon) ---
-    var resumeHtml = d.nextLesson
-      ? '<a class="resume-card" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '" style="display:block;text-decoration:none;margin-top:1.2rem">' +
-          '<p class="section-label">' + t('dashboard.learning') + '</p>' +
-          '<h3>' + escapeHtml(d.nextLesson.title) + '</h3>' +
-          '<p>' + t('dashboard.resumeSub') + '</p>' +
-        '</a>'
-      : '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
-          '<p class="section-label">' + t('dashboard.learning') + '</p>' +
-          '<h3>' + t('dashboard.resumeDone') + '</h3>' +
-          '<p>' + t('dashboard.resumeSub') + '</p>' +
-        '</a>';
+    var resumeHtml;
+    if (d.nextLesson) {
+      var isStart = prog.completed === 0;
+      resumeHtml = '<a class="resume-card" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '" style="display:block;text-decoration:none;margin-top:1.2rem">' +
+        '<p class="section-label">' + t('dashboard.learning') + '</p>' +
+        '<h3>' + (isStart ? t('dashboard.firstLesson') : t('dashboard.resume')) + '</h3>' +
+        '<p>' + (isStart ? (t('dashboard.startWith') + ' ' + escapeHtml(d.nextLesson.title)) : t('dashboard.resumeSub')) + '</p>' +
+      '</a>';
+    } else {
+      resumeHtml = '<a class="resume-card" href="#/courses" style="display:block;text-decoration:none;margin-top:1.2rem">' +
+        '<p class="section-label">' + t('dashboard.learning') + '</p>' +
+        '<h3>' + t('dashboard.resumeDone') + '</h3>' +
+        '<p>' + t('dashboard.resumeSub') + '</p>' +
+      '</a>';
+    }
 
     // --- Statistiques (streak / quiz / moyenne / leçons) ---
     var statHtml = '<div class="stat-grid" style="margin-top:1.2rem">' +
-      '<div class="stat-card"><div class="stat-value gold">' + qstats.streak + '</div><div class="stat-label">' + t('dashboard.streak') + '</div></div>' +
+      '<div class="stat-card"><div class="stat-value gold">' + (qstats.streak || '—') + '</div><div class="stat-label">' + t('dashboard.streak') + '</div></div>' +
       '<div class="stat-card"><div class="stat-value">' + qstats.taken + '</div><div class="stat-label">' + t('dashboard.quizzes') + '</div></div>' +
-      '<div class="stat-card"><div class="stat-value">' + qstats.avg + '%</div><div class="stat-label">' + t('dashboard.avgScore') + '</div></div>' +
+      '<div class="stat-card"><div class="stat-value">' + (qstats.avg ? qstats.avg + '%' : '—') + '</div><div class="stat-label">' + t('dashboard.avgScore') + '</div></div>' +
       '<div class="stat-card"><div class="stat-value">' + prog.completed + '/' + prog.total + '</div><div class="stat-label">' + t('dashboard.progress') + '</div></div>' +
     '</div>';
 
-    // --- Progression par académie (anneaux %) ---
+    // --- Progression par académie (barres %) ---
     var academyHtml = (d.academyProgress && d.academyProgress.length)
       ? '<div class="card" style="margin-top:1.2rem">' +
-          '<div style="font-weight:700;color:var(--forest);margin-bottom:0.9rem">' + t('dashboard.academies') + '</div>' +
+          '<div style="font-weight:700;color:var(--forest);margin-bottom:0.6rem">' + t('dashboard.academies') + '</div>' +
           d.academyProgress.map(function (a) {
-            return '<div style="display:flex;align-items:center;gap:0.9rem;padding:0.55rem 0">' +
-              '<div class="ring-wrap"><div class="ring" style="--p:' + a.pct + ';--sz:54px"><span style="font-size:0.66rem">' + a.pct + '%</span></div></div>' +
-              '<div style="flex:1"><div style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</div>' +
-              '<div style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</div></div>' +
-            '</div>';
+            return '<a href="#/courses" style="display:block;text-decoration:none;color:inherit;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
+              '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.8rem;margin-bottom:0.4rem">' +
+                '<span style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</span>' +
+                '<span style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</span>' +
+              '</div>' +
+              '<div class="progress-track"><div class="progress-fill" style="width:' + (a.pct || 0) + '%"></div></div>' +
+            '</a>';
           }).join('') +
         '</div>'
       : '';
@@ -802,11 +807,14 @@
       : '';
 
     // --- Historique ---
-    var txRows = (d.transactions || []).map(function (tx) {
+    var txRows = (d.transactions || []).slice().sort(function (a, b) {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    }).map(function (tx) {
       var date = tx.createdAt ? new Date(tx.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '';
-      var pill = tx.status === 'success'
-        ? '<span class="badge badge-emerald">' + t('dashboard.tx.success') + '</span>'
-        : '<span class="badge badge-muted">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
+      var pill;
+      if (tx.status === 'success') pill = '<span class="badge badge-emerald">' + t('dashboard.tx.success') + '</span>';
+      else if (tx.status === 'failed') pill = '<span class="badge badge-red">' + t('dashboard.tx.failed') + '</span>';
+      else pill = '<span class="badge badge-gold">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
       return '<li><span>' + t('pricing.' + (tx.plan || 'general')) + ' · ' + t('checkout.month.' + (tx.duration || 1)) + '</span>' +
         '<span style="color:var(--muted)">' + date + '</span>' +
         '<span>' + fmtNaira(tx.amount) + '</span>' + pill + '</li>';

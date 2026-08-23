@@ -307,5 +307,8 @@
   "finalCta.title.1": "Ready to open",
   "finalCta.title.2": "your world?",
   "finalCta.sub": "Your first lesson is free.",
-  "finalCta.button": "Start free"
+  "finalCta.button": "Start free",
+  "dashboard.firstLesson": "Take your first lesson",
+  "dashboard.startWith": "Start with",
+  "dashboard.expiresOn": "Expires"
 }

@@ -307,5 +307,8 @@
   "finalCta.title.1": "جاهز لفتح",
   "finalCta.title.2": "عالمك؟",
   "finalCta.sub": "درسك الأول مجاني.",
-  "finalCta.button": "ابدأ مجاناً"
+  "finalCta.button": "ابدأ مجاناً",
+  "dashboard.firstLesson": "خُذ درسك الأول",
+  "dashboard.startWith": "ابدأ بـ",
+  "dashboard.expiresOn": "ينتهي في"
 }
