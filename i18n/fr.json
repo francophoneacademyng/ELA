@@ -14,14 +14,12 @@
   "footer.contact": "Contact",
   "contact.whatsapp": "Bonjour ! Je veux plus d'infos sur E-Learn Language Academy.",
   "footer.by": "Par le fondateur de Francophone Academy",
-
   "hero.kicker": "E-Learn Language Academy — Nigeria",
   "hero.title.1": "Une académie.",
   "hero.title.2": "Cinq langues.",
   "hero.lead": "Apprends l'allemand, l'arabe, le mandarin, le russe ou l'anglais professionnel avec de vrais enseignants, des classes en direct, un Learning Assistant et des certificats vérifiés — pensé pour les visas d'études, le travail et les affaires à l'étranger.",
   "hero.cta.primary": "Commencer par une leçon gratuite",
   "hero.cta.secondary": "Voir les tarifs",
-
   "academies.label": "Les cinq académies",
   "academies.title.1": "Choisis la langue",
   "academies.title.2": "qui change ta vie.",
@@ -37,7 +35,6 @@
   "academies.arabic.desc": "L'arabe coranique et l'arabe des affaires du Golfe — comprendre, parler et travailler avec confiance.",
   "academies.russian.name": "Russophone",
   "academies.russian.desc": "Le russe pour les bourses du gouvernement russe : médecine et ingénierie en Russie, préparation TORFL.",
-
   "mission.label": "Pourquoi ELA",
   "mission.title.1": "Pas une application.",
   "mission.title.2": "Une vraie école, en ligne.",
@@ -47,7 +44,6 @@
   "mission.li.2": "Préparation officielle : Goethe, HSK, IELTS, TORFL",
   "mission.li.3": "Learning Assistant pour pratiquer entre les leçons",
   "mission.li.4": "Certificats vérifiables pour visas et emplois",
-
   "steps.label": "Comment ça marche",
   "steps.title": "Trois étapes vers ta première leçon.",
   "steps.1.title": "Crée ton compte",
@@ -56,7 +52,6 @@
   "steps.2.desc": "Des niveaux structurés depuis A1, des classes en direct hebdomadaires, des quiz et un Learning Assistant qui te corrige.",
   "steps.3.title": "Réussis ton examen",
   "steps.3.desc": "Prépare le Goethe, le HSK, l'IELTS ou le TORFL avec des examens blancs — et obtiens ton certificat ELA vérifié.",
-
   "pricing.label": "Frais de scolarité",
   "pricing.title.1": "Un prix clair.",
   "pricing.title.2": "Des résultats réels.",
@@ -87,13 +82,11 @@
   "faq.a3": "Ton abonnement couvre une académie. Ajoute une autre langue avec un abonnement supplémentaire.",
   "faq.q4": "Vais-je recevoir un certificat ?",
   "faq.a4": "Oui. Termine un cours et réussis ses quizz pour obtenir un certificat pour ce niveau.",
-
   "referral.title.1": "Apprenez ensemble,",
   "referral.title.2": "payez moins.",
   "referral.p": "Partage ton code de parrainage personnel. Ton ami paie ₦15,000 de moins le premier mois — tu reçois ₦10,000 de crédit académique valable sur tous les programmes ELA.",
   "referral.figure": "₦15,000",
   "referral.figure.sub": "De réduction sur le premier mois de ton ami",
-
   "register.title": "Crée ton compte",
   "register.sub": "Deux choix, un formulaire — et ta première leçon est gratuite.",
   "register.step1": "Étape 1 — Choisis ta langue d'interface",
@@ -109,14 +102,12 @@
   "register.setup": "Mode préparation : connecte tes clés Firebase (js/firebase-config.js) pour activer la création de compte.",
   "register.error": "Impossible de créer le compte. Vérifie l'email et le mot de passe, puis réessaie.",
   "register.success": "Compte créé. Bienvenue à ELA — ton tableau de bord arrive.",
-
   "login.title": "Bon retour.",
   "login.sub": "Connecte-toi pour continuer ton parcours.",
   "login.submit": "Connexion",
   "login.no": "Pas encore de compte ?",
   "login.registerLink": "Commencer gratuitement",
   "login.error": "Échec de connexion. Vérifie ton email et ton mot de passe.",
-
   "checkout.title": "Choisis ton parcours",
   "checkout.sub": "Choisis ton parcours et ta durée — le paiement se fait en toute sécurité via Paystack.",
   "checkout.planLabel": "Parcours",
@@ -143,7 +134,6 @@
   "payment.result.msg.fail": "Impossible de confirmer ton paiement. Si tu as été débité, contacte le support.",
   "payment.result.verifying": "Vérification de ton paiement...",
   "payment.result.backHome": "Retour à l'accueil",
-
   "assistant.title": "Learning Assistant",
   "assistant.sub": "Entraîne-toi entre les leçons avec ton tuteur de langue, jour et nuit.",
   "assistant.placeholder": "Écris une question ou une phrase à pratiquer...",
@@ -153,7 +143,6 @@
   "assistant.limitReached": "Limite de messages quotidienne atteinte. Reviens demain.",
   "assistant.degraded": "Le Learning Assistant n'est pas encore disponible. Réessaie plus tard.",
   "assistant.error": "Une erreur est survenue. Réessaie.",
-
   "dashboard.title": "Mon tableau de bord",
   "dashboard.signInRequired": "Connecte-toi pour voir ton tableau de bord.",
   "dashboard.loading": "Chargement de ton compte...",
@@ -172,7 +161,6 @@
   "dashboard.tx.success": "Payé",
   "dashboard.tx.pending": "En attente",
   "dashboard.tx.failed": "Échoué",
-
   "footer.terms": "Conditions générales",
   "footer.privacy": "Politique de confidentialité",
   "footer.refund": "Remboursements",
@@ -181,7 +169,6 @@
   "legal.updated": "Dernière mise à jour",
   "checkout.termsNotice": "En payant, tu acceptes nos",
   "common.and": "et",
-
   "nav.teacher": "Espace enseignant",
   "teacher.title": "Espace enseignant",
   "teacher.notTeacher": "Cette zone est réservée aux enseignants.",
@@ -215,7 +202,6 @@
   "teacher.type.live": "Cours live",
   "teacher.success": "Publié. Il apparaîtra après validation.",
   "teacher.error": "Impossible de publier. Réessaie.",
-
   "courses.title": "Cours",
   "courses.empty": "Les cours arrivent bientôt — tes enseignants préparent tes premières leçons.",
   "courses.lessons": "Leçons",
@@ -265,7 +251,6 @@
   "dashboard.badge.streak": "3 jours d'affilée",
   "dashboard.badge.certified": "Certifié",
   "dashboard.badge.complete": "Cours terminé",
-
   "nav.admin": "Admin",
   "nav.courses": "Cours",
   "nav.quiz": "Quizz",
@@ -285,7 +270,6 @@
   "admin.seeded": "Programme injecté :",
   "teacher.status.approved": "Approuvé",
   "teacher.status.rejected": "Rejeté",
-
   "course.outcomes": "Ce que tu vas apprendre",
   "lesson.objectives": "Objectifs",
   "lesson.vocabulary": "Vocabulaire",
@@ -296,7 +280,9 @@
   "lesson.trial": "Essai gratuit",
   "lesson.previous": "Leçon précédente",
   "lesson.next": "Leçon suivante",
-
   "common.next": "Continuer",
-  "common.back": "Retour"
+  "common.back": "Retour",
+  "legal.terms.body": "<h3>1. À propos de nous</h3><p>E-Learn Language Academy (ELA, « nous », « notre ») est une école de langues en ligne exploitée par YAYAKHALIF COMPANY LIMITED, enregistrée au Nigéria. Nous proposons des cours en ligne en direct d'allemand, de mandarin, d'anglais, d'arabe et de russe, dispensés par des professeurs qualifiés.</p><h3>2. Services</h3><p>ELA fournit un accès par abonnement à des cours de langue en ligne, à du matériel pédagogique et au Learning Assistant (un outil d'aide à l'étude automatisé). Les horaires, formats et affectations des professeurs sont communiqués après l'inscription et peuvent être ajustés avec un préavis raisonnable.</p><h3>3. Éligibilité et comptes</h3><p>Vous devez fournir des informations exactes lors de la création de votre compte. Vous êtes responsable de la confidentialité de vos identifiants et de toute activité effectuée sous votre compte. Un compte par personne ; les comptes sont personnels et non transférables.</p><h3>4. Abonnements et tarifs</h3><p>L'accès est accordé via des abonnements d'un mois, de 3 mois ou de 6 mois, selon les formules suivantes (par académie) :</p><table class=\"price-table\"><thead><tr><th>Formule</th><th>1 mois</th><th>3 mois</th><th>6 mois</th></tr></thead><tbody><tr><td>General Path</td><td>₦75,000</td><td>₦200,000</td><td>₦405,000</td></tr><tr><td>Premium Path</td><td>₦120,000</td><td>₦320,000</td><td>₦648,000</td></tr><tr><td>Business Language</td><td>₦150,000</td><td>₦420,000</td><td>₦840,000</td></tr></tbody></table><p>Les prix sont en naira nigérian (NGN) et traités par Paystack. Un abonnement démarre le jour où le paiement est confirmé et se termine à la date d'expiration indiquée dans votre tableau de bord. Renouveler avant l'expiration prolonge votre période en cours ; la nouvelle période commence à votre date de fin actuelle.</p><h3>5. Paiements</h3><p>Les paiements sont traités en toute sécurité par Paystack. ELA ne conserve jamais vos coordonnées bancaires ou de carte. En payant, vous acceptez également les conditions de service de Paystack.</p><h3>6. Usage acceptable</h3><p>Vous vous engagez à ne pas : partager votre compte ou votre accès aux cours avec des tiers ; enregistrer, redistribuer ou revendre le contenu des cours ; perturber les cours ou harceler les professeurs ou les autres élèves ; utiliser le Learning Assistant pour générer du contenu illégal, nuisible ou abusif. Toute violation peut entraîner une suspension ou une résiliation sans remboursement.</p><h3>7. Propriété intellectuelle</h3><p>Tous les supports de cours, contenus et la marque ELA sont la propriété de YAYAKHALIF COMPANY LIMITED. Vous recevez une licence personnelle et non transférable pour les utiliser dans le cadre de votre apprentissage pendant un abonnement actif.</p><h3>8. Avertissement sur le Learning Assistant</h3><p>Le Learning Assistant fournit une aide à l'étude automatisée. Il peut occasionnellement produire des informations inexactes. Il ne remplace pas les professeurs et ne doit pas être utilisé à des fins professionnelles, juridiques, médicales ou de traduction certifiée.</p><h3>9. Disponibilité du service</h3><p>Nous visons une disponibilité continue mais ne garantissons pas un service ininterrompu (maintenance, pannes réseau ou du fournisseur). Les cours manqués en raison d'une panne vérifiée de notre côté seront reprogrammés ou compensés.</p><h3>10. Résiliation</h3><p>Vous pouvez cesser d'utiliser le service à tout moment ; les abonnements restent actifs jusqu'à leur date d'expiration. Nous pouvons suspendre ou résilier les comptes qui enfreignent les présentes Conditions.</p><h3>11. Limitation de responsabilité</h3><p>Dans la mesure maximale permise par le droit nigérian, la responsabilité d'ELA est limitée au montant que vous avez payé pour votre période d'abonnement en cours. Nous ne sommes pas responsables des pertes indirectes (examens manqués, perte de revenus, etc.).</p><h3>12. Droit applicable</h3><p>Les présentes Conditions sont régies par le droit de la République fédérale du Nigéria. Les litiges seront d'abord traités par une négociation de bonne foi avec notre équipe d'assistance.</p><h3>13. Contact</h3><p>languageacademyelearn@gmail.com</p>",
+  "legal.privacy.body": "<h3>1. Données que nous collectons</h3><ul><li>Données de compte : nom, adresse e-mail, identifiant d'authentification.</li><li>Données d'abonnement et de transaction : formule, durée, références de paiement, dates d'expiration (nous ne voyons ni ne stockons jamais vos coordonnées bancaires ou de carte — celles-ci sont entièrement gérées par Paystack).</li><li>Données d'utilisation : conversations avec le Learning Assistant, compteurs de messages quotidiens, activité du tableau de bord.</li><li>Données de parrainage : votre code de parrainage et vos crédits de parrainage.</li></ul><h3>2. Comment nous utilisons vos données</h3><ul><li>Pour créer et gérer votre compte et vos abonnements.</li><li>Pour traiter et vérifier les paiements (via Paystack).</li><li>Pour faire fonctionner le programme de parrainage.</li><li>Pour envoyer des e-mails transactionnels (reçus de paiement, rappels d'expiration, notifications d'expiration) via SendGrid.</li><li>Pour améliorer nos cours et notre assistance.</li></ul><h3>3. Sous-traitants tiers</h3><ul><li>Paystack (paiements) — soumis à la politique de confidentialité de Paystack.</li><li>Google Firebase (hébergement, base de données, authentification).</li><li>SendGrid (e-mails transactionnels).</li><li>OpenRouter (traitement des requêtes du Learning Assistant — le contenu des messages est transmis pour générer des réponses).</li></ul><p>Nous ne vendons vos données personnelles à personne.</p><h3>4. Conservation des données</h3><p>Les données de compte et d'abonnement sont conservées tant que votre compte est actif, puis jusqu'à 24 mois après sa clôture pour des obligations comptables et légales. Les conversations avec le Learning Assistant peuvent être conservées à des fins d'amélioration du service et de prévention des abus.</p><h3>5. Vos droits</h3><p>En vertu de la loi nigériane sur la protection des données (Nigeria Data Protection Act 2023), vous pouvez demander l'accès, la rectification ou la suppression de vos données personnelles en écrivant à languageacademyelearn@gmail.com. La suppression de votre compte supprime également l'accès aux abonnements actifs, sans remboursement.</p><h3>6. Sécurité</h3><p>Nous utilisons des mesures conformes aux normes du secteur (HTTPS, accès authentifié, vérification des paiements côté serveur). Aucun système n'est sûr à 100 % ; signalez immédiatement toute violation suspectée à notre assistance.</p><h3>7. Enfants</h3><p>Nos services sont destinés aux utilisateurs âgés de 16 ans et plus. Les élèves plus jeunes ne peuvent s'inscrire que via le compte d'un parent ou tuteur et avec son consentement.</p><h3>8. Modifications</h3><p>Nous pouvons mettre à jour cette politique ; les changements importants seront annoncés sur le site ou par e-mail.</p><h3>9. Contact</h3><p>languageacademyelearn@gmail.com</p>",
+  "legal.refund.body": "<h3>1. Remboursements</h3><ul><li>Les paiements sont <strong>non remboursables</strong> une fois l'accès à l'abonnement activé, y compris en cas d'utilisation partielle d'une période.</li><li>Exception : si un paiement a été débité mais que votre abonnement n'a pas été activé (défaillance technique de notre côté), contactez-nous sous 7 jours avec votre référence de paiement ; nous activerons votre abonnement ou procéderons à un remboursement intégral.</li><li>Les paiements en double pour la même période sont intégralement remboursés ou convertis en prolongation d'abonnement, selon votre choix.</li><li>Les remboursements sont effectués sur le moyen de paiement d'origine via Paystack, généralement sous 5 à 10 jours ouvrés.</li></ul><h3>2. Programme de parrainage</h3><ul><li>Chaque élève reçoit un code de parrainage personnel.</li><li><strong>Élève parrainé (filleul) :</strong> réduction de ₦15,000 sur le premier paiement d'abonnement. Un code de parrainage peut être utilisé par nouveau compte, sur le premier paiement uniquement.</li><li><strong>Élève parrain :</strong> crédit académique de ₦10,000, ajouté après le premier paiement réussi de l'élève parrainé.</li><li>Les crédits de parrainage sont <strong>non transférables et non remboursables</strong>, et ne peuvent être utilisés que comme réduction sur les futurs paiements d'abonnement ELA.</li><li>L'auto-parrainage (utiliser son propre code) est interdit et annule à la fois la réduction et le crédit.</li><li>Nous pouvons suspendre le programme ou retenir des crédits en cas d'abus.</li></ul><h3>3. Contact</h3><p>languageacademyelearn@gmail.com</p>"
 }
