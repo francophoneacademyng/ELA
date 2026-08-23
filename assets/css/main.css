@@ -266,7 +266,7 @@ body {
 
 /* ---------- Forms (register / login) ---------- */
 .auth-wrap { max-width: 640px; margin: 0 auto; padding: clamp(3rem, 7vw, 5.5rem) 1.25rem; }
-.auth-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.2rem, 5vw, 3.4rem); color: var(--forest); line-height: 1.05; margin-bottom: 0.8rem; }
+.auth-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 5vw, 3.4rem); color: var(--forest); line-height: 1.05; margin-bottom: 0.8rem; }
 .auth-sub { color: var(--muted); margin-bottom: 2.6rem; }
 .auth-steps { display: flex; gap: 0.5rem; margin-bottom: 2.2rem; }
 .auth-steps span { height: 3px; flex: 1; background: var(--line); border-radius: 2px; }
