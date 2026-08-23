@@ -54,52 +54,91 @@
 
   function academyRow(a, i) {
     var status = a.open
-      ? '<span class="academy-status status-open">' + t('academies.open') + '</span>'
-      : '<span class="academy-status status-soon">' + t('academies.soon') + '</span>';
+      ? '<span class="badge badge-emerald">' + t('academies.open') + '</span>'
+      : '<span class="badge badge-muted">' + t('academies.soon') + '</span>';
     return '' +
-      '<a class="academy-row reveal" href="#/register" style="transition-delay:' + (i * 60) + 'ms">' +
-        '<span class="academy-num">0' + (i + 1) + '</span>' +
-        '<span class="academy-name">' + t('academies.' + a.key + '.name') +
+      '<a class="academy-card reveal" href="#/register" style="--accent:' + a.accent + ';transition-delay:' + (i * 60) + 'ms">' +
+        '<span class="num">0' + (i + 1) + '</span>' +
+        '<span class="name">' + t('academies.' + a.key + '.name') +
           '<span class="native">' + a.native + '</span></span>' +
-        '<span class="academy-desc">' + t('academies.' + a.key + '.desc') + '</span>' +
-        status +
-        '<span class="academy-bar" style="background:' + a.accent + '"></span>' +
+        '<span class="desc">' + t('academies.' + a.key + '.desc') + '</span>' +
+        '<span class="status">' + status + '</span>' +
       '</a>';
   }
 
   /* ---------- Pages ---------- */
 
   function renderHome() {
-    var rows = ACADEMIES.map(academyRow).join('');
+    var cards = ACADEMIES.map(academyRow).join('');
+    var testimonials = [1, 2, 3].map(function (n) {
+      return '<div class="testimonial reveal"><p class="quote">' + t('testimonials.' + n + '.quote') + '</p>' +
+        '<p class="who">' + t('testimonials.' + n + '.name') + '</p></div>';
+    }).join('');
+
     app.innerHTML = '' +
+      // — HERO sombre —
       '<section class="hero">' +
-        '<div class="reveal">' +
-          '<p class="hero-kicker">' + t('hero.kicker') + '</p>' +
-          '<h1>' + t('hero.title.1') + '<br><em>' + t('hero.title.2') + '</em></h1>' +
-          '<div class="hero-langs">' +
-            '<span>Deutsch</span><span class="sep">·</span>' +
-            '<span>中文</span><span class="sep">·</span>' +
-            '<span>English</span><span class="sep">·</span>' +
-            '<span>العربية</span><span class="sep">·</span>' +
-            '<span>Русский</span>' +
+        '<div class="hero-inner">' +
+          '<div class="hero-main reveal">' +
+            '<p class="hero-kicker">' + t('hero.kicker') + '</p>' +
+            '<h1>' + t('hero.title.1') + '<br><em>' + t('hero.title.2') + '</em></h1>' +
+            '<div class="hero-langs">' +
+              '<span>Deutsch</span><span class="sep">·</span>' +
+              '<span>中文</span><span class="sep">·</span>' +
+              '<span>English</span><span class="sep">·</span>' +
+              '<span>العربية</span><span class="sep">·</span>' +
+              '<span>Русский</span>' +
+            '</div>' +
           '</div>' +
-        '</div>' +
-        '<div class="hero-side reveal" style="transition-delay:120ms">' +
-          '<p>' + t('hero.lead') + '</p>' +
-          '<div class="hero-actions">' +
-            '<a class="btn btn-solid" href="#/register">' + t('hero.cta.primary') + ARROW_SVG + '</a>' +
-            '<a class="btn btn-outline" href="#/pricing">' + t('hero.cta.secondary') + '</a>' +
+          '<div class="hero-side reveal" style="transition-delay:120ms">' +
+            '<p>' + t('hero.lead') + '</p>' +
+            '<div class="hero-actions">' +
+              '<a class="btn btn-gold-vivid" href="#/register">' + t('hero.cta.primary') + ARROW_SVG + '</a>' +
+              '<a class="btn btn-outline" href="#/academies">' + t('hero.cta.secondary') + '</a>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</section>' +
 
+      // — Bande or (transition) —
+      '<section class="band-gold"><div class="inner">' +
+        '<p>' + t('footer.tag') + '</p>' +
+        '<a class="btn btn-solid" href="#/academies">' + t('hero.cta.secondary') + ARROW_SVG + '</a>' +
+      '</div></section>' +
+
+      // — Académies (cartes) —
       '<section class="section academies" id="academies">' +
         '<p class="section-label reveal">' + t('academies.label') + '</p>' +
-        '<h2 class="section-title reveal" style="margin-bottom:2.5rem">' +
-          t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
-        rows +
+        '<h2 class="section-title reveal">' + t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
+        '<div class="academy-grid">' + cards + '</div>' +
       '</section>' +
 
+      // — Expérience (sombre, image humaine) —
+      '<section class="section-dark">' +
+        '<div class="inner experience-grid">' +
+          '<div class="reveal">' +
+            '<p class="section-label">' + t('experience.label') + '</p>' +
+            '<h2 class="section-title">' + t('experience.title.1') + '<br><em>' + t('experience.title.2') + '</em></h2>' +
+            '<p style="font-size:1.05rem;margin-top:1.4rem">' + t('experience.p') + '</p>' +
+            '<div class="hero-actions" style="margin-top:1.6rem"><a class="btn btn-gold-vivid" href="#/live">' + t('nav.live') + ARROW_SVG + '</a></div>' +
+          '</div>' +
+          '<div class="human-img reveal" style="transition-delay:120ms">' +
+            '<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80&auto=format&fit=crop" alt="' + t('experience.imgAlt') + '" loading="lazy" decoding="async" width="1200" height="900">' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
+
+      // — Témoignages —
+      '<section class="section">' +
+        '<p class="section-label reveal">' + t('testimonials.label') + '</p>' +
+        '<h2 class="section-title reveal">' + t('testimonials.title.1') + '<br><em>' + t('testimonials.title.2') + '</em></h2>' +
+        '<div class="human-img wide reveal" style="margin-top:2rem">' +
+          '<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80&auto=format&fit=crop" alt="' + t('experience.imgAlt') + '" loading="lazy" decoding="async" width="1600" height="610">' +
+        '</div>' +
+        '<div class="testimonial-grid">' + testimonials + '</div>' +
+      '</section>' +
+
+      // — Mission —
       '<section class="section mission">' +
         '<div class="reveal">' +
           '<p class="section-label">' + t('mission.label') + '</p>' +
@@ -117,6 +156,7 @@
         '</div>' +
       '</section>' +
 
+      // — Étapes —
       '<section class="section">' +
         '<p class="section-label reveal">' + t('steps.label') + '</p>' +
         '<h2 class="section-title reveal">' + t('steps.title') + '</h2>' +
@@ -127,6 +167,7 @@
         '</div>' +
       '</section>' +
 
+      // — Parrainage (sombre) —
       '<section class="referral"><div class="section">' +
         '<div class="reveal">' +
           '<h2 class="section-title">' + t('referral.title.1') + '<br><em>' + t('referral.title.2') + '</em></h2>' +
@@ -135,18 +176,28 @@
         '<div class="referral-figure reveal" style="transition-delay:120ms">' +
           t('referral.figure') + '<small>' + t('referral.figure.sub') + '</small>' +
         '</div>' +
-      '</div></section>';
+      '</div></section>' +
+
+      // — CTA final sombre —
+      '<section class="final-cta">' +
+        '<div class="inner">' +
+          '<h2 class="section-title">' + t('finalCta.title.1') + '<br><em>' + t('finalCta.title.2') + '</em></h2>' +
+          '<p>' + t('finalCta.sub') + '</p>' +
+          '<div class="hero-actions"><a class="btn btn-gold-vivid" href="#/register">' + t('finalCta.button') + ARROW_SVG + '</a></div>' +
+        '</div>' +
+      '</section>';
+
     afterRender('home');
   }
 
   function renderAcademies() {
-    var rows = ACADEMIES.map(academyRow).join('');
+    var cards = ACADEMIES.map(academyRow).join('');
     app.innerHTML = '' +
       '<section class="section academies">' +
         '<p class="section-label reveal">' + t('academies.label') + '</p>' +
-        '<h2 class="section-title reveal" style="margin-bottom:2.5rem">' +
+        '<h2 class="section-title reveal">' +
           t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
-        rows +
+        '<div class="academy-grid">' + cards + '</div>' +
       '</section>';
     afterRender('academies');
   }
