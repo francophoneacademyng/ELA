@@ -281,7 +281,7 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
   });
   if (granted) {
     await sendPaymentConfirmation({
-      to: txDoc.email, plan: txDoc.plan, duration: txDoc.duration,
+      to: txDoc.email, uid: uid, plan: txDoc.plan, duration: txDoc.duration,
       amount: paidAmount, reference
     }).catch(() => {});
   }
@@ -404,7 +404,7 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
             });
             if (granted) {
               await sendPaymentConfirmation({
-                to: txDoc.email, plan: txDoc.plan, duration: txDoc.duration,
+                to: txDoc.email, uid: txDoc.uid, plan: txDoc.plan, duration: txDoc.duration,
                 amount: paidAmount, reference
               }).catch(() => {});
             }
@@ -582,27 +582,69 @@ async function sendEmail({ to, subject, text }) {
   }
 }
 
-function planLabel(plan) {
-  const labels = { general: 'General Path', premium: 'Premium Path', business: 'Business Language' };
-  return labels[plan] || plan;
+function planLabel(plan, lang) {
+  const labels = {
+    en: { general: 'General Path', premium: 'Premium Path', business: 'Business Language' },
+    fr: { general: 'General Path', premium: 'Premium Path', business: 'Business Language' },
+    ar: { general: 'المسار العام', premium: 'المسار المميز', business: 'لغة الأعمال' }
+  };
+  return ((labels[lang] || labels.en)[plan]) || plan;
 }
 
-async function sendPaymentConfirmation({ to, plan, duration, amount, reference }) {
-  const text =
-    'E-Learn Language Academy (ELA)\n\n' +
-    'Thank you for your payment.\n\n' +
-    'Plan: ' + planLabel(plan) + '\n' +
-    'Duration: ' + duration + ' month(s)\n' +
-    'Amount: NGN ' + Number(amount).toLocaleString('en-NG') + '\n' +
-    'Reference: ' + reference + '\n\n' +
-    'Your subscription is now active. Welcome to ELA.\n\n' +
-    'E-Learn Language Academy — One Academy. Five Languages.';
-  await sendEmail({ to, subject: 'ELA — Payment confirmed', text });
+/* Emails transactionnels — 3 langues (en/fr/ar), sélection selon interfaceLang. */
+const EMAIL = {
+  en: {
+    paymentSubject: 'ELA — Payment confirmed',
+    expiredSubject: 'ELA — Subscription expired',
+    renewSubject: 'ELA — Your subscription renews soon',
+    payment: (p) => 'E-Learn Language Academy (ELA)\n\nThank you for your payment.\n\nPlan: ' + p.plan + '\nDuration: ' + p.duration + ' month(s)\nAmount: NGN ' + p.amount + '\nReference: ' + p.reference + '\n\nYour subscription is now active. Welcome to ELA.\n\nE-Learn Language Academy — One Academy. Five Languages.',
+    expired: 'E-Learn Language Academy (ELA)\n\nYour subscription has expired. Renew to keep learning.\n\nE-Learn Language Academy — One Academy. Five Languages.',
+    renew: 'E-Learn Language Academy (ELA)\n\nYour subscription renews in 7 days or less. Keep your learning uninterrupted.\n\nE-Learn Language Academy — One Academy. Five Languages.'
+  },
+  fr: {
+    paymentSubject: 'ELA — Paiement confirmé',
+    expiredSubject: 'ELA — Abonnement expiré',
+    renewSubject: 'ELA — Votre abonnement arrive à échéance',
+    payment: (p) => 'E-Learn Language Academy (ELA)\n\nMerci pour votre paiement.\n\nFormule : ' + p.plan + '\nDurée : ' + p.duration + ' mois\nMontant : NGN ' + p.amount + '\nRéférence : ' + p.reference + '\n\nVotre abonnement est désormais actif. Bienvenue chez ELA.\n\nE-Learn Language Academy — Une académie. Cinq langues.',
+    expired: 'E-Learn Language Academy (ELA)\n\nVotre abonnement a expiré. Renouvelez pour continuer à apprendre.\n\nE-Learn Language Academy — Une académie. Cinq langues.',
+    renew: 'E-Learn Language Academy (ELA)\n\nVotre abonnement arrive à échéance dans 7 jours ou moins. Gardez votre apprentissage ininterrompu.\n\nE-Learn Language Academy — Une académie. Cinq langues.'
+  },
+  ar: {
+    paymentSubject: 'ELA — تم تأكيد الدفع',
+    expiredSubject: 'ELA — انتهى الاشتراك',
+    renewSubject: 'ELA — اشتراكك يقترب من التجديد',
+    payment: (p) => 'أكاديمية إي-ليرن للغات (ELA)\n\nشكراً لك على الدفع.\n\nالخطة: ' + p.plan + '\nالمدة: ' + p.duration + ' شهر\nالمبلغ: NGN ' + p.amount + '\nالمرجع: ' + p.reference + '\n\nاشتراكك نشط الآن. مرحباً بك في ELA.\n\nأكاديمية إي-ليرن للغات — أكاديمية واحدة. خمس لغات.',
+    expired: 'أكاديمية إي-ليرن للغات (ELA)\n\nانتهى اشتراكك. جدّد لمواصلة التعلّم.\n\nأكاديمية إي-ليرن للغات — أكاديمية واحدة. خمس لغات.',
+    renew: 'أكاديمية إي-ليرن للغات (ELA)\n\nينتهي اشتراكك خلال 7 أيام أو أقل. حافظ على استمرارية تعلّمك.\n\nأكاديمية إي-ليرن للغات — أكاديمية واحدة. خمس لغات.'
+  }
+};
+
+async function userLang(uid) {
+  try {
+    const u = await db.collection('users').doc(uid).get();
+    const lang = u.exists ? (u.data().interfaceLang || 'en') : 'en';
+    return EMAIL[lang] ? lang : 'en';
+  } catch (e) { return 'en'; }
+}
+
+async function sendPaymentConfirmation({ to, uid, plan, duration, amount, reference }) {
+  const lang = await userLang(uid);
+  const m = EMAIL[lang];
+  const text = m.payment({
+    plan: planLabel(plan, lang),
+    duration: duration,
+    amount: Number(amount).toLocaleString('en-NG'),
+    reference: reference
+  });
+  await sendEmail({ to, subject: m.paymentSubject, text });
 }
 
 async function emailForUser(uid) {
   const u = await db.collection('users').doc(uid).get();
-  return u.exists ? (u.data().email || null) : null;
+  if (!u.exists) return null;
+  const data = u.data();
+  const lang = EMAIL[data.interfaceLang] ? data.interfaceLang : 'en';
+  return { email: data.email || null, lang };
 }
 
 /**
@@ -625,22 +667,18 @@ exports.checkSubscriptionExpiry = onSchedule({ region: 'europe-west1', schedule:
     if (end <= now) {
       await doc.ref.set({ status: 'expired' }, { merge: true });
       expired++;
-      const to = await emailForUser(doc.id);
-      if (to) {
-        await sendEmail({
-          to, subject: 'ELA — Subscription expired',
-          text: 'E-Learn Language Academy (ELA)\n\nYour subscription has expired. Renew to keep learning.\n\nE-Learn Language Academy — One Academy. Five Languages.'
-        }).catch(() => {});
+      const user = await emailForUser(doc.id);
+      if (user && user.email) {
+        const m = EMAIL[user.lang];
+        await sendEmail({ to: user.email, subject: m.expiredSubject, text: m.expired }).catch(() => {});
       }
     } else if (end <= in7 && !s.reminderSent) {
       await doc.ref.set({ reminderSent: true }, { merge: true });
       reminded++;
-      const to = await emailForUser(doc.id);
-      if (to) {
-        await sendEmail({
-          to, subject: 'ELA — Your subscription renews soon',
-          text: 'E-Learn Language Academy (ELA)\n\nYour subscription renews in 7 days or less. Keep your learning uninterrupted.\n\nE-Learn Language Academy — One Academy. Five Languages.'
-        }).catch(() => {});
+      const user = await emailForUser(doc.id);
+      if (user && user.email) {
+        const m = EMAIL[user.lang];
+        await sendEmail({ to: user.email, subject: m.renewSubject, text: m.renew }).catch(() => {});
       }
     }
   }
