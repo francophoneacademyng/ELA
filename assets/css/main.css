@@ -883,4 +883,68 @@ body {
   .continue-thumb { flex-basis: 110px; }
 }
 
+/* ============================================================
+   DASHBOARD — refonte présentation (hero, journey, plan, tutor, refer)
+   ============================================================ */
+
+/* 1. HERO : salutation + grande progression + prochaine étape */
+.dash-hero {
+  display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap;
+  background: linear-gradient(135deg, var(--forest-ink) 0%, var(--forest) 55%, var(--emerald) 100%);
+  color: var(--cream); border-radius: var(--radius-xl); padding: 2.2rem 2.4rem;
+  margin-bottom: 1.4rem; position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.dash-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(50% 60% at 85% 0%, rgba(226, 172, 43, 0.18), transparent 70%); }
+.dash-hero-text { position: relative; z-index: 1; }
+.dash-hero .greeting { color: var(--cream); font-size: clamp(2.2rem, 5vw, 3.4rem); }
+.dash-hero .greeting em { color: var(--gold-vivid); }
+.dash-hero-sub { color: rgba(250, 246, 236, 0.82); font-size: 1.05rem; margin-top: 0.4rem; max-width: 46ch; }
+.dash-hero-next { margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.dash-hero-next .next-label { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-vivid); }
+.dash-hero-ring { position: relative; z-index: 1; text-align: center; }
+.dash-hero .ring { --sz: 122px; background: conic-gradient(var(--gold-vivid) calc(var(--p) * 1%), rgba(250, 246, 236, 0.14) 0); }
+.dash-hero .ring::before { background: var(--forest); }
+.dash-hero .ring span { color: var(--cream); font-size: 1.05rem; }
+.dash-hero .ring-caption { margin-top: 0.6rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250, 246, 236, 0.7); }
+
+/* 2. Continue your journey : carte focale */
+.journey-card {
+  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm); padding: 1.7rem 1.9rem; position: relative; overflow: hidden;
+}
+.journey-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: linear-gradient(90deg, var(--gold-vivid), var(--gold)); }
+.journey-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 0.7rem; align-items: center; margin-bottom: 0.7rem; }
+.journey-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 1.9rem); color: var(--forest); line-height: 1.1; }
+.journey-sub { color: var(--muted); margin-top: 0.4rem; font-size: 0.95rem; }
+.journey-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+
+/* 3. Progress : anneau dans la stat card */
+.dash-stat-ring { display: flex; justify-content: center; margin-bottom: 0.6rem; }
+.dash-stat-card .ring { --sz: 54px; }
+.dash-stat-card .ring span { font-size: 0.66rem; }
+
+/* 7. Meet your language tutor : grande carte premium */
+.tutor-card {
+  background: linear-gradient(135deg, var(--forest) 0%, var(--emerald) 100%);
+  color: var(--cream); border-radius: var(--radius-xl); padding: 2rem 2.2rem;
+  position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.tutor-card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(50% 60% at 90% 0%, rgba(226, 172, 43, 0.2), transparent 70%); }
+.tutor-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; color: var(--cream); position: relative; z-index: 1; }
+.tutor-card p { color: rgba(250, 246, 236, 0.85); margin-top: 0.5rem; max-width: 52ch; position: relative; z-index: 1; }
+.tutor-card .btn { margin-top: 1.3rem; position: relative; z-index: 1; }
+
+/* 8. Refer & earn : carte marketing */
+.refer-card { background: #fff; border: 1px dashed var(--gold); border-radius: var(--radius-xl); padding: 1.6rem 1.8rem; }
+
+/* 5. Live classes : état aspirationnel */
+.live-aspiration { text-align: center; padding: 1.6rem 1rem; }
+
+/* Responsive hero */
+@media (max-width: 560px) {
+  .dash-hero { flex-direction: column; align-items: flex-start; }
+  .dash-hero-ring { align-self: center; }
+}
+
+
 

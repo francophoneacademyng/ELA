@@ -355,5 +355,20 @@
   "dashboard.adminPanelSub": "Valide le contenu, injecte le curriculum et gère l’académie.",
   "dashboard.adminPanel.review": "Valider le contenu",
   "dashboard.adminPanel.seed": "Injecter le curriculum",
-  "dashboard.adminPanel.open": "Ouvrir le Panneau admin"
+  "dashboard.adminPanel.open": "Ouvrir le Panneau admin",
+  "dashboard.heroPhrase": "Ton chemin vers la fluidité, une leçon à la fois.",
+  "dashboard.nextStep": "Ta prochaine étape",
+  "dashboard.continue": "Continuer",
+  "dashboard.lesson": "Leçon",
+  "dashboard.startLesson": "Commencer la leçon",
+  "dashboard.level": "Niveau",
+  "dashboard.currentPlan": "Ta formule actuelle",
+  "dashboard.courseProgress": "Progression du cours",
+  "dashboard.liveAspiration": "Apprends avec un professeur. Entraîne-toi à parler. Gagne en confiance.",
+  "dashboard.exploreLive": "Explorer les cours en direct",
+  "dashboard.tutorTitle": "Rencontre ton tuteur de langue",
+  "dashboard.tutorSub": "Entraîne-toi à tout moment avec ton compagnon d’étude personnel — disponible jour et nuit.",
+  "dashboard.tutorCta": "Commencer à pratiquer",
+  "dashboard.referTitle": "Parraine & gagne",
+  "dashboard.referValue": "Ton ami économise ₦15,000 sur son premier mois. Tu gagnes ₦10,000 de crédit."
 }

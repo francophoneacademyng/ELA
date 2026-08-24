@@ -678,7 +678,7 @@
     afterRender('');
   }
 
-    function buildDashboard(d) {
+      function buildDashboard(d) {
     var sub = d.subscription;
     var now = Date.now();
     var firstName = ((d.user && d.user.displayName) || '').split(' ')[0];
@@ -689,93 +689,129 @@
     var certificates = d.certificates || [];
     var progPct = prog.total ? Math.round((prog.completed / prog.total) * 100) : 0;
     var isActive = !!(sub && sub.status === 'active' && sub.endDate && sub.endDate > now);
+    var nextLesson = d.nextLesson;
+    var myAcademy = d.user && d.user.academy;
+    var academyName = myAcademy ? t('academies.' + myAcademy + '.name') : '';
+    var role = d.user && d.user.role;
 
-    // --- En-tête : salutation + pills ---
-    var academyName = d.user && d.user.academy ? t('academies.' + d.user.academy + '.name') : '';
-    var headerHtml = '<div class="dash-header-row">' +
-      '<div>' +
+    // ============================================================
+    // 1. HERO — salutation + grande progression + prochaine étape
+    // ============================================================
+    var heroCtaHref = nextLesson ? ('#/lesson?id=' + encodeURIComponent(nextLesson.id)) : '#/courses';
+    var heroCtaLabel = nextLesson ? t('dashboard.continue') : t('dashboard.goToCourses');
+    var heroHtml = '<div class="dash-hero">' +
+      '<div class="dash-hero-text">' +
         '<h1 class="greeting">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '!</h1>' +
-        '<p class="dash-subtitle">' + t('dashboard.subtitle') + '</p>' +
+        '<p class="dash-hero-sub">' + t('dashboard.heroPhrase') + '</p>' +
+        '<div class="dash-hero-next">' +
+          '<span class="next-label">' + t('dashboard.nextStep') + '</span>' +
+          '<a class="btn btn-gold-vivid" href="' + heroCtaHref + '">' + heroCtaLabel + ARROW_SVG + '</a>' +
+        '</div>' +
       '</div>' +
-      '<div class="dash-pills">' +
-        '<div class="dash-pill">' + ICON_FLAME + '<span><strong>' + (qstats.streak || 0) + '</strong> ' + t('dashboard.streak') + '</span></div>' +
-        (academyName ? '<div class="dash-pill">' + ICON_GLOBE + '<span>' + escapeHtml(academyName) + '</span></div>' : '') +
+      '<div class="dash-hero-ring">' +
+        '<div class="ring-wrap">' +
+          '<div class="ring" style="--p:' + progPct + '"><span>' + progPct + '%</span></div>' +
+        '</div>' +
+        '<div class="ring-caption">' + t('dashboard.overallProgress') + '</div>' +
       '</div>' +
     '</div>';
 
-    // --- Stat cards (4 tuiles icône) ---
-    var statsHtml = '<div class="dash-stats-grid">' +
-      '<div class="dash-stat-card"><div class="dash-stat-icon tint-emerald">' + ICON_TROPHY + '</div>' +
-        '<div class="dash-stat-label">' + t('dashboard.overallProgress') + '</div>' +
-        '<div class="dash-stat-value">' + progPct + '%</div>' +
-        '<div class="progress-track"><div class="progress-fill" style="width:' + progPct + '%"></div></div></div>' +
-      '<div class="dash-stat-card"><div class="dash-stat-icon tint-forest">' + ICON_BOOK + '</div>' +
-        '<div class="dash-stat-label">' + t('dashboard.lessonsCompleted') + '</div>' +
-        '<div class="dash-stat-value">' + prog.completed + '</div>' +
-        '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
-      '<div class="dash-stat-card"><div class="dash-stat-icon tint-muted">' + ICON_QUIZ + '</div>' +
-        '<div class="dash-stat-label">' + t('dashboard.quizzes') + '</div>' +
-        '<div class="dash-stat-value">' + qstats.taken + '</div>' +
-        '<div class="dash-stat-hint">' + (qstats.avg ? t('dashboard.avgScore') + ' ' + qstats.avg + '%' : '') + '</div></div>' +
-      '<div class="dash-stat-card"><div class="dash-stat-icon tint-gold">' + ICON_FLAME + '</div>' +
-        '<div class="dash-stat-label">' + t('dashboard.streak') + '</div>' +
-        '<div class="dash-stat-value">' + (qstats.streak || 0) + '</div>' +
-        '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
-    '</div>';
-
-    // --- Ligne abonnement / bandeau upgrade ---
-    var planLine = '';
-    if (isActive) {
-      var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
-      var expiry = new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
-      planLine = '<div class="dash-plan-line">' +
-        '<span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
-        '<span>' + t('pricing.' + (sub.plan || 'general')) + '</span>' +
-        '<span>— ' + days + ' ' + t('dashboard.daysRemaining') + '</span>' +
-        '<span>· ' + t('dashboard.expiresOn') + ' ' + expiry + '</span>' +
-        '<a href="#/checkout" class="dashboard-section-link" style="margin-inline-start:auto">' + t('dashboard.renew') + '</a>' +
-      '</div>';
-    }
-    var upgradeBanner = (!isActive)
-      ? '<div class="upgrade-banner">' +
-          '<div><h3>' + t('dashboard.unlockPath') + '</h3>' +
-          '<p>' + t('dashboard.unlockPathSub') + '</p></div>' +
-          '<a class="btn btn-gold-vivid" href="#/pricing">' + t('dashboard.viewPlans') + '</a>' +
-        '</div>'
-      : '';
-
-    // --- Continue Learning (carte hero) ---
-    var continueHtml;
-    if (d.nextLesson) {
+    // ============================================================
+    // 2. CONTINUE YOUR JOURNEY — carte focale
+    // ============================================================
+    var journeyHtml;
+    if (nextLesson) {
       var isStart = prog.completed === 0;
-      continueHtml = '<div class="continue-hero">' +
-        '<div class="continue-thumb"><span class="continue-play">' + ICON_PLAY + '</span></div>' +
-        '<div class="continue-body">' +
-          '<span class="badge badge-emerald">' + progPct + '% ' + t('dashboard.overallProgress') + '</span>' +
-          '<h4>' + (isStart ? t('dashboard.firstLesson') : escapeHtml(d.nextLesson.title)) + '</h4>' +
-          '<p>' + (isStart ? (t('dashboard.startWith') + ' ' + escapeHtml(d.nextLesson.title)) : t('dashboard.resumeSub')) + '</p>' +
-          '<div class="progress-track"><div class="progress-fill" style="width:' + progPct + '%"></div></div>' +
-          '<a class="btn btn-solid btn-sm" href="#/lesson?id=' + encodeURIComponent(d.nextLesson.id) + '">' + (isStart ? t('hero.cta.primary') : t('dashboard.resume')) + '</a>' +
+      var jLevel = nextLesson.level ? ('<span class="badge badge-emerald">' + t('dashboard.level') + ' ' + escapeHtml(nextLesson.level) + '</span>') : '';
+      var jAcademy = academyName ? ('<span class="badge badge-muted">' + escapeHtml(academyName) + '</span>') : '';
+      var jLesson = nextLesson.order ? ('<span class="badge badge-gold">' + t('dashboard.lesson') + ' ' + nextLesson.order + '</span>') : '';
+      journeyHtml = '<div class="journey-card">' +
+        '<div class="journey-meta">' + jAcademy + jLevel + jLesson + '</div>' +
+        '<h2 class="journey-title">' + (isStart ? t('dashboard.firstLesson') : escapeHtml(nextLesson.title)) + '</h2>' +
+        '<p class="journey-sub">' + (isStart ? (t('dashboard.startWith') + ' ' + escapeHtml(nextLesson.title)) : t('dashboard.resumeSub')) + '</p>' +
+        '<div class="journey-actions" style="margin-top:1.2rem">' +
+          '<a class="btn btn-solid" href="#/lesson?id=' + encodeURIComponent(nextLesson.id) + '">' + t('dashboard.startLesson') + ARROW_SVG + '</a>' +
         '</div>' +
       '</div>';
     } else {
-      continueHtml = '<div class="continue-hero continue-empty">' +
-        '<div class="continue-thumb">' + ICON_BOOK + '</div>' +
-        '<div class="continue-body">' +
-          '<h4>' + t('dashboard.resumeDone') + '</h4>' +
-          '<p>' + t('dashboard.resumeSub') + '</p>' +
-          '<a class="btn btn-solid btn-sm" href="#/courses">' + t('dashboard.goToCourses') + ARROW_SVG + '</a>' +
-        '</div>' +
+      journeyHtml = '<div class="journey-card">' +
+        '<div class="journey-meta"><span class="badge badge-emerald">' + t('dashboard.status.active') + '</span></div>' +
+        '<h2 class="journey-title">' + t('dashboard.resumeDone') + '</h2>' +
+        '<p class="journey-sub">' + t('dashboard.resumeSub') + '</p>' +
+        '<div class="journey-actions" style="margin-top:1.2rem"><a class="btn btn-solid" href="#/courses">' + t('dashboard.goToCourses') + ARROW_SVG + '</a></div>' +
       '</div>';
     }
-    var continueSection = '<div class="dashboard-section">' +
+    var journeySection = '<div class="dashboard-section">' +
       '<div class="dashboard-section-header">' +
         '<h3 class="dashboard-section-title">' + t('dashboard.continueLearning') + '</h3>' +
         '<a class="dashboard-section-link" href="#/courses">' + t('dashboard.goToCourses') + ARROW_SVG + '</a>' +
-      '</div>' + continueHtml +
+      '</div>' + journeyHtml +
     '</div>';
 
-    // --- Live class mini carte ---
+    // ============================================================
+    // 3. YOUR PROGRESS — 4 stat cards (progression en anneau)
+    // ============================================================
+    var statsHtml = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.overallProgress') + '</h3></div>' +
+      '<div class="dash-stats-grid">' +
+        '<div class="dash-stat-card"><div class="dash-stat-ring"><div class="ring" style="--p:' + progPct + ';--sz:52px"><span style="font-size:0.66rem">' + progPct + '%</span></div></div>' +
+          '<div class="dash-stat-label">' + t('dashboard.overallProgress') + '</div>' +
+          '<div class="dash-stat-value">' + prog.completed + '/' + prog.total + '</div></div>' +
+        '<div class="dash-stat-card"><div class="dash-stat-icon tint-forest">' + ICON_BOOK + '</div>' +
+          '<div class="dash-stat-label">' + t('dashboard.lessonsCompleted') + '</div>' +
+          '<div class="dash-stat-value">' + prog.completed + '</div>' +
+          '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
+        '<div class="dash-stat-card"><div class="dash-stat-icon tint-muted">' + ICON_QUIZ + '</div>' +
+          '<div class="dash-stat-label">' + t('dashboard.quizzes') + '</div>' +
+          '<div class="dash-stat-value">' + qstats.taken + '</div>' +
+          '<div class="dash-stat-hint">' + (qstats.avg ? t('dashboard.avgScore') + ' ' + qstats.avg + '%' : '') + '</div></div>' +
+        '<div class="dash-stat-card"><div class="dash-stat-icon tint-gold">' + ICON_FLAME + '</div>' +
+          '<div class="dash-stat-label">' + t('dashboard.streak') + '</div>' +
+          '<div class="dash-stat-value">' + (qstats.streak || 0) + '</div>' +
+          '<div class="dash-stat-hint">' + t('dashboard.keepGoing') + '</div></div>' +
+      '</div>' +
+    '</div>';
+
+    // ============================================================
+    // 4. YOUR CURRENT PLAN — parcours (pas une échéance)
+    // ============================================================
+    var planSection = '';
+    if (isActive) {
+      var days = Math.max(0, Math.ceil((sub.endDate - now) / 86400000));
+      var expiry = new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
+      var myProg = (d.academyProgress || []).filter(function (a) { return a.academy === myAcademy; });
+      var apct = myProg.length ? (myProg[0].pct || 0) : 0;
+      planSection = '<div class="dashboard-section">' +
+        '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.currentPlan') + '</h3></div>' +
+        '<div class="card" style="margin-top:0">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.9rem">' +
+            '<div><span class="badge badge-emerald">' + t('dashboard.status.active') + '</span>' +
+            '<span style="font-weight:700;color:var(--forest);margin-inline-start:0.5rem">' + t('pricing.' + (sub.plan || 'general')) + '</span></div>' +
+            '<span style="font-size:0.9rem;color:var(--muted)">' + days + ' ' + t('dashboard.daysRemaining') + ' · ' + t('dashboard.expiresOn') + ' ' + expiry + '</span>' +
+          '</div>' +
+          (myProg.length
+            ? '<div style="margin-bottom:0.4rem"><div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--muted);margin-bottom:0.3rem">' +
+                '<span>' + t('dashboard.courseProgress') + '</span><span>' + myProg[0].completed + '/' + myProg[0].total + '</span></div>' +
+              '<div class="progress-track"><div class="progress-fill" style="width:' + apct + '%"></div></div></div>'
+            : '') +
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem">' +
+            '<a class="btn btn-solid btn-sm" href="#/courses">' + t('dashboard.continue') + ARROW_SVG + '</a>' +
+            '<a class="dashboard-section-link" href="#/checkout">' + t('dashboard.renew') + '</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    } else {
+      planSection = '<div class="dashboard-section">' +
+        '<div class="upgrade-banner" style="margin:0">' +
+          '<div><h3>' + t('dashboard.unlockPath') + '</h3><p>' + t('dashboard.unlockPathSub') + '</p></div>' +
+          '<a class="btn btn-gold-vivid" href="#/pricing">' + t('dashboard.viewPlans') + '</a>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // ============================================================
+    // 5. UPCOMING LIVE CLASSES — aspirationnel si vide
+    // ============================================================
     var liveCard;
     if (nxt) {
       var d0 = new Date(nxt.scheduledAt);
@@ -792,11 +828,11 @@
         '<a class="btn btn-solid btn-sm btn-full" href="#/live">' + ICON_VIDEO + ' ' + t('dashboard.joinLive') + '</a>' +
       '</div>';
     } else {
-      liveCard = '<div class="live-mini live-mini-empty">' +
-        '<div class="dash-stat-icon tint-muted">' + ICON_VIDEO + '</div>' +
-        '<p>' + t('dashboard.noLive') + '</p>' +
-        '<a class="btn btn-outline btn-sm" style="margin-top:0.8rem" href="#/live">' + t('dashboard.viewAll') + '</a>' +
-      '</div>';
+      liveCard = '<div class="card" style="margin-top:0"><div class="live-aspiration">' +
+        '<div class="dash-stat-icon tint-gold" style="margin:0 auto 0.8rem">' + ICON_VIDEO + '</div>' +
+        '<p style="font-family:var(--font-display);font-weight:700;font-size:1.2rem;color:var(--forest);margin-bottom:0.4rem">' + t('dashboard.liveAspiration') + '</p>' +
+        '<a class="btn btn-gold btn-sm" href="#/live">' + t('dashboard.exploreLive') + ARROW_SVG + '</a>' +
+      '</div></div>';
     }
     var liveSection = '<div class="dashboard-section">' +
       '<div class="dashboard-section-header">' +
@@ -805,7 +841,9 @@
       '</div>' + liveCard +
     '</div>';
 
-    // --- Achievements : grille de badges + certificats ---
+    // ============================================================
+    // 6. YOUR ACHIEVEMENTS — badges SVG (locked/unlocked) + certifs
+    // ============================================================
     var ICONS = { quiz: ICON_QUIZ, book: ICON_BOOK, flame: ICON_FLAME, award: ICON_AWARD, trophy: ICON_TROPHY };
     var badgeDefs = [
       { icon: 'quiz', tint: 'tint-emerald', name: 'dashboard.badge.firstQuiz', desc: 'dashboard.badge.firstQuiz.desc', ok: qstats.taken >= 1 },
@@ -833,72 +871,65 @@
         (c.pdfUrl ? '<a class="btn btn-outline btn-sm" href="' + escapeHtml(c.pdfUrl) + '" target="_blank" rel="noopener">' + t('dashboard.download') + '</a>' : '') +
       '</div>';
     }).join('');
+    var scoresHtml = scores.length
+      ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.4rem;font-size:0.9rem">' + t('dashboard.bestScores') + '</div>' +
+          '<ul class="tx-list" style="margin:0">' +
+          scores.map(function (s) {
+            var p = s.total ? Math.round((s.bestScore / s.total) * 100) : 0;
+            return '<li><span>' + escapeHtml(s.title) + '</span><span class="badge ' + (p >= 80 ? 'badge-emerald' : 'badge-gold') + '">' + s.bestScore + '/' + s.total + '</span></li>';
+          }).join('') + '</ul></div>'
+      : '';
+
     var achievementsSection = '<div class="dashboard-section">' +
       '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.achievements') + '</h3></div>' +
       '<div class="ach-grid">' + achCells + '</div>' +
+      scoresHtml +
       (certItems ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem">' + certItems + '</div>' : '') +
     '</div>';
 
-    // --- Progression par académie (modèle 1 abonnement = 1 langue) ---
-    var myAcademy = d.user && d.user.academy;
-    var myAcademies = (d.academyProgress || []).filter(function (a) {
-      return a.academy === myAcademy;
-    });
-    var academyHtml = myAcademies.length
-      ? '<div class="dashboard-section">' +
-          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.academies') + '</h3></div>' +
-          '<div class="card" style="margin-top:0;padding:1rem 1.3rem">' +
-          myAcademies.map(function (a) {
-            return '<a href="#/courses" style="display:block;text-decoration:none;color:inherit;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
-              '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.8rem;margin-bottom:0.4rem">' +
-                '<span style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</span>' +
-                '<span style="font-size:0.8rem;color:var(--muted)">' + a.completed + ' / ' + a.total + ' ' + t('courses.lessons') + '</span>' +
-              '</div>' +
-              '<div class="progress-track"><div class="progress-fill" style="width:' + (a.pct || 0) + '%"></div></div>' +
-            '</a>';
-          }).join('') +
-          '</div></div>'
-      : '';
+    // ============================================================
+    // 7. MEET YOUR LANGUAGE TUTOR — grande carte premium
+    // ============================================================
+    var tutorSection = '<div class="dashboard-section">' +
+      '<div class="tutor-card">' +
+        '<div style="display:flex;align-items:center;gap:0.9rem;margin-bottom:0.6rem"><div class="dash-stat-icon tint-gold" style="background:rgba(226,172,43,0.18);color:var(--gold-vivid)">' + ICON_CHAT + '</div><span class="badge badge-gold" style="background:rgba(226,172,43,0.16);color:var(--gold-vivid)">' + t('dashboard.assistant') + '</span></div>' +
+        '<h3>' + t('dashboard.tutorTitle') + '</h3>' +
+        '<p>' + t('dashboard.tutorSub') + '</p>' +
+        '<a class="btn btn-gold-vivid" href="#/assistant">' + t('dashboard.tutorCta') + ARROW_SVG + '</a>' +
+      '</div>' +
+    '</div>';
 
-    // --- Parrainage + Assistant ---
-    var refHtml = '<div class="dashboard-section">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.referralCode') + '</h3></div>' +
-      '<div class="card" style="margin-top:0">' +
-        '<div style="display:flex;justify-content:space-between;align-items:center;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.6rem">' +
-          '<span style="color:var(--muted)">' + t('dashboard.referralCredit') + ': <strong>' + fmtNaira(d.user.referralCredit) + '</strong></span>' +
-        '</div>' +
+    // ============================================================
+    // 8. REFER & EARN — carte marketing
+    // ============================================================
+    var referSection = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.referTitle') + '</h3></div>' +
+      '<div class="refer-card">' +
+        '<p style="color:var(--forest);font-weight:700;margin-bottom:0.8rem">' + t('dashboard.referValue') + '</p>' +
         '<div class="referral-code">' +
           '<span class="code">' + escapeHtml(d.user.referralCode || '—') + '</span>' +
           '<button type="button" class="btn btn-solid btn-sm" id="copy-code">' + t('dashboard.copy') + '</button>' +
         '</div>' +
-      '</div></div>';
+        '<p style="font-size:0.8rem;color:var(--muted);margin-top:0.6rem">' + t('dashboard.referralCredit') + ': <strong>' + fmtNaira(d.user.referralCredit) + '</strong></p>' +
+      '</div>' +
+    '</div>';
 
-    var assistantHtml = '<div class="dashboard-section">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.assistant') + '</h3></div>' +
-      '<div class="card" style="margin-top:0;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">' +
-        '<div><div style="font-weight:700;color:var(--forest)">' + t('assistant.sub') + '</div></div>' +
-        '<a class="btn btn-outline btn-sm" href="#/assistant">' + t('dashboard.assistant') + '</a>' +
-      '</div></div>';
+    // ============================================================
+    // 9. QUICK ACTIONS
+    // ============================================================
+    var quickActions = '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.quickActions') + '</h3></div>' +
+      '<div class="quick-grid">' +
+        '<a class="action-tile" href="#/courses"><div class="dash-stat-icon tint-emerald">' + ICON_BOOK + '</div><div class="action-title">' + t('nav.courses') + '</div><div class="action-sub">' + t('dashboard.coursesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/quiz"><div class="dash-stat-icon tint-gold">' + ICON_QUIZ + '</div><div class="action-title">' + t('nav.quiz') + '</div><div class="action-sub">' + t('dashboard.takeQuizSub') + '</div></a>' +
+        '<a class="action-tile" href="#/live"><div class="dash-stat-icon tint-forest">' + ICON_VIDEO + '</div><div class="action-title">' + t('nav.live') + '</div><div class="action-sub">' + t('dashboard.liveClassesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/assistant"><div class="dash-stat-icon tint-muted">' + ICON_CHAT + '</div><div class="action-title">' + t('dashboard.assistant') + '</div><div class="action-sub">' + t('dashboard.assistantSub') + '</div></a>' +
+      '</div>' +
+    '</div>';
 
-    // --- Quiz récents (tableau) ---
-    var quizRows = scores.map(function (s) {
-      var p = s.total ? Math.round((s.bestScore / s.total) * 100) : 0;
-      return '<tr><td>' + escapeHtml(s.title) + '</td>' +
-        '<td><span class="badge ' + (p >= 80 ? 'badge-emerald' : 'badge-gold') + '">' + s.bestScore + '/' + s.total + '</span></td></tr>';
-    }).join('');
-    var quizSection = scores.length
-      ? '<div class="dashboard-section">' +
-          '<div class="dashboard-section-header">' +
-            '<h3 class="dashboard-section-title">' + t('dashboard.bestScores') + '</h3>' +
-            '<a class="dashboard-section-link" href="#/quiz">' + t('dashboard.viewAll') + '</a>' +
-          '</div>' +
-          '<div class="dash-table-wrap"><table class="dash-table"><thead><tr>' +
-            '<th>' + t('dashboard.assessment') + '</th><th>' + t('dashboard.score') + '</th>' +
-          '</tr></thead><tbody>' + quizRows + '</tbody></table></div>' +
-        '</div>'
-      : '';
-
-    // --- Historique paiements ---
+    // ============================================================
+    // 10. PAYMENT HISTORY — compacte, tout en bas
+    // ============================================================
     var txRows = (d.transactions || []).slice().sort(function (a, b) {
       return (b.createdAt || 0) - (a.createdAt || 0);
     }).map(function (tx) {
@@ -919,19 +950,9 @@
         : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('dashboard.noTransactions') + '</p></div></div>') +
     '</div>';
 
-    // --- Quick actions ---
-    var quickActions = '<div class="dashboard-section">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.quickActions') + '</h3></div>' +
-      '<div class="quick-grid">' +
-        '<a class="action-tile" href="#/courses"><div class="dash-stat-icon tint-emerald">' + ICON_BOOK + '</div><div class="action-title">' + t('nav.courses') + '</div><div class="action-sub">' + t('dashboard.coursesSub') + '</div></a>' +
-        '<a class="action-tile" href="#/quiz"><div class="dash-stat-icon tint-gold">' + ICON_QUIZ + '</div><div class="action-title">' + t('nav.quiz') + '</div><div class="action-sub">' + t('dashboard.takeQuizSub') + '</div></a>' +
-        '<a class="action-tile" href="#/live"><div class="dash-stat-icon tint-forest">' + ICON_VIDEO + '</div><div class="action-title">' + t('nav.live') + '</div><div class="action-sub">' + t('dashboard.liveClassesSub') + '</div></a>' +
-        '<a class="action-tile" href="#/assistant"><div class="dash-stat-icon tint-muted">' + ICON_CHAT + '</div><div class="action-title">' + t('dashboard.assistant') + '</div><div class="action-sub">' + t('dashboard.assistantSub') + '</div></a>' +
-      '</div>' +
-    '</div>';
-
-    // --- Panneau par rôle (teacher / admin) — injecté après confirmation du rôle ---
-    var role = d.user && d.user.role;
+    // ============================================================
+    // Panneaux par rôle (teacher/admin) — APRÈS les sections étudiantes
+    // ============================================================
     var rolePanel = '';
     if (role === 'teacher') {
       rolePanel = '<div class="dashboard-section">' +
@@ -962,17 +983,17 @@
 
     return '' +
       '<section class="auth-wrap assistant-wrap">' +
-        headerHtml +
-        rolePanel +
+        heroHtml +
+        journeySection +
         statsHtml +
-        planLine +
-        upgradeBanner +
-        '<div class="dash-two-col">' + continueSection + liveSection + '</div>' +
-        '<div class="dash-two-col">' + achievementsSection + academyHtml + '</div>' +
-        '<div class="dash-two-col">' + refHtml + assistantHtml + '</div>' +
-        quizSection +
-        txHtml +
+        planSection +
+        liveSection +
+        achievementsSection +
+        tutorSection +
+        referSection +
         quickActions +
+        txHtml +
+        rolePanel +
       '</section>';
   }
 

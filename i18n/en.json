@@ -355,5 +355,20 @@
   "dashboard.adminPanelSub": "Review content, seed the curriculum and manage the academy.",
   "dashboard.adminPanel.review": "Review content",
   "dashboard.adminPanel.seed": "Seed curriculum",
-  "dashboard.adminPanel.open": "Open Admin Panel"
+  "dashboard.adminPanel.open": "Open Admin Panel",
+  "dashboard.heroPhrase": "Your path to fluency, one lesson at a time.",
+  "dashboard.nextStep": "Your next step",
+  "dashboard.continue": "Continue",
+  "dashboard.lesson": "Lesson",
+  "dashboard.startLesson": "Start lesson",
+  "dashboard.level": "Level",
+  "dashboard.currentPlan": "Your current plan",
+  "dashboard.courseProgress": "Course progress",
+  "dashboard.liveAspiration": "Learn with a teacher. Practice speaking. Build confidence.",
+  "dashboard.exploreLive": "Explore Live Classes",
+  "dashboard.tutorTitle": "Meet your language tutor",
+  "dashboard.tutorSub": "Practice anytime with your personal study companion — available day and night.",
+  "dashboard.tutorCta": "Start practicing",
+  "dashboard.referTitle": "Refer & earn",
+  "dashboard.referValue": "Your friend saves ₦15,000 on their first month. You earn ₦10,000 credit."
 }

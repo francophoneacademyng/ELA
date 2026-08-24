@@ -355,5 +355,20 @@
   "dashboard.adminPanelSub": "راجع المحتوى وأدخل المنهج وأدر الأكاديمية.",
   "dashboard.adminPanel.review": "مراجعة المحتوى",
   "dashboard.adminPanel.seed": "إدخال المنهج",
-  "dashboard.adminPanel.open": "فتح لوحة الإدارة"
+  "dashboard.adminPanel.open": "فتح لوحة الإدارة",
+  "dashboard.heroPhrase": "طريقك إلى الطلاقة، درساً تلو الآخر.",
+  "dashboard.nextStep": "خطوتك التالية",
+  "dashboard.continue": "متابعة",
+  "dashboard.lesson": "الدرس",
+  "dashboard.startLesson": "ابدأ الدرس",
+  "dashboard.level": "المستوى",
+  "dashboard.currentPlan": "خطتك الحالية",
+  "dashboard.courseProgress": "تقدم الدورة",
+  "dashboard.liveAspiration": "تعلّم مع معلم. تدرّب على التحدث. اكتسب الثقة.",
+  "dashboard.exploreLive": "استكشف الحصص المباشرة",
+  "dashboard.tutorTitle": "تعرّف على مدرّبك اللغوي",
+  "dashboard.tutorSub": "تدرّب في أي وقت مع رفيقك الدراسي الشخصي — متاح ليلاً ونهاراً.",
+  "dashboard.tutorCta": "ابدأ التدريب",
+  "dashboard.referTitle": "أحِل واكسب",
+  "dashboard.referValue": "يوفّر صديقك ₦15,000 في شهره الأول. وتربح أنت رصيداً بقيمة ₦10,000."
 }
