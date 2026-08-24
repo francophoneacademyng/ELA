@@ -1824,6 +1824,7 @@
     firebase.firestore().collection('users').doc(user.uid).get().then(function (snap) {
       var role = snap.exists ? snap.data().role : null;
       if (role !== 'admin') { app.innerHTML = ''; window.location.hash = '#/dashboard'; return; }
+      adminState.me = snap.data();
       loadAdminPanel();
     }).catch(function () { app.innerHTML = ''; window.location.hash = '#/dashboard'; });
   }
@@ -1835,13 +1836,17 @@
       db.collection('transactions').get(),
       db.collection('subscriptions').get(),
       db.collection('liveClasses').get(),
+      db.collection('courses').get(),
+      db.collection('lessons').get(),
       callable('getAdminQueue')()
     ]).then(function (r) {
-      adminState.users = r[0].docs.map(function (d) { var x = d.data(); return { id: d.id, name: x.displayName || '', email: x.email || '', role: x.role || 'student', referralCodeUsed: x.referralCodeUsed || null, referralCredit: x.referralCredit || 0, createdAt: toMillis(x.createdAt) }; });
+      adminState.users = r[0].docs.map(function (d) { var x = d.data(); return { id: d.id, name: x.displayName || '', email: x.email || '', role: x.role || 'student', academy: x.academy || null, referralCodeUsed: x.referralCodeUsed || null, referralCredit: x.referralCredit || 0, createdAt: toMillis(x.createdAt) }; });
       adminState.transactions = r[1].docs.map(function (d) { var x = d.data(); return { id: d.id, uid: x.uid, plan: x.plan, duration: x.duration, amount: x.amount, status: x.status, createdAt: toMillis(x.createdAt) }; });
       adminState.subscriptions = r[2].docs.map(function (d) { var x = d.data(); return { uid: d.id, plan: x.plan, status: x.status, endDate: toMillis(x.endDate) }; });
       adminState.liveClasses = r[3].docs.map(function (d) { var x = d.data(); return { id: d.id, title: x.title, academy: x.academy, teacherUid: x.teacherUid, scheduledAt: toMillis(x.scheduledAt), meetingLink: x.meetingLink, status: x.status }; });
-      adminState.items = (r[4].data && r[4].data.items) || [];
+      adminState.courses = r[4].docs.length;
+      adminState.lessons = r[5].docs.length;
+      adminState.items = (r[6].data && r[6].data.items) || [];
       adminState.rejectingId = null;
       adminState.search = '';
       renderAdminPanel();
@@ -1851,7 +1856,25 @@
     });
   }
 
-  function adminOverviewHtml() {
+  function adminHeaderHtml() {
+    var me = adminState.me || {};
+    var name = me.displayName || me.email || '';
+    var initial = (name.charAt(0) || 'A').toUpperCase();
+    var nav = [['admin-overview', 'admin.dashboard'], ['admin-users', 'admin.users'], ['admin-live', 'admin.liveClasses'], ['admin-payments', 'admin.payments'], ['admin-content', 'admin.contentCenter']];
+    var navHtml = nav.map(function (n) {
+      return '<button type="button" data-scroll="' + n[0] + '">' + t(n[1]) + '</button>';
+    }).join('');
+    return '<div class="admin-header">' +
+      '<span class="admin-brand"><span class="dot"></span>ELA ADMIN</span>' +
+      '<div class="admin-nav">' + navHtml + '</div>' +
+      '<div class="admin-right">' +
+        '<a class="view-site" href="#/">' + t('admin.viewWebsite') + '</a>' +
+        '<span class="admin-profile"><span class="admin-avatar">' + initial + '</span>' + escapeHtml(name) + '</span>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function adminKpiCards() {
     var now = Date.now();
     var activeSubs = adminState.subscriptions.filter(function (s) { return s.status === 'active' && s.endDate && s.endDate > now; });
     var byPlan = { general: 0, premium: 0, business: 0 };
@@ -1860,25 +1883,112 @@
     var monthRevenue = adminState.transactions.filter(function (tx) { return tx.status === 'success' && tx.createdAt && tx.createdAt >= monthStart.getTime(); }).reduce(function (sum, tx) { return sum + (tx.amount || 0); }, 0);
     var weekAgo = now - 7 * 86400000;
     var newUsers = adminState.users.filter(function (u) { return u.createdAt && u.createdAt >= weekAgo; }).length;
-    var upcoming = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; }).length;
 
-    var kpi = function (icon, tint, label, value) {
-      return '<div class="dash-stat-card"><div class="dash-stat-icon ' + tint + '">' + icon + '</div>' +
-        '<div class="dash-stat-label">' + label + '</div>' +
-        '<div class="dash-stat-value">' + value + '</div></div>';
-    };
+    return '<div class="kpi-grid">' +
+      '<div class="kpi-card"><div class="dash-stat-icon tint-emerald">' + ICON_AWARD + '</div>' +
+        '<div class="dash-stat-label">' + t('admin.totalUsers') + '</div>' +
+        '<div class="dash-stat-value">' + adminState.users.length + '</div>' +
+        '<div class="dash-stat-hint">+' + newUsers + ' ' + t('admin.thisWeek') + '</div></div>' +
+      '<div class="kpi-card"><div class="dash-stat-icon tint-forest">' + ICON_BOOK + '</div>' +
+        '<div class="dash-stat-label">' + t('admin.activeSubs') + '</div>' +
+        '<div class="dash-stat-value">' + activeSubs.length + '</div>' +
+        '<div class="dash-stat-hint">General ' + byPlan.general + ' · Premium ' + byPlan.premium + ' · Business ' + byPlan.business + '</div></div>' +
+      '<div class="kpi-card kpi-revenue"><div class="dash-stat-icon tint-gold">' + ICON_TROPHY + '</div>' +
+        '<div class="dash-stat-label">' + t('admin.monthRevenue') + '</div>' +
+        '<div class="dash-stat-value">' + fmtNaira(monthRevenue) + '</div>' +
+        '<div class="dash-stat-hint">' + t('admin.last30Days') + '</div></div>' +
+      '<div class="kpi-card"><div class="dash-stat-icon tint-muted">' + ICON_FLAME + '</div>' +
+        '<div class="dash-stat-label">' + t('admin.newUsers') + '</div>' +
+        '<div class="dash-stat-value">' + newUsers + '</div>' +
+        '<div class="dash-stat-hint">' + t('admin.thisWeek') + '</div></div>' +
+    '</div>';
+  }
 
-    return '<div class="dashboard-section">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.overview') + '</h3></div>' +
-      '<div class="dash-stats-grid">' +
-        kpi(ICON_AWARD, 'tint-emerald', t('admin.totalUsers'), adminState.users.length) +
-        kpi(ICON_BOOK, 'tint-forest', t('admin.activeSubs'), activeSubs.length) +
-        kpi(ICON_TROPHY, 'tint-gold', t('admin.monthRevenue'), fmtNaira(monthRevenue)) +
-        kpi(ICON_FLAME, 'tint-muted', t('admin.newUsers'), newUsers) +
+  function adminHeroHtml() {
+    var now = new Date();
+    var hour = now.getHours();
+    var greeting = hour < 12 ? t('admin.goodMorning') : hour < 18 ? t('admin.goodAfternoon') : t('admin.goodEvening');
+    var me = adminState.me || {};
+    var firstName = ((me.displayName || '') || (me.email || '')).split(' ')[0];
+    return '<div class="admin-hero" id="admin-overview">' +
+      '<h1>' + greeting + (firstName ? ', <em style="font-style:italic;color:var(--emerald)">' + escapeHtml(firstName) + '</em>' : '') + '!</h1>' +
+      '<p class="admin-hero-sub">' + t('admin.heroSub') + '</p>' +
+      adminKpiCards() +
+    '</div>';
+  }
+
+  function revenueChartHtml() {
+    var days = [];
+    var now = new Date();
+    for (var i = 29; i >= 0; i--) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+      days.push({ key: d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(), date: d, total: 0 });
+    }
+    var byDay = {};
+    days.forEach(function (d) { byDay[d.key] = d; });
+    adminState.transactions.forEach(function (tx) {
+      if (tx.status !== 'success' || !tx.createdAt) return;
+      var t0 = new Date(tx.createdAt);
+      var k = t0.getFullYear() + '-' + t0.getMonth() + '-' + t0.getDate();
+      if (byDay[k]) byDay[k].total += (tx.amount || 0);
+    });
+    var max = 0;
+    days.forEach(function (d) { if (d.total > max) max = d.total; });
+    if (max === 0) return '<div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('admin.noPayments') + '</p></div>';
+
+    var W = 600, H = 140, gap = 4, bw = (W - gap * 29) / 30;
+    var bars = days.map(function (d, i) {
+      var h = Math.max(3, Math.round((d.total / max) * (H - 16)));
+      return '<rect x="' + (i * (bw + gap)).toFixed(1) + '" y="' + (H - h) + '" width="' + bw.toFixed(1) + '" height="' + h + '" rx="2" fill="' + (d.total > 0 ? '#E2AC2B' : '#E9E2CB') + '"><title>' + d.date.toLocaleDateString(ELA_I18N.getLang()) + ': ' + fmtNaira(d.total) + '</title></rect>';
+    }).join('');
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" class="rev-chart" role="img" aria-label="' + t('admin.last30Days') + '">' + bars + '</svg>';
+  }
+
+  function revenueAnalyticsHtml() {
+    var now = new Date();
+    var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    var prevStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    var monthTotal = 0, prevTotal = 0;
+    adminState.transactions.forEach(function (tx) {
+      if (tx.status !== 'success' || !tx.createdAt) return;
+      if (tx.createdAt >= monthStart.getTime()) monthTotal += (tx.amount || 0);
+      else if (tx.createdAt >= prevStart.getTime() && tx.createdAt < monthStart.getTime()) prevTotal += (tx.amount || 0);
+    });
+    var compare = (prevTotal > 0)
+      ? '<div class="rev-compare">' + (monthTotal >= prevTotal ? '+' : '') + Math.round(((monthTotal - prevTotal) / prevTotal) * 100) + '% ' + t('admin.vsLastMonth') + '</div>'
+      : '';
+    return '<div class="dashboard-section" id="admin-revenue">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.monthRevenue') + '</h3></div>' +
+      '<div class="rev-panel">' +
+        '<div class="rev-total">' + fmtNaira(monthTotal) + '</div>' +
+        compare +
+        '<div style="margin-top:1rem;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">' + t('admin.last30Days') + '</div>' +
+        revenueChartHtml() +
       '</div>' +
-      '<p style="color:var(--muted);font-size:0.85rem;margin-top:0.6rem">' +
-        t('admin.activeSubs') + ': General ' + byPlan.general + ' · Premium ' + byPlan.premium + ' · Business ' + byPlan.business +
-        ' · ' + t('admin.liveClasses') + ': ' + upcoming + '</p>' +
+    '</div>';
+  }
+
+  function academyOverviewHtml() {
+    var academyByUid = {};
+    adminState.users.forEach(function (u) { if (u.academy) academyByUid[u.id] = u.academy; });
+    var now = Date.now();
+    var cards = ACADEMIES.map(function (a) {
+      var students = adminState.users.filter(function (u) { return u.academy === a.key; }).length;
+      var activeSubs = adminState.subscriptions.filter(function (s) { return s.status === 'active' && s.endDate && s.endDate > now && academyByUid[s.uid] === a.key; }).length;
+      var revenue = adminState.transactions.filter(function (tx) { return tx.status === 'success' && academyByUid[tx.uid] === a.key; }).reduce(function (sum, tx) { return sum + (tx.amount || 0); }, 0);
+      return '<div class="acad-stat" style="--accent:' + a.accent + '">' +
+        '<div class="acad-name">' + t('academies.' + a.key + '.name') + '</div>' +
+        '<div class="acad-native">' + a.native + '</div>' +
+        '<div class="acad-rows">' +
+          '<div><span>' + t('admin.students') + '</span><strong>' + students + '</strong></div>' +
+          '<div><span>' + t('admin.activeSubs') + '</span><strong>' + activeSubs + '</strong></div>' +
+          '<div><span>' + t('admin.revenue') + '</span><strong>' + fmtNaira(revenue) + '</strong></div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    return '<div class="dashboard-section" id="admin-academy">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.academyOverview') + '</h3></div>' +
+      '<div class="acad-grid">' + cards + '</div>' +
     '</div>';
   }
 
@@ -1887,6 +1997,7 @@
     var nameById = {};
     adminState.users.forEach(function (u) { nameById[u.id] = u.name || u.email || ''; });
     var sorted = adminState.liveClasses.slice().sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
+    var upcoming = sorted.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; });
     var rows = sorted.map(function (l) {
       var when = l.scheduledAt ? new Date(l.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—';
       var teacher = l.teacherUid ? (nameById[l.teacherUid] || l.teacherUid) : '—';
@@ -1896,72 +2007,43 @@
         '<td>' + when + '</td>' +
         '<td>' + (l.meetingLink ? '<a class="dashboard-section-link" href="' + escapeHtml(l.meetingLink) + '" target="_blank" rel="noopener">' + t('admin.link') + '</a>' : '—') + '</td></tr>';
     }).join('');
-    return '<div class="dashboard-section">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.liveClasses') + '</h3></div>' +
-      (rows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('admin.link') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
-        : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noLive') + '</p></div></div>') +
+    var body;
+    if (!rows) {
+      body = '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.6rem 1rem">' +
+        '<div class="dash-stat-icon tint-gold" style="margin:0 auto 0.8rem">' + ICON_VIDEO + '</div>' +
+        '<h3 style="font-family:var(--font-display);font-weight:800;font-size:1.6rem;color:var(--forest);margin-bottom:0.3rem">' + t('admin.liveZero') + '</h3>' +
+        '<p style="margin:0 auto 1.2rem;max-width:40ch">' + t('admin.liveHint') + '</p>' +
+        '<a class="btn btn-solid btn-sm" href="#/teacher">' + t('admin.scheduleClass') + '</a>' +
+      '</div></div>';
+    } else {
+      body = '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('admin.link') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+    return '<div class="dashboard-section" id="admin-live">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.liveClasses') + '</h3>' +
+      '<span style="font-size:0.8rem;color:var(--muted)">' + upcoming.length + ' ' + t('admin.students') + '</span></div>' +
+      body +
     '</div>';
   }
 
-  function bindAdminSearch() {
-    var search = document.getElementById('admin-search');
-    if (!search) return;
-    search.addEventListener('input', function () {
-      adminState.search = search.value.trim();
-      var usersEl = document.getElementById('admin-users-list');
-      if (usersEl) usersEl.innerHTML = adminUsersRowsHtml();
-    });
-  }
-
-  function adminUsersRowsHtml() {
-    var subById = {};
-    adminState.subscriptions.forEach(function (s) { subById[s.uid] = s; });
-    var q = (adminState.search || '').toLowerCase();
-    var list = adminState.users.filter(function (u) {
-      if (!q) return true;
-      return (u.name || '').toLowerCase().indexOf(q) >= 0 || (u.email || '').toLowerCase().indexOf(q) >= 0;
-    });
-    var now = Date.now();
-    var rows = list.map(function (u) {
-      var sub = subById[u.id];
-      var plan;
-      if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
-        plan = t('pricing.' + (sub.plan || 'general'));
-        if (sub.endDate) plan += ' · ' + new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
-      } else if (sub) {
-        plan = t('dashboard.status.expired');
-      } else {
-        plan = '—';
-      }
-      return '<tr><td>' + escapeHtml(u.name || '—') + '</td>' +
-        '<td>' + escapeHtml(u.email || '') + '</td>' +
-        '<td>' + escapeHtml(u.role || 'student') + '</td>' +
-        '<td>' + plan + '</td>' +
-        '<td>' + (u.createdAt ? new Date(u.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '—') + '</td></tr>';
+  function contentCenterHtml() {
+    var pending = adminState.items.length;
+    var stats = [
+      { num: 5, lbl: 'admin.academiesCount' },
+      { num: adminState.courses || 0, lbl: 'admin.courses' },
+      { num: adminState.lessons || 0, lbl: 'admin.lessons' },
+      { num: pending, lbl: 'admin.pendingReview' }
+    ];
+    var statHtml = stats.map(function (s) {
+      return '<div class="content-stat"><div class="num">' + s.num + '</div><div class="lbl">' + t(s.lbl) + '</div></div>';
     }).join('');
-    if (rows) return '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('admin.email') + '</th><th>' + t('admin.role') + '</th><th>' + t('dashboard.plan') + '</th><th>' + t('admin.joined') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
-    return '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noUsers') + '</p></div></div>';
-  }
-
-  function renderAdminPanel() {
-    app.innerHTML = '' +
-      '<section class="auth-wrap admin-wrap">' +
-        '<p class="section-label">' + t('nav.admin') + '</p>' +
-        '<h1 class="auth-title">' + t('admin.title') + '</h1>' +
-        adminOverviewHtml() +
-        adminLiveHtml() +
-        '<div class="dashboard-section">' +
-          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.users') + '</h3><span style="font-size:0.8rem;color:var(--muted)">' + adminState.users.length + '</span></div>' +
-          '<div class="field" style="margin-bottom:0.8rem"><input id="admin-search" type="text" placeholder="' + t('admin.searchPlaceholder') + '" value="' + escapeHtml(adminState.search || '') + '"></div>' +
-          '<div id="admin-users-list">' + adminUsersRowsHtml() + '</div>' +
-        '</div>' +
-        adminPaymentsHtml() +
-        adminReferralsHtml() +
-        '<div class="dashboard-section" id="admin-validation"></div>' +
-      '</section>';
-    afterRender('admin');
-    renderValidationSection();
-    bindAdminSearch();
+    return '<div class="dashboard-section" id="admin-content">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.contentCenter') + '</h3></div>' +
+      '<div class="content-stats">' + statHtml + '</div>' +
+      '<div class="admin-quick">' +
+        '<a class="btn btn-solid btn-sm" data-scroll="admin-validation">' + t('admin.reviewContent') + '</a>' +
+      '</div>' +
+      '<div class="dashboard-section" id="admin-validation" style="margin-top:1.4rem"></div>' +
+    '</div>';
   }
 
   function adminPaymentsHtml() {
@@ -1977,15 +2059,46 @@
       return '<tr><td>' + (tx.createdAt ? new Date(tx.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '—') + '</td>' +
         '<td>' + escapeHtml(nameById[tx.uid] || tx.uid || '—') + '</td>' +
         '<td>' + t('pricing.' + (tx.plan || 'general')) + '</td>' +
-        '<td>' + fmtNaira(tx.amount) + '</td>' +
+        '<td style="font-family:var(--font-brand);font-weight:700;color:var(--forest)">' + fmtNaira(tx.amount) + '</td>' +
         '<td>' + pill + '</td></tr>';
     }).join('');
-    return '<div class="dashboard-section">' +
+    return '<div class="dashboard-section" id="admin-payments">' +
       '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.payments') + '</h3>' +
-      '<span style="font-size:0.85rem;color:var(--muted)">' + t('admin.monthTotal') + ': <strong>' + fmtNaira(monthTotal) + '</strong></span></div>' +
+      '<span style="font-size:0.85rem;color:var(--muted)">' + t('admin.monthTotal') + ': <strong style="color:var(--gold-deep);font-family:var(--font-brand)">' + fmtNaira(monthTotal) + '</strong></span></div>' +
       (rows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('dashboard.date') + '</th><th>' + t('admin.name') + '</th><th>' + t('dashboard.plan') + '</th><th>' + t('dashboard.amount') + '</th><th>' + t('dashboard.status') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
         : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noPayments') + '</p></div></div>') +
     '</div>';
+  }
+
+  function adminUsersRowsHtml() {
+    var subById = {};
+    adminState.subscriptions.forEach(function (s) { subById[s.uid] = s; });
+    var q = (adminState.search || '').toLowerCase();
+    var list = adminState.users.filter(function (u) {
+      if (!q) return true;
+      return (u.name || '').toLowerCase().indexOf(q) >= 0 || (u.email || '').toLowerCase().indexOf(q) >= 0;
+    });
+    var now = Date.now();
+    var rows = list.map(function (u) {
+      var roleBadge = u.role === 'admin' ? 'badge-forest' : u.role === 'teacher' ? 'badge-gold' : 'badge-muted';
+      var sub = subById[u.id];
+      var plan;
+      if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
+        plan = '<span class="badge badge-emerald">' + t('pricing.' + (sub.plan || 'general')) + '</span>';
+        if (sub.endDate) plan += ' <span style="font-size:0.75rem;color:var(--muted)">' + new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang()) + '</span>';
+      } else if (sub) {
+        plan = '<span class="badge badge-red">' + t('dashboard.status.expired') + '</span>';
+      } else {
+        plan = '—';
+      }
+      return '<tr><td><strong style="color:var(--forest)">' + escapeHtml(u.name || '—') + '</strong></td>' +
+        '<td>' + escapeHtml(u.email || '') + '</td>' +
+        '<td><span class="badge ' + roleBadge + '">' + escapeHtml(u.role || 'student') + '</span></td>' +
+        '<td>' + plan + '</td>' +
+        '<td>' + (u.createdAt ? new Date(u.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '—') + '</td></tr>';
+    }).join('');
+    if (rows) return '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('admin.email') + '</th><th>' + t('admin.role') + '</th><th>' + t('dashboard.plan') + '</th><th>' + t('admin.joined') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    return '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noUsers') + '</p></div></div>';
   }
 
   function adminReferralsHtml() {
@@ -2000,6 +2113,18 @@
             '<div class="dash-stat-card"><div class="dash-stat-icon tint-emerald">' + ICON_TROPHY + '</div><div class="dash-stat-label">' + t('admin.creditsDistributed') + '</div><div class="dash-stat-value">' + fmtNaira(credits) + '</div></div>' +
           '</div>'
         : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noReferrals') + '</p></div></div>') +
+    '</div>';
+  }
+
+  function adminQuickActionsHtml() {
+    return '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.quickActions') + '</h3></div>' +
+      '<div class="quick-grid">' +
+        '<a class="action-tile" href="#/courses"><div class="dash-stat-icon tint-emerald">' + ICON_BOOK + '</div><div class="action-title">' + t('nav.courses') + '</div><div class="action-sub">' + t('dashboard.coursesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/quiz"><div class="dash-stat-icon tint-gold">' + ICON_QUIZ + '</div><div class="action-title">' + t('nav.quiz') + '</div><div class="action-sub">' + t('dashboard.takeQuizSub') + '</div></a>' +
+        '<a class="action-tile" href="#/live"><div class="dash-stat-icon tint-forest">' + ICON_VIDEO + '</div><div class="action-title">' + t('nav.live') + '</div><div class="action-sub">' + t('dashboard.liveClassesSub') + '</div></a>' +
+        '<a class="action-tile" href="#/teacher"><div class="dash-stat-icon tint-muted">' + ICON_CALENDAR + '</div><div class="action-title">' + t('admin.scheduleClass') + '</div><div class="action-sub">' + t('dashboard.liveClassesSub') + '</div></a>' +
+      '</div>' +
     '</div>';
   }
 
@@ -2064,6 +2189,46 @@
     });
     document.querySelectorAll('[data-cancel-reject]').forEach(function (b) {
       b.addEventListener('click', function () { adminState.rejectingId = null; renderValidationSection(); });
+    });
+  }
+
+  function bindAdminSearch() {
+    var search = document.getElementById('admin-search');
+    if (!search) return;
+    search.addEventListener('input', function () {
+      adminState.search = search.value.trim();
+      var usersEl = document.getElementById('admin-users-list');
+      if (usersEl) usersEl.innerHTML = adminUsersRowsHtml();
+    });
+  }
+
+  function renderAdminPanel() {
+    app.innerHTML = '' +
+      '<section class="auth-wrap admin-wrap">' +
+        adminHeaderHtml() +
+        adminHeroHtml() +
+        revenueAnalyticsHtml() +
+        academyOverviewHtml() +
+        adminLiveHtml() +
+        contentCenterHtml() +
+        adminPaymentsHtml() +
+        '<div class="dashboard-section" id="admin-users">' +
+          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.users') + '</h3><span style="font-size:0.8rem;color:var(--muted)">' + adminState.users.length + '</span></div>' +
+          '<div class="field" style="margin-bottom:0.8rem"><input id="admin-search" type="text" placeholder="' + t('admin.searchPlaceholder') + '" value="' + escapeHtml(adminState.search || '') + '"></div>' +
+          '<div id="admin-users-list">' + adminUsersRowsHtml() + '</div>' +
+        '</div>' +
+        adminReferralsHtml() +
+        adminQuickActionsHtml() +
+      '</section>';
+    afterRender('admin');
+    renderValidationSection();
+    bindAdminSearch();
+
+    document.querySelectorAll('[data-scroll]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var target = document.getElementById(b.getAttribute('data-scroll'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     });
   }
 
