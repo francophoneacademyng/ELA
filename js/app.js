@@ -1083,39 +1083,18 @@
       return;
     }
     var user = firebase.auth().currentUser;
-    if (!user) {
-      app.innerHTML = '' +
-        '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
-        '<p class="auth-sub">' + t('assistant.signInRequired') + '</p>' +
-        '<div class="hero-actions"><a class="btn btn-solid" href="#/login">' + t('login.submit') + '</a></div></section>';
-      afterRender('teacher');
-      return;
-    }
-    app.innerHTML = '' +
-      '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
-      '<p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
-    afterRender('teacher');
+    if (!user) { app.innerHTML = ''; window.location.hash = '#/login'; return; }
+    app.innerHTML = '';
 
     firebase.firestore().collection('users').doc(user.uid).get()
       .then(function (snap) {
         var d = snap.exists ? snap.data() : {};
         var role = d.role;
-        if (role !== 'teacher' && role !== 'admin') {
-          app.innerHTML = '' +
-            '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
-            '<p class="auth-sub">' + t('teacher.notTeacher') + '</p></section>';
-          afterRender('teacher');
-          return;
-        }
+        if (role !== 'teacher' && role !== 'admin') { app.innerHTML = ''; window.location.hash = '#/dashboard'; return; }
         teacherAcademy = d.academy || null;
         renderTeacherDashboard(user.uid, teacherAcademy);
       })
-      .catch(function () {
-        app.innerHTML = '' +
-          '<section class="auth-wrap"><h1 class="auth-title">' + t('teacher.title') + '</h1>' +
-          '<p class="auth-sub">' + t('teacher.error') + '</p></section>';
-        afterRender('teacher');
-      });
+      .catch(function () { app.innerHTML = ''; window.location.hash = '#/dashboard'; });
   }
 
   function quizQuestionCardHtml(index) {
@@ -1826,6 +1805,13 @@
   /* ---------- Admin validation ---------- */
   var adminState = { items: [], rejectingId: null };
 
+  function toMillis(v) {
+    if (!v) return null;
+    if (v.toMillis) return v.toMillis();
+    if (v instanceof Date) return v.getTime();
+    return v;
+  }
+
   function renderAdmin() {
     if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.firestore) {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><div class="setup-banner">' + t('register.setup') + '</div></section>';
@@ -1833,23 +1819,188 @@
       return;
     }
     var user = firebase.auth().currentUser;
-    if (!user) { studentSignInRequired(t('admin.title')); return; }
-
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('dashboard.loading') + '</p></section>';
-    afterRender('admin');
-
+    if (!user) { app.innerHTML = ''; window.location.hash = '#/login'; return; }
+    app.innerHTML = '';
     firebase.firestore().collection('users').doc(user.uid).get().then(function (snap) {
       var role = snap.exists ? snap.data().role : null;
-      if (role !== 'admin') {
-        app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.notTeacher') + '</p></section>';
-        afterRender('admin');
-        return;
-      }
-      loadAdminQueue();
+      if (role !== 'admin') { app.innerHTML = ''; window.location.hash = '#/dashboard'; return; }
+      loadAdminPanel();
+    }).catch(function () { app.innerHTML = ''; window.location.hash = '#/dashboard'; });
+  }
+
+  function loadAdminPanel() {
+    var db = firebase.firestore();
+    Promise.all([
+      db.collection('users').get(),
+      db.collection('transactions').get(),
+      db.collection('subscriptions').get(),
+      db.collection('liveClasses').get(),
+      callable('getAdminQueue')()
+    ]).then(function (r) {
+      adminState.users = r[0].docs.map(function (d) { var x = d.data(); return { id: d.id, name: x.displayName || '', email: x.email || '', role: x.role || 'student', referralCodeUsed: x.referralCodeUsed || null, referralCredit: x.referralCredit || 0, createdAt: toMillis(x.createdAt) }; });
+      adminState.transactions = r[1].docs.map(function (d) { var x = d.data(); return { id: d.id, uid: x.uid, plan: x.plan, duration: x.duration, amount: x.amount, status: x.status, createdAt: toMillis(x.createdAt) }; });
+      adminState.subscriptions = r[2].docs.map(function (d) { var x = d.data(); return { uid: d.id, plan: x.plan, status: x.status, endDate: toMillis(x.endDate) }; });
+      adminState.liveClasses = r[3].docs.map(function (d) { var x = d.data(); return { id: d.id, title: x.title, academy: x.academy, teacherUid: x.teacherUid, scheduledAt: toMillis(x.scheduledAt), meetingLink: x.meetingLink, status: x.status }; });
+      adminState.items = (r[4].data && r[4].data.items) || [];
+      adminState.rejectingId = null;
+      adminState.search = '';
+      renderAdminPanel();
     }).catch(function () {
       app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.error') + '</p></section>';
       afterRender('admin');
     });
+  }
+
+  function adminOverviewHtml() {
+    var now = Date.now();
+    var activeSubs = adminState.subscriptions.filter(function (s) { return s.status === 'active' && s.endDate && s.endDate > now; });
+    var byPlan = { general: 0, premium: 0, business: 0 };
+    activeSubs.forEach(function (s) { if (byPlan[s.plan] != null) byPlan[s.plan]++; });
+    var monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+    var monthRevenue = adminState.transactions.filter(function (tx) { return tx.status === 'success' && tx.createdAt && tx.createdAt >= monthStart.getTime(); }).reduce(function (sum, tx) { return sum + (tx.amount || 0); }, 0);
+    var weekAgo = now - 7 * 86400000;
+    var newUsers = adminState.users.filter(function (u) { return u.createdAt && u.createdAt >= weekAgo; }).length;
+    var upcoming = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; }).length;
+
+    var kpi = function (icon, tint, label, value) {
+      return '<div class="dash-stat-card"><div class="dash-stat-icon ' + tint + '">' + icon + '</div>' +
+        '<div class="dash-stat-label">' + label + '</div>' +
+        '<div class="dash-stat-value">' + value + '</div></div>';
+    };
+
+    return '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.overview') + '</h3></div>' +
+      '<div class="dash-stats-grid">' +
+        kpi(ICON_AWARD, 'tint-emerald', t('admin.totalUsers'), adminState.users.length) +
+        kpi(ICON_BOOK, 'tint-forest', t('admin.activeSubs'), activeSubs.length) +
+        kpi(ICON_TROPHY, 'tint-gold', t('admin.monthRevenue'), fmtNaira(monthRevenue)) +
+        kpi(ICON_FLAME, 'tint-muted', t('admin.newUsers'), newUsers) +
+      '</div>' +
+      '<p style="color:var(--muted);font-size:0.85rem;margin-top:0.6rem">' +
+        t('admin.activeSubs') + ': General ' + byPlan.general + ' · Premium ' + byPlan.premium + ' · Business ' + byPlan.business +
+        ' · ' + t('admin.liveClasses') + ': ' + upcoming + '</p>' +
+    '</div>';
+  }
+
+  function adminLiveHtml() {
+    var now = Date.now();
+    var nameById = {};
+    adminState.users.forEach(function (u) { nameById[u.id] = u.name || u.email || ''; });
+    var sorted = adminState.liveClasses.slice().sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
+    var rows = sorted.map(function (l) {
+      var when = l.scheduledAt ? new Date(l.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—';
+      var teacher = l.teacherUid ? (nameById[l.teacherUid] || l.teacherUid) : '—';
+      return '<tr><td>' + escapeHtml(l.title || '') + '</td>' +
+        '<td>' + escapeHtml(t('academies.' + (l.academy || 'german') + '.name')) + '</td>' +
+        '<td>' + escapeHtml(teacher) + '</td>' +
+        '<td>' + when + '</td>' +
+        '<td>' + (l.meetingLink ? '<a class="dashboard-section-link" href="' + escapeHtml(l.meetingLink) + '" target="_blank" rel="noopener">' + t('admin.link') + '</a>' : '—') + '</td></tr>';
+    }).join('');
+    return '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.liveClasses') + '</h3></div>' +
+      (rows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('admin.link') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noLive') + '</p></div></div>') +
+    '</div>';
+  }
+
+  function bindAdminSearch() {
+    var search = document.getElementById('admin-search');
+    if (!search) return;
+    search.addEventListener('input', function () {
+      adminState.search = search.value.trim();
+      var usersEl = document.getElementById('admin-users-list');
+      if (usersEl) usersEl.innerHTML = adminUsersRowsHtml();
+    });
+  }
+
+  function adminUsersRowsHtml() {
+    var subById = {};
+    adminState.subscriptions.forEach(function (s) { subById[s.uid] = s; });
+    var q = (adminState.search || '').toLowerCase();
+    var list = adminState.users.filter(function (u) {
+      if (!q) return true;
+      return (u.name || '').toLowerCase().indexOf(q) >= 0 || (u.email || '').toLowerCase().indexOf(q) >= 0;
+    });
+    var now = Date.now();
+    var rows = list.map(function (u) {
+      var sub = subById[u.id];
+      var plan;
+      if (sub && sub.status === 'active' && sub.endDate && sub.endDate > now) {
+        plan = t('pricing.' + (sub.plan || 'general'));
+        if (sub.endDate) plan += ' · ' + new Date(sub.endDate).toLocaleDateString(ELA_I18N.getLang());
+      } else if (sub) {
+        plan = t('dashboard.status.expired');
+      } else {
+        plan = '—';
+      }
+      return '<tr><td>' + escapeHtml(u.name || '—') + '</td>' +
+        '<td>' + escapeHtml(u.email || '') + '</td>' +
+        '<td>' + escapeHtml(u.role || 'student') + '</td>' +
+        '<td>' + plan + '</td>' +
+        '<td>' + (u.createdAt ? new Date(u.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '—') + '</td></tr>';
+    }).join('');
+    if (rows) return '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('admin.email') + '</th><th>' + t('admin.role') + '</th><th>' + t('dashboard.plan') + '</th><th>' + t('admin.joined') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+    return '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noUsers') + '</p></div></div>';
+  }
+
+  function renderAdminPanel() {
+    app.innerHTML = '' +
+      '<section class="auth-wrap admin-wrap">' +
+        '<p class="section-label">' + t('nav.admin') + '</p>' +
+        '<h1 class="auth-title">' + t('admin.title') + '</h1>' +
+        adminOverviewHtml() +
+        adminLiveHtml() +
+        '<div class="dashboard-section">' +
+          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.users') + '</h3><span style="font-size:0.8rem;color:var(--muted)">' + adminState.users.length + '</span></div>' +
+          '<div class="field" style="margin-bottom:0.8rem"><input id="admin-search" type="text" placeholder="' + t('admin.searchPlaceholder') + '" value="' + escapeHtml(adminState.search || '') + '"></div>' +
+          '<div id="admin-users-list">' + adminUsersRowsHtml() + '</div>' +
+        '</div>' +
+        adminPaymentsHtml() +
+        adminReferralsHtml() +
+        '<div class="dashboard-section" id="admin-validation"></div>' +
+      '</section>';
+    afterRender('admin');
+    renderValidationSection();
+    bindAdminSearch();
+  }
+
+  function adminPaymentsHtml() {
+    var sorted = adminState.transactions.slice().sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+    var monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0, 0, 0, 0);
+    var monthTotal = adminState.transactions.filter(function (tx) { return tx.status === 'success' && tx.createdAt && tx.createdAt >= monthStart.getTime(); }).reduce(function (sum, tx) { return sum + (tx.amount || 0); }, 0);
+    var nameById = {};
+    adminState.users.forEach(function (u) { nameById[u.id] = u.name || u.email || ''; });
+    var rows = sorted.map(function (tx) {
+      var pill = tx.status === 'success' ? '<span class="badge badge-emerald">' + t('dashboard.tx.success') + '</span>'
+        : tx.status === 'failed' ? '<span class="badge badge-red">' + t('dashboard.tx.failed') + '</span>'
+        : '<span class="badge badge-gold">' + t('dashboard.tx.' + (tx.status || 'pending')) + '</span>';
+      return '<tr><td>' + (tx.createdAt ? new Date(tx.createdAt).toLocaleDateString(ELA_I18N.getLang()) : '—') + '</td>' +
+        '<td>' + escapeHtml(nameById[tx.uid] || tx.uid || '—') + '</td>' +
+        '<td>' + t('pricing.' + (tx.plan || 'general')) + '</td>' +
+        '<td>' + fmtNaira(tx.amount) + '</td>' +
+        '<td>' + pill + '</td></tr>';
+    }).join('');
+    return '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.payments') + '</h3>' +
+      '<span style="font-size:0.85rem;color:var(--muted)">' + t('admin.monthTotal') + ': <strong>' + fmtNaira(monthTotal) + '</strong></span></div>' +
+      (rows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('dashboard.date') + '</th><th>' + t('admin.name') + '</th><th>' + t('dashboard.plan') + '</th><th>' + t('dashboard.amount') + '</th><th>' + t('dashboard.status') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noPayments') + '</p></div></div>') +
+    '</div>';
+  }
+
+  function adminReferralsHtml() {
+    var codesUsed = adminState.users.filter(function (u) { return u.referralCodeUsed; }).length;
+    var credits = adminState.users.reduce(function (sum, u) { return sum + (u.referralCredit || 0); }, 0);
+    var hasData = codesUsed > 0 || credits > 0;
+    return '<div class="dashboard-section">' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.referrals') + '</h3></div>' +
+      (hasData
+        ? '<div class="dash-stats-grid" style="grid-template-columns:repeat(2,1fr)">' +
+            '<div class="dash-stat-card"><div class="dash-stat-icon tint-gold">' + ICON_AWARD + '</div><div class="dash-stat-label">' + t('admin.codesUsed') + '</div><div class="dash-stat-value">' + codesUsed + '</div></div>' +
+            '<div class="dash-stat-card"><div class="dash-stat-icon tint-emerald">' + ICON_TROPHY + '</div><div class="dash-stat-label">' + t('admin.creditsDistributed') + '</div><div class="dash-stat-value">' + fmtNaira(credits) + '</div></div>' +
+          '</div>'
+        : '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.2rem 0"><p style="margin:0">' + t('admin.noReferrals') + '</p></div></div>') +
+    '</div>';
   }
 
   function adminPreviewHtml(it) {
@@ -1860,49 +2011,48 @@
     return '';
   }
 
-  function renderAdminList() {
+  function renderValidationSection() {
+    var el = document.getElementById('admin-validation');
+    if (!el) return;
     var items = adminState.items;
+    var itemsHtml;
     if (!items.length) {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><p class="section-label">' + t('nav.admin') + '</p><h1 class="auth-title">' + t('admin.title') + '</h1>' +
-        '<div class="hero-actions" style="margin-bottom:1rem"><button type="button" class="btn btn-solid" id="admin-seed">' + t('admin.seed') + '</button></div>' +
-        '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('admin.empty') + '</p></div></div></section>';
-      afterRender('admin');
-      bindAdminSeed();
-      return;
+      itemsHtml = '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('admin.empty') + '</p></div></div>';
+    } else {
+      itemsHtml = items.map(function (it) {
+        var typeLabel = t('teacher.type.' + (it.collection === 'lessons' ? 'lesson' : it.collection === 'quizzes' ? 'quiz' : 'live'));
+        var academyLabel = t('academies.' + (it.academy || 'german') + '.name');
+        var date = it.submittedAt ? new Date(it.submittedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
+        var rejecting = adminState.rejectingId === it.id;
+        var actions = rejecting
+          ? '<div class="field"><input id="reject-reason" type="text" placeholder="' + t('admin.rejectReason') + '"></div>' +
+            '<div class="hero-actions"><button type="button" class="btn btn-gold" data-confirm-reject="' + encodeURIComponent(it.id) + '">' + t('admin.confirm') + '</button>' +
+            '<button type="button" class="btn btn-outline" data-cancel-reject>' + t('admin.cancel') + '</button></div>'
+          : '<div class="hero-actions"><button type="button" class="btn btn-solid" data-approve="' + encodeURIComponent(it.id) + '">' + t('admin.approve') + '</button>' +
+            '<button type="button" class="btn btn-outline" data-reject="' + encodeURIComponent(it.id) + '">' + t('admin.reject') + '</button></div>';
+        return '<div class="card" style="margin-bottom:1rem">' +
+          '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:center;margin-bottom:0.5rem">' +
+            '<span class="badge badge-forest">' + typeLabel + '</span>' +
+            '<strong style="font-size:1.05rem;color:var(--forest)">' + escapeHtml(it.title) + '</strong>' +
+            '<span class="badge badge-muted">' + academyLabel + '</span>' +
+          '</div>' +
+          '<p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.6rem">' +
+            t('admin.teacher') + ': ' + escapeHtml(it.teacherName || '—') + ' · ' + t('admin.submitted') + ' ' + date + '</p>' +
+          adminPreviewHtml(it) + actions +
+        '</div>';
+      }).join('');
     }
-    var html = items.map(function (it) {
-      var typeLabel = t('teacher.type.' + (it.collection === 'lessons' ? 'lesson' : it.collection === 'quizzes' ? 'quiz' : 'live'));
-      var academyLabel = t('academies.' + (it.academy || 'german') + '.name');
-      var date = it.submittedAt ? new Date(it.submittedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
-      var rejecting = adminState.rejectingId === it.id;
-      var actions = rejecting
-        ? '<div class="field"><input id="reject-reason" type="text" placeholder="' + t('admin.rejectReason') + '"></div>' +
-          '<div class="hero-actions"><button type="button" class="btn btn-gold" data-confirm-reject="' + encodeURIComponent(it.id) + '">' + t('admin.confirm') + '</button>' +
-          '<button type="button" class="btn btn-outline" data-cancel-reject>' + t('admin.cancel') + '</button></div>'
-        : '<div class="hero-actions"><button type="button" class="btn btn-solid" data-approve="' + encodeURIComponent(it.id) + '">' + t('admin.approve') + '</button>' +
-          '<button type="button" class="btn btn-outline" data-reject="' + encodeURIComponent(it.id) + '">' + t('admin.reject') + '</button></div>';
-      return '<div class="card" style="margin-bottom:1rem">' +
-        '<div style="display:flex;flex-wrap:wrap;gap:0.5rem 1rem;align-items:center;margin-bottom:0.5rem">' +
-          '<span class="badge badge-forest">' + typeLabel + '</span>' +
-          '<strong style="font-size:1.05rem;color:var(--forest)">' + escapeHtml(it.title) + '</strong>' +
-          '<span class="badge badge-muted">' + academyLabel + '</span>' +
-        '</div>' +
-        '<p style="color:var(--muted);font-size:0.85rem;margin-bottom:0.6rem">' +
-          t('admin.teacher') + ': ' + escapeHtml(it.teacherName || '—') + ' · ' + t('admin.submitted') + ' ' + date + '</p>' +
-        adminPreviewHtml(it) + actions +
-      '</div>';
-    }).join('');
-
-    app.innerHTML = '<section class="auth-wrap teacher-wrap"><p class="section-label">' + t('nav.admin') + '</p><h1 class="auth-title">' + t('admin.title') + '</h1>' +
-      '<div class="hero-actions" style="margin-bottom:1rem"><button type="button" class="btn btn-solid" id="admin-seed">' + t('admin.seed') + '</button></div>' + html + '</section>';
-    afterRender('admin');
+    el.innerHTML = '<div class="dashboard-section-header">' +
+      '<h3 class="dashboard-section-title">' + t('admin.contentValidation') + '</h3>' +
+      '<button type="button" class="btn btn-solid btn-sm" id="admin-seed">' + t('admin.seed') + '</button>' +
+      '</div>' + itemsHtml;
 
     bindAdminSeed();
     document.querySelectorAll('[data-approve]').forEach(function (b) {
       b.addEventListener('click', function () { adminReview(decodeURIComponent(b.getAttribute('data-approve')), 'approve', ''); });
     });
     document.querySelectorAll('[data-reject]').forEach(function (b) {
-      b.addEventListener('click', function () { adminState.rejectingId = decodeURIComponent(b.getAttribute('data-reject')); renderAdminList(); });
+      b.addEventListener('click', function () { adminState.rejectingId = decodeURIComponent(b.getAttribute('data-reject')); renderValidationSection(); });
     });
     document.querySelectorAll('[data-confirm-reject]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -1913,7 +2063,7 @@
       });
     });
     document.querySelectorAll('[data-cancel-reject]').forEach(function (b) {
-      b.addEventListener('click', function () { adminState.rejectingId = null; renderAdminList(); });
+      b.addEventListener('click', function () { adminState.rejectingId = null; renderValidationSection(); });
     });
   }
 
@@ -1921,7 +2071,7 @@
     var item = adminState.items.filter(function (x) { return x.id === id; })[0];
     if (!item) return;
     callable('reviewContent')({ collection: item.collection, docId: item.id, decision: decision, reason: reason })
-      .then(function () { adminState.rejectingId = null; loadAdminQueue(); })
+      .then(function () { adminState.rejectingId = null; refreshPending(); })
       .catch(function () { alert(t('teacher.error')); });
   }
 
@@ -1933,20 +2083,17 @@
       callable('seedCurriculum')({}).then(function (r) {
         var d = r.data || {};
         alert(t('admin.seeded') + ' ' + (d.courses || 0) + '/' + (d.lessons || 0) + '/' + (d.quizzes || 0));
-        loadAdminQueue();
+        refreshPending();
       }).catch(function () { alert(t('teacher.error')); btn.disabled = false; });
     });
   }
 
-  function loadAdminQueue() {
+  function refreshPending() {
     callable('getAdminQueue')().then(function (r) {
       adminState.items = (r.data && r.data.items) || [];
       adminState.rejectingId = null;
-      renderAdminList();
-    }).catch(function () {
-      app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('admin.title') + '</h1><p class="auth-sub">' + t('teacher.error') + '</p></section>';
-      afterRender('admin');
-    });
+      renderValidationSection();
+    }).catch(function () {});
   }
 
   /* ---------- Register: 3-step wizard ---------- */

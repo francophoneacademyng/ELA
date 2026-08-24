@@ -940,6 +940,9 @@ body {
 /* 5. Live classes : état aspirationnel */
 .live-aspiration { text-align: center; padding: 1.6rem 1rem; }
 
+/* Panneau admin : conteneur large pour les tables */
+.admin-wrap { max-width: 980px; }
+
 /* Responsive hero */
 @media (max-width: 560px) {
   .dash-hero { flex-direction: column; align-items: flex-start; }
