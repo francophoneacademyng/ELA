@@ -255,6 +255,9 @@
           '</div>' +
           '<p class="reveal" style="color:var(--muted);max-width:36ch">' + t('pricing.lead') + '</p>' +
         '</div>' +
+        '<div class="reveal" style="margin:-1.5rem 0 2.5rem">' +
+          '<div class="setup-banner" style="margin:0">' + t('pricing.perLanguage') + '</div>' +
+        '</div>' +
         '<div class="price-scroll reveal">' +
           '<table class="price-table">' +
             '<thead><tr>' +
@@ -836,12 +839,16 @@
       (certItems ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem">' + certItems + '</div>' : '') +
     '</div>';
 
-    // --- Progression par académie ---
-    var academyHtml = (d.academyProgress && d.academyProgress.length)
+    // --- Progression par académie (modèle 1 abonnement = 1 langue) ---
+    var myAcademy = d.user && d.user.academy;
+    var myAcademies = (d.academyProgress || []).filter(function (a) {
+      return a.academy === myAcademy;
+    });
+    var academyHtml = myAcademies.length
       ? '<div class="dashboard-section">' +
           '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.academies') + '</h3></div>' +
           '<div class="card" style="margin-top:0;padding:1rem 1.3rem">' +
-          d.academyProgress.map(function (a) {
+          myAcademies.map(function (a) {
             return '<a href="#/courses" style="display:block;text-decoration:none;color:inherit;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
               '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.8rem;margin-bottom:0.4rem">' +
                 '<span style="font-weight:700;color:var(--forest)">' + t('academies.' + a.academy + '.name') + '</span>' +
@@ -923,9 +930,40 @@
       '</div>' +
     '</div>';
 
+    // --- Panneau par rôle (teacher / admin) — injecté après confirmation du rôle ---
+    var role = d.user && d.user.role;
+    var rolePanel = '';
+    if (role === 'teacher') {
+      rolePanel = '<div class="dashboard-section">' +
+        '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.teacherStudio') + '</h3>' +
+        '<a class="dashboard-section-link" href="#/teacher">' + t('dashboard.teacherStudio.open') + ARROW_SVG + '</a></div>' +
+        '<div class="card" style="margin-top:0">' +
+          '<p style="color:var(--muted);margin-bottom:0.9rem">' + t('dashboard.teacherStudioSub') + '</p>' +
+          '<div class="quick-grid" style="grid-template-columns:repeat(3,1fr)">' +
+            '<a class="action-tile" href="#/teacher"><div class="dash-stat-icon tint-emerald">' + ICON_BOOK + '</div><div class="action-title">' + t('dashboard.teacherStudio.publishLesson') + '</div></a>' +
+            '<a class="action-tile" href="#/teacher"><div class="dash-stat-icon tint-gold">' + ICON_QUIZ + '</div><div class="action-title">' + t('dashboard.teacherStudio.publishQuiz') + '</div></a>' +
+            '<a class="action-tile" href="#/teacher"><div class="dash-stat-icon tint-forest">' + ICON_VIDEO + '</div><div class="action-title">' + t('dashboard.teacherStudio.scheduleLive') + '</div></a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    } else if (role === 'admin') {
+      rolePanel = '<div class="dashboard-section">' +
+        '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.adminPanel') + '</h3>' +
+        '<a class="dashboard-section-link" href="#/admin">' + t('dashboard.adminPanel.open') + ARROW_SVG + '</a></div>' +
+        '<div class="card" style="margin-top:0">' +
+          '<p style="color:var(--muted);margin-bottom:0.9rem">' + t('dashboard.adminPanelSub') + '</p>' +
+          '<div class="quick-grid" style="grid-template-columns:repeat(2,1fr)">' +
+            '<a class="action-tile" href="#/admin"><div class="dash-stat-icon tint-emerald">' + ICON_AWARD + '</div><div class="action-title">' + t('dashboard.adminPanel.review') + '</div></a>' +
+            '<a class="action-tile" href="#/admin"><div class="dash-stat-icon tint-gold">' + ICON_BOOK + '</div><div class="action-title">' + t('dashboard.adminPanel.seed') + '</div></a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
     return '' +
       '<section class="auth-wrap assistant-wrap">' +
         headerHtml +
+        rolePanel +
         statsHtml +
         planLine +
         upgradeBanner +
@@ -1249,6 +1287,28 @@
       .catch(function () { return false; });
   }
 
+  // Modèle « 1 abonnement = 1 langue » : un élève n'accède qu'à son académie
+  // (trial public, admin/teacher non restreints).
+  function contentAccess(content) {
+    var user = firebase.auth().currentUser;
+    if (!user) return Promise.resolve(!!(content && content.isTrial));
+    var db = firebase.firestore();
+    return Promise.all([
+      db.collection('users').doc(user.uid).get(),
+      db.collection('subscriptions').doc(user.uid).get()
+    ]).then(function (r) {
+      var u = r[0].exists ? r[0].data() : {};
+      var role = u.role || 'student';
+      if (role === 'admin' || role === 'teacher') return true;
+      if (content && content.isTrial) return true;
+      var s = r[1].exists ? r[1].data() : null;
+      var end = s && s.endDate && s.endDate.toDate ? s.endDate.toDate() : (s && s.endDate ? new Date(s.endDate) : null);
+      if (!(s && s.status === 'active' && end && end > new Date())) return false;
+      var academy = u.academy || (Array.isArray(u.academies) && u.academies[0]) || null;
+      return academy ? (content && content.academy === academy) : false;
+    }).catch(function () { return false; });
+  }
+
   function studentSignInRequired(title) {
     app.innerHTML = '' +
       '<section class="auth-wrap"><h1 class="auth-title">' + title + '</h1>' +
@@ -1378,16 +1438,27 @@
         return;
       }
       var lesson = snap.data();
-      var courseId = lesson.courseId;
-      if (courseId && window.firebase && firebase.functions) {
-        callable('getCourse')({ courseId: courseId }).then(function (r) {
-          renderLessonContent(id, uid, lesson, (r.data && r.data.lessons) || []);
-        }).catch(function () {
+      contentAccess(lesson).then(function (allowed) {
+        if (!allowed) {
+          app.innerHTML = '' +
+            '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.lockedTitle') + '</h1>' +
+            '<p class="auth-sub">' + t('lesson.lockedSub') + '</p>' +
+            '<div class="hero-actions"><a class="btn btn-gold" href="#/pricing">' + t('lesson.lockedCta') + '</a></div>' +
+            '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p></section>';
+          afterRender('courses');
+          return;
+        }
+        var courseId = lesson.courseId;
+        if (courseId && window.firebase && firebase.functions) {
+          callable('getCourse')({ courseId: courseId }).then(function (r) {
+            renderLessonContent(id, uid, lesson, (r.data && r.data.lessons) || []);
+          }).catch(function () {
+            renderLessonContent(id, uid, lesson, []);
+          });
+        } else {
           renderLessonContent(id, uid, lesson, []);
-        });
-      } else {
-        renderLessonContent(id, uid, lesson, []);
-      }
+        }
+      });
     }).catch(function () {
       if (!user) {
         studentSignInRequired(t('courses.lessons'));
@@ -1495,10 +1566,22 @@
         afterRender('quiz');
         return;
       }
-      quizState.quiz = { id: id, data: snap.data() };
-      quizState.current = 0;
-      quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
-      renderQuizQuestion();
+      var qz = snap.data();
+      contentAccess(qz).then(function (allowed) {
+        if (!allowed) {
+          app.innerHTML = '' +
+            '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.lockedTitle') + '</h1>' +
+            '<p class="auth-sub">' + t('lesson.lockedSub') + '</p>' +
+            '<div class="hero-actions"><a class="btn btn-gold" href="#/pricing">' + t('lesson.lockedCta') + '</a></div>' +
+            '<p class="auth-alt"><a href="#/quiz">' + t('common.back') + '</a></p></section>';
+          afterRender('quiz');
+          return;
+        }
+        quizState.quiz = { id: id, data: qz };
+        quizState.current = 0;
+        quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
+        renderQuizQuestion();
+      });
     }).catch(function () {
       if (!user) {
         studentSignInRequired(t('courses.quizzes'));
