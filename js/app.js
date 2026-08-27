@@ -2463,6 +2463,19 @@
   }
 
   /* ---------- Boot ---------- */
+  /* ============================================================
+     NAV PAR RÔLE — MÉCANISME DURABLE (NE PAS SUPPRIMER)
+     ------------------------------------------------------------
+     Les liens « Teacher area » et « Admin » NE DOIVENT JAMAIS
+     exister dans le HTML statique (index.html). Ils sont créés
+     UNIQUEMENT ici, en JS, APRÈS confirmation du rôle via
+     Firestore (users/{uid}.role). Pour un visiteur (currentUser
+     === null) ou un élève simple, aucun lien n'est injecté.
+     ➜ TOUTE RÉFONTE du header/nav doit CONSERVER cette fonction
+       et ne jamais ajouter de lien teacher/admin dans index.html.
+       Si le header est réécrit, garder .nav-links et l'appel
+       de updateTeacherNav() (onAuthStateChanged + init).
+     ============================================================ */
   function updateTeacherNav() {
     var container = document.querySelector('.nav-links');
     if (!container) return;
