@@ -1858,21 +1858,60 @@
     });
   }
 
-  function adminHeaderHtml() {
+  function adminSidebarHtml() {
     var me = adminState.me || {};
     var name = me.displayName || me.email || '';
     var initial = (name.charAt(0) || 'A').toUpperCase();
-    var nav = [['admin-overview', 'admin.dashboard'], ['admin-users', 'admin.users'], ['admin-live', 'admin.liveClasses'], ['admin-payments', 'admin.payments'], ['admin-content', 'admin.contentCenter']];
+    var nav = [
+      ['admin-overview', 'admin.dashboard', ICON_AWARD],
+      ['admin-users', 'admin.users', ICON_BOOK],
+      ['admin-live', 'admin.liveClasses', ICON_VIDEO],
+      ['admin-payments', 'admin.payments', ICON_TROPHY],
+      ['admin-referrals', 'admin.referrals', ICON_GLOBE],
+      ['admin-content', 'admin.contentCenter', ICON_QUIZ]
+    ];
     var navHtml = nav.map(function (n) {
-      return '<button type="button" data-scroll="' + n[0] + '">' + t(n[1]) + '</button>';
+      return '<button type="button" class="admin-nav-item" data-scroll="' + n[0] + '">' +
+        '<span class="icon">' + n[2] + '</span><span>' + t(n[1]) + '</span></button>';
     }).join('');
-    return '<div class="admin-header">' +
-      '<span class="admin-brand"><span class="dot"></span>ELA ADMIN</span>' +
-      '<div class="admin-nav">' + navHtml + '</div>' +
-      '<div class="admin-right">' +
+    return '<aside class="admin-sidebar" id="admin-sidebar">' +
+      '<div class="admin-brand"><span class="admin-brand-mark">ELA</span><span class="admin-brand-name">Admin</span></div>' +
+      '<nav class="admin-nav">' + navHtml + '</nav>' +
+      '<div class="admin-side-footer">' +
         '<a class="view-site" href="#/">' + t('admin.viewWebsite') + '</a>' +
         '<span class="admin-profile"><span class="admin-avatar">' + initial + '</span>' + escapeHtml(name) + '</span>' +
       '</div>' +
+    '</aside>';
+  }
+
+  function adminActionableCardsHtml() {
+    var now = Date.now();
+    var nameById = {};
+    adminState.users.forEach(function (u) { nameById[u.id] = u.name || u.email || ''; });
+    var upcoming = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; }).sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
+    var next = upcoming[0] || null;
+    var pendingAmount = adminState.transactions.filter(function (tx) { return tx.status !== 'success'; }).reduce(function (s, tx) { return s + (tx.amount || 0); }, 0);
+    var pendingCount = adminState.transactions.filter(function (tx) { return tx.status !== 'success'; }).length;
+
+    var nextHtml;
+    if (next) {
+      var diff = next.scheduledAt - now;
+      var h = Math.floor(diff / 3600000);
+      var m = Math.round((diff % 3600000) / 60000);
+      nextHtml = '<div class="dash-stat-label">' + t('admin.nextLive') + '</div>' +
+        '<div class="dash-stat-value" style="font-size:1.4rem">' + escapeHtml(next.title || '') + '</div>' +
+        '<div class="dash-stat-hint">' + t('admin.liveIn') + ' ' + h + 'h ' + String(m).padStart(2, '0') + 'm · ' + escapeHtml(nameById[next.teacherUid] || t('admin.teacher')) + '</div>';
+    } else {
+      nextHtml = '<div class="dash-stat-label">' + t('admin.nextLive') + '</div>' +
+        '<div class="dash-stat-value" style="font-size:1.6rem">—</div>' +
+        '<div class="dash-stat-hint">' + t('admin.noUpcoming') + '</div>';
+    }
+
+    return '<div class="kpi-grid" style="grid-template-columns:repeat(2,1fr)">' +
+      '<div class="kpi-card">' + nextHtml + '</div>' +
+      '<div class="kpi-card"><div class="dash-stat-label">' + t('admin.paymentsPending') + '</div>' +
+        '<div class="dash-stat-value" style="color:var(--gold-deep)">' + fmtNaira(pendingAmount) + '</div>' +
+        '<div class="dash-stat-hint">' + pendingCount + ' ' + t('dashboard.tx.pending') + '</div></div>' +
     '</div>';
   }
 
@@ -1919,10 +1958,11 @@
     '</div>';
   }
 
-  function revenueChartHtml() {
+  function revenueChartHtml(range) {
+    range = range || 30;
     var days = [];
     var now = new Date();
-    for (var i = 29; i >= 0; i--) {
+    for (var i = range - 1; i >= 0; i--) {
       var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
       days.push({ key: d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(), date: d, total: 0 });
     }
@@ -1938,15 +1978,16 @@
     days.forEach(function (d) { if (d.total > max) max = d.total; });
     if (max === 0) return '<div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('admin.noPayments') + '</p></div>';
 
-    var W = 600, H = 140, gap = 4, bw = (W - gap * 29) / 30;
+    var W = 600, H = 140, gap = (range > 45 ? 1 : 4), bw = (W - gap * (range - 1)) / range;
     var bars = days.map(function (d, i) {
       var h = Math.max(3, Math.round((d.total / max) * (H - 16)));
-      return '<rect x="' + (i * (bw + gap)).toFixed(1) + '" y="' + (H - h) + '" width="' + bw.toFixed(1) + '" height="' + h + '" rx="2" fill="' + (d.total > 0 ? '#E2AC2B' : '#E9E2CB') + '"><title>' + d.date.toLocaleDateString(ELA_I18N.getLang()) + ': ' + fmtNaira(d.total) + '</title></rect>';
+      return '<rect x="' + (i * (bw + gap)).toFixed(1) + '" y="' + (H - h) + '" width="' + bw.toFixed(1) + '" height="' + h + '" rx="1.5" fill="' + (d.total > 0 ? '#E2AC2B' : '#E9E2CB') + '"><title>' + d.date.toLocaleDateString(ELA_I18N.getLang()) + ': ' + fmtNaira(d.total) + '</title></rect>';
     }).join('');
     return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" class="rev-chart" role="img" aria-label="' + t('admin.last30Days') + '">' + bars + '</svg>';
   }
 
   function revenueAnalyticsHtml() {
+    var range = adminState.range || 30;
     var now = new Date();
     var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
     var prevStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -1959,15 +2000,30 @@
     var compare = (prevTotal > 0)
       ? '<div class="rev-compare">' + (monthTotal >= prevTotal ? '+' : '') + Math.round(((monthTotal - prevTotal) / prevTotal) * 100) + '% ' + t('admin.vsLastMonth') + '</div>'
       : '';
+    var rangeBtns = [7, 30, 90].map(function (r) {
+      return '<button type="button" class="range-btn' + (r === range ? ' active' : '') + '" data-range="' + r + '">' + t('admin.' + r + 'd') + '</button>';
+    }).join('');
     return '<div class="dashboard-section" id="admin-revenue">' +
-      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.monthRevenue') + '</h3></div>' +
+      '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.monthRevenue') + '</h3>' +
+      '<div class="range-switch">' + rangeBtns + '</div></div>' +
       '<div class="rev-panel">' +
         '<div class="rev-total">' + fmtNaira(monthTotal) + '</div>' +
         compare +
         '<div style="margin-top:1rem;font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">' + t('admin.last30Days') + '</div>' +
-        revenueChartHtml() +
+        '<div id="admin-rev-chart">' + revenueChartHtml(range) + '</div>' +
       '</div>' +
     '</div>';
+  }
+
+  function bindRevenueRange() {
+    document.querySelectorAll('[data-range]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        adminState.range = parseInt(b.getAttribute('data-range'), 10);
+        var el = document.getElementById('admin-revenue');
+        if (el) el.outerHTML = revenueAnalyticsHtml();
+        bindRevenueRange();
+      });
+    });
   }
 
   function academyOverviewHtml() {
@@ -1996,34 +2052,59 @@
 
   function adminLiveHtml() {
     var now = Date.now();
+    var WINDOW = 4 * 3600000; // fenêtre de 4 h après le début (lien externe, pas de présence temps réel)
     var nameById = {};
     adminState.users.forEach(function (u) { nameById[u.id] = u.name || u.email || ''; });
-    var sorted = adminState.liveClasses.slice().sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
-    var upcoming = sorted.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; });
-    var rows = sorted.map(function (l) {
-      var when = l.scheduledAt ? new Date(l.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—';
-      var teacher = l.teacherUid ? (nameById[l.teacherUid] || l.teacherUid) : '—';
-      return '<tr><td>' + escapeHtml(l.title || '') + '</td>' +
+
+    var linkBadge = function (l) {
+      if (l.meetingLink) return '<a class="dashboard-section-link" href="' + escapeHtml(l.meetingLink) + '" target="_blank" rel="noopener">' + t('admin.link') + '</a>';
+      return '<span class="badge badge-red">' + t('admin.notStarted') + '</span>';
+    };
+    var teacherOf = function (l) { return l.teacherUid ? (nameById[l.teacherUid] || l.teacherUid) : '—'; };
+    var row = function (l) {
+      return '<tr><td style="font-weight:700;color:var(--forest)">' + escapeHtml(l.title || '') + '</td>' +
         '<td>' + escapeHtml(t('academies.' + (l.academy || 'german') + '.name')) + '</td>' +
-        '<td>' + escapeHtml(teacher) + '</td>' +
-        '<td>' + when + '</td>' +
-        '<td>' + (l.meetingLink ? '<a class="dashboard-section-link" href="' + escapeHtml(l.meetingLink) + '" target="_blank" rel="noopener">' + t('admin.link') + '</a>' : '—') + '</td></tr>';
+        '<td>' + escapeHtml(teacherOf(l)) + '</td>' +
+        '<td>' + (l.scheduledAt ? new Date(l.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—') + '</td>' +
+        '<td>' + linkBadge(l) + '</td></tr>';
+    };
+
+    var happening = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt <= now && l.scheduledAt + WINDOW >= now; }).sort(function (a, b) { return (b.scheduledAt || 0) - (a.scheduledAt || 0); });
+    var upcoming = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt > now; }).sort(function (a, b) { return (a.scheduledAt || 0) - (b.scheduledAt || 0); });
+    var completed = adminState.liveClasses.filter(function (l) { return l.scheduledAt && l.scheduledAt + WINDOW < now && l.scheduledAt >= now - 30 * 86400000; }).sort(function (a, b) { return (b.scheduledAt || 0) - (a.scheduledAt || 0); });
+
+    var block = function (title, rowsHtml, emptyKey) {
+      return '<div class="admin-section-block">' +
+        '<h3 class="admin-section-title">' + title + '</h3>' +
+        (rowsHtml || '<div class="admin-empty-inline">' + t(emptyKey) + '</div>') +
+      '</div>';
+    };
+
+    var happeningHtml = happening.map(function (l) {
+      return '<div class="admin-live-card">' +
+        '<div class="admin-live-head"><span class="badge badge-gold"><span class="live-dot" style="margin-inline-end:0.35rem"></span>' + t('admin.liveNow') + '</span>' +
+        '<span class="admin-live-title">' + escapeHtml(l.title || '') + '</span></div>' +
+        '<div class="admin-live-meta">' + escapeHtml(teacherOf(l)) + ' · ' + escapeHtml(t('academies.' + (l.academy || 'german') + '.name')) + '</div>' +
+        '<div class="admin-live-meta">' + t('admin.externalLink') + '</div>' +
+        linkBadge(l) +
+      '</div>';
     }).join('');
-    var body;
-    if (!rows) {
-      body = '<div class="card" style="margin-top:0"><div class="empty-state" style="padding:1.6rem 1rem">' +
-        '<div class="dash-stat-icon tint-gold" style="margin:0 auto 0.8rem">' + ICON_VIDEO + '</div>' +
-        '<h3 style="font-family:var(--font-display);font-weight:800;font-size:1.6rem;color:var(--forest);margin-bottom:0.3rem">' + t('admin.liveZero') + '</h3>' +
-        '<p style="margin:0 auto 1.2rem;max-width:40ch">' + t('admin.liveHint') + '</p>' +
-        '<a class="btn btn-solid btn-sm" href="#/teacher">' + t('admin.scheduleClass') + '</a>' +
-      '</div></div>';
-    } else {
-      body = '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('admin.link') + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
-    }
+
+    var upcomingRows = upcoming.map(row).join('');
+    var completedRows = completed.map(function (l) {
+      return '<tr><td style="font-weight:700;color:var(--forest)">' + escapeHtml(l.title || '') + '</td>' +
+        '<td>' + escapeHtml(t('academies.' + (l.academy || 'german') + '.name')) + '</td>' +
+        '<td>' + escapeHtml(teacherOf(l)) + '</td>' +
+        '<td>' + (l.scheduledAt ? new Date(l.scheduledAt).toLocaleString(ELA_I18N.getLang()) : '—') + '</td>' +
+        '<td><span class="badge badge-muted">' + t('admin.completed') + '</span></td></tr>';
+    }).join('');
+
     return '<div class="dashboard-section" id="admin-live">' +
       '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.liveClasses') + '</h3>' +
-      '<span style="font-size:0.8rem;color:var(--muted)">' + upcoming.length + ' ' + t('admin.students') + '</span></div>' +
-      body +
+      '<a class="btn btn-solid btn-sm" href="#/teacher">' + t('admin.scheduleClass') + '</a></div>' +
+      block(t('admin.happeningNow'), happeningHtml, 'admin.noHappening') +
+      block(t('admin.upcoming'), (upcomingRows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('admin.link') + '</th></tr></thead><tbody>' + upcomingRows + '</tbody></table></div>' : ''), 'admin.noUpcoming') +
+      block(t('admin.completed'), (completedRows ? '<div class="dash-table-wrap"><table class="dash-table"><thead><tr><th>' + t('admin.name') + '</th><th>' + t('nav.academies') + '</th><th>' + t('admin.teacher') + '</th><th>' + t('dashboard.date') + '</th><th>' + t('dashboard.status') + '</th></tr></thead><tbody>' + completedRows + '</tbody></table></div>' : ''), 'admin.noCompleted') +
     '</div>';
   }
 
@@ -2107,7 +2188,7 @@
     var codesUsed = adminState.users.filter(function (u) { return u.referralCodeUsed; }).length;
     var credits = adminState.users.reduce(function (sum, u) { return sum + (u.referralCredit || 0); }, 0);
     var hasData = codesUsed > 0 || credits > 0;
-    return '<div class="dashboard-section">' +
+    return '<div class="dashboard-section" id="admin-referrals">' +
       '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.referrals') + '</h3></div>' +
       (hasData
         ? '<div class="dash-stats-grid" style="grid-template-columns:repeat(2,1fr)">' +
@@ -2206,25 +2287,29 @@
 
   function renderAdminPanel() {
     app.innerHTML = '' +
-      '<section class="auth-wrap admin-wrap">' +
-        adminHeaderHtml() +
-        adminHeroHtml() +
-        revenueAnalyticsHtml() +
-        academyOverviewHtml() +
-        adminLiveHtml() +
-        contentCenterHtml() +
-        adminPaymentsHtml() +
-        '<div class="dashboard-section" id="admin-users">' +
-          '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.users') + '</h3><span style="font-size:0.8rem;color:var(--muted)">' + adminState.users.length + '</span></div>' +
-          '<div class="field" style="margin-bottom:0.8rem"><input id="admin-search" type="text" placeholder="' + t('admin.searchPlaceholder') + '" value="' + escapeHtml(adminState.search || '') + '"></div>' +
-          '<div id="admin-users-list">' + adminUsersRowsHtml() + '</div>' +
+      '<section class="auth-wrap admin-wrap admin-layout">' +
+        adminSidebarHtml() +
+        '<div class="admin-content">' +
+          adminHeroHtml() +
+          adminActionableCardsHtml() +
+          revenueAnalyticsHtml() +
+          academyOverviewHtml() +
+          adminLiveHtml() +
+          contentCenterHtml() +
+          adminPaymentsHtml() +
+          '<div class="dashboard-section" id="admin-users">' +
+            '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('admin.users') + '</h3><span style="font-size:0.8rem;color:var(--muted)">' + adminState.users.length + '</span></div>' +
+            '<div class="field" style="margin-bottom:0.8rem"><input id="admin-search" type="text" placeholder="' + t('admin.searchPlaceholder') + '" value="' + escapeHtml(adminState.search || '') + '"></div>' +
+            '<div id="admin-users-list">' + adminUsersRowsHtml() + '</div>' +
+          '</div>' +
+          adminReferralsHtml() +
+          adminQuickActionsHtml() +
         '</div>' +
-        adminReferralsHtml() +
-        adminQuickActionsHtml() +
       '</section>';
     afterRender('admin');
     renderValidationSection();
     bindAdminSearch();
+    bindRevenueRange();
 
     document.querySelectorAll('[data-scroll]').forEach(function (b) {
       b.addEventListener('click', function () {

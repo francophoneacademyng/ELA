@@ -414,5 +414,21 @@
   "admin.lessons": "Leçons",
   "admin.academiesCount": "Académies",
   "admin.pendingReview": "En attente de validation",
-  "admin.reviewContent": "Valider le contenu"
+  "admin.reviewContent": "Valider le contenu",
+  "admin.happeningNow": "En cours",
+  "admin.upcoming": "À venir",
+  "admin.completed": "Terminées / Passées",
+  "admin.externalLink": "Lien externe — présence non suivie",
+  "admin.notStarted": "Pas commencé",
+  "admin.noHappening": "Aucun cours en cours.",
+  "admin.noUpcoming": "Aucun cours à venir.",
+  "admin.noCompleted": "Aucun cours terminé sur les 30 derniers jours.",
+  "admin.nextLive": "Prochain cours en direct",
+  "admin.paymentsPending": "Paiements en attente",
+  "admin.liveIn": "dans",
+  "admin.range": "Période",
+  "admin.liveNow": "En direct",
+  "admin.7d": "7j",
+  "admin.30d": "30j",
+  "admin.90d": "90j"
 }

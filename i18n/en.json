@@ -414,5 +414,21 @@
   "admin.lessons": "Lessons",
   "admin.academiesCount": "Academies",
   "admin.pendingReview": "Pending review",
-  "admin.reviewContent": "Review content"
+  "admin.reviewContent": "Review content",
+  "admin.happeningNow": "Happening now",
+  "admin.upcoming": "Upcoming",
+  "admin.completed": "Completed / Past",
+  "admin.externalLink": "External link — attendance not tracked",
+  "admin.notStarted": "Not started",
+  "admin.noHappening": "No class is running right now.",
+  "admin.noUpcoming": "No upcoming classes scheduled.",
+  "admin.noCompleted": "No completed classes in the last 30 days.",
+  "admin.nextLive": "Next live class",
+  "admin.paymentsPending": "Payments pending",
+  "admin.liveIn": "in",
+  "admin.range": "Range",
+  "admin.liveNow": "Live now",
+  "admin.7d": "7d",
+  "admin.30d": "30d",
+  "admin.90d": "90d"
 }

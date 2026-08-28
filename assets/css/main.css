@@ -1029,6 +1029,56 @@ body {
   .admin-nav { margin-inline-start: 0; }
 }
 
+/* ============================================================
+   ADMIN — sidebar back-office + live classes (3 blocs) + range
+   ============================================================ */
+.admin-layout { display: flex; gap: 1.4rem; align-items: flex-start; max-width: 1200px; }
+.admin-sidebar {
+  flex: 0 0 210px; position: sticky; top: 84px;
+  background: var(--forest-ink); color: var(--cream);
+  border-radius: var(--radius-lg); padding: 1.1rem 0.8rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.admin-sidebar .admin-brand { padding: 0 0.5rem 0.6rem; font-family: var(--font-brand); font-size: 0.95rem; letter-spacing: 0.04em; }
+.admin-sidebar .admin-brand-mark { color: var(--gold-vivid); }
+.admin-sidebar .admin-brand-name { color: rgba(250, 246, 236, 0.7); font-size: 0.8rem; }
+.admin-nav-item {
+  display: flex; align-items: center; gap: 0.6rem; width: 100%;
+  background: none; border: none; cursor: pointer; color: rgba(250, 246, 236, 0.72);
+  font-family: var(--font-body); font-size: 0.88rem; text-align: start;
+  padding: 0.5rem 0.6rem; border-radius: var(--radius);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.admin-nav-item .icon { display: inline-flex; color: var(--gold-vivid); }
+.admin-nav-item:hover, .admin-nav-item.active { background: rgba(250, 246, 236, 0.1); color: var(--cream); }
+.admin-side-footer { margin-top: auto; padding: 0.6rem 0.5rem 0; border-top: 1px solid rgba(250, 246, 236, 0.12); display: flex; flex-direction: column; gap: 0.5rem; }
+.admin-side-footer .view-site { color: var(--gold-vivid); text-decoration: none; font-size: 0.85rem; }
+.admin-side-footer .admin-profile { font-size: 0.8rem; color: rgba(250, 246, 236, 0.85); display: flex; align-items: center; gap: 0.5rem; }
+.admin-content { flex: 1; min-width: 0; }
+
+/* Range switch (revenus 7/30/90) */
+.range-switch { display: flex; gap: 0.3rem; background: var(--cream-soft); border-radius: 999px; padding: 0.2rem; }
+.range-btn { border: none; background: transparent; cursor: pointer; font-family: var(--font-body); font-size: 0.78rem; color: var(--muted); padding: 0.3rem 0.8rem; border-radius: 999px; transition: background 0.15s ease, color 0.15s ease; }
+.range-btn.active { background: var(--forest); color: var(--cream); }
+
+/* Live classes admin : blocs + cartes */
+.admin-section-block { margin-bottom: 1.4rem; }
+.admin-section-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--forest); margin-bottom: 0.6rem; }
+.admin-live-card { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: 1rem 1.2rem; margin-bottom: 0.7rem; }
+.admin-live-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+.admin-live-title { font-weight: 700; color: var(--forest); }
+.admin-live-meta { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.3rem; }
+.admin-empty-inline { background: var(--cream-soft); border-radius: var(--radius-lg); padding: 1.2rem 1rem; font-size: 0.88rem; color: var(--muted); }
+
+/* Sidebar responsive */
+@media (max-width: 900px) {
+  .admin-layout { flex-direction: column; }
+  .admin-sidebar { position: static; flex: none; width: 100%; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .admin-nav-item { width: auto; }
+  .admin-side-footer { margin-top: 0; border-top: none; flex-direction: row; align-items: center; }
+}
+
+
 
 /* Responsive hero */
 @media (max-width: 560px) {

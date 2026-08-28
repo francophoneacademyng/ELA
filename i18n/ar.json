@@ -414,5 +414,21 @@
   "admin.lessons": "الدروس",
   "admin.academiesCount": "الأكاديميات",
   "admin.pendingReview": "قيد المراجعة",
-  "admin.reviewContent": "مراجعة المحتوى"
+  "admin.reviewContent": "مراجعة المحتوى",
+  "admin.happeningNow": "جارية الآن",
+  "admin.upcoming": "القادمة",
+  "admin.completed": "المكتملة / الماضية",
+  "admin.externalLink": "رابط خارجي — لا يتم تتبع الحضور",
+  "admin.notStarted": "لم تبدأ",
+  "admin.noHappening": "لا توجد حصة جارية الآن.",
+  "admin.noUpcoming": "لا توجد حصص قادمة مجدولة.",
+  "admin.noCompleted": "لا توجد حصص مكتملة في آخر 30 يوماً.",
+  "admin.nextLive": "الحصة المباشرة القادمة",
+  "admin.paymentsPending": "مدفوعات معلقة",
+  "admin.liveIn": "خلال",
+  "admin.range": "الفترة",
+  "admin.liveNow": "مباشر الآن",
+  "admin.7d": "7ي",
+  "admin.30d": "30ي",
+  "admin.90d": "90ي"
 }
