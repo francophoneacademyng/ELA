@@ -430,5 +430,8 @@
   "admin.liveNow": "Live now",
   "admin.7d": "7d",
   "admin.30d": "30d",
-  "admin.90d": "90d"
+  "admin.90d": "90d",
+  "consent.text": "We use cookies for analytics to improve your experience.",
+  "consent.accept": "Accept",
+  "consent.decline": "Decline"
 }

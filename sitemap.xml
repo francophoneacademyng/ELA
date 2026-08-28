@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ela-academy-7f868.web.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/academies</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/pricing</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/courses</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/quiz</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/live</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://ela-academy-7f868.web.app/#/refund</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

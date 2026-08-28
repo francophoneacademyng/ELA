@@ -430,5 +430,8 @@
   "admin.liveNow": "En direct",
   "admin.7d": "7j",
   "admin.30d": "30j",
-  "admin.90d": "90j"
+  "admin.90d": "90j",
+  "consent.text": "Nous utilisons des cookies d’analyse pour améliorer votre expérience.",
+  "consent.accept": "Accepter",
+  "consent.decline": "Refuser"
 }

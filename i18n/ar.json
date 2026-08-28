@@ -430,5 +430,8 @@
   "admin.liveNow": "مباشر الآن",
   "admin.7d": "7ي",
   "admin.30d": "30ي",
-  "admin.90d": "90ي"
+  "admin.90d": "90ي",
+  "consent.text": "نستخدم ملفات تعريف الارتباط للتحليلات لتحسين تجربتك.",
+  "consent.accept": "قبول",
+  "consent.decline": "رفض"
 }
