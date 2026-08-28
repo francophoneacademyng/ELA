@@ -138,6 +138,16 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // Tracking (Phase 0) : le client ne peut créer que les événements non sensibles
+    // (page_view, registration, trial_started, checkout_started) avec champs validés.
+    // payment_success est écrit UNIQUEMENT par le serveur (webhook Paystack, Admin SDK).
+    match /marketingEvents/{id} {
+      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started']
+                    && request.resource.data.ts is number;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

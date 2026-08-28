@@ -407,6 +407,18 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
                 to: txDoc.email, uid: txDoc.uid, plan: txDoc.plan, duration: txDoc.duration,
                 amount: paidAmount, reference
               }).catch(() => {});
+              // Tracking Phase 0 — payment_success (valeur NGN réelle, serveur uniquement).
+              try {
+                await db.collection('marketingEvents').add({
+                  event: 'payment_success',
+                  ts: Date.now(),
+                  valueNGN: paidAmount,
+                  plan: txDoc.plan,
+                  duration: txDoc.duration,
+                  uid: txDoc.uid,
+                  reference
+                }).catch(() => {});
+              } catch (e) { /* silencieux */ }
             }
           } catch (err) {
             console.error('webhook grant failed', err);

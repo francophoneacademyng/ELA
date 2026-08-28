@@ -481,6 +481,7 @@
 
     afterRender('pricing');
     refreshCheckoutPreview();
+    if (window.ELAMarketing) window.ELAMarketing.track('checkout_started', { plan: checkoutState.plan || 'general', duration: checkoutState.duration || 1 });
   }
 
   /* ---------- Payment result ---------- */
@@ -1448,6 +1449,7 @@
           afterRender('courses');
           return;
         }
+        if (lesson.isTrial && window.ELAMarketing) window.ELAMarketing.track('trial_started', { academy: lesson.academy || 'german', lessonId: id });
         var courseId = lesson.courseId;
         if (courseId && window.firebase && firebase.functions) {
           callable('getCourse')({ courseId: courseId }).then(function (r) {
@@ -2360,7 +2362,10 @@
               createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
           })
-          .then(function () { alert(t('register.success')); window.location.hash = '#/dashboard'; })
+          .then(function () {
+            if (window.ELAMarketing) window.ELAMarketing.track('registration', { academy: registerState.academy || 'german' });
+            alert(t('register.success')); window.location.hash = '#/dashboard';
+          })
           .catch(function () { document.getElementById('reg-error').classList.add('show'); });
       });
     }
