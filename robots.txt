@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ela-academy-7f868.web.app/sitemap.xml
+Sitemap: https://elaacademy.ng/sitemap.xml

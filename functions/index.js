@@ -34,7 +34,7 @@ const db = admin.firestore();
 
 const REGION = 'africa-south1';
 const PAYSTACK_BASE = 'https://api.paystack.co';
-const DEFAULT_CALLBACK_URL = 'https://ela-academy-7f868.web.app/#/payment/result';
+const DEFAULT_CALLBACK_URL = 'https://elaacademy.ng/#/payment/result';
 
 /**
  * Grille tarifaire canonique (NGN) — source de vérité côté serveur.
