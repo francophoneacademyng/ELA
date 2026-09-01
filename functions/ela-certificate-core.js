@@ -10,7 +10,16 @@
    ============================================================ */
 
 const crypto = require('crypto');
-const db = require('firebase-admin').firestore();
+const admin = require('firebase-admin');
+// DB lazy : permet le test unitaire des fonctions pures sans Firebase.
+let _db = null;
+function getDb() {
+  if (!_db) {
+    if (!admin.apps.length) admin.initializeApp();
+    _db = admin.firestore();
+  }
+  return _db;
+}
 
 const CERTIFICATES = 'ela_certificates';
 const EVENTS = 'ela_certificate_events';
@@ -96,7 +105,7 @@ function appendEvent(evt) {
     academyCode: String(evt.academyCode || ''),
     metadata: evt.metadata || {}
   };
-  return db.collection(EVENTS).add(doc)
+  return getDb().collection(EVENTS).add(doc)
     .then(() => null)
     .catch((err) => { console.error('[ELA-Cert] event write failed:', err.message); return null; });
 }
@@ -167,7 +176,7 @@ async function issueCertificate(input) {
     updatedAt: now.toISOString()
   };
 
-  await db.collection(CERTIFICATES).doc(id).set(cert);
+  await getDb().collection(CERTIFICATES).doc(id).set(cert);
   await appendEvent({
     certificateId: id, action: 'ISSUED', performedBy: cert.createdBy,
     academyCode: academyCode,
@@ -206,7 +215,7 @@ function ownerView(cert) {
 
 /** Révocation (super admin ELA) + event REVOKED. */
 async function revokeCertificate(id, reason, performedBy) {
-  const ref = db.collection(CERTIFICATES).doc(String(id));
+  const ref = getDb().collection(CERTIFICATES).doc(String(id));
   const snap = await ref.get();
   if (!snap.exists) throw new Error('certificate-not-found');
   await ref.update({
@@ -226,7 +235,7 @@ async function revokeCertificate(id, reason, performedBy) {
 
 /** Migration one-shot d'un certificat legacy → ela_certificates (event MIGRATED). */
 async function migrateLegacyCertificate(legacyId, legacy) {
-  const existing = await db.collection(CERTIFICATES)
+  const existing = await getDb().collection(CERTIFICATES)
     .where('legacyId', '==', String(legacyId)).limit(1).get();
   if (!existing.empty) return null; // déjà migré (idempotent)
 
@@ -247,7 +256,7 @@ async function migrateLegacyCertificate(legacyId, legacy) {
     sourceQuizId: legacy.quizId || null
   });
 
-  await db.collection(CERTIFICATES).doc(cert.id).update({
+  await getDb().collection(CERTIFICATES).doc(cert.id).update({
     legacyId: String(legacyId),
     legacyCollection: 'certificates',
     legacyVerificationCode: legacy.verificationCode || null,
@@ -260,7 +269,7 @@ async function migrateLegacyCertificate(legacyId, legacy) {
     metadata: { legacyId: String(legacyId), legacyCollection: 'certificates' }
   });
   // L'ancien document est marqué migré — JAMAIS supprimé.
-  await db.collection('certificates').doc(String(legacyId))
+  await getDb().collection('certificates').doc(String(legacyId))
     .update({ migratedToELA: cert.id, migratedAt: new Date().toISOString() })
     .catch(() => null);
   return cert.id;
