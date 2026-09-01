@@ -1050,6 +1050,218 @@ exports.reviewContent = onCall({ region: REGION }, async (request) => {
 });
 
 /* ============================================================
+   INTERFACE ADMIN — données agrégées du panel (réplique FA)
+   Remplace les 6 lectures pleine collection du client :
+   l'agrégation est faite côté serveur, paginée et bornée.
+   ============================================================ */
+const ADMIN_PAGE_SIZE = 100;
+
+exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  await requireAdmin(request.auth.uid);
+
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
+
+  // --- Utilisateurs (borné, tri desc) ---
+  const usersSnap = await db.collection('users')
+    .orderBy('createdAt', 'desc').limit(ADMIN_PAGE_SIZE).get();
+  const users = usersSnap.docs.map((d) => {
+    const u = d.data() || {};
+    return {
+      id: d.id,
+      name: u.displayName || '',
+      email: u.email || '',
+      role: u.role || 'student',
+      academy: u.academy || null,
+      referralCodeUsed: u.referralCodeUsed || null,
+      referralCredit: u.referralCredit || 0,
+      createdAt: ts(u.createdAt)
+    };
+  });
+
+  // --- Transactions (borné, tri desc) ---
+  const txSnap = await db.collection('transactions')
+    .orderBy('createdAt', 'desc').limit(ADMIN_PAGE_SIZE).get();
+  const transactions = txSnap.docs.map((d) => {
+    const x = d.data() || {};
+    return {
+      id: d.id,
+      uid: x.uid || '',
+      plan: x.plan || 'general',
+      amount: x.amount || 0,
+      discount: x.discount || 0,
+      creditUsed: x.creditUsed || 0,
+      status: x.status || 'pending',
+      createdAt: ts(x.createdAt)
+    };
+  });
+
+  // --- Abonnements ---
+  const subsSnap = await db.collection('subscriptions').get();
+  const subscriptions = subsSnap.docs.map((d) => {
+    const s = d.data() || {};
+    return { uid: d.id, plan: s.plan || 'general', status: s.status || '', endDate: ts(s.endDate) };
+  });
+
+  // --- Live classes à venir (30 jours glissants) ---
+  const horizon = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
+  const liveSnap = await db.collection('liveClasses')
+    .where('scheduledAt', '>=', now).where('scheduledAt', '<=', horizon)
+    .orderBy('scheduledAt', 'asc').limit(50).get();
+  const liveClasses = liveSnap.docs.map((d) => {
+    const l = d.data() || {};
+    return {
+      id: d.id, title: l.title || '', academy: l.academy || null,
+      teacherUid: l.teacherUid || null, scheduledAt: ts(l.scheduledAt), status: l.status || ''
+    };
+  });
+
+  // --- Agrégats (KPI + revenus) — calculés ici, jamais côté client ---
+  let revenueThisMonth = 0;
+  let revenuePrevMonth = 0;
+  let newUsers7d = 0;
+  const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  for (const t of transactions) {
+    if (t.status !== 'success') continue;
+    if (t.createdAt >= monthStart.getTime()) revenueThisMonth += t.amount;
+    else if (t.createdAt >= prevMonthStart.getTime()) revenuePrevMonth += t.amount;
+  }
+  for (const u of users) {
+    if (u.createdAt >= weekAgo.getTime()) newUsers7d++;
+  }
+  const activeSubs = subscriptions.filter((s) =>
+    s.status === 'active' && s.endDate > now.getTime()).length;
+  const byPlan = {};
+  for (const s of subscriptions) {
+    if (s.status === 'active' && s.endDate > now.getTime()) {
+      byPlan[s.plan] = (byPlan[s.plan] || 0) + 1;
+    }
+  }
+  const dailyRevenue = {};
+  for (const t of transactions) {
+    if (t.status !== 'success' || !t.createdAt) continue;
+    const d = new Date(t.createdAt);
+    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+
+/* ============================================================
+   INTERFACE TEACHER — soumission de contenu (réplique FA)
+   Les écritures teacher passent par le serveur : mêmes règles
+   que firestore.rules (canCreateContent) appliquées ici.
+   Les documents atterrissent dans lessons/quizzes/liveClasses
+   avec status:'pending' — aucune donnée existante modifiée.
+   ============================================================ */
+const MAX_CONTENT_LENGTH = 20000;
+const MAX_QUESTIONS = 50;
+
+function validateContentPayload(type, p) {
+  if (!p || typeof p !== 'object') {
+    throw new HttpsError('invalid-argument', 'missing-payload');
+  }
+  const title = String(p.title || '').trim();
+  if (!title || title.length > 200) {
+    throw new HttpsError('invalid-argument', 'invalid-title');
+  }
+  if (type === 'lesson') {
+    const content = String(p.content || '').trim();
+    if (!content || content.length > MAX_CONTENT_LENGTH) {
+      throw new HttpsError('invalid-argument', 'invalid-content');
+    }
+    const levels = ['beginner', 'intermediate', 'advanced'];
+    if (!levels.includes(p.level)) {
+      throw new HttpsError('invalid-argument', 'invalid-level');
+    }
+    return { title, description: String(p.description || '').trim(), content, level: p.level };
+  }
+  if (type === 'quiz') {
+    const qs = Array.isArray(p.questions) ? p.questions : [];
+    if (!qs.length || qs.length > MAX_QUESTIONS) {
+      throw new HttpsError('invalid-argument', 'invalid-questions');
+    }
+    const questions = qs.map((q) => {
+      const text = String((q && q.text) || '').trim();
+      const options = Array.isArray(q && q.options) ? q.options.map((o) => String(o || '').trim()) : [];
+      const correctIndex = Number(q && q.correctIndex);
+      if (!text || options.length !== 4 || options.some((o) => !o) ||
+          !(correctIndex >= 0 && correctIndex < 4)) {
+        throw new HttpsError('invalid-argument', 'invalid-question');
+      }
+      return { text, options, correctIndex };
+    });
+    return { title, questions };
+  }
+  if (type === 'live') {
+    const link = String(p.meetingLink || '').trim();
+    if (!/^https?:\/\/.+/i.test(link)) {
+      throw new HttpsError('invalid-argument', 'invalid-meeting-link');
+    }
+    const when = new Date(p.scheduledAt || '');
+    if (isNaN(when.getTime()) || when.getTime() <= Date.now()) {
+      throw new HttpsError('invalid-argument', 'invalid-scheduled-at');
+    }
+    return { title, scheduledAt: when, meetingLink: link };
+  }
+  throw new HttpsError('invalid-argument', 'invalid-type');
+}
+
+exports.submitContent = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const callerSnap = await db.collection('users').doc(uid).get();
+  if (!callerSnap.exists) {
+    throw new HttpsError('permission-denied', 'teacher-only');
+  }
+  const caller = callerSnap.data();
+  const role = caller.role || 'student';
+  if (role !== 'teacher' && role !== 'admin') {
+    throw new HttpsError('permission-denied', 'teacher-only');
+  }
+
+  const data = request.data || {};
+  const type = data.type;
+  if (!['lesson', 'quiz', 'live'].includes(type)) {
+    throw new HttpsError('invalid-argument', 'invalid-type');
+  }
+
+  // L'académie est imposée pour un teacher (jamais fournie par le client).
+  const academy = role === 'teacher'
+    ? caller.academy
+    : (VALID_ACADEMIES.includes(data.academy) ? data.academy : caller.academy || VALID_ACADEMIES[0]);
+  if (!VALID_ACADEMIES.includes(academy)) {
+    throw new HttpsError('invalid-argument', 'teacher-requires-valid-academy');
+  }
+
+  const clean = validateContentPayload(type, data.payload);
+  const target = type === 'lesson' ? 'lessons' : type === 'quiz' ? 'quizzes' : 'liveClasses';
+  const docData = Object.assign({}, clean, {
+    academy,
+    teacherUid: uid,
+    status: 'pending',
+    createdAt: new Date()
+  });
+  const ref = await db.collection(target).add(docData);
+  return { ok: true, id: ref.id, collection: target, status: 'pending' };
+});
+
+    dailyRevenue[key] = (dailyRevenue[key] || 0) + t.amount;
+  }
+
+  return {
+    users, transactions, subscriptions, liveClasses,
+    metrics: {
+      revenueThisMonth, revenuePrevMonth, newUsers7d, activeSubs,
+      byPlan, dailyRevenue, totalUsersCounted: users.length
+    }
+  };
+});
+
+
+/* ============================================================
    CURRICULUM — seed + catalogue + cours (réplique FA)
    ============================================================ */
 function slugify(s) {
