@@ -1489,3 +1489,9 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   console.log('[Certificate] generated:', verificationCode);
   return null;
 });
+
+/* ============================================================
+   CERTIFICATS ELA — centralisation (cf. ela-certificates.js)
+   ============================================================ */
+Object.assign(exports, require('./ela-certificates.js'));
+

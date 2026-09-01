@@ -1,0 +1,331 @@
+/* ============================================================
+   ELA — functions/ela-certificates.js
+   ------------------------------------------------------------
+   Cloud Functions de la centralisation des certificats ELA.
+   - issueELACertificate      (callable)   : émission par une académie
+   - verifyELACertificate     (HTTPS)      : vérification publique sans auth
+   - generateELACertificatePdf(callable)   : PDF officiel + QR code
+   - getELACertificatePdfUrl  (callable)   : URL signée temporaire
+   - listELACertificates      (callable)   : mes certificats / liste admin
+   - revokeELACertificate     (callable)   : révocation super admin
+   - migrateLegacyCertificates(callable)   : migration one-shot
+   Toutes en africa-south1. enforceAppCheck: false tant que
+   l'application cliente n'a pas d'App Check activé (à durcir ensuite).
+   AUCUNE réponse ne contient signatureHash, studentId ou email.
+   ============================================================ */
+
+const { onCall, onRequest, HttpsError } = require('firebase-functions/v2/https');
+const admin = require('firebase-admin');
+const crypto = require('crypto');
+const core = require('./ela-certificate-core.js');
+
+const REGION = 'africa-south1';
+const db = admin.firestore();
+
+/* ---------- Helpers ---------- */
+
+/** Charge le rôle de l'appelant (users/{uid}.role). */
+async function userRole(uid) {
+  if (!uid) return null;
+  const snap = await db.collection('users').doc(String(uid)).get();
+  return snap.exists ? (snap.data().role || null) : null;
+}
+
+function ensure(condition, code, message) {
+  if (!condition) throw new HttpsError(code, message || code);
+}
+
+/** Réponse callable publique-safe (jamais de hash / id interne élève). */
+function safeIssueResponse(cert) {
+  return { ok: true, certificate: core.ownerView(cert) };
+}
+
+/* ============================================================
+   a) issueELACertificate — callable (rôle academy_admin | system)
+   ============================================================ */
+exports.issueELACertificate = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const role = await userRole(uid);
+  ensure(role === 'academy_admin' || role === 'system' || role === 'admin',
+    'permission-denied', 'Only academy_admin or system may issue certificates.');
+
+  const data = request.data || {};
+  const academyCode = String(data.academyCode || '').toUpperCase();
+  ensure(core.CALLABLE_ACADEMY_WHITELIST.indexOf(academyCode) >= 0,
+    'invalid-argument', 'Academy not allowed to issue via callable yet.');
+
+  try {
+    const cert = await core.issueCertificate({
+      academyCode: academyCode,
+      studentId: data.studentId,
+      studentName: data.studentName,
+      cecrLevel: data.cecrLevel,
+      skills: data.skills || {},
+      score: data.score || 0,
+      certificateType: data.certificateType,
+      createdBy: uid
+    });
+    return safeIssueResponse(cert);
+  } catch (err) {
+    throw new HttpsError('invalid-argument', err.message || 'issue-failed');
+  }
+});
+
+/* ============================================================
+   b) verifyELACertificate — HTTPS onRequest, SANS auth, CORS ouvert
+      GET ?id=ELA-XX-Y-XXXXXX → vue publique uniquement.
+   ============================================================ */
+exports.verifyELACertificate = onRequest({ region: REGION }, async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  if (req.method === 'OPTIONS') { res.status(204).send(''); return; }
+  if (req.method !== 'GET') { res.status(405).json({ error: 'method-not-allowed' }); return; }
+
+  const id = String(req.query.id || '').trim().toUpperCase();
+  if (!/^ELA-[A-Z]{2}-[A-C][1-2]-[A-Z0-9]{4,8}$/.test(id)) {
+    res.status(200).json({ found: false, valid: false, error: 'invalid-format' });
+    return;
+  }
+  try {
+    const snap = await db.collection(core.CERTIFICATES).doc(id).get();
+    if (!snap.exists) { res.status(200).json({ found: false, valid: false }); return; }
+    // publicView : certificateId, studentName, institution, academyLabel,
+    // cecrLevel, issueDate, expiryDate, status, valid — RIEN d'autre.
+    res.status(200).json(core.publicView(snap.data()));
+  } catch (err) {
+    console.error('[ELA-Cert] verify failed:', err.message);
+    res.status(500).json({ found: false, valid: false, error: 'internal' });
+  }
+});
+/* ============================================================
+   c) generateELACertificatePdf — callable : PDF officiel (pdfkit
+      + QR code) uploadé sur Storage (ela-certificates/{id}.pdf).
+   ============================================================ */
+exports.generateELACertificatePdf = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const id = String((request.data || {}).id || '').trim().toUpperCase();
+
+  const snap = await db.collection(core.CERTIFICATES).doc(id).get();
+  ensure(snap.exists, 'not-found', 'Certificate not found.');
+  const cert = snap.data();
+  ensure(cert.studentId === uid || (await userRole(uid)) === 'admin',
+    'permission-denied', 'Not allowed.');
+
+  try {
+    const PDFDocument = require('pdfkit');
+    const QRCode = require('qrcode');
+    const qrDataUrl = await QRCode.toDataURL(cert.verificationUrl, { margin: 1, width: 220 });
+
+    const pdfBuffer = await new Promise((resolve, reject) => {
+      const doc = new PDFDocument({ layout: 'landscape', size: 'A4', margin: 0 });
+      const chunks = [];
+      doc.on('data', (c) => chunks.push(c));
+      doc.on('end', () => resolve(Buffer.concat(chunks)));
+      doc.on('error', reject);
+      drawOfficialPdf(doc, cert, qrDataUrl);
+      doc.end();
+    });
+
+    const bucket = admin.storage().bucket();
+    const filePath = 'ela-certificates/' + id + '.pdf';
+    const file = bucket.file(filePath);
+    await file.save(pdfBuffer, { contentType: 'application/pdf', resumable: false });
+    await file.makePublic();
+    const pdfUrl = 'https://storage.googleapis.com/' + bucket.name + '/' + filePath;
+
+    await db.collection(core.CERTIFICATES).doc(id).update({
+      pdfUrl: pdfUrl, pdfStoragePath: filePath, updatedAt: new Date().toISOString()
+    });
+    return { ok: true, url: pdfUrl, storagePath: filePath };
+  } catch (err) {
+    console.error('[ELA-Cert] PDF generation failed:', err.message);
+    throw new HttpsError('internal', 'pdf-generation-failed');
+  }
+});
+
+/* Template officiel unique du PDF ELA (cf. Phase G). */
+function drawOfficialPdf(doc, cert, qrDataUrl) {
+  const W = 841.89, H = 595.28;
+  doc.rect(0, 0, W, H).fill('#063D2C');
+  doc.lineWidth(2).rect(24, 24, W - 48, H - 48).stroke('#C9A227');
+  doc.lineWidth(0.5).rect(30, 30, W - 60, H - 60).stroke('#C9A227');
+
+  doc.fillColor('#C9A227').fontSize(16).font('Times-Bold')
+    .text('E-LEARN LANGUAGE ACADEMY', 0, 60, { align: 'center' });
+  doc.fillColor('#8ea79b').fontSize(9).font('Helvetica')
+    .text('E-Learn Language Academy — sole issuing institution of ELA certificates', 0, 82, { align: 'center' });
+
+  const titles = {
+    completion: 'Certificate of Participation — ELA',
+    achievement: 'Certificate of Achievement — ELA',
+    certification: 'ELA Certificate — CEFR Level (Official)'
+  };
+  doc.fillColor('#FAF6EC').fontSize(28).font('Times-Bold')
+    .text(titles[cert.certificateType] || titles.certification, 0, 110, { align: 'center' });
+
+  doc.fillColor('#8ea79b').fontSize(11).font('Helvetica').text('This certifies that', 0, 165, { align: 'center' });
+  doc.fillColor('#FAF6EC').fontSize(26).font('Times-Bold').text(String(cert.studentName), 0, 188, { align: 'center' });
+
+  const typeLabels = {
+    completion: 'has attended the programme of',
+    achievement: 'has successfully completed the programme of',
+    certification: 'has been certified at CEFR level by'
+  };
+  doc.fillColor('#8ea79b').fontSize(11).text(typeLabels[cert.certificateType] || typeLabels.certification, 0, 232, { align: 'center' });
+  doc.fillColor('#C9A227').fontSize(15).font('Times-Bold')
+    .text(cert.academyLabel + '  ·  Level ' + cert.cecrLevel, 0, 252, { align: 'center' });
+
+  doc.fillColor('#FAF6EC').fontSize(12).font('Helvetica')
+    .text('Global score: ' + (cert.scoreGlobal || 0) + '%', 0, 286, { align: 'center' });
+  doc.fillColor('#8ea79b').fontSize(10)
+    .text('Issued: ' + cert.issueDate + '   ·   Valid until: ' + cert.expiryDate, 0, 320, { align: 'center' });
+  doc.fillColor('#C9A227').font('Courier-Bold').fontSize(11)
+    .text('Certificate No. ' + cert.id, 0, 336, { align: 'center' });
+
+  doc.fillColor('#8ea79b').font('Helvetica').fontSize(10)
+    .text('Digitally signed by ELA Certification Authority', 0, H - 92, { align: 'center' });
+  doc.fillColor('#5f7d70').fontSize(6.5).font('Courier')
+    .text('signatureAlgorithm: ' + cert.signatureAlgorithm + '   signatureHash: ' + cert.signatureHash, 0, H - 68, { align: 'center' });
+  doc.fillColor('#8ea79b').fontSize(8).font('Helvetica')
+    .text('Verify this certificate at ' + cert.verificationUrl, 0, H - 52, { align: 'center' });
+
+  try {
+    const qrBuf = Buffer.from(qrDataUrl.split(',')[1], 'base64');
+    doc.image(qrBuf, W - 130, 90, { width: 90 });
+    doc.fillColor('#8ea79b').fontSize(7).text('Scan to verify', W - 140, 182, { width: 100, align: 'center' });
+  } catch (qrErr) {
+    console.error('[ELA-Cert] QR embed failed:', qrErr.message);
+  }
+}
+/* ============================================================
+   d) getELACertificatePdfUrl — callable : URL signée temporaire
+   ============================================================ */
+exports.getELACertificatePdfUrl = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const id = String((request.data || {}).id || '').trim().toUpperCase();
+
+  const snap = await db.collection(core.CERTIFICATES).doc(id).get();
+  ensure(snap.exists, 'not-found', 'Certificate not found.');
+  const cert = snap.data();
+  ensure(cert.studentId === uid || (await userRole(uid)) === 'admin',
+    'permission-denied', 'Not allowed.');
+
+  const path = cert.pdfStoragePath || ('ela-certificates/' + id + '.pdf');
+  try {
+    const file = admin.storage().bucket().file(path);
+    const [exists] = await file.exists();
+    if (!exists) return { ok: false, error: 'pdf-not-generated' };
+    const [url] = await file.getSignedUrl({
+      action: 'read', expires: Date.now() + 15 * 60 * 1000 // 15 min
+    });
+    return { ok: true, url: url };
+  } catch (err) {
+    console.error('[ELA-Cert] signed url failed:', err.message);
+    return { ok: false, error: 'pdf-url-failed' };
+  }
+});
+
+/* ============================================================
+   e) listELACertificates — callable :
+      - élève          → ses propres certificats (ownerView)
+      - admin/teacher  → liste paginée + filtres (academyCode, status)
+   ============================================================ */
+exports.listELACertificates = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const data = request.data || {};
+  const role = await userRole(uid);
+
+  const pageSize = Math.min(Math.max(Number(data.pageSize) || 20, 1), 100);
+
+  if (role === 'admin' || role === 'teacher') {
+    let q = db.collection(core.CERTIFICATES).orderBy('createdAt', 'desc').limit(pageSize);
+    if (data.academyCode) q = q.where('academyCode', '==', String(data.academyCode).toUpperCase());
+    if (data.status) q = q.where('status', '==', String(data.status));
+    // after a where + orderBy('createdAt') an extra orderBy keeps order stable
+    const snap = await q.get();
+    const items = snap.docs.map((d) => {
+      const c = d.data();
+      return {
+        id: c.id, certificateType: c.certificateType, academyLabel: c.academyLabel,
+        academyCode: c.academyCode, studentName: c.studentName, cecrLevel: c.cecrLevel,
+        scoreGlobal: c.scoreGlobal, issueDate: c.issueDate, expiryDate: c.expiryDate,
+        status: c.status, pdfUrl: c.pdfUrl || null, verificationUrl: c.verificationUrl,
+        createdAt: c.createdAt
+      };
+    });
+    return {
+      ok: true, scope: 'admin', items: items,
+      nextCursor: items.length === pageSize ? items[items.length - 1].id : null
+    };
+  }
+
+  // Élève : ses certificats uniquement (ownerView, sans hash).
+  const own = await db.collection(core.CERTIFICATES)
+    .where('studentId', '==', uid).orderBy('createdAt', 'desc')
+    .get();
+  return {
+    ok: true, scope: 'owner',
+    items: own.docs.map((d) => core.ownerView(d.data()))
+  };
+});
+
+/* ============================================================
+   f) revokeELACertificate — callable : super admin ELA uniquement.
+      Motif obligatoire. Event REVOKED écrit par le core.
+   ============================================================ */
+exports.revokeELACertificate = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const role = await userRole(uid);
+  ensure(role === 'admin' || role === 'system', 'permission-denied', 'Super admin ELA only.');
+
+  const data = request.data || {};
+  const id = String(data.id || '').trim().toUpperCase();
+  const reason = String(data.reason || '').trim();
+  ensure(id, 'invalid-argument', 'Certificate id required.');
+  ensure(reason.length >= 3, 'invalid-argument', 'A revocation reason is required.');
+
+  try {
+    await core.revokeCertificate(id, reason, uid);
+    return { ok: true };
+  } catch (err) {
+    throw new HttpsError('not-found', err.message || 'revoke-failed');
+  }
+});
+
+/* ============================================================
+   g) migrateLegacyCertificates — callable one-shot (admin).
+      Migrer certificates/* → ela_certificates (event MIGRATED),
+      sans supprimer aucune donnée. Idempotent.
+   ============================================================ */
+exports.migrateLegacyCertificates = onCall({ region: REGION, enforceAppCheck: false, timeoutSeconds: 300 }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const role = await userRole(uid);
+  ensure(role === 'admin' || role === 'system', 'permission-denied', 'Super admin ELA only.');
+
+  const legacySnap = await db.collection('certificates')
+    .where('migratedToELA', '==', null).limit(200).get();
+  // fallback : si aucun champ migratedToELA, tout le reste n'est pas migré
+  let snap = legacySnap;
+  if (legacySnap.empty) {
+    snap = await db.collection('certificates').limit(200).get();
+    const remaining = snap.docs.filter((d) => !d.data().migratedToELA);
+    let migrated = 0, skipped = 0;
+    for (const doc of remaining) {
+      const r = await core.migrateLegacyCertificate(doc.id, doc.data());
+      if (r) migrated++; else skipped++;
+    }
+    return { ok: true, scanned: remaining.length, migrated: migrated, skipped: skipped };
+  }
+  let migrated = 0, skipped = 0;
+  for (const doc of snap.docs) {
+    const r = await core.migrateLegacyCertificate(doc.id, doc.data());
+    if (r) migrated++; else skipped++;
+  }
+  return { ok: true, scanned: snap.size, migrated: migrated, skipped: skipped };
+});
