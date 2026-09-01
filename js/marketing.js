@@ -1,8 +1,8 @@
 /* ============================================================
    ELA - MARKETING & TRACKING (Phase 0) + CONSENTEMENT
    ------------------------------------------------------------
-   SEULE ACTION REQUISE : colle ton ID Google Analytics 4
-   ci-dessous (format G-XXXXXXXXXX), puis redeploie.
+   Concepteur/SEO : l'ID GA4 est déjà renseigné (G-K9ZWWPHQDF,
+   ligne GA_MEASUREMENT_ID ci-dessous) et saisi au déploiement.
    ------------------------------------------------------------
    - GA4 ne charge QUE si l'utilisateur a accepté les cookies
      (localStorage `ela_consent`). Tant que ce n'est pas décidé,
@@ -13,7 +13,7 @@
    - payment_success : UNIQUEMENT via le webhook Paystack (serveur).
    ============================================================ */
 window.ELAMarketing = (function () {
-  var GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // ← ID Google Analytics 4 ELA
+  var GA_MEASUREMENT_ID = 'G-K9ZWWPHQDF'; // ← ID Google Analytics 4 ELA
   var CONSENT_KEY = 'ela_consent';
   var gaOn = false;
 
