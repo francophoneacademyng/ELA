@@ -1488,5 +1488,5 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
 /* ============================================================
    CERTIFICATS ELA � centralisation (cf. ela-certificates.js)
    ============================================================ */
-Object.assign(exports, require('./ela-certificates.js'));
+Object.assign(module.exports, require('./ela-certificates.js'));
 
