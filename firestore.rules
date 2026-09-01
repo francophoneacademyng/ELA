@@ -148,6 +148,35 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    /* ============================================================
+       CERTIFICATS CENTRALISÉS ELA — ela_certificates
+       - Lecture : titulaire (studentId == uid) OU admin/teacher.
+       - Écriture : UNIQUEMENT via Cloud Functions (Admin SDK) → false.
+       - list (query large) : admin/teacher ; l'élève ne peut que
+         lire ses propres documents (query where studentId == uid).
+       ============================================================ */
+    function isElaStaff() {
+      return isAdmin() || isTeacher();
+    }
+
+    match /ela_certificates/{id} {
+      allow get: if isSignedIn()
+                 && (resource.data.studentId == request.auth.uid || isElaStaff());
+      allow list: if isElaStaff();
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    /* ============================================================
+       AUDIT TRAIL — ela_certificate_events (append-only)
+       - Lecture : super admin ELA (role == 'admin').
+       - Écriture : UNIQUEMENT via Cloud Functions → false.
+       - Jamais de suppression, jamais de mise à jour.
+       ============================================================ */
+    match /ela_certificate_events/{id} {
+      allow read: if isAdmin();
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
