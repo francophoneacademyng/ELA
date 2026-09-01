@@ -544,6 +544,21 @@
         afterRender('pricing');
       });
   }
+/* ---------- Payment success (route #/payment-success, callback Paystack live) ---------- */
+  function renderPaymentSuccess() {
+    var reference = getPaymentReference();
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('payment.result.title.success') + '</h1>' +
+        '<p class="auth-sub">' + t('payment.success.msg') + '</p>' +
+        (reference ? '<p class="auth-sub" style="margin-top:0.5rem;color:var(--forest)">' + t('payment.reference') + ': <strong>' + escapeHtml(reference) + '</strong></p>' : '') +
+        '<div class="hero-actions">' +
+          '<a class="btn btn-solid" href="#/dashboard">' + t('dashboard.title') + '</a>' +
+          '<a class="btn btn-outline" href="#/\">' + t('payment.result.backHome') + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('pricing');
+  }
 
   /* ---------- Learning Assistant (Jalon 3) ---------- */
   var assistantHistory = [];
@@ -2508,6 +2523,7 @@
     '/pricing': renderPricing,
     '/checkout': renderCheckout,
     '/payment/result': renderPaymentResult,
+    '/payment-success': renderPaymentSuccess,
     '/assistant': renderAssistant,
     '/dashboard': renderDashboard,
     '/terms': renderTerms,
@@ -2532,7 +2548,8 @@
     '/dashboard': 'dashboard.title', '/assistant': 'assistant.title',
     '/teacher': 'nav.teacher', '/admin': 'nav.admin',
     '/checkout': 'checkout.title', '/register': 'nav.cta', '/login': 'nav.login',
-    '/terms': 'footer.terms', '/privacy': 'footer.privacy', '/refund': 'footer.refundPolicy'
+    '/terms': 'footer.terms', '/privacy': 'footer.privacy', '/refund': 'footer.refundPolicy',
+    '/payment-success': 'payment.result.title.success'
   };
 
   function updateMeta(path) {

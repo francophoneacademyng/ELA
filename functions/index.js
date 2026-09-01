@@ -576,7 +576,7 @@ async function sendEmail({ to, subject, text }) {
     console.log(`[email:log] to=${to} subject="${subject}"`);
     return;
   }
-  const from = process.env.SENDGRID_FROM || 'noreply@elearnlanguage.ng';
+  const from = process.env.SENDGRID_FROM || 'languageacademyelearn@gmail.com';
   try {
     const resp = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
