@@ -16,6 +16,7 @@ import { overviewHtml } from './sections/overview.js';
 import { revenueHtml } from './sections/revenue.js';
 import { usersHtml } from './sections/users.js';
 import { validationHtml, bindValidationEvents } from './sections/validation.js';
+import { certificationsHtml, bindCertificationsEvents } from './sections/certifications.js';
 import { registerRenderer } from './refresh.js';
 
 let currentRange = 30;
@@ -82,6 +83,7 @@ function paint() {
           '<a data-scroll="admin-v2-overview">' + t('admin.overview') + '</a>' +
           '<a data-scroll="admin-v2-revenue">' + t('admin.revenueThisMonth') + '</a>' +
           '<a data-scroll="admin-v2-users">' + t('admin.users') + '</a>' +
+          '<a data-scroll="admin-v2-certifications">' + t('admin.certs.title') + '</a>' +
           '<a data-scroll="admin-v2-validation">' + t('admin.pendingReview') +
             (s.queue.length ? ' (' + s.queue.length + ')' : '') + '</a>' +
         '</nav>' +
@@ -92,6 +94,7 @@ function paint() {
         '<div id="admin-v2-overview">' + overviewHtml() + '</div>' +
         '<div id="admin-v2-revenue">' + revenueHtml(currentRange) + '</div>' +
         '<div id="admin-v2-users">' + usersHtml(currentSearch) + '</div>' +
+        '<div id="admin-v2-certifications">' + certificationsHtml() + '</div>' +
         validationHtml() +
       '</div>' +
     '</div>';
@@ -128,6 +131,7 @@ function bindAdminEvents(app) {
   }
 
   bindValidationEvents(app);
+  bindCertificationsEvents(app);
 }
 
 /** Re-rendu local sans recharger les données (option : conserver le focus). */

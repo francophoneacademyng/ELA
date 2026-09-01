@@ -202,10 +202,15 @@ exports.listELACertificates = onCall({ region: REGION, enforceAppCheck: false },
   const own = await db.collection(core.CERTIFICATES)
     .where('studentId', '==', uid).orderBy('createdAt', 'desc')
     .get();
-  return {
-    ok: true, scope: 'owner',
-    items: own.docs.map((d) => core.ownerView(d.data()))
-  };
+  const QRCode = require('qrcode');
+  const items = [];
+  for (const d of own.docs) {
+    const item = core.ownerView(d.data());
+    try { item.qrDataUrl = await QRCode.toDataURL(item.verificationUrl, { margin: 1, width: 160 }); }
+    catch (e) { item.qrDataUrl = null; }
+    items.push(item);
+  }
+  return { ok: true, scope: 'owner', items: items };
 });
 
 /* ============================================================

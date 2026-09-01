@@ -694,6 +694,56 @@
     afterRender('');
   }
 
+  /* ============================================================
+     MES CERTIFICATS ELA — chargement des cartes (dashboard élève
+     et dashboard Francophone : même section centralisée).
+     ============================================================ */
+  function loadElaCertificates() {
+    var box = document.getElementById('ela-certs-list');
+    if (!box || !window.ELA_API) return;
+    window.ELA_API.callFunction('listELACertificates', {}).then(function (res) {
+      var items = (res && res.items) || [];
+      if (!items.length) {
+        box.innerHTML = '<p class="muted" style="font-size:0.85rem;padding:0.4rem 0">' + t('dashboard.elaCertsEmpty') + '</p>';
+        return;
+      }
+      box.innerHTML = items.map(function (c) {
+        var badge = c.status === 'active'
+          ? '<span class="badge badge-emerald">Valid</span>'
+          : '<span class="badge badge-red">' + escapeHtml(c.status || '') + '</span>';
+        var qr = c.qrDataUrl
+          ? '<img src="' + c.qrDataUrl + '" alt="QR verification" width="56" height="56" style="border:1px solid var(--line-soft);border-radius:6px;flex-shrink:0">'
+          : '';
+        return '<div class="ela-cert-card" style="display:flex;align-items:center;gap:0.9rem;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
+          qr +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-weight:700;color:var(--forest)">' + escapeHtml(c.typeLabel || 'Certificat ELA') +
+              (c.cecrLevel ? ' — ' + escapeHtml(c.cecrLevel) : '') + '</div>' +
+            '<div style="font-size:0.8rem;color:var(--muted)">' +
+              escapeHtml(c.academyLabel || '') + ' · ' + escapeHtml(c.issueDate || '') + ' · ' + escapeHtml(c.id || '') + '</div>' +
+            '<div style="font-size:0.72rem;color:var(--muted)">' + t('dashboard.elaCertsIssuer') + '</div>' +
+          '</div>' +
+          badge +
+          '<button type="button" class="btn btn-outline btn-sm" data-ela-pdf="' + escapeHtml(c.id || '') + '">PDF</button>' +
+          '<a class="btn btn-outline btn-sm" href="verify.html?id=' + encodeURIComponent(c.id || '') + '" target="_blank" rel="noopener">' + t('dashboard.elaCertsVerify') + '</a>' +
+        '</div>';
+      }).join('');
+      box.querySelectorAll('[data-ela-pdf]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          btn.disabled = true; btn.textContent = '…';
+          window.ELA_API.callFunction('generateELACertificatePdf', { id: btn.getAttribute('data-ela-pdf') })
+            .then(function (r) {
+              if (r && r.url) window.open(r.url, '_blank', 'noopener');
+            })
+            .catch(function () {})
+            .then(function () { btn.disabled = false; btn.textContent = 'PDF'; });
+        });
+      });
+    }).catch(function () {
+      box.innerHTML = '';
+    });
+  }
+
       function buildDashboard(d) {
     var sub = d.subscription;
     var now = Date.now();
@@ -875,18 +925,16 @@
         '<small>' + t(b.desc) + '</small>' +
       '</div>';
     }).join('');
-    var certItems = certificates.map(function (c) {
-      var date = c.issuedAt ? new Date(c.issuedAt).toLocaleDateString(ELA_I18N.getLang()) : '';
-      var meta = [];
-      if (c.academy) meta.push(t('academies.' + c.academy + '.name'));
-      if (c.percentage != null) meta.push(c.percentage + '%');
-      if (date) meta.push(date);
-      return '<div style="display:flex;align-items:center;gap:0.8rem;padding:0.6rem 0;border-top:1px solid var(--line-soft)">' +
-        '<div style="flex:1"><div style="font-weight:700;color:var(--forest)">' + escapeHtml(c.title) + '</div>' +
-        '<div style="font-size:0.8rem;color:var(--muted)">' + escapeHtml(meta.join(' · ')) + '</div></div>' +
-        (c.pdfUrl ? '<a class="btn btn-outline btn-sm" href="' + escapeHtml(c.pdfUrl) + '" target="_blank" rel="noopener">' + t('dashboard.download') + '</a>' : '') +
+    /* ============================================================
+       MES CERTIFICATS ELA — centralisation (élève + mention
+       "Délivré par E-Learn Language Academy" pour Francophone).
+       Données via callable listELACertificates (jamais Firestore
+       direct). PDF : generateELACertificatePdf. Vérification :
+       page publique verify.html.
+       ============================================================ */
+    var certItems = '<div id="ela-certs-list">' +
+        '<div class="skeleton skeleton-card"></div>' +
       '</div>';
-    }).join('');
     var scoresHtml = scores.length
       ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem"><div style="font-weight:700;color:var(--forest);margin-bottom:0.4rem;font-size:0.9rem">' + t('dashboard.bestScores') + '</div>' +
           '<ul class="tx-list" style="margin:0">' +
@@ -900,8 +948,15 @@
       '<div class="dashboard-section-header"><h3 class="dashboard-section-title">' + t('dashboard.achievements') + '</h3></div>' +
       '<div class="ach-grid">' + achCells + '</div>' +
       scoresHtml +
-      (certItems ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem">' + certItems + '</div>' : '') +
+      (certItems ? '<div class="card" style="margin-top:0.8rem;padding:0.9rem 1.3rem">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.3rem">' +
+          '<div style="font-weight:700;color:var(--forest);font-size:0.9rem">' + t('dashboard.elaCertsTitle') + '</div>' +
+          '<span class="badge badge-gold">' + t('dashboard.elaCertsIssuer') + '</span>' +
+        '</div>' + certItems + '</div>' : '') +
     '</div>';
+
+    /* Chargement asynchrone des certificats ELA (callable). */
+    setTimeout(loadElaCertificates, 0);
 
     // ============================================================
     // 7. MEET YOUR LANGUAGE TUTOR — grande carte premium
