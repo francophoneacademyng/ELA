@@ -16,6 +16,18 @@
                                     "package-lock.json",
                                     "*-debug.log"
                                 ],
+"redirects":  [
+                                     {
+                                         "source":  "/**",
+                                         "destination":  "https://elaacademy.ng/:0",
+                                         "type":  301,
+                                         "condition":  {
+                                                           "host":  [
+                                                                        "www.elaacademy.ng"
+                                                                    ]
+                                                       }
+                                     }
+                                 ],
                     "rewrites":  [
                                      {
                                          "source":  "**",
