@@ -2566,6 +2566,11 @@
     var qi = hash.indexOf('?');
     var path = qi >= 0 ? hash.slice(0, qi) : hash;
     updateMeta(path);
+    /* Routes v2 (refactor admin/teacher) : handlers enregistrés par js/routes-v2.js */
+    if (window.ELA_ROUTE_HANDLERS && typeof window.ELA_ROUTE_HANDLERS[path] === 'function') {
+      window.ELA_ROUTE_HANDLERS[path]();
+      return;
+    }
     (ROUTES[path] || renderHome)();
   }
 
