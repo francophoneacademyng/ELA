@@ -1418,7 +1418,11 @@ exports.getCourse = onCall({ region: REGION }, async (request) => {
 });
 
 /* ============================================================
-   CERTIFICATS — génération PDF (pdfkit) à 80 % de réussite
+   CERTIFICATS — délégation à la certification centralisée ELA.
+   Ancien flux (PDF inline + collection 'certificates') déplacé
+   dans functions/_legacy/generate-certificate-legacy.js.
+   L'émission passe désormais par ela-certificate-core
+   (ela_certificates + event ISSUED), le PDF par ela-pdf.js.
    ============================================================ */
 exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'quizScores/{docId}' }, async (event) => {
   const data = event.data.after.data();
@@ -1429,8 +1433,9 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   const bestScore = data.bestScore || 0;
   if (!uid || !quizId || bestScore / total < 0.8) return;
 
-  // Idempotence : un seul certificat par quizz.
-  const existing = await db.collection('certificates').where('userId', '==', uid).where('quizId', '==', quizId).limit(1).get();
+  // Idempotence : un seul certificat ELA par (élève, quizz).
+  const existing = await db.collection('ela_certificates')
+    .where('studentId', '==', uid).where('sourceQuizId', '==', quizId).limit(1).get();
   if (!existing.empty) return;
 
   const quizSnap = await db.collection('quizzes').doc(quizId).get();
@@ -1438,60 +1443,50 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   const userSnap = await db.collection('users').doc(uid).get();
   const studentName = userSnap.exists ? (userSnap.data().displayName || 'Student') : 'Student';
   const academy = quiz ? (quiz.academy || '') : '';
-  const courseId = quiz ? (quiz.courseId || '') : '';
-  const verificationCode = 'ELA-' + (academy || 'XX').toUpperCase().slice(0, 4) + '-' + Math.floor(10000 + Math.random() * 90000);
 
-  let pdfUrl = null;
+  const certCore = require('./ela-certificate-core.js');
+  const academyCode = certCore.ACADEMY_KEY_TO_CODE[String(academy).toLowerCase()] || 'FR';
+  const percentage = Math.round((bestScore / total) * 100);
+
   try {
-    const PDFDocument = require('pdfkit');
-    const pdfBuffer = await new Promise((resolve, reject) => {
-      const doc = new PDFDocument({ layout: 'landscape', size: 'A4', margin: 0 });
-      const chunks = [];
-      doc.on('data', (c) => chunks.push(c));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
-
-      const W = 841.89, H = 595.28;
-      doc.rect(0, 0, W, H).fill('#063D2C');
-      doc.lineWidth(2).rect(24, 24, W - 48, H - 48).stroke('#C9A227');
-      doc.lineWidth(0.5).rect(30, 30, W - 60, H - 60).stroke('#C9A227');
-      doc.fillColor('#C9A227').fontSize(16).font('Times-Bold').text('E-LEARN LANGUAGE ACADEMY', 0, 70, { align: 'center' });
-      doc.fillColor('#FAF6EC').fontSize(34).text('Certificate of Achievement', 0, 110, { align: 'center' });
-      doc.fillColor('#8ea79b').fontSize(12).font('Helvetica').text('This certifies that', 0, 175, { align: 'center' });
-      doc.fillColor('#FAF6EC').fontSize(26).font('Times-Bold').text(studentName, 0, 200, { align: 'center' });
-      doc.fillColor('#8ea79b').fontSize(12).font('Helvetica').text('has successfully completed the assessment', 0, 242, { align: 'center' });
-      doc.fillColor('#C9A227').fontSize(18).font('Times-Bold').text((quiz ? quiz.title : 'Assessment'), 0, 266, { align: 'center' });
-      doc.fillColor('#FAF6EC').fontSize(13).font('Helvetica').text('Level ' + (quiz ? quiz.level : '') + '  —  Score ' + Math.round((bestScore / total) * 100) + '%', 0, 300, { align: 'center' });
-      doc.fillColor('#8ea79b').fontSize(10).text('Issued: ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), 60, H - 80);
-      doc.fillColor('#C9A227').font('Courier-Bold').text('Code: ' + verificationCode, 60, H - 62);
-      doc.fillColor('#8ea79b').font('Helvetica').text('E-Learn Language Academy — One Academy. Five Languages.', W - 60, H - 62, { align: 'right' });
-      doc.end();
+    // 1) Émission centralisée ELA (event ISSUED écrit par le core).
+    const cert = await certCore.issueCertificate({
+      academyCode: academyCode,
+      studentId: uid,
+      studentName: studentName,
+      cecrLevel: quiz && certCore.CECRL_LEVELS.indexOf(String(quiz.level || '').toUpperCase()) >= 0
+        ? String(quiz.level).toUpperCase() : 'A1',
+      score: percentage,
+      certificateType: 'achievement',
+      createdBy: 'trigger:quiz',
+      sourceQuizId: quizId
     });
 
-    const bucket = admin.storage().bucket();
-    const filePath = 'certificates/' + uid + '/' + verificationCode + '.pdf';
-    const file = bucket.file(filePath);
-    await file.save(pdfBuffer, { contentType: 'application/pdf' });
-    await file.makePublic();
-    pdfUrl = 'https://storage.googleapis.com/' + bucket.name + '/' + filePath;
+    // 2) PDF officiel unique (template ela-pdf.js) → Storage.
+    try {
+      const pdfBuffer = await require('./ela-pdf.js').makeOfficialPdfBuffer(cert);
+      const filePath = 'ela-certificates/' + cert.id + '.pdf';
+      const bucket = admin.storage().bucket();
+      await bucket.file(filePath).save(pdfBuffer, { contentType: 'application/pdf', resumable: false });
+      await bucket.file(filePath).makePublic();
+      await db.collection('ela_certificates').doc(cert.id).update({
+        pdfUrl: 'https://storage.googleapis.com/' + bucket.name + '/' + filePath,
+        pdfStoragePath: filePath,
+        updatedAt: new Date().toISOString()
+      });
+    } catch (err) {
+      console.error('[Certificate] PDF/Storage failed (metadata only):', err && err.message);
+    }
+
+    console.log('[Certificate] issued via ELA centralization:', cert.id);
   } catch (err) {
-    console.error('[Certificate] PDF/Storage failed (metadata only):', err && err.message);
+    console.error('[Certificate] ELA issuance failed:', err && err.message);
   }
-
-  await db.collection('certificates').add({
-    userId: uid, quizId: quizId, quizTitle: quiz ? quiz.title : 'Assessment',
-    academy: academy, courseId: courseId, level: quiz ? quiz.level : '',
-    score: bestScore, total: total, percentage: Math.round((bestScore / total) * 100),
-    studentName: studentName, pdfUrl: pdfUrl, verificationCode: verificationCode,
-    issuedAt: new Date()
-  });
-
-  console.log('[Certificate] generated:', verificationCode);
   return null;
 });
 
 /* ============================================================
-   CERTIFICATS ELA � centralisation (cf. ela-certificates.js)
+   CERTIFICATS ELA � centralisation (cf. ela-certificates.js)
    ============================================================ */
 Object.assign(exports, require('./ela-certificates.js'));
 
