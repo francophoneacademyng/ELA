@@ -64,6 +64,9 @@ export function createDashboardPage(code) {
           activePage: 'dashboard', contentHtml: content
         });
       });
+    }).catch(function () {
+      const app = document.getElementById('app');
+      if (app) app.innerHTML = '<p class="ac-courses-empty">Unable to load this academy page. Please try again.</p>';
     });
   };
 }

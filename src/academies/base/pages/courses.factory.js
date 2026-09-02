@@ -40,6 +40,9 @@ export function createCoursesPage(code) {
           contentHtml: '<p class="ac-courses-empty">Catalogue indisponible pour le moment.</p>'
         });
       });
+    }).catch(function () {
+      const app = document.getElementById('app');
+      if (app) app.innerHTML = '<p class="ac-courses-empty">Unable to load this academy page. Please try again.</p>';
     });
   };
 }
