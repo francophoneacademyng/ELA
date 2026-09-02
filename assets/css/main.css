@@ -34,6 +34,8 @@
   --accent-mandarin: #C0372F;
   --accent-english: #1E3A5F;
   --accent-arabic: #0F766E;
+  --accent-french: #1D4ED8;
+
   --accent-russian: #2D4F8F;
   --radius: 10px;
   --radius-lg: 18px;
@@ -1003,9 +1005,124 @@ body {
 .acad-name { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--forest); }
 .acad-native { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.7rem; }
 .acad-rows { display: flex; flex-direction: column; gap: 0.35rem; }
+
+/* ============================================================
+   ACADÉMIES IMMERSIVES (coque partagée des 6 académies)
+   Consommateurs : src/shared/components/academy/*.js
+   Variable d'accent par instance : --ac (posée par academy-shell).
+   ============================================================ */
+
+/* --- Coque : sidebar + contenu --- */
+.ac-shell { display: flex; gap: 1.6rem; align-items: flex-start; max-width: 1200px; margin: 0 auto; }
+.ac-sidebar {
+  flex: 0 0 240px; position: sticky; top: 84px;
+  background: var(--forest-ink, #063D2C); color: var(--cream);
+  border-radius: var(--radius-lg); padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem;
+}
+.ac-brand { color: rgba(250,246,236,0.65); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.ac-brand:hover { color: var(--cream); }
+.ac-brand-academy { display: flex; flex-direction: column; gap: 0.15rem; }
+.ac-flag { font-size: 1.6rem; line-height: 1; }
+.ac-label { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--cream); }
+.ac-native { font-size: 0.85rem; color: rgba(250,246,236,0.6); }
+.ac-nav { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.4rem; }
+.ac-nav-item {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.8rem;
+  border-radius: var(--radius); color: rgba(250,246,236,0.75); text-decoration: none;
+  font-size: 0.92rem; transition: background 0.15s ease, color 0.15s ease;
+}
+.ac-nav-item:hover { background: rgba(250,246,236,0.08); color: var(--cream); }
+.ac-nav-item.active { background: var(--ac, var(--emerald)); color: #fff; font-weight: 700; }
+.ac-nav-icon { width: 1.2rem; text-align: center; }
+.ac-side-footer { margin-top: auto; border-top: 1px solid rgba(250,246,236,0.14); padding-top: 0.7rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(250,246,236,0.5); }
+
+.ac-main { flex: 1; min-width: 0; }
+.ac-header { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin-bottom: 1.2rem; }
+.ac-header h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 3.4vw, 2.3rem); color: var(--forest); margin: 0; }
+.ac-header-cert { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ac, var(--emerald)); font-weight: 700; }
+.ac-content { display: flex; flex-direction: column; gap: 1.4rem; }
+
+/* Sidebar responsive */
+@media (max-width: 900px) {
+  .ac-shell { flex-direction: column; }
+  .ac-sidebar { position: static; flex: none; width: 100%; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .ac-nav { flex-direction: row; flex-wrap: wrap; }
+  .ac-side-footer { display: none; }
+}
+
 .acad-rows > div { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; }
 .acad-rows span { color: var(--muted); }
 .acad-rows strong { color: var(--forest); font-family: var(--font-brand); font-size: 0.95rem; }
+
+/* --- Cartes de niveaux --- */
+.ac-levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.9rem; }
+.ac-level-card {
+  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); padding: 1rem 1.1rem; text-decoration: none;
+  display: flex; flex-direction: column; gap: 0.35rem; position: relative; overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.ac-level-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--ac); }
+.ac-level-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.ac-level-badge { font-family: var(--font-brand); font-size: 1.15rem; color: var(--ac); }
+.ac-level-name { font-size: 0.85rem; color: var(--muted); }
+.ac-level-state { position: absolute; top: 0.7rem; right: 0.8rem; font-size: 0.9rem; }
+.ac-level-track { height: 5px; border-radius: 999px; background: rgba(6,61,44,0.1); overflow: hidden; }
+.ac-level-fill { display: block; height: 100%; background: var(--ac); border-radius: 999px; }
+.ac-level-pct { font-size: 0.75rem; color: var(--muted); }
+.ac-level-card.ac-locked { opacity: 0.55; pointer-events: none; filter: grayscale(0.4); }
+.ac-levels-cert { font-size: 0.85rem; color: var(--muted); }
+.ac-levels-cert strong { color: var(--forest); }
+
+/* --- Anneau de progression --- */
+.ac-ring { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.ac-ring-label { position: absolute; font-size: 0.78rem; font-weight: 700; }
+
+/* --- Filtres --- */
+.ac-filters { display: flex; flex-direction: column; gap: 0.5rem; }
+.ac-filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ac-filter-btn {
+  border: 1px solid var(--line); background: #fff; color: var(--muted);
+  font-family: var(--font-body); font-size: 0.85rem; padding: 0.35rem 0.9rem;
+  border-radius: 999px; cursor: pointer; transition: all 0.12s ease;
+}
+.ac-filter-btn:hover { border-color: var(--ac, var(--emerald)); color: var(--forest); }
+.ac-filter-btn.active { background: var(--ac, var(--emerald)); border-color: var(--ac, var(--emerald)); color: #fff; font-weight: 700; }
+
+/* --- Catalogue cours (réutilise .academy-row) --- */
+.ac-courses-empty { color: var(--muted); font-size: 0.95rem; }
+.ac-course-row .academy-name { color: var(--forest); }
+
+/* --- Cartes quiz --- */
+.ac-quiz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+.ac-quiz-card {
+  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); padding: 1.1rem 1.2rem; text-decoration: none;
+  display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.ac-quiz-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.ac-quiz-level { font-family: var(--font-brand); font-size: 0.85rem; color: var(--ac, var(--emerald)); letter-spacing: 0.06em; }
+.ac-quiz-title { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; color: var(--forest); }
+.ac-quiz-badge { font-size: 0.75rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 999px; padding: 0.25rem 0.7rem; align-self: flex-start; }
+
+/* --- Hub étudiant "Mes académies" --- */
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.hub-card {
+  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); padding: 1.2rem 1.3rem; text-decoration: none;
+  display: flex; flex-direction: column; gap: 0.6rem; position: relative; overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.hub-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--ac); }
+.hub-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.hub-card .hub-flag { font-size: 1.5rem; }
+.hub-card .hub-name { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; color: var(--forest); }
+.hub-card .hub-native { font-size: 0.85rem; color: var(--muted); }
+.hub-card .hub-meta { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ac); font-weight: 700; }
+.hub-card.hub-locked { opacity: 0.7; }
+.hub-card .hub-cta { font-size: 0.85rem; color: var(--emerald); font-weight: 700; }
+.hub-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+
 
 /* Content Center */
 .content-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
