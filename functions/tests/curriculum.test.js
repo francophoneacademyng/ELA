@@ -113,10 +113,54 @@ async function clean(paths) { for (const p of paths) { try { await db.doc(p).del
   if (r.body && r.body.error && r.body.error.status === 'FAILED_PRECONDITION') ok('T8 non-abonné ouvre un cours -> REFUSÉ');
   else bad('T8', r.body);
 
-  // T9 : isolation entre académies (mandarin tente un cours german) -> REFUSÉ
+    // T9 : isolation entre académies (mandarin tente un cours german) -> REFUSÉ
   r = await callFn('getCourse', cTok, { courseId: courseId });
   if (r.body && r.body.error && r.body.error.status === 'PERMISSION_DENIED') ok('T9 isolation académie -> REFUSÉ');
   else bad('T9', r.body);
+
+  // --- Tests académies immersives ELA ---
+
+  // T10 : seedAcademyTree (admin) -> 6 académies, 6 levels chacune, 3 unités, 3 modules, 2 leçons
+  r = await callFn('seedAcademyTree', adminTok, {});
+  const treeSeed = r.body && r.body.result && r.body.result.academies;
+  if (treeSeed && treeSeed.FR && treeSeed.DE && treeSeed.ZH && treeSeed.EN && treeSeed.AR && treeSeed.RU
+    && treeSeed.FR.levels === 6 && treeSeed.FR.units === 18 && treeSeed.FR.modules === 54 && treeSeed.FR.lessons === 108)
+    ok('T10 seedAcademyTree -> 6 académies x (6L/18U/54M/108L)');
+  else bad('T10', { treeSeed: treeSeed });
+
+  // T11 : getMyAcademies (student general) -> 1 académie (german → DE)
+  r = await callFn('getMyAcademies', aTok, {});
+  const academiesA = (r.body && r.body.result && r.body.result.academies) || [];
+  if (academiesA.length === 1 && academiesA[0] === 'DE')
+    ok('T11 getMyAcademies (general) -> [DE]');
+  else bad('T11', { academies: academiesA, body: r.body });
+
+  // T12 : getMyAcademies (non-abonné) -> []
+  r = await callFn('getMyAcademies', bTok, {});
+  const academiesB = (r.body && r.body.result && r.body.result.academies) || [];
+  if (academiesB.length === 0)
+    ok('T12 getMyAcademies (pas abonné) -> []');
+  else bad('T12', { academies: academiesB, body: r.body });
+
+  // T13 : getAcademyTree (abonné general → DE) -> 6 niveaux
+  r = await callFn('getAcademyTree', aTok, { code: 'DE' });
+  const tree = (r.body && r.body.result && r.body.result.levels) || [];
+  if (r.status === 200 && tree.length === 6)
+    ok('T13 getAcademyTree (DE) -> 6 niveaux');
+  else bad('T13', { status: r.status, levels: tree.length, body: r.body });
+
+  // T14 : getAcademyTree (abonné general → ZH, pas autorisé) -> REFUSÉ
+  r = await callFn('getAcademyTree', aTok, { code: 'ZH' });
+  if (r.body && r.body.error && r.body.error.status === 'PERMISSION_DENIED')
+    ok('T14 getAcademyTree (ZH, general) -> REFUSÉ');
+  else bad('T14', { status: r.status, body: r.body });
+
+  // T15 : getAcademyTree (admin → AR) -> 6 niveaux HSK-like (6 levels)
+  r = await callFn('getAcademyTree', adminTok, { code: 'AR' });
+  const treeAr = (r.body && r.body.result && r.body.result.levels) || [];
+  if (r.status === 200 && treeAr.length === 6)
+    ok('T15 getAcademyTree (admin → AR) -> 6 niveaux');
+  else bad('T15', { status: r.status, levels: treeAr.length, body: r.body });
 
   console.log(`\nRésultat: ${pass} PASS, ${fail} FAIL`);
   process.exit(fail ? 1 : 0);
