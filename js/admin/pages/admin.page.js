@@ -9,6 +9,7 @@
 import { requireAdmin } from '../../core/auth.service.js';
 import { afterRender, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
+import { callFunction } from '../../core/api-client.js';
 import { fetchAdminPanelData } from '../repositories/admin-data.repository.js';
 import { getState, setState, reset } from '../services/admin-state.js';
 import { refreshQueue } from '../services/admin-review.service.js';
@@ -130,8 +131,41 @@ function bindAdminEvents(app) {
     }, 300));
   }
 
-  bindValidationEvents(app);
+    bindValidationEvents(app);
   bindCertificationsEvents(app);
+
+  /* Seed curriculum (contenu réel) */
+  const seedBtn = document.getElementById('admin-seed-curriculum');
+  if (seedBtn) seedBtn.addEventListener('click', function () {
+    if (!confirm('Seed the curriculum (lessons + quizzes) for all 5 academies?')) return;
+    seedBtn.disabled = true;
+    callFunction('seedCurriculum').then(function (r) {
+      toast(t('admin.seeded') + ' ' + r.courses + ' courses / ' + r.lessons + ' lessons / ' + r.quizzes + ' quizzes', 'success');
+      seedBtn.disabled = false;
+    }).catch(function (e) {
+      toast('Seed failed: ' + (e.message || e), 'error');
+      seedBtn.disabled = false;
+    });
+  });
+
+  /* Seed academy tree (squelettes levels/units/modules/lessons) */
+  const treeBtn = document.getElementById('admin-seed-tree');
+  if (treeBtn) treeBtn.addEventListener('click', function () {
+    if (!confirm('Seed the academy curriculum tree (skeleton) for all 6 academies?')) return;
+    treeBtn.disabled = true;
+    callFunction('seedAcademyTree').then(function (r) {
+      const parts = [];
+      Object.keys(r.academies).forEach(function (code) {
+        const s = r.academies[code];
+        parts.push(code + ': ' + s.levels + 'L/' + s.units + 'U/' + s.modules + 'M/' + s.lessons + 'L');
+      });
+      toast(t('admin.seedTreeDone') + ' ' + parts.join(' | '), 'success');
+      treeBtn.disabled = false;
+    }).catch(function (e) {
+      toast('Seed failed: ' + (e.message || e), 'error');
+      treeBtn.disabled = false;
+    });
+  });
 }
 
 /** Re-rendu local sans recharger les données (option : conserver le focus). */

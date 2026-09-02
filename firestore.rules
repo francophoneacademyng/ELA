@@ -177,6 +177,16 @@ service cloud.firestore {
       allow create, update, delete: if false; // Cloud Functions uniquement
     }
 
+        /* ============================================================\
+        ACADEMY CURRICULUM TREE — academies/{code}/curriculum/...
+        Arbre imbriqué (levels/units/modules/lessons).
+        - Lecture/écriture : serveur uniquement (Cloud Functions Admin SDK).
+        - Accès direct client : refusé (les acadéries lecture via getAcademyTree callable).
+        ============================================================ */
+    match /academies/{code}/curriculum/{doc=**} {
+      allow read, write: if false; // Cloud Functions uniquement
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

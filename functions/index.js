@@ -1395,6 +1395,228 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
   return { courses: nCourses, lessons: nLessons, quizzes: nQuizzes };
 });
 
+/**
+ * Seed de la structure arborescente du curriculum par académie
+ * (admin only, idempotent, IDs déterministes).
+ *
+ * Structure : academies/{code}/curriculum/levels/{levelId}/units/{unitId}/modules/{moduleId}/lessons/{lessonId}
+ *
+ * Squelette uniquement (pas de contenu pédagogique) :
+ *   - 6 niveaux par académie (A1→C2 ou HSK1→HSK6)
+ *   - 3 unités par niveau
+ *   - 3 modules par unité
+ *   - 2 leçons par module
+ *
+ * Retourne le décompte créé par académie.
+ */
+exports.seedAcademyTree = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  await requireAdmin(request.auth.uid);
+
+  // Mapping code → niveaux (miroir de academies.config.js)
+  const ACADEMY_LEVELS = {
+    FR: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+    DE: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+    ZH: ['HSK1', 'HSK2', 'HSK3', 'HSK4', 'HSK5', 'HSK6'],
+    EN: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+    AR: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
+    RU: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  };
+  const ACADEMY_KEY = {
+    FR: 'french', DE: 'german', ZH: 'mandarin',
+    EN: 'english', AR: 'arabic', RU: 'russian'
+  };
+  const UNITS_PER_LEVEL = 3;
+  const MODULES_PER_UNIT = 3;
+  const LESSONS_PER_MODULE = 2;
+
+  const summary = {};
+
+  for (const code of Object.keys(ACADEMY_LEVELS)) {
+    const levels = ACADEMY_LEVELS[code];
+    const academyKey = ACADEMY_KEY[code];
+    let nLevels = 0, nUnits = 0, nModules = 0, nLessons = 0;
+
+    for (const level of levels) {
+      const levelId = code + '_' + level;
+      // Document niveau (sous-collection levels)
+      await db.collection('academies').doc(code)
+        .collection('curriculum').doc('singleton')
+        .collection('levels').doc(levelId).set({
+          id: levelId,
+          code: code,
+          level: level,
+          academyKey: academyKey,
+          title: level,
+          order: levels.indexOf(level) + 1,
+          createdAt: new Date()
+        }, { merge: true });
+      nLevels++;
+
+      for (let u = 1; u <= UNITS_PER_LEVEL; u++) {
+        const unitId = levelId + '_U' + u;
+        await db.collection('academies').doc(code)
+          .collection('curriculum').doc('singleton')
+          .collection('levels').doc(levelId)
+          .collection('units').doc(unitId).set({
+            id: unitId,
+            levelId: levelId,
+            code: code,
+            title: 'Unit ' + u,
+            order: u,
+            createdAt: new Date()
+          }, { merge: true });
+        nUnits++;
+
+        for (let m = 1; m <= MODULES_PER_UNIT; m++) {
+          const moduleId = unitId + '_M' + m;
+          await db.collection('academies').doc(code)
+            .collection('curriculum').doc('singleton')
+            .collection('levels').doc(levelId)
+            .collection('units').doc(unitId)
+            .collection('modules').doc(moduleId).set({
+              id: moduleId,
+              unitId: unitId,
+              levelId: levelId,
+              code: code,
+              title: 'Module ' + m,
+              order: m,
+              createdAt: new Date()
+            }, { merge: true });
+          nModules++;
+
+          for (let l = 1; l <= LESSONS_PER_MODULE; l++) {
+            const lessonId = moduleId + '_L' + l;
+            await db.collection('academies').doc(code)
+              .collection('curriculum').doc('singleton')
+              .collection('levels').doc(levelId)
+              .collection('units').doc(unitId)
+              .collection('modules').doc(moduleId)
+              .collection('lessons').doc(lessonId).set({
+                id: lessonId,
+                moduleId: moduleId,
+                unitId: unitId,
+                levelId: levelId,
+                code: code,
+                title: 'Lesson ' + l,
+                order: l,
+                content: '',
+                objectives: [],
+                vocabulary: [],
+                grammar: [],
+                exercises: [],
+                videoUrl: '',
+                isTrial: false,
+                status: 'draft',
+                createdAt: new Date()
+              }, { merge: true });
+            nLessons++;
+          }
+        }
+      }
+    }
+
+    summary[code] = { levels: nLevels, units: nUnits, modules: nModules, lessons: nLessons };
+  }
+
+  return { academies: summary };
+});
+
+
+
+/**
+ * Arbre du curriculum d'une académie (callable).
+ * Lecture côté serveur (Admin SDK) → ignore les règles Firestore.
+ * Structure : { levels: [{ id, level, title, units: [{ id, title, modules: [{ id, title, lessons: [{ id, title }]}] }] }] }
+ * - Admin/teacher : accès à toutes les académies.
+ * - Student abonné : accès à son académie (ou toutes si plan Premium/Business).
+ * - Student non abonné : refus (la garde client checkAcademyAccess
+ *   empêche l'appel depuis une académie verrouillée).
+ */
+exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const code = String(request.data.code || '').toUpperCase();
+  if (!['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'].includes(code)) {
+    throw new HttpsError('invalid-argument', 'Invalid academy code: ' + code);
+  }
+
+  const userSnap = await db.collection('users').doc(uid).get();
+  const u = userSnap.exists ? userSnap.data() : {};
+  const role = u.role || 'student';
+  if (role === 'admin' || role === 'teacher') {
+    // OK, access to all academies
+  } else {
+    const subSnap = await db.collection('subscriptions').doc(uid).get();
+    const sub = subSnap.exists ? subSnap.data() : null;
+    const now = new Date();
+    const active = sub && sub.status === 'active' &&
+      sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > now;
+    if (!active) {
+      throw new HttpsError('permission-denied', 'Active subscription required to read curriculum.');
+    }
+    const plan = sub.plan || 'general';
+    if (plan !== 'premium' && plan !== 'business') {
+      // General path: one academy only
+      const keyMap = {
+        french: 'FR', francophone: 'FR', fr: 'FR',
+        german: 'DE', de: 'DE',
+        mandarin: 'ZH', chinese: 'ZH', zh: 'ZH',
+        english: 'EN', en: 'EN',
+        arabic: 'AR', ar: 'AR',
+        russian: 'RU', ru: 'RU'
+      };
+      const userAcademy = u.academy || (Array.isArray(u.academies) && u.academies[0]) || 'german';
+      const allowedCode = keyMap[String(userAcademy || '').toLowerCase()] || 'DE';
+      if (code !== allowedCode) {
+        throw new HttpsError('permission-denied', 'This academy is not included in your subscription.');
+      }
+    }
+  }
+
+  // Build the tree from Firestore
+  const treeRef = db.collection('academies').doc(code)
+    .collection('curriculum').doc('singleton')
+    .collection('levels');
+  const levelSnap = await treeRef.get();
+
+  const levels = [];
+  for (const ldoc of levelSnap.docs) {
+    const levelData = ldoc.data();
+    const unitSnap = await treeRef.doc(ldoc.id).collection('units').orderBy('order').get();
+    const units = [];
+    for (const udoc of unitSnap.docs) {
+      const unitData = udoc.data();
+      const moduleSnap = await treeRef.doc(ldoc.id).collection('units').doc(udoc.id)
+        .collection('modules').orderBy('order').get();
+      const modules = [];
+      for (const mdoc of moduleSnap.docs) {
+        const moduleData = mdoc.data();
+        const lessonSnap = await treeRef.doc(ldoc.id).collection('units').doc(udoc.id)
+          .collection('modules').doc(mdoc.id).collection('lessons').orderBy('order').get();
+        const lessons = lessonSnap.docs.map(function (l) {
+          var d = l.data();
+          return { id: d.id, title: d.title || '', order: d.order || 0, status: d.status || 'draft' };
+        });
+        modules.push({ id: moduleData.id, title: moduleData.title || '', order: moduleData.order || 0, lessons: lessons });
+      }
+      units.push({ id: unitData.id, title: unitData.title || '', order: unitData.order || 0, modules: modules });
+    }
+    levels.push({ id: levelData.id, level: levelData.level || '', title: levelData.title || '', order: levelData.order || 0, units: units });
+  }
+
+  levels.sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+
+  return { code: code, levels: levels };
+});
+
+
+
+
 /** Catalogue des cours de l'académie de l'élève (abonné). */
 /** Catalogue public des cours (toutes académies) — sans auth, sans abonnement.
     Seules les métadonnées (titre/niveau/description) sont exposées ;
