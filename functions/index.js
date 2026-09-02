@@ -1297,6 +1297,86 @@ function canAccess(access, content) {
   return !!access.active;
 }
 
+/* ============================================================
+   seedAcademyA1 — Injection du contenu A1 Foundations (5 académies).
+   Lit les fichiers JSON bundleés dans ./seed-a1/*.json et écrit
+   dans courses / lessons / quizzes (idempotent : IDs déterministes,
+   jamais de doublon, aucune suppression). Admin uniquement.
+   ============================================================ */
+exports.seedAcademyA1 = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  await requireAdmin(request.auth.uid);
+
+  const keys = ['DE', 'ZH', 'EN', 'AR', 'RU'];
+  const files = {
+    DE: 'germanophone-a1.json', ZH: 'sinophone-a1.json', EN: 'anglophone-a1.json',
+    AR: 'arabophone-a1.json', RU: 'russophone-a1.json'
+  };
+
+  const normalize = (q) => {
+    if (q.type === 'tf') {
+      const correct = q.correct === true;
+      return { text: q.text, options: ['Vrai', 'Faux'], correctIndex: correct ? 0 : 1 };
+    }
+    return { text: q.text, options: q.options || [], correctIndex: q.correctIndex };
+  };
+  const exText = (ex) => {
+    const parts = [ex.instruction, ex.question];
+    if (ex.answer) parts.push('Réponse : ' + ex.answer);
+    return parts.filter(Boolean).join(' — ');
+  };
+
+  const summary = {};
+  for (const code of keys) {
+    const seed = require('./seed-a1/' + files[code]);
+    const courseId = slugify(seed.academyKey + '-' + seed.course.title);
+
+    await db.collection('courses').doc(courseId).set({
+      academy: seed.academyKey, level: seed.level, title: seed.course.title,
+      titleNative: seed.course.titleNative || '', description: seed.course.description || '',
+      category: seed.course.category || 'All', learningOutcomes: seed.course.learningOutcomes || [],
+      order: seed.course.order || 1, cecrLevel: seed.cecrLevel, academyCode: code,
+      certification: seed.certification || '', status: 'approved', createdAt: new Date()
+    });
+
+    let nL = 0;
+    for (const lesson of seed.lessons) {
+      const linked = seed.quizzes.find((q) => Array.isArray(q.lessons) && q.lessons.indexOf(lesson.id) !== -1);
+      await db.collection('lessons').doc(courseId + '-l' + lesson.order).set({
+        courseId, academy: seed.academyKey, level: seed.level, order: lesson.order,
+        title: lesson.title, titleNative: lesson.titleNative || '', objective: lesson.objective || '',
+        objectives: lesson.objectives || [], content: lesson.content || '',
+        vocabulary: lesson.vocabulary || [], grammar: lesson.grammar || [],
+        exercises: (lesson.exercises || []).map(exText),
+        audioScript: lesson.audioScript || null, videoUrl: lesson.videoUrl || '',
+        quizId: linked ? linked.id : null, isTrial: lesson.isTrial === true,
+        cecrLevel: lesson.cecrLevel || seed.cecrLevel, academyCode: code,
+        teacherUid: null, status: 'approved', createdAt: new Date()
+      });
+      nL++;
+    }
+
+    let nQ = 0;
+    for (const quiz of seed.quizzes) {
+      const firstLesson = Array.isArray(quiz.lessons) && quiz.lessons.length
+        ? seed.lessons.find((l) => l.id === quiz.lessons[0]) : null;
+      await db.collection('quizzes').doc(quiz.id).set({
+        courseId, lessonId: firstLesson ? courseId + '-l' + firstLesson.order : null,
+        academy: seed.academyKey, level: seed.level, title: quiz.title,
+        questions: (quiz.questions || []).map(normalize), isTrial: false,
+        cecrLevel: seed.cecrLevel, academyCode: code, teacherUid: null,
+        status: 'approved', createdAt: new Date()
+      });
+      nQ++;
+    }
+
+    summary[code] = { course: 1, lessons: nL, quizzes: nQ };
+  }
+
+  return { academies: summary };
+});
 /**
  * Liste des académies accessibles pour l'utilisateur courant.
  * - general        → [users/{uid}.academy] (une seule académie)
