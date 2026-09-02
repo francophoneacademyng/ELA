@@ -7,7 +7,7 @@
 import { mountShell } from '../../../shared/components/academy/academy-shell.js';
 import { checkAcademyAccess } from '../../../shared/components/academy/academy-access.js';
 import { courseCards } from '../../../shared/components/academy/course-cards.js';
-import { filters as fFilters, renderFilters, bindFilters, applyCourseFilters } from '../../../shared/components/academy/filters.js';
+import { renderFilters, bindFilters, applyCourseFilters } from '../../../shared/components/academy/filters.js';
 import { callFunction } from '../../../js/core/api-client.js';
 import { renderLockedView } from './dashboard.factory.js';
 

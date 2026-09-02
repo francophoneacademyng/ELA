@@ -1,2 +1,2 @@
-import { createCertificatesPage } from '../../../base/pages/certificates.factory.js';
+import { createCertificatesPage } from '../../base/pages/certificates.factory.js';
 export const render = createCertificatesPage('RU');
