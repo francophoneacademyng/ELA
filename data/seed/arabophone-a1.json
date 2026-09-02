@@ -1,0 +1,429 @@
+{
+  "academyCode": "AR",
+  "academyName": "Arabophone Academy",
+  "cecrLevel": "A1",
+  "lessons": [
+    {
+      "id": "AR-A1-L01",
+      "order": 1,
+      "title": "L'alphabet et la lecture",
+      "titleTargetLang": "الأبجدية والقراءة (al-abjadīya wa-l-qirāʼa)",
+      "objective": "Reconnaître les lettres de l'alphabet arabe et lire les voyelles courtes.",
+      "content": [
+        { "heading": "L'alphabet arabe", "text": "L'arabe s'écrit de droite à gauche avec 28 lettres. La forme d'une lettre change selon sa position dans le mot : initiale, médiane, finale ou isolée. Par exemple « b » (ب) se relie aux lettres suivantes." },
+        { "heading": "Les voyelles", "text": "L'arabe utilise des signes de voyelles courtes au-dessus ou en dessous des lettres : « fatḥa » (a, َ), « ḍamma » (ou, ُ) et « kasra » (i, ِ). Les voyelles longues sont des lettres : ā (ا), ū (و), ī (ي)." },
+        { "heading": "Lire de droite à gauche", "text": "Il faut s'habituer à lire de droite à gauche. Le mot « kitāb » (livre, كتاب) se lit en commençant par le « k ». La majorité des lettres se lient comme une écriture continue." }
+      ],
+      "vocabulary": [
+        { "word": "أبجديّة (abjadīya)", "translation": "l'alphabet" },
+        { "word": "حرف (ḥarf)", "translation": "la lettre" },
+        { "word": "كتاب (kitāb)", "translation": "le livre" },
+        { "word": "قلم (qalam)", "translation": "le stylo" },
+        { "word": "مدرسة (madrasa)", "translation": "l'école" },
+        { "word": "يقرأ (yaqraʼ)", "translation": "il lit" },
+        { "word": "يكتب (yaktub)", "translation": "il écrit" },
+        { "word": "يمين (yamīn)", "translation": "droite" },
+        { "word": "يسار (yasār)", "translation": "gauche" },
+        { "word": "واحد (wāḥid)", "translation": "un" },
+        { "word": "ماء (māʼ)", "translation": "l'eau" },
+        { "word": "اسم (ism)", "translation": "le nom" },
+        { "word": "ما (mā)", "translation": "quoi / que" },
+        { "word": "نعم (naʿam)", "translation": "oui" },
+        { "word": "لا (lā)", "translation": "non" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Dans quel sens lit-on l'arabe ?", "options": ["de gauche à droite", "de droite à gauche", "de haut en bas", "en zigzag"], "answer": "de droite à gauche" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Combien de lettres compte l'alphabet arabe ?", "options": ["24", "26", "28", "30"], "answer": "28" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « كتاب » (kitāb) ?", "options": ["la maison", "le livre", "le stylo", "l'école"], "answer": "le livre" }
+      ],
+      "audioScript": "A: Mā hādhā?\nB: Hādhā kitāb.\nA: Wa mā hādhā?\nB: Hādhā qalam.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L02",
+      "order": 2,
+      "title": "Les salutations",
+      "titleTargetLang": "التحيات (at-taḥiyyāt)",
+      "objective": "Saluer, se présenter et répondre aux formules de politesse en arabe.",
+      "content": [
+        { "heading": "Le salam", "text": "La salutation universelle est « as-salāmu ʿalaykum » (que la paix soit sur vous), à laquelle on répond « wa ʿalaykum as-salām ». « Marḥaban » est un bonjour plus simple et « ahlan » un accueil chaleureux." },
+        { "heading": "Demander des nouvelles", "text": "On demande des nouvelles avec « kayfa ḥāluk? » (comment vas-tu ?). On répond « bi-khayr, shukran » (bien, merci) ou « al-ḥamdu li-llāh » (grâce à Dieu, bien)." },
+        { "heading": "Se présenter", "text": "Pour se présenter : « ismī … » (mon nom est). On demande « mā ismuk? » (quel est ton nom ?). « Tasharraftu » signifie « enchanté(e) de faire votre connaissance »." }
+      ],
+      "vocabulary": [
+        { "word": "as-salāmu ʿalaykum", "translation": "bonjour / que la paix soit sur vous" },
+        { "word": "wa ʿalaykum as-salām", "translation": "et sur vous la paix" },
+        { "word": "marḥaban", "translation": "bonjour (simple)" },
+        { "word": "kayfa ḥāluk?", "translation": "comment vas-tu ?" },
+        { "word": "bi-khayr", "translation": "bien" },
+        { "word": "shukran", "translation": "merci" },
+        { "word": "al-ḥamdu li-llāh", "translation": "Dieu merci (bien)" },
+        { "word": "ismī", "translation": "mon nom est" },
+        { "word": "mā ismuk?", "translation": "quel est ton nom ?" },
+        { "word": "tasharraftu", "translation": "enchanté(e)" },
+        { "word": "maʿa as-salāma", "translation": "au revoir" },
+        { "word": "ilā al-liqāʼ", "translation": "à bientôt" },
+        { "word": "naʿam", "translation": "oui" },
+        { "word": "lā", "translation": "non" },
+        { "word": "min faḍlik", "translation": "s'il vous plaît" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment répond-on à « as-salāmu ʿalaykum » ?", "options": ["bi-khayr", "wa ʿalaykum as-salām", "shukran", "naʿam"], "answer": "wa ʿalaykum as-salām" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on « quel est ton nom ? »", "options": ["mā ismuk?", "kayfa ḥāluk?", "mā hādhā?", "ayna anta?"], "answer": "mā ismuk?" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « shukran » ?", "options": ["bonjour", "merci", "au revoir", "oui"], "answer": "merci" }
+      ],
+      "audioScript": "A: as-salāmu ʿalaykum! Kayfa ḥāluk?\nB: wa ʿalaykum as-salām! Anā bi-khayr, shukran. Wa anta?\nA: al-ḥamdu li-llāh. Mā ismuk?\nB: Ismī Karīm.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L03",
+      "order": 3,
+      "title": "Les nombres",
+      "titleTargetLang": "الأرقام (al-arqām)",
+      "objective": "Compter de 0 à 20 et donner son numéro de téléphone en arabe.",
+      "content": [
+        { "heading": "Les chiffres", "text": "Les chiffres utilisés en arabe moderne : ٠ (0), ١ (1), ٢ (2), ٣ (3), ٤ (4), ٥ (5), ٦ (6), ٧ (7), ٨ (8), ٩ (9). Dans la conversation : ṣifr, wāḥid, ithnān, thalātha, arbaʿa, khamsa, sitta, sabʿa, thamāniya, tisʿa." },
+        { "heading": "Compter de 10 à 20", "text": "De 10 à 20 : ʿashara (10), aḥada ʿashar (11), ithnā ʿashar (12), thalāthata ʿashar (13)… jusqu'à ʿishrūn (20). En arabe, les nombres de 11 à 19 se construisent avec « ʿashar »." },
+        { "heading": "Le téléphone", "text": "Un numéro de téléphone se lit chiffre par chiffre. On utilise l'expression « raqam » (numéro) : « raqm al-hātif » est le numéro de téléphone. En arabe levantin, « hātif » désigne le téléphone." }
+      ],
+      "vocabulary": [
+        { "word": "ṣifr", "translation": "zéro" },
+        { "word": "wāḥid", "translation": "un" },
+        { "word": "ithnān", "translation": "deux" },
+        { "word": "thalātha", "translation": "trois" },
+        { "word": "arbaʿa", "translation": "quatre" },
+        { "word": "khamsa", "translation": "cinq" },
+        { "word": "sitta", "translation": "six" },
+        { "word": "sabʿa", "translation": "sept" },
+        { "word": "thamāniya", "translation": "huit" },
+        { "word": "tisʿa", "translation": "neuf" },
+        { "word": "ʿashara", "translation": "dix" },
+        { "word": "ʿishrūn", "translation": "vingt" },
+        { "word": "raqm", "translation": "le numéro" },
+        { "word": "al-hātif", "translation": "le téléphone" },
+        { "word": "kam", "translation": "combien" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « cinq » en arabe ?", "options": ["arbaʿa", "khamsa", "sitta", "sabʿa"], "answer": "khamsa" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « dix » ?", "options": ["ʿashara", "ʿishrūn", "tisʿa", "wāḥid"], "answer": "ʿashara" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « raqm » ?", "options": ["le prix", "le numéro", "la lettre", "le mot"], "answer": "le numéro" }
+      ],
+      "audioScript": "A: Mā raqm al-hātif?\nB: Raqmī wāḥid, khamsa, sitta, sitta, sitta.\nA: Shukran. Raqmuka wāḥid khamsa sitta sitta sitta.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L04",
+      "order": 4,
+      "title": "La famille",
+      "titleTargetLang": "العائلة (al-ʿāʼila)",
+      "objective": "Présenter sa famille et utiliser les possessifs en arabe.",
+      "content": [
+        { "heading": "La famille proche", "text": "Les proches : al-abb (le père), al-umm (la mère), al-akh (le frère), al-ukht (la sœur). Le pluriel « al-wālidān » désigne les parents. « al-ʿāʼila » signifie la famille." },
+        { "heading": "La famille élargie", "text": "Plus loin : al-jadd (le grand-père), al-jadda (la grand-mère), al-ʿamm (l'oncle paternel), al-khāl (l'oncle maternel), al-ʿamma (la tante paternelle), al-khāla (la tante maternelle)." },
+        { "heading": "Exprimer la possession", "text": "L'arabe ajoute un suffixe possessif au nom : « abī » (mon père), « ummī » (ma mère), « akhī » (mon frère). Pour « ton », on ajoute « -ka » (masculin) ou « -ki » (féminin) : « abūk » (ton père)." }
+      ],
+      "vocabulary": [
+        { "word": "al-abb", "translation": "le père" },
+        { "word": "al-umm", "translation": "la mère" },
+        { "word": "al-akh", "translation": "le frère" },
+        { "word": "al-ukht", "translation": "la sœur" },
+        { "word": "al-wālidān", "translation": "les parents" },
+        { "word": "al-jadd", "translation": "le grand-père" },
+        { "word": "al-jadda", "translation": "la grand-mère" },
+        { "word": "al-ʿamm", "translation": "l'oncle paternel" },
+        { "word": "al-khāl", "translation": "l'oncle maternel" },
+        { "word": "al-ʿamma", "translation": "la tante paternelle" },
+        { "word": "ibn", "translation": "le fils" },
+        { "word": "bint", "translation": "la fille" },
+        { "word": "abī", "translation": "mon père" },
+        { "word": "ummī", "translation": "ma mère" },
+        { "word": "akhlī", "translation": "ma famille" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « la mère » en arabe ?", "options": ["al-abb", "al-umm", "al-ukht", "al-akh"], "answer": "al-umm" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « mon père » ?", "options": ["ummī", "abī", "akhī", "abūk"], "answer": "abī" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « al-ʿāʼila » ?", "options": ["l'école", "la famille", "la maison", "les amis"], "answer": "la famille" }
+      ],
+      "audioScript": "A: Hal ʿindaka ʿāʼila kabīra?\nB: Naʿam, ʿindī ab wa umm wa akhān. Wa anta?\nA: ʿindī umm wa ukht waḥida.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L05",
+      "order": 5,
+      "title": "La vie quotidienne",
+      "titleTargetLang": "الحياة اليومية (al-ḥayāt al-yawmiyya)",
+      "objective": "Décrire ses activités quotidiennes et utiliser le verbe au présent.",
+      "content": [
+        { "heading": "Le matin", "text": "La journée commence par « astayqiẓ » (je me réveille) et « atanāwalu al-fuṭūr » (je prends le petit-déjeuner). « Adhhabu ilā al-ʿamal » signifie je vais au travail." },
+        { "heading": "Les verbes au présent", "text": "En arabe, le présent se forme avec des préfixes : « a- » (je), « ta- » (tu), « ya- » (il), « na- » (nous). Exemple : adhhabu (je vais), tadhhabu (tu vas), yadhhabu (il va)." },
+        { "heading": "Le soir", "text": "Le soir on « arjiʿu ilā al-bayt » (je rentre à la maison) et « atashā ʿashāʼ » (je dîne). « Anāmu » signifie je dors. Les moments : fī al-ṣabāḥ (le matin), fī al-masāʼ (le soir)." }
+      ],
+      "vocabulary": [
+        { "word": "astayqiẓ", "translation": "je me réveille" },
+        { "word": "al-fuṭūr", "translation": "le petit-déjeuner" },
+        { "word": "al-ʿamal", "translation": "le travail" },
+        { "word": "adhhabu", "translation": "je vais" },
+        { "word": "arjiʿu", "translation": "je rentre" },
+        { "word": "al-bayt", "translation": "la maison" },
+        { "word": "atashā ʿashāʼ", "translation": "je dîne" },
+        { "word": "anāmu", "translation": "je dors" },
+        { "word": "fī al-ṣabāḥ", "translation": "le matin" },
+        { "word": "fī al-masāʼ", "translation": "le soir" },
+        { "word": "al-yawm", "translation": "aujourd'hui" },
+        { "word": "ghadan", "translation": "demain" },
+        { "word": "ams", "translation": "hier" },
+        { "word": "as-sāʿa", "translation": "l'heure" },
+        { "word": "kulla yawm", "translation": "chaque jour" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je vais au travail » ?", "options": ["adhhabu ilā al-bayt", "adhhabu ilā al-ʿamal", "arjiʿu ilā al-ʿamal", "anāmu fī al-ʿamal"], "answer": "adhhabu ilā al-ʿamal" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « al-bayt » ?", "options": ["le travail", "la maison", "l'école", "le marché"], "answer": "la maison" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le matin » ?", "options": ["fī al-masāʼ", "fī al-ṣabāḥ", "fī al-layl", "kulla yawm"], "answer": "fī al-ṣabāḥ" }
+      ],
+      "audioScript": "A: Mathā tafʿal fī al-ṣabāḥ?\nB: Astayqiẓ fī as-sāʿa as-sādisa, thumma atanāwalu al-fuṭūr.\nA: Wa fī al-masāʼ?\nB: Arjiʿu ilā al-bayt wa atashā ʿashāʼ.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L06",
+      "order": 6,
+      "title": "La nourriture et les boissons",
+      "titleTargetLang": "الطعام والشراب (aṭ-ṭaʿām wa-sh-sharāb)",
+      "objective": "Commander à manger, exprimer ses goûts et demander poliment en arabe.",
+      "content": [
+        { "heading": "Les aliments", "text": "Les aliments courants : khubz (le pain), uruzz (le riz), laḥm (la viande), samak (le poisson), khudrāwāt (les légumes), fākiha (les fruits). Boissons : māʼ (l'eau), shāy (le thé), qahwa (le café), ḥalīb (le lait)." },
+        { "heading": "Au restaurant", "text": "Pour commander : « urīd … » (je veux) ou « aʿṭinī …, min faḍlik » (donnez-moi …, s'il vous plaît). L'addition : « al-ḥisāb » (l'addition). Le serveur demande « mādhā tashāʼ? » (que voulez-vous ?)." },
+        { "heading": "Exprimer ses goûts", "text": "« Uḥibbu » signifie j'aime : « uḥibbu al-qahwa » (j'aime le café). La négation : « lā uḥibbu al-shāy » (je n'aime pas le thé). « Ḥalāl » désigne ce qui est permis selon la religion." }
+      ],
+      "vocabulary": [
+        { "word": "khubz", "translation": "le pain" },
+        { "word": "uruzz", "translation": "le riz" },
+        { "word": "laḥm", "translation": "la viande" },
+        { "word": "samak", "translation": "le poisson" },
+        { "word": "māʼ", "translation": "l'eau" },
+        { "word": "shāy", "translation": "le thé" },
+        { "word": "qahwa", "translation": "le café" },
+        { "word": "ḥalīb", "translation": "le lait" },
+        { "word": "urīd", "translation": "je veux" },
+        { "word": "aʿṭinī", "translation": "donne-moi" },
+        { "word": "min faḍlik", "translation": "s'il vous plaît" },
+        { "word": "al-ḥisāb", "translation": "l'addition" },
+        { "word": "uḥibbu", "translation": "j'aime" },
+        { "word": "lā uḥibbu", "translation": "je n'aime pas" },
+        { "word": "ṭayyib", "translation": "bon / délicieux" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le pain » en arabe ?", "options": ["uruzz", "khubz", "laḥm", "samak"], "answer": "khubz" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on l'addition ?", "options": ["al-ḥisāb, min faḍlik", "al-qahwa, min faḍlik", "khubz, min faḍlik", "al-māʼ, min faḍlik"], "answer": "al-ḥisāb, min faḍlik" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « uḥibbu » ?", "options": ["je bois", "j'aime", "je mange", "je veux"], "answer": "j'aime" }
+      ],
+      "audioScript": "A: Mādhā tashāʼ?\nB: Urīd khubz wa qahwa, min faḍlik.\nA: Ahlan wa sahlan. Ayy shayʾ ākhar?\nB: Lā, shukran. Al-ḥisāb, min faḍlik.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L07",
+      "order": 7,
+      "title": "Le logement",
+      "titleTargetLang": "السكن (as-sakan)",
+      "objective": "Décrire son logement et demander des directions simples.",
+      "content": [
+        { "heading": "Le logement", "text": "On vit dans « bayt » (la maison) ou « shaqqa » (l'appartement). Les pièces : al-maṭbakh (la cuisine), ghurfat al-nawm (la chambre), al-ḥammām (la salle de bains), ghurfat al-julūs (le salon)." },
+        { "heading": "Les meubles", "text": "Les meubles : al-ṭāwila (la table), al-kursī (la chaise), al-sarīr (le lit), al-khizāna (l'armoire). « Fī al-bayt » signifie dans la maison." },
+        { "heading": "S'orienter", "text": "Pour s'orienter : « ayna …? » (où est ?), « ilā al-yamīn » (à droite), « ilā al-yasār » (à gauche), « mustaqīman » (tout droit). Exemple : « Ayna al-bank? » (où est la banque ?)." }
+      ],
+      "vocabulary": [
+        { "word": "bayt", "translation": "la maison" },
+        { "word": "shaqqa", "translation": "l'appartement" },
+        { "word": "al-maṭbakh", "translation": "la cuisine" },
+        { "word": "ghurfat al-nawm", "translation": "la chambre" },
+        { "word": "al-ḥammām", "translation": "la salle de bains" },
+        { "word": "al-ṭāwila", "translation": "la table" },
+        { "word": "al-kursī", "translation": "la chaise" },
+        { "word": "al-sarīr", "translation": "le lit" },
+        { "word": "al-bank", "translation": "la banque" },
+        { "word": "ayna", "translation": "où" },
+        { "word": "ilā al-yamīn", "translation": "à droite" },
+        { "word": "ilā al-yasār", "translation": "à gauche" },
+        { "word": "mustaqīman", "translation": "tout droit" },
+        { "word": "al-mustashfā", "translation": "l'hôpital" },
+        { "word": "al-sūq", "translation": "le marché" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « la maison » en arabe ?", "options": ["shaqqa", "bayt", "ghurfa", "maṭbakh"], "answer": "bayt" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on « où est la banque ? »", "options": ["Ayna al-bank?", "Mā al-bank?", "Kam al-bank?", "Mādhā al-bank?"], "answer": "Ayna al-bank?" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « ilā al-yamīn » ?", "options": ["à gauche", "à droite", "tout droit", "derrière"], "answer": "à droite" }
+      ],
+      "audioScript": "A: Ayna al-bank, min faḍlik?\nB: Al-bank hunāk, ilā al-yamīn.\nA: Ilā al-yamīn. Shukran jazeelan!\nB: ʿAfwan.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L08",
+      "order": 8,
+      "title": "L'heure et le temps",
+      "titleTargetLang": "الوقت (al-waqt)",
+      "objective": "Donner l'heure et les jours de la semaine, fixer un rendez-vous.",
+      "content": [
+        { "heading": "L'heure", "text": "On demande l'heure avec « kam as-sāʿa? » (quelle heure est-il ?). On répond « as-sāʿa thalātha » (il est trois heures). « Al-niṣf » signifie la demie : as-sāʿa thalātha wa-n-niṣf (trois heures et demie)." },
+        { "heading": "Les jours de la semaine", "text": "Les jours : al-ithnayn (lundi), ath-thulāthāʼ (mardi), al-arbiʿāʼ (mercredi), al-khamīs (jeudi), al-jumʿa (vendredi), as-sabt (samedi), al-aḥad (dimanche). Le vendredi, jour sacré, est souvent férié." },
+        { "heading": "Fixer un rendez-vous", "text": "« Mawʿid » signifie le rendez-vous. On propose : « hal nataqābal yawm al-ithnayn? » (se voit-on lundi ?). « Fī al-thalātha » précise « à trois heures »." }
+      ],
+      "vocabulary": [
+        { "word": "kam as-sāʿa?", "translation": "quelle heure est-il ?" },
+        { "word": "as-sāʿa", "translation": "l'heure" },
+        { "word": "al-niṣf", "translation": "la demie" },
+        { "word": "al-ithnayn", "translation": "lundi" },
+        { "word": "ath-thulāthāʼ", "translation": "mardi" },
+        { "word": "al-arbiʿāʼ", "translation": "mercredi" },
+        { "word": "al-khamīs", "translation": "jeudi" },
+        { "word": "al-jumʿa", "translation": "vendredi" },
+        { "word": "al-aḥad", "translation": "dimanche" },
+        { "word": "al-yawm", "translation": "aujourd'hui" },
+        { "word": "ghadan", "translation": "demain" },
+        { "word": "mawʿid", "translation": "le rendez-vous" },
+        { "word": "nataqābal", "translation": "nous nous rencontrons" },
+        { "word": "mubakkiran", "translation": "tôt" },
+        { "word": "mutāʾakhkhiran", "translation": "tard" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on l'heure ?", "options": ["kam as-sāʿa?", "ayna as-sāʿa?", "mā as-sāʿa?", "kam anta?"], "answer": "kam as-sāʿa?" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « as-sāʿa thalātha wa-n-niṣf » ?", "options": ["trois heures moins le quart", "trois heures et demie", "quatre heures", "trois heures cinq"], "answer": "trois heures et demie" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Quel jour est « al-jumʿa » ?", "options": ["lundi", "mercredi", "vendredi", "dimanche"], "answer": "vendredi" }
+      ],
+      "audioScript": "A: Kam as-sāʿa?\nB: As-sāʿa al-khāmisa wa-n-niṣf.\nA: Hal nataqābal ghadan?\nB: Naʿam, ghadan fī as-sāʿa as-sādisa.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L09",
+      "order": 9,
+      "title": "Les achats",
+      "titleTargetLang": "التسوق (at-tasawwuq)",
+      "objective": "Demander un prix, acheter et négocier simplement sur le marché.",
+      "content": [
+        { "heading": "Au marché", "text": "Sur le marché (as-sūq), le vendeur dit « Ahlan wa sahlan » (bienvenue). On demande le prix : « kam al-thaman? » (combien coûte ?). Le commerce se fait souvent avec une certaine négociation." },
+        { "heading": "Demander un prix", "text": "« Bikam hādhā? » (combien coûte ceci ?). La réponse : « bi-ʿashara dīnār » (dix dinars). « Ghālī » signifie cher, « rakhīṣ » bon marché. On peut dire « hādhā ghālī jiddan » (c'est très cher)." },
+        { "heading": "Acheter et payer", "text": "Pour acheter : « sa-ākhudh hādhā » (je prendrai ceci). « Anāqid » signifie je paie. En espèces : naqdan. La question « hal taqbalu al-bāqāt? » demande si le paiement par carte est accepté." }
+      ],
+      "vocabulary": [
+        { "word": "as-sūq", "translation": "le marché" },
+        { "word": "Bikam hādhā?", "translation": "combien coûte ceci ?" },
+        { "word": "ghālī", "translation": "cher" },
+        { "word": "rakhīṣ", "translation": "bon marché" },
+        { "word": "naqdan", "translation": "en espèces" },
+        { "word": "sa-ākhudh", "translation": "je prendrai" },
+        { "word": "al-thaman", "translation": "le prix" },
+        { "word": "dīnār", "translation": "le dinar" },
+        { "word": "al-māl", "translation": "l'argent" },
+        { "word": "nāqish", "translation": "discuter / négocier" },
+        { "word": "kathīr", "translation": "beaucoup" },
+        { "word": "qalīl", "translation": "peu" },
+        { "word": "ḥāja", "translation": "la chose" },
+        { "word": "mufīd", "translation": "utile" },
+        { "word": "jayyid", "translation": "bon" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on le prix ?", "options": ["Bikam hādhā?", "Ayna hādhā?", "Kam as-sāʿa?", "Mā hādhā?"], "answer": "Bikam hādhā?" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « ghālī » ?", "options": ["bon marché", "cher", "joli", "nouveau"], "answer": "cher" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je prendrai ceci » ?", "options": ["sa-ākhudh hādhā", "urīd hādhā", "uḥibbu hādhā", "aʿṭinī hādhā"], "answer": "sa-ākhudh hādhā" }
+      ],
+      "audioScript": "A: Bikam hādhā al-qamīṣ?\nB: Hādhā al-qamīṣ bi-ʿishrīn dīnār.\nA: Hādhā ghālī jiddan! A-rākhīṣ akhī?\nB: Ḥasanan, bikhamsata ʿashar dīnār.",
+      "cecrLevel": "A1"
+    },
+    {
+      "id": "AR-A1-L10",
+      "order": 10,
+      "title": "Les voyages et les transports",
+      "titleTargetLang": "السفر والمواصلات (as-safar wa-l-muwaṣṣalāt)",
+      "objective": "Prendre les transports, acheter un billet et se déplacer en voyage.",
+      "content": [
+        { "heading": "Les transports", "text": "Les transports : as-sayyāra (la voiture), al-ḥāfila (le bus), al-qiṭār (le train), aṭ-ṭāʼira (l'avion), al-tāksī (le taxi). « Khuḏ al-ḥāfila » signifie prendre le bus." },
+        { "heading": "Acheter un billet", "text": "Au guichet : « uḥtāju tadhkara ilā … » (j'ai besoin d'un billet pour …). « Dhahāb » signifie aller simple, « dhahāb wa-iyāb » aller-retour. « Matā yughādir al-qiṭār? » (quand part le train ?)." },
+        { "heading": "À l'aéroport et à la gare", "text": "Le quai se dit « ar-riṣīf », le départ « al-inṭilāq » et l'arrivée « al-wuṣūl ». « Mataḥṭa » désigne la station. On demande l'itinéraire avec « kayfa adhhabu ilā …? » (comment aller à … ?)." }
+      ],
+      "vocabulary": [
+        { "word": "as-sayyāra", "translation": "la voiture" },
+        { "word": "al-ḥāfila", "translation": "le bus" },
+        { "word": "al-qiṭār", "translation": "le train" },
+        { "word": "aṭ-ṭāʼira", "translation": "l'avion" },
+        { "word": "al-tāksī", "translation": "le taxi" },
+        { "word": "tadhkara", "translation": "le billet" },
+        { "word": "dhahāb", "translation": "aller simple" },
+        { "word": "dhahāb wa-iyāb", "translation": "aller-retour" },
+        { "word": "ar-riṣīf", "translation": "le quai" },
+        { "word": "al-inṭilāq", "translation": "le départ" },
+        { "word": "al-wuṣūl", "translation": "l'arrivée" },
+        { "word": "al-maṭār", "translation": "l'aéroport" },
+        { "word": "al-muḥaṭṭa", "translation": "la gare / la station" },
+        { "word": "kayfa adhhabu", "translation": "comment aller" },
+        { "word": "al-tāʾkhīr", "translation": "le retard" }
+      ],
+      "exercises": [
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le train » en arabe ?", "options": ["al-ḥāfila", "al-qiṭār", "as-sayyāra", "aṭ-ṭāʼira"], "answer": "al-qiṭār" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « aller-retour » ?", "options": ["dhahāb", "dhahāb wa-iyāb", "mataḥṭa", "inṭilāq"], "answer": "dhahāb wa-iyāb" },
+        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « al-maṭār » ?", "options": ["la gare", "l'aéroport", "le port", "le quai"], "answer": "l'aéroport" }
+      ],
+      "audioScript": "A: Uḥtāju tadhkara ilā al-Qāhira, min faḍlik.\nB: Dhahāb am dhahāb wa-iyāb?\nA: Dhahāb. Matā yughādir al-qiṭār?\nB: Fī as-sāʿa al-ʿāshira.",
+      "cecrLevel": "A1"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "AR-A1-Q01",
+      "title": "Alphabet & Salutations",
+      "level": "A1",
+      "questions": [
+        { "type": "qcm", "question": "Dans quel sens se lit l'arabe ?", "options": ["de gauche à droite", "de droite à gauche", "de bas en haut", "de haut en bas"], "answer": "de droite à gauche" },
+        { "type": "qcm", "question": "Comment répond-on à « as-salāmu ʿalaykum » ?", "options": ["shukran", "wa ʿalaykum as-salām", "bi-khayr", "naʿam"], "answer": "wa ʿalaykum as-salām" },
+        { "type": "qcm", "question": "Que signifie « shukran » ?", "options": ["bonjour", "merci", "oui", "au revoir"], "answer": "merci" },
+        { "type": "qcm", "question": "Comment demande-t-on le nom de quelqu'un ?", "options": ["mā ismuk?", "kayfa ḥāluk?", "ayna anta?", "kam as-sāʿa?"], "answer": "mā ismuk?" },
+        { "type": "qcm", "question": "Combien de lettres compte l'alphabet arabe ?", "options": ["26", "28", "30", "24"], "answer": "28" }
+      ]
+    },
+    {
+      "id": "AR-A1-Q02",
+      "title": "Nombres & Famille",
+      "level": "A1",
+      "questions": [
+        { "type": "qcm", "question": "Comment dit-on « cinq » en arabe ?", "options": ["arbaʿa", "khamsa", "sitta", "sabʿa"], "answer": "khamsa" },
+        { "type": "qcm", "question": "Comment dit-on « dix » ?", "options": ["ʿashara", "ʿishrūn", "tisʿa", "wāḥid"], "answer": "ʿashara" },
+        { "type": "qcm", "question": "Comment dit-on « le frère » ?", "options": ["al-ukht", "al-akh", "al-abb", "al-umm"], "answer": "al-akh" },
+        { "type": "qcm", "question": "Comment dit-on « mon père » ?", "options": ["ummī", "abī", "akhī", "abūk"], "answer": "abī" },
+        { "type": "qcm", "question": "Que signifie « al-ʿāʼila » ?", "options": ["l'école", "la famille", "le travail", "le marché"], "answer": "la famille" }
+      ]
+    },
+    {
+      "id": "AR-A1-Q03",
+      "title": "Vie quotidienne & Nourriture",
+      "level": "A1",
+      "questions": [
+        { "type": "qcm", "question": "Comment dit-on « la maison » ?", "options": ["al-ʿamal", "al-bayt", "al-madrasa", "as-sūq"], "answer": "al-bayt" },
+        { "type": "qcm", "question": "Comment dit-on « je vais au travail » ?", "options": ["adhhabu ilā al-bayt", "adhhabu ilā al-ʿamal", "arjiʿu ilā al-ʿamal", "anāmu fī al-bayt"], "answer": "adhhabu ilā al-ʿamal" },
+        { "type": "qcm", "question": "Comment dit-on « le pain » ?", "options": ["uruzz", "khubz", "laḥm", "samak"], "answer": "khubz" },
+        { "type": "qcm", "question": "Comment dit-on « j'aime le café » ?", "options": ["uḥibbu al-qahwa", "lā uḥibbu al-qahwa", "urīd al-qahwa", "ashrabu al-qahwa"], "answer": "uḥibbu al-qahwa" },
+        { "type": "qcm", "question": "Comment demande-t-on l'addition ?", "options": ["al-ḥisāb, min faḍlik", "al-māʼ, min faḍlik", "khubz, min faḍlik", "al-bayt, min faḍlik"], "answer": "al-ḥisāb, min faḍlik" }
+      ]
+    },
+    {
+      "id": "AR-A1-Q04",
+      "title": "Logement & Heure",
+      "level": "A1",
+      "questions": [
+        { "type": "qcm", "question": "Comment dit-on « l'appartement » ?", "options": ["bayt", "shaqqa", "ghurfa", "sakan"], "answer": "shaqqa" },
+        { "type": "qcm", "question": "Comment dit-on « à droite » ?", "options": ["ilā al-yasār", "ilā al-yamīn", "mustaqīman", "ilā al-waraʼ"], "answer": "ilā al-yamīn" },
+        { "type": "qcm", "question": "Comment demande-t-on l'heure ?", "options": ["kam as-sāʿa?", "ayna as-sāʿa?", "mā as-sāʿa?", "kam al-thaman?"], "answer": "kam as-sāʿa?" },
+        { "type": "qcm", "question": "Que signifie « al-niṣf » ?", "options": ["le quart", "la demie", "la minute", "l'heure"], "answer": "la demie" },
+        { "type": "qcm", "question": "Quel jour est « al-ithnayn » ?", "options": ["mardi", "lundi", "dimanche", "vendredi"], "answer": "lundi" }
+      ]
+    },
+    {
+      "id": "AR-A1-Q05",
+      "title": "Achats & Voyages",
+      "level": "A1",
+      "questions": [
+        { "type": "qcm", "question": "Comment demande-t-on le prix ?", "options": ["Bikam hādhā?", "Ayna hādhā?", "Mā hādhā?", "Kam anta?"], "answer": "Bikam hādhā?" },
+        { "type": "qcm", "question": "Que signifie « rakhīṣ » ?", "options": ["cher", "bon marché", "joli", "gratuit"], "answer": "bon marché" },
+        { "type": "qcm", "question": "Comment dit-on « le train » ?", "options": ["al-ḥāfila", "al-qiṭār", "as-sayyāra", "aṭ-ṭāʼira"], "answer": "al-qiṭār" },
+        { "type": "qcm", "question": "Comment dit-on « aller-retour » ?", "options": ["dhahāb", "dhahāb wa-iyāb", "inṭilāq", "wuṣūl"], "answer": "dhahāb wa-iyāb" },
+        { "type": "qcm", "question": "Que signifie « al-maṭār » ?", "options": ["la gare", "l'aéroport", "le port", "le quai"], "answer": "l'aéroport" }
+      ]
+    }
+  ]
+}

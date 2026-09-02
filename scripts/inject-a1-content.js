@@ -3,24 +3,40 @@
  * ELA — Injection A1 (5 académies) dans Firestore
  * ------------------------------------------------------------
  * Lit data/seed/{academy}-a1.json et injecte de façon idempotente :
- *   academies/{key}/curriculum/levels/A1/units/UNIT-01/modules/MOD-01/lessons/{lessonId}
- *   academies/{key}/quizzes/{quizId}
- *   academies/{key}/courses/COURSE-A1   (doc racine qui référence les leçons)
+ *   academies/{CODE}/curriculum/levels/A1/units/UNIT-01/modules/MOD-01/lessons/{lessonId}
+ *   academies/{CODE}/quizzes/{quizId}
+ *   academies/{CODE}/courses/COURSE-A1   (doc racine qui référence les leçons)
  *
  * Usage : node scripts/inject-a1-content.js
- * Prérequis : credentials Admin SDK (GOOGLE_APPLICATION_CREDENTIALS
- *   ou service account) — le .env du projet ne suffit pas pour l'Admin SDK.
+ * Prérequis (l'un des deux) :
+ *   1) export GOOGLE_APPLICATION_CREDENTIALS=/chemin/serviceAccount.json
+ *   2) gcloud auth application-default login   (ADC du même compte Google)
  * ============================================================ */
-const admin = require('firebase-admin');
 const fs = require('fs');
 const path = require('path');
+const { createRequire } = require('module');
 
-if (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.FIREBASE_CONFIG) {
-  console.error('ERREUR : aucun service account détecté. Exporte GOOGLE_APPLICATION_CREDENTIALS=<path.json> puis relance.');
+// firebase-admin est installé dans functions/node_modules → on résout là-bas.
+const requireFn = createRequire(path.join(__dirname, '..', 'functions', 'package.json'));
+const admin = requireFn('firebase-admin');
+
+// Pré-contrôle rapide : sans credential ADC le script échouerait confusément.
+const gcloudAdc = path.join(process.env.USERPROFILE || process.env.HOME || '', '.config', 'gcloud', 'application_default_credentials.json');
+if (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !fs.existsSync(gcloudAdc)) {
+  console.error('ERREUR : aucune credential Admin SDK trouvée sur cette machine.');
+  console.error('  → export GOOGLE_APPLICATION_CREDENTIALS=<serviceAccount.json>');
+  console.error('  → OU exécute : gcloud auth application-default login');
   process.exit(1);
 }
-admin.initializeApp();
-const db = admin.firestore();
+
+let db;
+try {
+  admin.initializeApp({ credential: admin.credential.applicationDefault(), projectId: 'ela-academy-7f868' });
+  db = admin.firestore();
+} catch (e) {
+  console.error('ERREUR : échec d\'initialisation Admin SDK :', e.message);
+  process.exit(1);
+}
 
 const SEED_DIR = path.join(__dirname, '..', 'data', 'seed');
 const FILES = [
@@ -31,12 +47,11 @@ const FILES = [
   'russophone-a1.json'
 ];
 
-// Récupère l'id d'académie Firestore (academyKey si présent, sinon slug du code).
+// Id d'académie Firestore = academyCode (DE / ZH / EN / AR / RU).
 function academyKey(file) {
   const j = JSON.parse(fs.readFileSync(path.join(SEED_DIR, file), 'utf8'));
-  if (j.academyKey) return j.academyKey;
-  if (j.academyCode) return j.academyCode.toLowerCase();
-  return file.replace('-a1.json', '');
+  if (j.academyCode) return j.academyCode;
+  return file.replace('-a1.json', '').toUpperCase();
 }
 
 function lessonIdOf(l) {
@@ -44,23 +59,22 @@ function lessonIdOf(l) {
   return 'A1_L' + String((l.order || 0)).padStart(2, '0');
 }
 
-function toDoc(l) {
-  // Découpe proprement les champs disponibles (tolérant au schéma).
+function toDoc(l, code) {
+  // Schéma uniforme : title (FR), titleTargetLang, objective, content[3],
+  // vocabulary[15+], exercises[3], audioScript, cecrLevel.
   return {
     order: l.order || 0,
-    title: l.title || l.titleTargetLang || '',
-    titleNative: l.titleTargetLang || l.titleNative || '',
+    title: l.title || '',
+    titleNative: l.titleTargetLang || '',
     objective: l.objective || '',
-    objectives: l.objectives || [],
     content: l.content || [],
     vocabulary: l.vocabulary || [],
-    grammar: l.grammar || [],
     exercises: l.exercises || [],
     audioScript: l.audioScript || '',
-    cecrLevel: l.cecrLevel || l.level || 'A1',
-    level: l.cecrLevel || l.level || 'A1',
-    isTrial: l.isTrial === true,
-    academyCode: l.academyCode || '',
+    cecrLevel: l.cecrLevel || 'A1',
+    level: l.cecrLevel || 'A1',
+    isTrial: l.order === 1, // première leçon de chaque académie = essai gratuit
+    academyCode: code,
     createdAt: admin.firestore.FieldValue.serverTimestamp()
   };
 }
@@ -76,15 +90,16 @@ async function injectFile(file) {
 
   for (const l of (j.lessons || [])) {
     const lid = lessonIdOf(l);
+    // Chemin valide Firestore : academies/{CODE}/curriculum/A1/units/UNIT-01/modules/MOD-01/lessons/{lessonId}
     const ref = db
       .collection('academies').doc(key)
-      .collection('curriculum').doc('levels')
-      .collection('A1').doc('units')
-      .collection('UNIT-01').doc('modules')
-      .collection('MOD-01').doc('lessons').doc(lid);
+      .collection('curriculum').doc('A1')
+      .collection('units').doc('UNIT-01')
+      .collection('modules').doc('MOD-01')
+      .collection('lessons').doc(lid);
     const snap = await ref.get();
     if (!snap.exists) {
-      await ref.set(toDoc(l));
+      await ref.set(toDoc(l, code));
       nLessons++;
     }
     lessonRefs.push(lid);
