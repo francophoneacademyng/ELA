@@ -1297,6 +1297,48 @@ function canAccess(access, content) {
   return !!access.active;
 }
 
+/**
+ * Liste des académies accessibles pour l'utilisateur courant.
+ * - general        → [users/{uid}.academy] (une seule académie)
+ * - premium/business → les 6 académies
+ * - admin/teacher  → les 6 académies
+ * - sinon          → []
+ * Source de vérité serveur pour la garde d'accès des pages académies.
+ */
+exports.getMyAcademies = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const userSnap = await db.collection('users').doc(uid).get();
+  const u = userSnap.exists ? userSnap.data() : {};
+  const role = u.role || 'student';
+
+  if (role === 'admin' || role === 'teacher') {
+    return { academies: ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'], plan: role };
+  }
+
+  const subSnap = await db.collection('subscriptions').doc(uid).get();
+  const sub = subSnap.exists ? subSnap.data() : null;
+  const now = new Date();
+  const active = sub && sub.status === 'active' && sub.endDate && sub.endDate.toDate && sub.endDate.toDate() > now;
+
+  if (!active) {
+    return { academies: [], plan: (sub && sub.plan) || null };
+  }
+
+  const plan = sub.plan || 'general';
+  if (plan === 'premium' || plan === 'business') {
+    return { academies: ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'], plan: plan };
+  }
+
+  // general (ou défaut) : une seule académie
+  const academyKey = u.academy || (Array.isArray(u.academies) && u.academies[0]) || 'german';
+  const code = { french: 'FR', francophone: 'FR', fr: 'FR', german: 'DE', de: 'DE', mandarin: 'ZH', chinese: 'ZH', zh: 'ZH', english: 'EN', en: 'EN', arabic: 'AR', ar: 'AR', russian: 'RU', ru: 'RU' }[academyKey] || 'DE';
+  return { academies: [code], plan: plan };
+});
+
+
 /** Seed du curriculum (admin only, idempotent : IDs déterministes). */
 exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
