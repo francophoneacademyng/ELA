@@ -1,69 +1,80 @@
-﻿{
-    "hosting":  {
-                    "public":  ".",
-                    "ignore":  [
-                                   "firebase.json",
-                                   ".firebaserc",
-                                   "**/.*",
-                                   "**/.*/**",
-                                   "**/node_modules/**",
-                                   "functions/**",
-                                   "*.md",
-                                   "firestore.rules",
-                                   "firestore.indexes.json",
-                                    "*.zip",
-                                    "package.json",
-                                    "package-lock.json",
-                                    "*-debug.log"
-                                ],
-"redirects":  [
-                                     {
-                                         "source":  "/**",
-                                         "destination":  "https://elaacademy.ng/:0",
-                                         "type":  301,
-                                         "condition":  {
-                                                           "host":  [
-                                                                        "www.elaacademy.ng"
-                                                                    ]
-                                                       }
-                                     }
-                                 ],
-                    "rewrites":  [
-                                     {
-                                         "source":  "/verifyELACertificate",
-                                         "destination":  "https://africa-south1-ela-academy-7f868.cloudfunctions.net/verifyELACertificate"
-                                     },
-                                     {
-                                         "source":  "**",
-                                         "destination":  "/index.html"
-                                     }
-                                 ]
-                },
-    "firestore":  {
-                      "rules":  "firestore.rules",
-                      "indexes":  "firestore.indexes.json"
-                  },
-    "functions":  [
-                       {
-                           "source":  "functions",
-                           "codebase":  "default"
-                       }
-                   ],
-    "emulators":  {
-                       "auth":  {
-                                    "port":  9099
-                                },
-                       "functions":  {
-                                         "port":  5001
-                                     },
-                       "firestore":  {
-                                         "port":  8080
-                                     },
-                       "pubsub":  {
-                                      "port":  8089
-                                  },
-                       "ui":  {
-                                  "enabled":  false
-                              }
-                   }
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/.*/**",
+      "**/node_modules/**",
+      "functions/**",
+      "*.md",
+      "firestore.rules",
+      "firestore.indexes.json",
+      "*.zip",
+      "package.json",
+      "package-lock.json",
+      "*-debug.log"
+    ],
+    "redirects": [
+      {
+        "source": "/**",
+        "destination": "https://elaacademy.ng/:0",
+        "type": 301,
+        "condition": {
+          "host": [
+            "www.elaacademy.ng"
+          ]
+        }
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/verifyELACertificate",
+        "destination": "https://africa-south1-ela-academy-7f868.cloudfunctions.net/verifyELACertificate"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/src/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, max-age=0, must-revalidate"
+          }
+        ]
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default"
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "pubsub": {
+      "port": 8089
+    },
+    "ui": {
+      "enabled": false
+    }
+  }
 }
