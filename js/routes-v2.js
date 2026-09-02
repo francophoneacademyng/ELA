@@ -10,6 +10,7 @@
 
 import { renderAdminPage } from './admin/pages/admin.page.js';
 import { renderTeacherPage } from './teacher/pages/teacher.page.js';
+import { registerAcademyRoutes } from '../src/academies/registry.js';
 
 if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS = window.ELA_ROUTE_HANDLERS || {};
@@ -18,4 +19,6 @@ if (typeof window !== 'undefined') {
   /* PHASE 4 — switch : les routes canoniques utilisent les nouvelles pages */
   window.ELA_ROUTE_HANDLERS['/admin'] = renderAdminPage;
   window.ELA_ROUTE_HANDLERS['/teacher'] = renderTeacherPage;
+  /* Académies immersives (6 langues) */
+  registerAcademyRoutes();
 }
