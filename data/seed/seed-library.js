@@ -701,5 +701,503 @@ const DE = {
     }
   ]
 };
+const ZH = {
+  academyCode: 'ZH',
+  academyKey: 'mandarin',
+  level: 'HSK1',
+  levelId: 'ZH_HSK1',
+  certification: 'HSK',
+  nativeName: '中文',
+  cecrLevel: 'A1',
+  course: {
+    title: 'Mandarin HSK 1 — Foundations',
+    titleNative: '中文 HSK 1 — 基础',
+    description: 'Vos premiers pas en mandarin : le pinyin et les quatre tons, les salutations, les nombres, la famille, la nourriture, les directions, le temps, les achats et le voyage. Contenu bilingue (chinois pinyin + français) pour l’examen HSK 1.',
+    category: 'All',
+    learningOutcomes: [
+      'Lire le pinyin et prononcer correctement les quatre tons',
+      'Saluer et se présenter en mandarin',
+      'Compter et utiliser les nombres et les dates',
+      'Se repérer, commander à manger et faire des achats',
+      'Poser l’heure, demander son chemin et voyager'
+    ],
+    order: 2
+  },
+  lessons: [
+    {
+      id: 'ZH_A1_L01', order: 1,
+      title: 'Pinyin & Four Tones',
+      titleNative: '拼音和声调',
+      objective: 'Lire le pinyin, prononcer les quatre tons du mandarin et comprendre comment ils changent le sens des mots.',
+      objectives: [
+        'Identifier les 4 tons et le ton neutre',
+        'Lire des syllabes en pinyin',
+        'Comprendre que le ton change le sens'
+      ],
+      content: 'Le pinyin (拼音) est la romanisation du mandarin utilisée pour apprendre la prononciation. Chaque syllabe a une initiale (consonne) et une finale (voyelle). Par exemple « mā » : « m » (initiale) + « a » (finale).\n\nLe mandarin a quatre tons plus un ton neutre : premier ton (¯) haut et plat — mā (maman) ; deuxième ton (´) montant — má (chanvre) ; troisième ton (ˇ) descendant puis montant — mǎ (cheval) ; quatrième ton (ˋ) descendant rapide — mà (gronder). Ton neutre : léger et court — ma (particule de question).\n\nLes tons changent totalement le sens : ils sont aussi importants que les sons. Entraînez-vous : mā, má, mǎ, mà.\n\nTon 3 + ton 3 : « nĭ hǎo » (bonjour) — le premier ton 3 devient ton 2 : « ní hǎo ».',
+      vocabulary: [
+        { term: '拼音 pīnyīn', meaning: 'la romanisation du chinois' },
+        { term: '声调 shēngdiào', meaning: 'le ton' },
+        { term: '妈 mā', meaning: 'maman (1er ton)' },
+        { term: '马 mǎ', meaning: 'cheval (3e ton)' },
+        { term: '你 nǐ', meaning: 'tu / vous (informel)' },
+        { term: '好 hǎo', meaning: 'bon / bien' },
+        { term: '第一声', meaning: 'premier ton' },
+        { term: '词 cí', meaning: 'le mot' },
+        { term: '音节 yīnjié', meaning: 'la syllabe' },
+        { term: '声母 shēngmǔ', meaning: 'l’initiale' },
+        { term: '韵母 yùnmǔ', meaning: 'la finale' },
+        { term: '读 dú', meaning: 'lire' },
+        { term: '说 shuō', meaning: 'dire / parler' },
+        { term: '听 tīng', meaning: 'écouter' },
+        { term: '练习 liànxí', meaning: 's’entraîner / exercice' }
+      ],
+      grammar: [
+        'Les 4 tons + le ton neutre : mā (1), má (2), mǎ (3), mà (4), ma (neutre).',
+        'Règle du 3e ton : deux tons 3 consécutifs — le premier devient ton 2 (nǐ hǎo → ní hǎo).'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez le ton correct.', question: '« mā » (1er ton) signifie…', options: ['cheval', 'maman', 'chanvre', 'gronder'], answer: 'maman' },
+        { type: 'complete', instruction: 'Complétez.', question: '« nǐ hǎo » : quand deux tons 3 se suivent, le premier devient ton ___ (numéro).', answer: '2 (deuxième ton)' },
+        { type: 'translate', instruction: 'Traduisez.', question: 'Quel est l’ordre des tons de « mā, má, mǎ, mà » ?', answer: '1er, 2e, 3e, 4e ton' }
+      ],
+      audioScript: {
+        context: 'Un professeur fait répéter les tons à deux élèves.',
+        lines: [
+          { speaker: 'Lǎoshī', text: 'Gēn wǒ dú: mā, má, mǎ, mà. (Lisez après moi: mā, má, mǎ, mà.)' },
+          { speaker: 'Xuéshēng A', text: 'mā, má, mǎ, mà.' },
+          { speaker: 'Lǎoshī', text: 'Hěn hǎo! Xiànzài: wō, wó, wǒ, wò. (Très bien! Maintenant: wō...) )' },
+          { speaker: 'Xuéshēng B', text: 'wō, wó, wǒ, wò.' },
+          { speaker: 'Lǎoshī', text: 'Jìzhù: shēngdiào hěn zhòngyào. (Rappelez-vous : les tons sont très importants.)' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: true
+    },
 
 module.exports = { DE };
+{
+      id: 'ZH_A1_L02', order: 2,
+      title: 'Greetings & Introductions',
+      titleNative: '问候和介绍',
+      objective: 'Saluer, se présenter avec son nom et sa nationalité, demander comment va quelqu’un et prendre congé en mandarin.',
+      objectives: [
+        'Dire nǐ hǎo, zǎoshang hǎo et zàijiàn',
+        'Se présenter : Wǒ jiào …, Wǒ shì … rén',
+        'Demander et dire comment on va'
+      ],
+      content: 'Les salutations (问候 wènhòu) : « nǐ hǎo » (bonjour/salut), « zǎoshang hǎo » (bonjour le matin), « wǎnshang hǎo » (bonsoir). Pour prendre congé : « zàijiàn » (au revoir), « míngtiān jiàn » (à demain).\n\nDemander comment ça va : « Nǐ hǎo ma? », réponses « Wǒ hěn hǎo, xièxie » (je vais très bien, merci), « Hái kěyǐ » (ça va / pas mal). « xièxie » = merci.\n\nSe présenter : « Wǒ jiào Anna » (je m’appelle Anna), « Wǒ shì Fǎguó rén » (je suis français), « Nǐ jiào shénme míngzi? » (comment t’appelles-tu ?).\n\nExemple : A : Nǐ hǎo! Wǒ jiào Lǐ. — B : Nǐ hǎo, Wǒ jiào Hélín. Wǒ shì Yīngguó rén.',
+      vocabulary: [
+        { term: '你好 nǐ hǎo', meaning: 'bonjour / salut' },
+        { term: '早上好 zǎoshang hǎo', meaning: 'bonjour (le matin)' },
+        { term: '晚上好 wǎnshang hǎo', meaning: 'bonsoir' },
+        { term: '再见 zàijiàn', meaning: 'au revoir' },
+        { term: '谢谢 xièxie', meaning: 'merci' },
+        { term: '不客气 bú kèqi', meaning: 'de rien' },
+        { term: '你好吗？ Nǐ hǎo ma?', meaning: 'Comment vas-tu ?' },
+        { term: '很好 hěn hǎo', meaning: 'très bien' },
+        { term: '还可以 hái kěyǐ', meaning: 'pas mal / ça va' },
+        { term: '我叫 Wǒ jiào', meaning: 'je m’appelle' },
+        { term: '名字 míngzi', meaning: 'le nom' },
+        { term: '是 shì', meaning: 'être' },
+        { term: '人 rén', meaning: 'la personne' },
+        { term: '法国人 Fǎguó rén', meaning: 'français(e)' },
+        { term: '呢 ne', meaning: 'et (toi) ?' },
+        { term: '请 qǐng', meaning: 's’il vous plaît' }
+      ],
+      grammar: [
+        'Salutation : Nǐ hǎo ; question : Nǐ hǎo ma? ; réponse : Wǒ hěn hǎo.',
+        'Se présenter : Wǒ jiào + nom ; Wǒ shì + nationalité + rén.',
+        '« ne » en fin de question : Nǐ ne? (et toi ?).'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« zàijiàn » signifie…', options: ['bonjour', 'au revoir', 'merci', 'd’accord'], answer: 'au revoir' },
+        { type: 'complete', instruction: 'Complétez.', question: '« Wǒ ___ Anna » (je m’appelle) ; « Wǒ ___ Fǎguó rén » (je suis).', answer: 'jiào ; shì' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« Comment vas-tu ? » et « je vais très bien, merci ».', answer: 'Nǐ hǎo ma? — Wǒ hěn hǎo, xièxie.' }
+      ],
+      audioScript: {
+        context: 'Au campus, une étudiante salue un élève chinois pour la première fois.',
+        lines: [
+          { speaker: 'Anna', text: 'Nǐ hǎo! Wǒ jiào Anna. Nǐ jiào shénme míngzi?' },
+          { speaker: 'Lǐ', text: 'Nǐ hǎo, Anna! Wǒ jiào Lǐ Ming. Nǐ shì Fǎguó rén ma?' },
+          { speaker: 'Anna', text: 'Duì, wǒ shì Fǎguó rén. Nǐ ne?' },
+          { speaker: 'Lǐ', text: 'Wǒ shì Zhōngguó rén.' },
+          { speaker: 'Anna', text: 'Hěn gāoxìng rènshi nǐ! (Enchantée de te rencontrer!)' },
+          { speaker: 'Lǐ', text: 'Wǒ yě hěn gāoxìng. Zàijiàn!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L03', order: 3,
+      title: 'Numbers & Dates',
+      titleNative: '数字和日期',
+      objective: 'Compter de 0 à 100, donner son âge, dire les jours et les dates, et utiliser les nombres dans la vie courante.',
+      objectives: [
+        'Compter de 1 à 100 en mandarin',
+        'Donner son âge et son numéro de téléphone',
+        'Dire les jours, les mois et une date'
+      ],
+      content: 'Les nombres (数字 shùzì) : 0 líng, 1 yī, 2 èr, 3 sān, 4 sì, 5 wǔ, 6 liù, 7 qī, 8 bā, 9 jiǔ, 10 shí, 11 shí yī, 12 shí èr, 20 èr shí, 21 èr shí yī, 100 yì bǎi.\n\nLes dizaines : 20 èr shí, 30 sān shí, 40 sì shí, 50 wǔ shí, 60 liù shí, 70 qī shí, 80 bā shí, 90 jiǔ shí. Ex. 34 = sān shí sì, 56 = wǔ shí liù.\n\nDonner l’âge : « Nǐ duō dà? », « Wǒ èrshí suì » (j’ai vingt ans). « suì » = âge. Numéro de téléphone : « Nǐ de diànhuà hàomǎ shì duōshǎo? »\n\nLes jours (星期 xīngqī) : xīngqī yī (lundi), xīngqī èr (mardi), …, xīngqī tiān (dimanche). « jīntiān » (aujourd’hui), « míngtiān » (demain).',
+      vocabulary: [
+        { term: '一 yī', meaning: 'un' },
+        { term: '二 èr', meaning: 'deux' },
+        { term: '三 sān', meaning: 'trois' },
+        { term: '四 sì', meaning: 'quatre' },
+        { term: '五 wǔ', meaning: 'cinq' },
+        { term: '十 shí', meaning: 'dix' },
+        { term: '百 bǎi', meaning: 'cent' },
+        { term: '岁 suì', meaning: 'ans (âge)' },
+        { term: '几 jǐ', meaning: 'combien (petit nombre)' },
+        { term: '星期 xīngqī', meaning: 'la semaine' },
+        { term: '今天 jīntiān', meaning: 'aujourd’hui' },
+        { term: '明天 míngtiān', meaning: 'demain' },
+        { term: '号 hào', meaning: 'le jour (du mois)' },
+        { term: '月 yuè', meaning: 'le mois' },
+        { term: '年 nián', meaning: 'l’année' },
+        { term: '电话 diànhuà', meaning: 'le téléphone' },
+        { term: '号码 hàomǎ', meaning: 'le numéro' }
+      ],
+      grammar: [
+        'Nombres : unité + shí + unité (34 = sān shí sì).',
+        'Âge : Wǒ + nombre + suì.',
+        'Jours : xīngqī + nombre ; dimanche : xīngqī tiān.'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez le nombre correct.', question: '« sān shí sì » = …', options: ['34', '43', '304', '14'], answer: '34' },
+        { type: 'complete', instruction: 'Complétez.', question: '« j’ai vingt ans » = « Wǒ ___ suì » ; dimanche = « xīngqī ___ ».', answer: 'èrshí ; tiān' },
+        { type: 'translate', instruction: 'Traduisez.', question: 'Écrivez en chinois : « quinze » et « cent ».', answer: 'shíwǔ ; yì bǎi' }
+      ],
+      audioScript: {
+        context: 'À l’accueil du cours de chinois, un élève donne son âge et son numéro.',
+        lines: [
+          { speaker: 'Yán', text: 'Nǐ duō dà?' },
+          { speaker: 'Marc', text: 'Wǒ èrshí suì. Nǐ ne?' },
+          { speaker: 'Yán', text: 'Wǒ shíqī suì. Nǐ de diànhuà hàomǎ shì duōshǎo?' },
+          { speaker: 'Marc', text: 'Liù-wǔ-èr-sān-yī.' },
+          { speaker: 'Yán', text: 'Hǎo, wǒ zhīdào le.' },
+          { speaker: 'Marc', text: 'Xīngqītiān jiàn!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L04', order: 4,
+      title: 'Family Members',
+      titleNative: '家人',
+      objective: 'Nommer les membres de la famille, utiliser les classificateurs et parler de sa famille en mandarin.',
+      objectives: [
+        'Nommer père, mère, frère, sœur, enfants',
+        'Utiliser le classificateur « ge » pour les personnes',
+        'Parler de sa famille : Wǒ jiā yǒu … rén'
+      ],
+      content: 'La famille (家 jiā) : 爸爸 bàba (papa), 妈妈 māma (maman), 哥哥 gēge (grand frère), 弟弟 dìdi (petit frère), 姐姐 jiějie (grande sœur), 妹妹 mèimei (petite sœur), 儿子 érzi (fils), 女儿 nǚ’ér (fille), 爷爷 yéye (grand-père), 奶奶 nǎinai (grand-mère).\n\nPour compter les personnes, on utilise le classificateur 个 gè : « yī gè rén » (une personne), « sān gè rén ». Il se place entre le nombre et le nom : 一个人 yī gè rén.\n\nParler de sa famille : « Wǒ jiā yǒu sì gè rén » (ma famille a quatre personnes), « Wǒ yǒu yī gè gēge » (j’ai un grand frère), « Māma shì lǎoshī » (maman est professeur). Le verbe « yǒu » signifie « avoir ».\n\nAdjectifs de description : 大 dà (grand), 小 xiǎo (petit), 老 lǎo (vieux), 年轻 niánqīng (jeune).',
+      vocabulary: [
+        { term: '爸爸 bàba', meaning: 'papa' },
+        { term: '妈妈 māma', meaning: 'maman' },
+        { term: '哥哥 gēge', meaning: 'grand frère' },
+        { term: '弟弟 dìdi', meaning: 'petit frère' },
+        { term: '姐姐 jiějie', meaning: 'grande sœur' },
+        { term: '妹妹 mèimei', meaning: 'petite sœur' },
+        { term: '儿子 érzi', meaning: 'le fils' },
+        { term: '女儿 nǚ’ér', meaning: 'la fille' },
+        { term: '爷爷 yéye', meaning: 'le grand-père' },
+        { term: '奶奶 nǎinai', meaning: 'la grand-mère' },
+        { term: '家 jiā', meaning: 'la famille / la maison' },
+        { term: '有 yǒu', meaning: 'avoir / il y a' },
+        { term: '个 gè', meaning: 'classificateur (individu)' },
+        { term: '人 rén', meaning: 'la personne' },
+        { term: '大 dà', meaning: 'grand' },
+        { term: '小 xiǎo', meaning: 'petit' },
+        { term: '老师 lǎoshī', meaning: 'le professeur' }
+      ],
+      grammar: [
+        'Classificateur 个 : 一 + gè + substantif (一个人).',
+        '« yǒu » (avoir) : Wǒ jiā yǒu sì gè rén.',
+        'Qualificatifs avant le nom : dà, xiǎo, lǎo, niánqīng.'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« gēge » signifie…', options: ['petit frère', 'grand frère', 'sœur', 'père'], answer: 'grand frère' },
+        { type: 'complete', instruction: 'Complétez.', question: '« ma famille a quatre personnes » = « Wǒ jiā ___ sì ___ rén ».', answer: 'yǒu ; gè' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« j’ai un grand frère » et « maman est professeur ».', answer: 'Wǒ yǒu yī gè gēge. — Māma shì lǎoshī.' }
+      ],
+      audioScript: {
+        context: 'Deux amis parlent de leur famille à la bibliothèque.',
+        lines: [
+          { speaker: 'Alain', text: 'Nǐ jiā yǒu jǐ gè rén?' },
+          { speaker: 'Lǐ', text: 'Wǒ jiā yǒu sì gè rén: bàba, māma, gēge hé wǒ.' },
+          { speaker: 'Alain', text: 'Nǐ yǒu yī gè gēge? Tā duō dà?' },
+          { speaker: 'Lǐ', text: 'Tā èrshíwǔ suì. Nǐ jiā ne?' },
+          { speaker: 'Alain', text: 'Wǒ yǒu yī gè mèimei. Tā hěn xiǎo.' },
+          { speaker: 'Lǐ', text: 'Hěn hǎo! Nǐ jiā yě hěn hǎo.' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L05', order: 5,
+      title: 'Colors & Objects',
+      titleNative: '颜色和东西',
+      objective: 'Nommer les couleurs et les objets courants, utiliser adjectif + 的 + nom et construire des phrases du type « c’est une pomme rouge ».',
+      objectives: [
+        'Nommer les couleurs et les objets du quotidien',
+        'Employer l’adjectif + 的 + nom',
+        'Identifier un objet : zhè shì …'
+      ],
+      content: 'Les couleurs (颜色 yánsè) : 红色 hóngsè (rouge), 蓝色 lánsè (bleu), 绿色 lǜsè (vert), 黄色 huángsè (jaune), 白色 báisè (blanc), 黑色 hēisè (noir), 咖啡色 kāfēisè (marron).\n\nLes objets (东西 dōngxi) : 书 shū (livre), 手机 shǒujī (portable), 桌子 zhuōzi (table), 椅子 yǐzi (chaise), 苹果 píngguǒ (pomme), 笔 bǐ (stylo), 杯子 bēizi (verre), 车 chē (voiture).\n\nStructure : adjectif + 的 + nom. « hóngsè de píngguǒ » (la pomme rouge), « hēisè de shǒujī » (le téléphone noir).\n\nIdentifier : « Zhè shì shénme? » (c’est quoi ?), « Zhè shì yī gè píngguǒ » (c’est une pomme), « Nà shì wǒ de shū » (c’est mon livre). 我的 wǒ de (mon), 你的 nǐ de (ton).',
+      vocabulary: [
+        { term: '红色 hóngsè', meaning: 'rouge' },
+        { term: '蓝色 lánsè', meaning: 'bleu' },
+        { term: '绿色 lǜsè', meaning: 'vert' },
+        { term: '黄色 huángsè', meaning: 'jaune' },
+        { term: '白色 báisè', meaning: 'blanc' },
+        { term: '黑色 hēisè', meaning: 'noir' },
+        { term: '东西 dōngxi', meaning: 'la chose / l’objet' },
+        { term: '书 shū', meaning: 'le livre' },
+        { term: '手机 shǒujī', meaning: 'le téléphone portable' },
+        { term: '桌子 zhuōzi', meaning: 'la table' },
+        { term: '椅子 yǐzi', meaning: 'la chaise' },
+        { term: '苹果 píngguǒ', meaning: 'la pomme' },
+        { term: '笔 bǐ', meaning: 'le stylo' },
+        { term: '杯子 bēizi', meaning: 'le verre / la tasse' },
+        { term: '车 chē', meaning: 'la voiture' },
+        { term: '的 de', meaning: 'particule (possession / qualification)' },
+        { term: '这个 zhège', meaning: 'ceci' },
+        { term: '那个 nàge', meaning: 'cela' }
+      ],
+      grammar: [
+        'Adjectif + 的 + nom : hóngsè de píngguǒ.',
+        'Adjectifs courts sans 的 : dà píngguǒ (grosse pomme).',
+        'Possessifs : wǒ de, nǐ de, tā de.'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« lánsè » signifie…', options: ['rouge', 'bleu', 'vert', 'jaune'], answer: 'bleu' },
+        { type: 'complete', instruction: 'Complétez.', question: '« la pomme rouge » = « hóngsè ___ píngguǒ » ; « mon livre » = « ___ de shū ».', answer: 'de ; wǒ' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« c’est quoi ? » et « c’est une pomme ».', answer: 'Zhè shì shénme? — Zhè shì yī gè píngguǒ.' }
+      ],
+      audioScript: {
+        context: 'Dans un magasin, des clients regardent des articles colorés.',
+        lines: [
+          { speaker: 'Kāi', text: 'Zhège shǒujī shì shénme yánsè?' },
+          { speaker: 'Nǚshòuyuán', text: 'Tā shì hēisè de. Nàge shì báisè de.' },
+          { speaker: 'Kāi', text: 'Wǒ xǐhuan hēisè de shǒujī.' },
+          { speaker: 'Nǚshòuyuán', text: 'Hěn hǎo. Zhège píngguǒ ne?' },
+          { speaker: 'Kāi', text: 'Tā shì hóngsè de. Hěn piàoliang!' },
+          { speaker: 'Nǚshòuyuán', text: 'Dōu hěn hǎo. Nǐ mǎi zhège ma?' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L06', order: 6,
+      title: 'Food & Drink',
+      titleNative: '吃饭和喝水',
+      objective: 'Nommer les plats et boissons courants, commander au restaurant et exprimer ses goûts (je veux / je n’aime pas).',
+      objectives: [
+        'Nommer riz, viande, légumes, thé, eau',
+        'Commander : Wǒ yào …, Qǐng gěi wǒ …',
+        'Exprimer ses goûts : Wǒ xǐhuan / Wǒ bù xǐhuan'
+      ],
+      content: 'La nourriture (食物 shíwù) : 米饭 mǐfàn (riz), 面条 miàntiáo (nouilles), 鸡肉 jīròu (poulet), 牛肉 niúròu (bœuf), 菜 cài (plat / légume), 苹果 píngguǒ (pomme), 面包 miànbāo (pain). Boissons : 水 shuǐ (eau), 茶 chá (thé), 咖啡 kāfēi (café), 牛奶 niúnǎi (lait), 果汁 guǒzhī (jus de fruit).\n\nCommander (点菜 diǎncài) : « Wǒ yào yī wǎn mǐfàn » (je veux un bol de riz), « Qǐng gěi wǒ yī bēi chá » (donnez-moi une tasse de thé, s’il vous plaît), « Zhège duōshǎo qián? » (c’est combien ?). Classificateur pour les bols/tasses : 碗 wǎn (bol), 杯 bēi (tasse).\n\nExprimer ses goûts : « Wǒ xǐhuan chá » (j’aime le thé), « Wǒ bù xǐhuan kāfēi » (je n’aime pas le café), « Hěn hǎo chī » (c’est très bon à manger), « Hěn hǎo hē » (bon à boire).',
+      vocabulary: [
+        { term: '吃 chī', meaning: 'manger' },
+        { term: '喝 hē', meaning: 'boire' },
+        { term: '米饭 mǐfàn', meaning: 'le riz cuit' },
+        { term: '面条 miàntiáo', meaning: 'les nouilles' },
+        { term: '鸡肉 jīròu', meaning: 'le poulet' },
+        { term: '牛肉 niúròu', meaning: 'le bœuf' },
+        { term: '菜 cài', meaning: 'le plat / le légume' },
+        { term: '面包 miànbāo', meaning: 'le pain' },
+        { term: '水 shuǐ', meaning: 'l’eau' },
+        { term: '茶 chá', meaning: 'le thé' },
+        { term: '咖啡 kāfēi', meaning: 'le café' },
+        { term: '牛奶 niúnǎi', meaning: 'le lait' },
+        { term: '要 yào', meaning: 'vouloir' },
+        { term: '给 gěi', meaning: 'donner' },
+        { term: '喜欢 xǐhuan', meaning: 'aimer' },
+        { term: '钱 qián', meaning: 'l’argent' },
+        { term: '多少 duōshǎo', meaning: 'combien' },
+        { term: '碗 wǎn / 杯 bēi', meaning: 'le bol / la tasse' }
+      ],
+      grammar: [
+        'Commander : Wǒ yào + classificateur + plat (Wǒ yào yī wǎn mǐfàn).',
+        'Politesse : Qǐng gěi wǒ … (veuillez me donner …).',
+        'Goût : Wǒ xǐhuan … / Wǒ bù xǐhuan … ; « duōshǎo qián? » = combien pour l’argent ?'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« chá » signifie…', options: ['café', 'thé', 'eau', 'lait'], answer: 'thé' },
+        { type: 'complete', instruction: 'Complétez.', question: '« je veux un bol de riz » = « Wǒ ___ yī wǎn mǐfàn » ; « je n’aime pas le café » = « Wǒ ___ xǐhuan kāfēi » (négation).', answer: 'yào ; bù' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« je veux une tasse de thé, s’il vous plaît » et « c’est combien ? ».', answer: 'Qǐng gěi wǒ yī bēi chá. — Zhège duōshǎo qián?' }
+      ],
+      audioScript: {
+        context: 'Au restaurant, une cliente commande un repas.',
+        lines: [
+          { speaker: 'Kèrén', text: 'Qǐng gěi wǒ yī wǎn mǐfàn hé yī bēi chá.' },
+          { speaker: 'Fúwùyuán', text: 'Hǎo de. Nǐ yào niúròu ma?' },
+          { speaker: 'Kèrén', text: 'Bù, xièxie. Wǒ bù chī niúròu.' },
+          { speaker: 'Fúwùyuán', text: 'Míngbái. Zhège duōshǎo qián?' },
+          { speaker: 'Kèrén', text: 'Èrshí kuài. (Vingt yuans.)' },
+          { speaker: 'Kèrén', text: 'Hǎo, hěn hǎo chī! Xièxie!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L07', order: 7,
+      title: 'Places & Directions',
+      titleNative: '地方和怎么走',
+      objective: 'Nommer les lieux de la ville, demander son chemin et donner des directions simples en mandarin.',
+      objectives: [
+        'Nommer banque, hôpital, école, gare, supermarché',
+        'Demander : … zài nǎr? / zěnme zǒu?',
+        'Comprendre les directions : zuǒ, yòu, yīzhí zǒu'
+      ],
+      content: 'Les lieux (地方 dìfāng) : 学校 xuéxiào (l’école), 医院 yīyuàn (l’hôpital), 银行 yínháng (la banque), 火车站 huǒchēzhàn (la gare), 机场 jīchǎng (l’aéroport), 超市 chāoshì (le supermarché), 饭店 fàndiàn (le restaurant/l’hôtel), 厕所 cèsuǒ (les toilettes).\n\nDemander son chemin : « Xǐdà zài nǎr? » (où est la faculté ?), « Zěnme zǒu? » (comment y aller ?), « Chāoshì zài nǎlǐ? » (où est le supermarché ?).\n\nDirections : 往左走 wǎng zuǒ zǒu (allez à gauche), 往右走 wǎng yòu zǒu (à droite), 一直走 yīzhí zǒu (allez tout droit), 在附近 zài fùjìn (tout près), 对面 duìmiàn (en face).\n\nRéponses types : « Yīzhí zǒu, ránhòu wǎng zuǒ guǎi » (allez tout droit puis tournez à gauche), « Tā zài yínháng pángbiān » (c’est à côté de la banque).',
+      vocabulary: [
+        { term: '地方 dìfāng', meaning: 'le lieu' },
+        { term: '学校 xuéxiào', meaning: 'l’école' },
+        { term: '医院 yīyuàn', meaning: 'l’hôpital' },
+        { term: '银行 yínháng', meaning: 'la banque' },
+        { term: '火车站 huǒchēzhàn', meaning: 'la gare' },
+        { term: '机场 jīchǎng', meaning: 'l’aéroport' },
+        { term: '超市 chāoshì', meaning: 'le supermarché' },
+        { term: '饭店 fàndiàn', meaning: 'le restaurant / l’hôtel' },
+        { term: '厕所 cèsuǒ', meaning: 'les toilettes' },
+        { term: '在 zài', meaning: 'être à / se trouver' },
+        { term: '哪儿 nǎr', meaning: 'où' },
+        { term: '怎么 zěnme', meaning: 'comment' },
+        { term: '走 zǒu', meaning: 'marcher / aller' },
+        { term: '左 zuǒ', meaning: 'gauche' },
+        { term: '右 yòu', meaning: 'droite' },
+        { term: '一直 yīzhí', meaning: 'tout droit' },
+        { term: '旁边 pángbiān', meaning: 'à côté de' },
+        { term: '对面 duìmiàn', meaning: 'en face' }
+      ],
+      grammar: [
+        'Localisation : « zài + lieu ». Où est…? « … zài nǎr? »',
+        'Directions : wǎng + direction + zǒu (wǎng zuǒ zǒu = allez à gauche).',
+        '« zěnme zǒu? » = comment y aller ?'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« zuǒ » signifie…', options: ['droite', 'gauche', 'tout droit', 'en face'], answer: 'gauche' },
+        { type: 'complete', instruction: 'Complétez.', question: '« où est la gare ? » = « Huǒchēzhàn ___ nǎr? » ; « allez tout droit » = « ___ zǒu ».', answer: 'zài ; yīzhí' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« comment y aller ? » et « c’est en face ».', answer: 'Zěnme zǒu? — Tā zài duìmiàn.' }
+      ],
+      audioScript: {
+        context: 'Un touriste demande son chemin dans une ville chinoise.',
+        lines: [
+          { speaker: 'Touriste', text: 'Qǐngwèn, huǒchēzhàn zài nǎr?' },
+          { speaker: 'Passant', text: 'Yīzhí zǒu, ránhòu wǎng yòu guǎi.' },
+          { speaker: 'Touriste', text: 'Yīzhí zǒu, ránhòu yòu guǎi. Hǎo.' },
+          { speaker: 'Passant', text: 'Shì de, yínháng pángbiān jiù shì.' },
+          { speaker: 'Touriste', text: 'Duìmiàn yǒu chāoshì ma?' },
+          { speaker: 'Passant', text: 'Yǒu, chāoshì zài fùjìn. Hěn fāngbiàn!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L08', order: 8,
+      title: 'Time & Schedule',
+      titleNative: '时间',
+      objective: 'Dire l’heure, demander l’heure et parler de son emploi du temps avec des phrases simples du HSK 1.',
+      objectives: [
+        'Demander et dire l’heure : Jǐ diǎn?',
+        'Dire « à quelle heure » : … diǎn',
+        'Parler de son emploi du temps du jour'
+      ],
+      content: 'L’heure (时间 shíjiān) : « Jǐ diǎn le? » (quelle heure est-il ?), réponse « Xiànzài sān diǎn » (il est trois heures). 点 diǎn = heure, 分 fēn = minute, 半 bàn = demie, 刻 kè = quart.\n\nExemples : « qī diǎn » (sept heures), « qī diǎn bàn » (sept heures et demie), « bā diǎn shí fēn » (huit heures dix), « jiǔ diǎn yī kè » (neuf heures et quart).\n\nEmploi du temps : « Wǒ míngtiān záoshang jiǔ diǎn shàngkè » (demain matin à neuf heures j’ai cours), « Nǐ jǐ diǎn chī wǎnfàn? » (à quelle heure dînes-tu ?), « Wǒ wǎnshang qī diǎn chī fàn » (je dîne à sept heures).\n\n« jīntiān » (aujourd’hui), « míngtiān » (demain), « zǎoshang » (le matin), « xiàwǔ » (l’après-midi), « wǎnshang » (le soir).',
+      vocabulary: [
+        { term: '时间 shíjiān', meaning: 'le temps' },
+        { term: '几点了？ Jǐ diǎn le?', meaning: 'Quelle heure est-il ?' },
+        { term: '点 diǎn', meaning: 'l’heure (horloge)' },
+        { term: '分 fēn', meaning: 'la minute' },
+        { term: '半 bàn', meaning: 'la demie' },
+        { term: '刻 kè', meaning: 'le quart' },
+        { term: '早上 zǎoshang', meaning: 'le matin' },
+        { term: '下午 xiàwǔ', meaning: 'l’après-midi' },
+        { term: '晚上 wǎnshang', meaning: 'le soir' },
+        { term: '现在 xiànzài', meaning: 'maintenant' },
+        { term: '上课 shàngkè', meaning: 'avoir cours' },
+        { term: '吃饭 chī fàn', meaning: 'manger (un repas)' },
+        { term: '起床 qǐchuáng', meaning: 'se lever' },
+        { term: '睡觉 shuìjiào', meaning: 'dormir' },
+        { term: '今天 jīntiān', meaning: 'aujourd’hui' },
+        { term: '明天 míngtiān', meaning: 'demain' },
+        { term: '作业 zuòyè', meaning: 'les devoirs' }
+      ],
+      grammar: [
+        'Demande : Jǐ diǎn le? ; réponse : (Xiànzài) + nombre + diǎn.',
+        'Heures et demie : diǎn bàn ; heures + minutes : diǎn + nombre + fēn.',
+        'Emploi du temps : Wǒ + jǐ diǎn + action (Wǒ qī diǎn qǐchuáng).'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez l’heure.', question: '« qī diǎn bàn » = …', options: ['7h00', '7h30', '8h00', '6h30'], answer: '7h30' },
+        { type: 'complete', instruction: 'Complétez.', question: '« quelle heure est-il ? » = « ___ diǎn le? » : complétez.', answer: 'Jǐ' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« demain matin à neuf heures j’ai cours » =…', answer: 'Wǒ míngtiān záoshang jiǔ diǎn shàngkè.' }
+      ],
+      audioScript: {
+        context: 'Deux étudiants parlent de leur journée.',
+        lines: [
+          { speaker: 'Anna', text: 'Xiànzài jǐ diǎn le?' },
+          { speaker: 'Lǐ', text: 'Xiànzài qī diǎn bàn.' },
+          { speaker: 'Anna', text: 'Wǒ zǎoshang qī diǎn qǐchuáng. Nǐ ne?' },
+          { speaker: 'Lǐ', text: 'Wǒ bā diǎn shàngkè. Xiàwǔ wǒ zuò zuòyè.' },
+          { speaker: 'Anna', text: 'Wǒ wǎnshang jiǔ diǎn shuìjiào.' },
+          { speaker: 'Lǐ', text: 'Hěn hǎo de shíjiān. Míngtiān jiàn!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
+{
+      id: 'ZH_A1_L09', order: 9,
+      title: 'Shopping & Money',
+      titleNative: '买东西',
+      objective: 'Demander le prix, négocier et payer en mandarin (le yuan).',
+      objectives: [
+        'Demander : Zhège duōshǎo qián?',
+        'Exprimer : trop cher / pas cher',
+        'Payer et remercier'
+      ],
+      content: 'Acheter (买 mǎi) : « Wǒ yào mǎi yī gè dōngxi » (je veux acheter une chose), « Zhège duōshǎo qián? » (c’est combien ?), « Tài guì le! » (trop cher !), « Piányi » (pas cher).\n\nLa monnaie : 元 kuài (yuan), 角 jiǎo / 毛 máo, 分 fēn. Ex. « shí kuài » (dix yuans), « wǔ kuài qī máo » (5 yuans 70).\n\nPayer : « Wǒ mǎi zhège » (je prends ceci), « Shuākǎ » (par carte), « Fù xiànjīn » (en espèces). Le vendeur : « Yīgòng shíwǔ kuài » (ça fait quinze yuans au total).\n\nEssayer : « Kěyǐ shì yī shì ma? » (puis-je l’essayer ?). Tailles : Dà, Zhōng, Xiǎo (grand, moyen, petit).',
+      vocabulary: [
+        { term: '买 mǎi', meaning: 'acheter' },
+        { term: '卖 mài', meaning: 'vendre' },
+        { term: '多少钱？ Duōshǎo qián?', meaning: 'Combien ça coûte ?' },
+        { term: '钱 qián', meaning: 'l’argent' },
+        { term: '元 kuài', meaning: 'le yuan' },
+        { term: '贵 guì', meaning: 'cher' },
+        { term: '便宜 piányi', meaning: 'pas cher' },
+        { term: '大 dà', meaning: 'grand' },
+        { term: '中 zhōng', meaning: 'moyen' },
+        { term: '小 xiǎo', meaning: 'petit' },
+        { term: '颜色 yánsè', meaning: 'la couleur' },
+        { term: '试 shì', meaning: 'essayer' },
+        { term: '刷卡 shuākǎ', meaning: 'payer par carte' },
+        { term: '现金 xiànjīn', meaning: 'en espèces' },
+        { term: '一共 yīgòng', meaning: 'au total' },
+        { term: '太 tài', meaning: 'trop' },
+        { term: '给 gěi', meaning: 'donner' }
+      ],
+      grammar: [
+        'Prix : Zhège duōshǎo qián? réponse : nombre + kuài.',
+        'Appréciation : Tài … le (trop …) ; piányi (pas cher).',
+        '« Wǒ yào … » pour ce qu’on désire acheter.'
+      ],
+      exercises: [
+        { type: 'qcm', instruction: 'Choisissez la bonne réponse.', question: '« duōshǎo qián » signifie…', options: ['à quelle heure', 'combien ça coûte', 'où est l’argent', 'quel jour'], answer: 'combien ça coûte' },
+        { type: 'complete', instruction: 'Complétez.', question: '« c’est trop cher ! » = « Tài ___ le! » ; « pas cher » = « ___ ».', answer: 'guì ; piányi' },
+        { type: 'translate', instruction: 'Traduisez.', question: '« je prends ceci » et « ça fait quinze yuans au total ».', answer: 'Wǒ mǎi zhège. — Yīgòng shíwǔ kuài.' }
+      ],
+      audioScript: {
+        context: 'Une cliente achète un manteau au marché.',
+        lines: [
+          { speaker: 'Kèrén', text: 'Zhège dàyī duōshǎo qián?' },
+          { speaker: 'Shāngrén', text: 'Zhège shì yì bǎi wǔshí kuài.' },
+          { speaker: 'Kèrén', text: 'Tài guì le! Kěyǐ piányi yīdiǎn ma?' },
+          { speaker: 'Shāngrén', text: 'Hǎo, yì bǎi èrshí kuài, zuìhòu jiàgé.' },
+          { speaker: 'Kèrén', text: 'Kěyǐ shuākǎ ma?' },
+          { speaker: 'Shāngrén', text: 'Kěyǐ. Xièxie nǐ lái!' }
+        ]
+      },
+      cecrLevel: 'A1', academyCode: 'ZH', isTrial: false
+    },
