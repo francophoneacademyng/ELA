@@ -13,6 +13,7 @@ import { renderTeacherPage } from './teacher/pages/teacher.page.js';
 import { registerAcademyRoutes } from '../src/academies/registry.js';
 import { renderStudentHub } from '../src/ela/pages/student-hub.page.js';
 import { renderAcademiesPublic } from '../src/ela/pages/academies-public.page.js';
+import { renderFreeTrial } from '../src/ela/pages/free-trial.page.js';
 
 if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS = window.ELA_ROUTE_HANDLERS || {};
@@ -24,6 +25,7 @@ if (typeof window !== 'undefined') {
   /* Hub étudiant + page publique académies */
   window.ELA_ROUTE_HANDLERS['/dashboard'] = renderStudentHub;
   window.ELA_ROUTE_HANDLERS['/academies'] = renderAcademiesPublic;
+  window.ELA_ROUTE_HANDLERS['/free-trial'] = renderFreeTrial;
   /* Académies immersives (6 langues) */
   registerAcademyRoutes();
 }

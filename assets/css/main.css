@@ -1223,3 +1223,165 @@ body {
 
 
 
+
+/* ============================================================
+   FREE TRIAL — Premium pro design system
+   Inspiré de francophone.ng : épuré, élégant, pas de cheap
+   ============================================================ */
+.ft-section {
+  font-family: 'Inter', 'Quattrocento Sans', 'Noto Sans Arabic', 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background: #faf9f6;
+}
+.ft-section .ft-display { font-family: var(--font-display); }
+
+/* Hero premium : gradient emerald→forest */
+.ft-hero {
+  position: relative; overflow: hidden;
+  padding: clamp(4.5rem, 11vw, 9rem) clamp(1.25rem, 5vw, 5rem);
+  background: linear-gradient(150deg, #064e3b 0%, #065f46 45%, #047857 100%);
+  color: #faf9f6; text-align: center;
+}
+.ft-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(800px 400px at 80% 20%, rgba(201,162,39,0.12), transparent),
+              radial-gradient(600px 500px at 10% 90%, rgba(255,255,255,0.05), transparent);
+  pointer-events: none;
+}
+.ft-hero-inner { position: relative; max-width: 860px; margin: 0 auto; }
+.ft-hero h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2.6rem, 6vw, 3.6rem); line-height: 1.08;
+  letter-spacing: -0.02em; margin-bottom: 1.4rem;
+}
+.ft-hero h1 em { font-style: italic; color: var(--gold); font-weight: 700; }
+.ft-hero .ft-lead {
+  font-size: clamp(1.05rem, 2vw, 1.3rem); color: rgba(250,249,246,0.86);
+  max-width: 60ch; margin: 0 auto 2.4rem; line-height: 1.6;
+}
+.ft-cta {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  border-radius: 999px; padding: 1rem 2.4rem;
+  font-size: 1.05rem; font-weight: 700;
+  text-decoration: none; cursor: pointer; border: none;
+  background: var(--gold); color: #064e3b;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+  box-shadow: 0 6px 22px rgba(201,162,39,0.35);
+}
+.ft-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,162,39,0.45); }
+.ft-hero .ft-micro {
+  margin-top: 2.6rem; font-size: 0.82rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(250,249,246,0.6);
+}
+.ft-hero .ft-micro span { margin: 0 0.7rem; color: var(--gold); }
+
+/* Avantages — 3 colonnes minimalistes */
+.ft-adv { padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 5rem); max-width: 1200px; margin: 0 auto; }
+.ft-adv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4rem; margin-top: 2.6rem; }
+.ft-adv-card { text-align: center; }
+.ft-adv-icon {
+  width: 56px; height: 56px; margin: 0 auto 1.2rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #EDF5F1; color: #065f46;
+}
+.ft-adv-card h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; color: var(--forest); margin-bottom: 0.5rem; }
+.ft-adv-card p { color: var(--muted); font-size: 0.98rem; line-height: 1.6; }
+
+
+
+/* Sections leçons */
+.ft-lessons { padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 5rem); max-width: 1200px; margin: 0 auto; }
+.ft-lessons-head { text-align: center; margin-bottom: 3rem; }
+.ft-lessons-head h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); color: var(--forest); }
+.ft-lessons-head p { color: var(--muted); margin-top: 0.8rem; font-size: 1.05rem; }
+.ft-academy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.ft-academy-card {
+  background: #fff; border: 1px solid var(--line-soft); border-radius: 18px;
+  padding: 1.8rem; box-shadow: 0 2px 10px rgba(6,61,44,0.05);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.ft-academy-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(6,61,44,0.10); }
+.ft-academy-top { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.ft-academy-flag { font-size: 2rem; }
+.ft-academy-name { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--forest); }
+.ft-academy-native { display: block; font-size: 0.85rem; color: var(--muted); }
+.ft-lesson-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 0; border-bottom: 1px solid var(--line-soft);
+  text-decoration: none; color: var(--ink); gap: 1rem;
+}
+.ft-lesson-row:last-child { border-bottom: none; }
+.ft-lesson-row:hover .ft-lesson-title { color: var(--emerald); }
+.ft-lesson-title { font-weight: 600; font-size: 0.95rem; transition: color 0.15s; }
+.ft-lesson-locked { color: var(--muted-2); }
+.ft-lesson-row .ft-lesson-locked { cursor: pointer; }
+
+/* Badges pills discrets gold — PAS rouge/vert criard */
+.ft-pill {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+  white-space: nowrap; flex-shrink: 0;
+}
+.ft-pill-instant { background: #EDF5F1; color: #065f46; }
+.ft-pill-signup { background: #FDF6E3; color: #92660a; }
+.ft-pill-comingSoon { background: #F3EEDC; color: var(--muted-2); }
+
+/* CTA final premium */
+.ft-final {
+  padding: clamp(4.5rem, 10vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+  background: linear-gradient(150deg, #064e3b 0%, #065f46 50%, #047857 100%);
+  color: #faf9f6; text-align: center;
+}
+.ft-final h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 4.5vw, 3.2rem); margin-bottom: 1rem; }
+.ft-final p { color: rgba(250,249,246,0.85); max-width: 52ch; margin: 0 auto 2.2rem; font-size: 1.08rem; line-height: 1.6; }
+
+/* Newsletter */
+.ft-newsletter { padding: clamp(4rem, 8vw, 6rem) clamp(1.25rem, 5vw, 5rem); background: #fff; text-align: center; border-top: 1px solid var(--line-soft); }
+.ft-newsletter h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.8rem; color: var(--forest); margin-bottom: 0.6rem; }
+.ft-newsletter p { color: var(--muted); margin-bottom: 1.8rem; }
+.ft-newsletter-form { display: flex; justify-content: center; gap: 0.6rem; max-width: 460px; margin: 0 auto; flex-wrap: wrap; }
+.ft-newsletter-form input {
+
+/* Modal auth premium — backdrop blur, pas de popup cheap */
+.ft-modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(3,25,15,0.55); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 1.5rem;
+}
+.ft-modal-overlay.active { display: flex; }
+.ft-modal {
+  background: #fff; border-radius: 18px; padding: 2.4rem; max-width: 420px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+.ft-modal h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--forest); margin-bottom: 0.4rem; }
+.ft-modal .ft-modal-sub { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.6rem; }
+.ft-modal label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 0.35rem; }
+.ft-modal input {
+  width: 100%; padding: 0.85rem 1.1rem; border-radius: 10px; margin-bottom: 1.1rem;
+  border: 1.5px solid var(--line); font-family: inherit; font-size: 0.95rem; outline: none;
+}
+.ft-modal input:focus { border-color: var(--emerald); }
+.ft-modal-actions { display: flex; gap: 0.8rem; margin-top: 0.4rem; }
+.ft-modal-actions .ft-cta { flex: 1; justify-content: center; padding: 0.9rem 1.4rem; }
+.ft-modal-cancel {
+  padding: 0.9rem 1.4rem; border-radius: 999px; border: 1.5px solid var(--line);
+  background: transparent; color: var(--ink); font-weight: 600; cursor: pointer; font-family: inherit;
+}
+.ft-modal-err { color: #b91c1c; font-size: 0.85rem; margin-bottom: 0.8rem; min-height: 1rem; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .ft-academy-grid { grid-template-columns: repeat(2, 1fr); }
+  .ft-adv-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+@media (max-width: 640px) {
+  .ft-academy-grid { grid-template-columns: 1fr; }
+  .ft-hero h1 { font-size: 2.1rem; }
+}
+
+  flex: 1; min-width: 220px; padding: 0.9rem 1.2rem; border-radius: 999px;
+  border: 1.5px solid var(--line); font-family: inherit; font-size: 0.95rem; outline: none;
+  transition: border-color 0.15s;
+}
+.ft-newsletter-form input:focus { border-color: var(--emerald); }
+.ft-newsletter-msg { margin-top: 1rem; font-size: 0.9rem; min-height: 1.2rem; }

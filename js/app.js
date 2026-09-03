@@ -1894,6 +1894,15 @@
     var hash = window.location.hash.replace(/^#/, '') || '/';
     var qi = hash.indexOf('?');
     var path = qi >= 0 ? hash.slice(0, qi) : hash;
+    /* Redirection #/academies?trial=true → #/free-trial */
+    if (path === '/academies' && qi >= 0) {
+      var qs = hash.slice(qi + 1);
+      var params = new URLSearchParams(qs);
+      if (params.get('trial') === 'true') {
+        window.location.hash = '#/free-trial';
+        return;
+      }
+    }
     updateMeta(path);
     /* Routes v2 (refactor admin/teacher) : handlers enregistrés par js/routes-v2.js */
     if (window.ELA_ROUTE_HANDLERS && typeof window.ELA_ROUTE_HANDLERS[path] === 'function') {
