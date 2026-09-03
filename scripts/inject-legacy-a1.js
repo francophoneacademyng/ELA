@@ -93,7 +93,8 @@ async function injectLegacy(file) {
         cecrLevel: 'A1',
         level: 'A1',
         order: l.order || 0,
-        isTrial: l.order === 1,
+        isTrial: l.order >= 1 && l.order <= 6,
+        trialAccess: l.order <= 2 ? 'instant' : 'signup',
         status: 'approved',
         createdAt: ts
       });

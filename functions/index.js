@@ -1351,7 +1351,9 @@ exports.seedAcademyA1 = onCall({ region: REGION }, async (request) => {
         vocabulary: lesson.vocabulary || [], grammar: lesson.grammar || [],
         exercises: (lesson.exercises || []).map(exText),
         audioScript: lesson.audioScript || null, videoUrl: lesson.videoUrl || '',
-        quizId: linked ? linked.id : null, isTrial: lesson.isTrial === true,
+        quizId: linked ? linked.id : null,
+        isTrial: lesson.order >= 1 && lesson.order <= 6,
+        trialAccess: lesson.order <= 2 ? 'instant' : 'signup',
         cecrLevel: lesson.cecrLevel || seed.cecrLevel, academyCode: code,
         teacherUid: null, status: 'approved', createdAt: new Date()
       });
@@ -1385,6 +1387,35 @@ exports.seedAcademyA1 = onCall({ region: REGION }, async (request) => {
  * - sinon          → []
  * Source de vérité serveur pour la garde d'accès des pages académies.
  */
+/**
+ * getTrialLessons — Liste publique des leçons d'échantillon (sans auth).
+ * Filtre côté serveur sur isTrial == true pour ne retourner que le
+ * contenu gratuit, groupé par académie. Les leçons 1-2 sont accessibles
+ * instantanément, les leçons 3-6 nécessitent un compte gratuit.
+ */
+exports.getTrialLessons = onCall({ region: REGION }, async () => {
+  const academies = ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'];
+  const out = {};
+  for (const code of academies) {
+    const snap = await db.collection('lessons')
+      .where('academyCode', '==', code)
+      .where('isTrial', '==', true)
+      .orderBy('order')
+      .get();
+    out[code] = snap.docs.map((d) => {
+      const v = d.data();
+      return {
+        id: d.id, title: v.title || '', titleNative: v.titleNative || '',
+        objective: v.objective || '', order: v.order || 0,
+        level: v.level || '', cecrLevel: v.cecrLevel || '',
+        trialAccess: v.trialAccess || (v.order <= 2 ? 'instant' : 'signup'),
+        quizId: v.quizId || null
+      };
+    });
+  }
+  return { academies: out };
+});
+
 exports.getMyAcademies = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1428,6 +1459,7 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
 
   const curriculum = require('./curriculum');
   const quizzes = require('./curriculum-quizzes');
+  const ac = { german: 'DE', mandarin: 'ZH', english: 'EN', arabic: 'AR', russian: 'RU' };
   let nCourses = 0, nLessons = 0, nQuizzes = 0;
 
   for (const course of curriculum) {
@@ -1436,6 +1468,7 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
       academy: course.academy, level: course.level, title: course.title,
       description: course.description, category: course.category,
       learningOutcomes: course.learningOutcomes || [], order: course.order || 1,
+      academyCode: ac[course.academy] || '',
       status: 'approved', createdAt: new Date()
     });
     nCourses++;
@@ -1444,7 +1477,8 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
       const lesson = course.lessons[i];
       const lessonId = courseId + '-l' + (i + 1);
       const quizId = lessonId + '-quiz';
-      const isTrial = i === 0; // 1re leçon de chaque académie = essai gratuit
+      const isTrial = i < 6; // leçons 1-6 = essai gratuit (2 instant + 4 signup)
+      const trialAccess = i < 2 ? 'instant' : 'signup';
 
       const quizKey = course.academy + '|' + lesson.title;
       const quiz = quizzes[quizKey];
@@ -1455,7 +1489,8 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
         content: lesson.content, vocabulary: lesson.vocabulary || [],
         grammar: lesson.grammar || [], exercises: lesson.exercises || [],
         videoUrl: lesson.videoUrl || '', quizId: quiz ? quizId : null,
-        isTrial: isTrial,
+        isTrial: isTrial, trialAccess: trialAccess,
+        academyCode: ac[course.academy] || '',
         teacherUid: null, status: 'approved', createdAt: new Date()
       });
       nLessons++;
@@ -1464,7 +1499,8 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
         await db.collection('quizzes').doc(quizId).set({
           lessonId: lessonId, courseId: courseId, academy: course.academy,
           level: course.level, title: lesson.title + ' — Quiz',
-          questions: quiz.questions, isTrial: isTrial,
+          questions: quiz.questions, isTrial: isTrial, trialAccess: trialAccess,
+          academyCode: ac[course.academy] || '',
           teacherUid: null, status: 'approved', createdAt: new Date()
         });
         nQuizzes++;

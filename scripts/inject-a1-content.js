@@ -73,7 +73,8 @@ function toDoc(l, code) {
     audioScript: l.audioScript || '',
     cecrLevel: l.cecrLevel || 'A1',
     level: l.cecrLevel || 'A1',
-    isTrial: l.order === 1, // première leçon de chaque académie = essai gratuit
+    isTrial: l.order >= 1 && l.order <= 6,
+    trialAccess: l.order <= 2 ? 'instant' : 'signup',
     academyCode: code,
     createdAt: admin.firestore.FieldValue.serverTimestamp()
   };
