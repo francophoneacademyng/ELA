@@ -1106,7 +1106,10 @@ body {
 .ac-quiz-badge { font-size: 0.75rem; color: var(--muted); border: 1px dashed var(--line); border-radius: 999px; padding: 0.25rem 0.7rem; align-self: flex-start; }
 
 /* --- Hub étudiant "Mes académies" --- */
-.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+/* Layout 3+3 : 3 colonnes fixes (6 académies), fallbacks responsive */
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .hub-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .hub-grid { grid-template-columns: 1fr; } }
 .hub-card {
   background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm); padding: 1.2rem 1.3rem; text-decoration: none;

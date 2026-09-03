@@ -1,7 +1,7 @@
 # E-Learn Language Academy — Pages légales (contenu prêt à intégrer)
 
 Site : https://ela-academy-7f868.web.app
-Exploitant : YAYAKHALIF COMPANY LIMITED (Nigeria)
+Exploitant : E-Learn Language Academy (ELA) — Nigeria
 Contact : languageacademyelearn@gmail.com
 Dernière mise à jour : 19 août 2026
 
@@ -10,7 +10,7 @@ Dernière mise à jour : 19 août 2026
 ## PAGE 1 — Terms and Conditions
 
 **1. About us**
-E-Learn Language Academy ("ELA", "we", "our") is an online language school operated by YAYAKHALIF COMPANY LIMITED, registered in Nigeria. We offer live online courses in German, Mandarin Chinese, English, Arabic and Russian, delivered by qualified teachers.
+E-Learn Language Academy ("ELA", "we", "our") is an online language school registered in Nigeria. We offer live online courses in German, Mandarin Chinese, English, Arabic and Russian, delivered by qualified teachers.
 
 **2. Services**
 ELA provides subscription-based access to online language classes, learning materials and the Learning Assistant (an automated study support tool). Class schedules, formats and teacher assignments are communicated after enrollment and may be adjusted with reasonable notice.
@@ -36,7 +36,7 @@ Payments are processed securely by Paystack. ELA never stores your card or bank 
 You agree not to: share your account or course access with third parties; record, redistribute or resell course content; disrupt classes or harass teachers or other students; use the Learning Assistant to generate unlawful, harmful or abusive content. Violation may lead to suspension or termination without refund.
 
 **7. Intellectual property**
-All course materials, content and the ELA brand are the property of YAYAKHALIF COMPANY LIMITED. You receive a personal, non-transferable license to use them for your own learning during an active subscription.
+All course materials, content and the ELA brand are the property of E-Learn Language Academy (ELA). You receive a personal, non-transferable license to use them for your own learning during an active subscription.
 
 **8. Learning Assistant disclaimer**
 The Learning Assistant provides automated study support. It may occasionally produce inaccurate information. It does not replace teachers and must not be relied upon for professional, legal, medical or certified-translation purposes.

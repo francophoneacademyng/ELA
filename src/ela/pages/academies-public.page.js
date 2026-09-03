@@ -5,6 +5,7 @@
    ============================================================ */
 
 import { ACADEMIES, ACADEMY_ORDER } from '../../shared/config/academies.config.js';
+import { afterRender } from '../../../js/core/dom.js';
 
 export function renderAcademiesPublic() {
   const app = document.getElementById('app');
@@ -32,5 +33,8 @@ export function renderAcademiesPublic() {
         '<a class="btn" href="#/register">Start free</a>' +
       '</div>' +
     '</div>';
-  window.scrollTo(0, 0);
+  /* Correctif page blanche : les .academy-row.reveal restaient à
+     opacity:0 car afterRender() (observateur IntersectionObserver)
+     n'était jamais appelé par ce handler v2. */
+  afterRender('academies');
 }
