@@ -9,6 +9,7 @@ import { requireTeacher } from '../../core/auth.service.js';
 import { afterRender, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
 import { getProfile } from '../../core/auth.service.js';
+import { callFunction } from '../../core/api-client.js';
 import { LessonDraft } from '../models/lesson-draft.model.js';
 import { QuizDraft } from '../models/quiz-draft.model.js';
 import { LiveDraft } from '../models/live-draft.model.js';
@@ -36,6 +37,11 @@ export function renderTeacherPage() {
     setState({ profile: guard.profile });
     paint();
     refreshSubmissions();
+    // Charger les stats enseignant
+    callFunction('getTeacherStats').then(function (r) {
+      setState({ teacherStats: r });
+      paint();
+    }).catch(function () { /* silencieux */ });
   });
 }
 
@@ -49,6 +55,7 @@ function paint() {
     '<div class="container dashboard-section teacher-page">' +
       '<h2>' + t('teacher.title') + '</h2>' +
       '<p class="muted">' + t('teacher.academy') + ' : <strong>' + (academy || '—') + '</strong></p>' +
+      teacherStatsHtml() +
       lessonFormHtml() +
       quizFormHtml() +
       liveFormHtml() +
@@ -60,6 +67,34 @@ function paint() {
 
   bindTeacherEvents(app);
   afterRender('teacher');
+}
+
+/** Statistiques enseignant (dashboard cards) */
+function teacherStatsHtml() {
+  const s = getState();
+  const stats = s.teacherStats && s.teacherStats.stats;
+  if (!stats) return '';
+
+  return '<div class="dashboard-section" style="margin-bottom:1.5rem">' +
+    '<h3>' + t('teacher.myStats', 'My Statistics') + '</h3>' +
+    '<div class="kpi-grid">' +
+      '<div class="kpi-card"><span class="kpi-label">' + t('teacher.totalSubmissions', 'Total') + '</span>' +
+        '<strong class="kpi-value">' + stats.total + '</strong></div>' +
+      '<div class="kpi-card"><span class="kpi-label" style="color:var(--gold)">' + t('teacher.pending', 'Pending') + '</span>' +
+        '<strong class="kpi-value">' + (stats.pending || 0) + '</strong></div>' +
+      '<div class="kpi-card"><span class="kpi-label" style="color:var(--emerald)">' + t('teacher.approved', 'Approved') + '</span>' +
+        '<strong class="kpi-value">' + (stats.approved || 0) + '</strong></div>' +
+      '<div class="kpi-card"><span class="kpi-label" style="color:var(--red,#b3261e)">' + t('teacher.rejected', 'Rejected') + '</span>' +
+        '<strong class="kpi-value">' + (stats.rejected || 0) + '</strong></div>' +
+    '</div>' +
+    '<p class="muted" style="margin-top:0.8rem;font-size:0.85rem">' +
+      (stats.byType ? (
+        (stats.byType.lesson || 0) + ' lessons · ' +
+        (stats.byType.quiz || 0) + ' quizzes · ' +
+        (stats.byType.live || 0) + ' live classes'
+      ) : '') +
+    '</p>' +
+  '</div>';
 }
 
 function fieldError(name) {

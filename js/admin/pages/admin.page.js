@@ -166,6 +166,22 @@ function bindAdminEvents(app) {
       treeBtn.disabled = false;
     });
   });
+
+  /* Seed live classes (3-5 sessions d'exemple) */
+  const seedLiveBtn = document.getElementById('admin-seed-live');
+  if (seedLiveBtn) seedLiveBtn.addEventListener('click', function () {
+    if (!confirm('Seed 5 sample live classes (FR/DE/EN/AR/ZH)?')) return;
+    seedLiveBtn.disabled = true;
+    callFunction('seedLiveClasses').then(function (r) {
+      toast(r.message || ('Seeded ' + r.seeded + ' live classes'), 'success');
+      seedLiveBtn.disabled = false;
+      // Recharger les données
+      reset(); loadAndRender();
+    }).catch(function (e) {
+      toast('Seed failed: ' + (e.message || e), 'error');
+      seedLiveBtn.disabled = false;
+    });
+  });
 }
 
 /** Re-rendu local sans recharger les données (option : conserver le focus). */

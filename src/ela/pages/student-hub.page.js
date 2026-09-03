@@ -24,6 +24,7 @@ export function renderStudentHub() {
       '<h2 style="font-family:var(--font-display);font-weight:800;color:var(--forest)">My Academies</h2>' +
       '<p style="color:var(--muted)">Your active academies. Continue your journey or discover a new language.</p>' +
       '<div id="hub-grid" class="hub-grid" style="margin-top:1.2rem"></div>' +
+      '<div id="cecrl-tracking" style="margin-top:2rem"></div>' +
     '</div>';
 
   const grid = document.getElementById('hub-grid');
@@ -60,6 +61,27 @@ export function renderStudentHub() {
       }
     });
     grid.innerHTML = html;
+
+    // Afficher la progression CECRL par niveau
+    const cecrlContainer = document.getElementById('cecrl-tracking');
+    if (cecrlContainer && dash && dash.completedByLevel) {
+      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      const cecrlHtml = '<div class="dashboard-section">' +
+        '<h3 style="font-family:var(--font-display);color:var(--forest)">CECRL Progress Tracker</h3>' +
+        '<p style="color:var(--muted);font-size:0.9rem">Your progress across CEFR levels (A1 → C2)</p>' +
+        '<div class="cecrl-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.8rem;margin-top:1rem">';
+      levels.forEach(function (lvl) {
+        const pct = dash.completedByLevel[lvl] || 0;
+        cecrlHtml += '<div class="cecrl-card" style="background:#fff;border:1px solid var(--line-soft);border-radius:12px;padding:1rem;text-align:center">' +
+          '<div class="cecrl-badge" style="font-family:var(--font-brand);font-size:1.2rem;color:var(--forest)">' + lvl + '</div>' +
+          '<div class="cecrl-bar" style="height:6px;background:var(--cream-soft);border-radius:999px;margin:0.6rem 0;overflow:hidden">' +
+          '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--emerald),var(--gold));border-radius:999px"></div></div>' +
+          '<div class="cecrl-pct" style="font-size:0.8rem;color:var(--muted)">' + pct + '%</div>' +
+        '</div>';
+      });
+      cecrlHtml += '</div></div>';
+      cecrlContainer.innerHTML = cecrlHtml;
+    }
   }).catch(function () {
     grid.innerHTML = '<p class="ac-courses-empty">Unable to load your academies.</p>';
   });

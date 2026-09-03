@@ -7,6 +7,7 @@
 
 import { ACADEMIES, ACADEMY_ORDER } from '../../shared/config/academies.config.js';
 import { callFunction } from '../../js/core/api-client.js';
+import { t } from '../../js/core/i18n-helpers.js';
 
 const ACADEMY_TAGS = {
   FR: { tag: 'CECRL', tagColor: '#1D4ED8' },
@@ -17,37 +18,85 @@ const ACADEMY_TAGS = {
   RU: { tag: 'TORFL', tagColor: '#B22234' }
 };
 
-export function renderFreeTrial() {
-  const app = document.getElementById('app');
-  if (!app) return;
-
-  if (!window.ELA_FIREBASE_READY || !window.firebase) {
-    app.innerHTML = '<div class="section"><p class="ac-courses-empty">Loading…</p></div>';
-    return;
-  }
-
-  const fb = window.firebase;
-  const isAuth = !!(fb.auth && fb.auth().currentUser);
-
-  app.innerHTML = '' +
-    '<div class="ft-section">' +
-      renderHero() +
-      renderAdvantages() +
-      '<div id="ft-lessons"></div>' +
-      renderFinalCTA() +
-      renderNewsletter() +
-      renderAuthModal() +
+function renderAuthModal() {
+  return '' +
+    '<div class="ft-modal-overlay" id="ft-auth-modal">' +
+      '<div class="ft-modal">' +
+        '<h3 class="ft-display">Create Your Free Account</h3>' +
+        '<p class="ft-modal-sub">Unlock 24 more lessons and track your progress. No payment required.</p>' +
+        '<div class="ft-modal-err" id="ft-auth-err"></div>' +
+        '<label for="ft-auth-email">Email</label>' +
+        '<input type="email" id="ft-auth-email" placeholder="you@example.com" />' +
+        '<label for="ft-auth-password">Password</label>' +
+        '<input type="password" id="ft-auth-password" placeholder="At least 6 characters" />' +
+        '<div class="ft-modal-actions">' +
+          '<button class="ft-cta" id="ft-auth-submit">Create Free Account</button>' +
+          '<button class="ft-modal-cancel" id="ft-auth-cancel">Cancel</button>' +
+        '</div>' +
+      '</div>' +
     '</div>';
+}
 
-  callFunction('getTrialLessons').then(function (data) {
-    const byAcademy = (data && data.academies) || {};
-    renderLessons(byAcademy, isAuth);
-  }).catch(function () {
-    renderLessons({}, isAuth);
+function closeAuthModal() {
+  var overlay = document.getElementById('ft-auth-modal');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function openAuthModal() {
+  var overlay = document.getElementById('ft-auth-modal');
+  if (overlay) overlay.classList.add('active');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>\"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function bindAuthModal() {
+  var overlay = document.getElementById('ft-auth-modal');
+  if (!overlay) return;
+
+  document.getElementById('ft-auth-cancel').addEventListener('click', closeAuthModal);
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) closeAuthModal();
   });
 
-  bindNewsletter();
-  bindAuthModal();
+  document.getElementById('ft-auth-submit').addEventListener('click', function () {
+    var email = document.getElementById('ft-auth-email').value.trim();
+    var password = document.getElementById('ft-auth-password').value;
+    var err = document.getElementById('ft-auth-err');
+
+    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      err.textContent = 'Please enter a valid email address.';
+      return;
+    }
+    if (!password || password.length < 6) {
+      err.textContent = 'Password must be at least 6 characters.';
+      return;
+    }
+
+    var fb = window.firebase;
+    fb.auth().createUserWithEmailAndPassword(email, password)
+      .then(function (cred) {
+        return fb.firestore().collection('users').doc(cred.user.uid).set({
+          displayName: email.split('@')[0],
+          email: email,
+          role: 'student',
+          interfaceLang: 'en',
+          academies: [],
+          trialProgress: { startedAt: Date.now(), lessonsCompleted: [] },
+          createdAt: fb.firestore.FieldValue.serverTimestamp()
+        });
+      })
+      .then(function () {
+        closeAuthModal();
+        window.location.reload();
+      })
+      .catch(function (e) {
+        err.textContent = (e && e.message) ? e.message : 'Account creation failed.';
+      });
+  });
 }
 
 function renderHero() {
@@ -89,7 +138,6 @@ function renderAdvantages() {
     '</section>';
 }
 
-
 function renderLessons(byAcademy, isAuth) {
   const container = document.getElementById('ft-lessons');
   if (!container) return;
@@ -111,15 +159,15 @@ function renderLessons(byAcademy, isAuth) {
   container.innerHTML = '' +
     '<section class="ft-lessons">' +
       '<div class="ft-lessons-head">' +
-        '<h2 class="ft-display">Start Instantly — No Account Needed</h2>' +
-        '<p>12 free lessons. Click and learn, right now.</p>' +
+        '<h2 class="ft-display">' + t('trial.instantTitle') + '</h2>' +
+        '<p>' + t('trial.instantSubtitle') + '</p>' +
       '</div>' +
       '<div class="ft-academy-grid">' + instantHtml + '</div>' +
     '</section>' +
     '<section class="ft-lessons">' +
       '<div class="ft-lessons-head">' +
-        '<h2 class="ft-display">Unlock 24 More Lessons</h2>' +
-        '<p>Create a free account to continue your journey. No payment required.</p>' +
+        '<h2 class="ft-display">' + t('trial.signupTitle') + '</h2>' +
+        '<p>' + t('trial.signupSubtitle') + '</p>' +
       '</div>' +
       '<div class="ft-academy-grid">' + signupHtml + '</div>' +
     '</section>';
@@ -131,20 +179,21 @@ function renderAcademyCard(code, a, lessons, type, isAuth) {
   let rows = '';
 
   if (lessons.length === 0) {
-    rows = '<div class="ft-lesson-row ft-lesson-locked"><span class="ft-lesson-title">Coming soon</span><span class="ft-pill ft-pill-comingSoon">Soon</span></div>';
+    rows = '<div class="ft-lesson-row ft-lesson-locked"><span class="ft-lesson-title">' + t('trial.comingSoon') + '</span><span class="ft-pill ft-pill-comingSoon">' + t('trial.soon') + '</span></div>';
   } else {
     lessons.forEach(function (l) {
       const title = l.title || ('Lesson ' + l.order);
       if (type === 'instant') {
         rows += '<a class="ft-lesson-row ft-lesson-open" href="#/lesson/' + l.id + '" data-lesson-id="' + l.id + '">' +
           '<span class="ft-lesson-title">' + escapeHtml(title) + '</span>' +
-          '<span class="ft-pill ft-pill-instant">Free</span>' +
+          '<span class="ft-pill ft-pill-instant">' + t('trial.startNow') + '</span>' +
         '</a>';
       } else {
         const locked = !isAuth;
         rows += '<div class="ft-lesson-row ft-lesson-locked' + (locked ? ' ft-locked' : '') + '" data-lesson-id="' + l.id + '" data-locked="' + locked + '">' +
           '<span class="ft-lesson-title">' + escapeHtml(title) + '</span>' +
-          '<span class="ft-pill ft-pill-signup">' + (locked ? 'Sign Up' : 'Free') + '</span>' +
+          (locked ? '<span class="ft-lock-overlay"><span class="ft-lock-icon">🔒</span></span>' : '') +
+          '<span class="ft-pill ft-pill-signup">' + (locked ? t('trial.signUp') : t('trial.startNow')) + '</span>' +
         '</div>';
       }
     });
@@ -179,6 +228,8 @@ function bindLessonClicks(isAuth) {
     });
   });
 }
+
+
 
 function renderFinalCTA() {
   return '' +
@@ -232,88 +283,40 @@ function bindNewsletter() {
       msg.textContent = 'Something went wrong. Please try again.';
       msg.style.color = '#b91c1c';
     });
+  });
+}
 
-function renderAuthModal() {
-  return '' +
-    '<div class="ft-modal-overlay" id="ft-auth-modal">' +
-      '<div class="ft-modal">' +
-        '<h3 class="ft-display">Create Your Free Account</h3>' +
-        '<p class="ft-modal-sub">Unlock 24 more lessons and track your progress. No payment required.</p>' +
-        '<div class="ft-modal-err" id="ft-auth-err"></div>' +
-        '<label for="ft-auth-email">Email</label>' +
-        '<input type="email" id="ft-auth-email" placeholder="you@example.com" />' +
-        '<label for="ft-auth-password">Password</label>' +
-        '<input type="password" id="ft-auth-password" placeholder="At least 6 characters" />' +
-        '<div class="ft-modal-actions">' +
-          '<button class="ft-cta" id="ft-auth-submit">Create Free Account</button>' +
-          '<button class="ft-modal-cancel" id="ft-auth-cancel">Cancel</button>' +
-        '</div>' +
-      '</div>' +
+
+export function renderFreeTrial() {
+  const app = document.getElementById('app');
+  if (!app) return;
+
+  if (!window.ELA_FIREBASE_READY || !window.firebase) {
+    app.innerHTML = '<div class="section"><p class="ac-courses-empty">Loading…</p></div>';
+    return;
+  }
+
+  const fb = window.firebase;
+  const isAuth = !!(fb.auth && fb.auth().currentUser);
+
+  app.innerHTML = '' +
+    '<div class="ft-section">' +
+      renderHero() +
+      renderAdvantages() +
+      '<div id="ft-lessons"></div>' +
+      renderFinalCTA() +
+      renderNewsletter() +
+      renderAuthModal() +
     '</div>';
-}
 
-function bindAuthModal() {
-  var overlay = document.getElementById('ft-auth-modal');
-  if (!overlay) return;
-
-  document.getElementById('ft-auth-cancel').addEventListener('click', closeAuthModal);
-  overlay.addEventListener('click', function (e) {
-    if (e.target === overlay) closeAuthModal();
+  callFunction('getTrialLessons').then(function (data) {
+    const byAcademy = (data && data.academies) || {};
+    renderLessons(byAcademy, isAuth);
+  }).catch(function () {
+    renderLessons({}, isAuth);
   });
 
-  document.getElementById('ft-auth-submit').addEventListener('click', function () {
-    var email = document.getElementById('ft-auth-email').value.trim();
-    var password = document.getElementById('ft-auth-password').value;
-    var err = document.getElementById('ft-auth-err');
-
-    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      err.textContent = 'Please enter a valid email address.';
-      return;
-    }
-    if (!password || password.length < 6) {
-      err.textContent = 'Password must be at least 6 characters.';
-      return;
-    }
-
-    var fb = window.firebase;
-    fb.auth().createUserWithEmailAndPassword(email, password)
-      .then(function (cred) {
-        return fb.firestore().collection('users').doc(cred.user.uid).set({
-          displayName: email.split('@')[0],
-          email: email,
-          role: 'student',
-          interfaceLang: 'en',
-          academies: [],
-          trialProgress: { startedAt: Date.now(), lessonsCompleted: [] },
-          createdAt: fb.firestore.FieldValue.serverTimestamp()
-        });
-      })
-      .then(function () {
-        closeAuthModal();
-        window.location.reload();
-      })
-      .catch(function (e) {
-        err.textContent = (e && e.message) ? e.message : 'Account creation failed.';
-      });
-  });
-}
-
-function openAuthModal() {
-  var overlay = document.getElementById('ft-auth-modal');
-  if (overlay) overlay.classList.add('active');
-}
-
-function closeAuthModal() {
-  var overlay = document.getElementById('ft-auth-modal');
-  if (overlay) overlay.classList.remove('active');
-}
-
-function escapeHtml(s) {
-  return String(s || '').replace(/[&<>"']/g, function (c) {
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-  });
-}
-
-  });
+  bindNewsletter();
+  bindAuthModal();
 }
 

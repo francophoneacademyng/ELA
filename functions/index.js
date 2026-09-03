@@ -1,27 +1,4 @@
-/**
- * ============================================================
- * E-Learn Language Academy (ELA) — Cloud Functions
- * ============================================================
- * RÈGLES DE SÉCURITÉ (héritées de la crise Francophone Academy) :
- * - AUCUNE clé secrète dans ce fichier ni dans le frontend
- * - Toutes les clés vivent dans functions/.env (jamais commité)
- * - 2nd-gen functions chargent automatiquement le .env
- * - Répondre TOUJOURS "N" aux invites Firebase qui proposent
- *   de supprimer des index ou des fonctions
- * ============================================================
- *
- * JALON 1 : squelette + santé du système (healthCheck).
- * JALON 2 : paiements Paystack.
- *   - initializePayment    (callable)  : initie un paiement côté serveur
- *   - verifyPaystackPayment(callable)  : vérifie un paiement côté serveur
- *   - paystackWebhook      (onRequest) : reçoit charge.success (idempotent)
- *   Les montants sont TOUJOURS recalculés côté serveur (table canonique),
- *   jamais depuis le client. Le secret vit dans functions/.env uniquement.
- * JALON 3 : assistantChat (Learning Assistant multi-langue, clé OpenRouter serveur).
- * JALON 4 : processReferral (filleul -15000 NGN 1er mois, parrain +10000 NGN).
- * JALON 5 : checkSubscriptionExpiry + notifications.
- * ============================================================
- */
+
 
 const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https');
 const { onSchedule } = require('firebase-functions/v2/scheduler');
@@ -36,10 +13,7 @@ const REGION = 'africa-south1';
 const PAYSTACK_BASE = 'https://api.paystack.co';
 const DEFAULT_CALLBACK_URL = 'https://elaacademy.ng/#/payment/result';
 
-/**
- * Grille tarifaire canonique (NGN) — source de vérité côté serveur.
- * Le montant facturé/validé est TOUJOURS lu ici, jamais depuis le client.
- */
+
 const PRICE_TABLE = {
   general:  { 1: 75000,  3: 200000, 6: 405000 },
   premium:  { 1: 120000, 3: 320000, 6: 648000 },
@@ -59,12 +33,7 @@ function paystackSecret() {
   return secret;
 }
 
-/* ============================================================
-   JALON 4 — Parrainage
-   - filleul : -15000 NGN sur son PREMIER paiement (jamais sous 0)
-   - parrain : +10000 NGN de crédit académique (referralCredit)
-   - crédit utilisé en priorité sur les paiements suivants
-   ============================================================ */
+
 const REFERRAL_DISCOUNT = 15000;
 const REFERRAL_CREDIT = 10000;
 
@@ -113,7 +82,7 @@ async function computePricing(uid, plan, duration, referralCode) {
   return { base, discount, creditUsed, total, firstPayment, credit, referrerUid, codeValid, error };
 }
 
-/** Health check — vérifier que les fonctions répondent après déploiement */
+
 exports.healthCheck = onRequest({ region: REGION }, (req, res) => {
   res.json({
     status: 'ok',
@@ -123,10 +92,7 @@ exports.healthCheck = onRequest({ region: REGION }, (req, res) => {
   });
 });
 
-/**
- * Initie un paiement Paystack (callable — utilisateur authentifié requis).
- * Le montant est recalculé côté serveur. Enregistre une transaction "pending".
- */
+
 exports.initializePayment = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -201,11 +167,7 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
   };
 });
 
-/**
- * Aperçu du prix (callable — auth requis) : renvoie le montant final calculé
- * côté serveur (prix - remise parrainage - crédit utilisé) SANS initialiser
- * de paiement. Utilisé par la page de checkout pour afficher la remise.
- */
+
 exports.previewPayment = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -228,10 +190,7 @@ exports.previewPayment = onCall({ region: REGION }, async (request) => {
   };
 });
 
-/**
- * Vérifie un paiement Paystack et active l'abonnement (callable — auth requis).
- * Revalide le montant et l'appartenance de la référence côté serveur.
- */
+
 exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -288,19 +247,14 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
   return { status: 'success', reference };
 });
 
-/**
- * Active l'abonnement (idempotent). Étend un abonnement actif non expiré.
- * Écrit via l'Admin SDK (contourne les règles client — le client ne peut pas
- * forger un abonnement actif).
- */
+
 async function grantSubscription({ uid, plan, duration, amount, reference, referrerUid, creditUsed }) {
   const txRef = db.collection('transactions').doc(reference);
   const subRef = db.collection('subscriptions').doc(uid);
   const userRef = db.collection('users').doc(uid);
   const referrerRef = referrerUid ? db.collection('users').doc(referrerUid) : null;
 
-  return db.runTransaction(async (t) => {
-    // Toutes les lectures AVANT toutes les écritures (règle Firestore).
+  return db.runTransaction(async (t) => {
     const txDoc = await t.get(txRef);
     if (txDoc.exists && txDoc.data().status === 'success') {
       return false; // déjà accordé — idempotent
@@ -338,15 +292,11 @@ async function grantSubscription({ uid, plan, duration, amount, reference, refer
       amount,
       status: 'success',
       paidAt: new Date()
-    }, { merge: true });
-
-    // Parrainage : crédite le parrain (+10000 NGN) au premier paiement du filleul.
+    }, { merge: true });
     if (referrerRef) {
       const current = refDoc && refDoc.exists ? (refDoc.data().referralCredit || 0) : 0;
       t.set(referrerRef, { referralCredit: current + REFERRAL_CREDIT }, { merge: true });
-    }
-
-    // Marque le 1er paiement effectué + consomme le crédit éventuel.
+    }
     const uData = uDoc.exists ? uDoc.data() : {};
     const patch = { firstPaymentDone: true };
     if (referrerRef) patch.referralDiscountApplied = true;
@@ -358,10 +308,7 @@ async function grantSubscription({ uid, plan, duration, amount, reference, refer
   });
 }
 
-/**
- * Webhook Paystack (onRequest, appelé par Paystack en serveur-à-serveur).
- * Vérifie la signature HMAC SHA-512 puis active l'abonnement (idempotent).
- */
+
 exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
   const secret = process.env.PAYSTACK_SECRET;
   if (!secret) {
@@ -406,8 +353,7 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
               await sendPaymentConfirmation({
                 to: txDoc.email, uid: txDoc.uid, plan: txDoc.plan, duration: txDoc.duration,
                 amount: paidAmount, reference
-              }).catch(() => {});
-              // Tracking Phase 0 — payment_success (valeur NGN réelle, serveur uniquement).
+              }).catch(() => {});
               try {
                 await db.collection('marketingEvents').add({
                   event: 'payment_success',
@@ -418,7 +364,7 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
                   uid: txDoc.uid,
                   reference
                 }).catch(() => {});
-              } catch (e) { /* silencieux */ }
+              } catch (e) {  }
             }
           } catch (err) {
             console.error('webhook grant failed', err);
@@ -433,9 +379,7 @@ exports.paystackWebhook = onRequest({ region: REGION }, async (req, res) => {
   res.status(200).send('received');
 });
 
-/* ============================================================
-   JALON 3 — Learning Assistant (OpenRouter, côté serveur)
-   ============================================================ */
+
 const OPENROUTER_BASE = 'https://openrouter.ai/api/v1';
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini';
 const ASSISTANT_DAILY_LIMIT = parseInt(process.env.ASSISTANT_DAILY_LIMIT || '50', 10);
@@ -443,8 +387,7 @@ const ASSISTANT_TIMEOUT_MS = 30000;
 const ASSISTANT_MAX_HISTORY = 20;
 const ASSISTANT_MAX_LEN = 2000;
 
-/** Prompts système par académie (le tuteur s'adapte au niveau de l'élève).
-    Aucun terme "AI" n'apparaît : c'est un tuteur de langue bienveillant. */
+
 const ACADEMY_PROMPTS = {
   german: 'You are a warm, patient and encouraging German tutor for the Germanophone academy of E-Learn Language Academy. Help learners progress from A1 to B2 and prepare the Goethe-Zertifikat and daily life in Germany. Adapt vocabulary, grammar and pace to the level the learner signals. Correct mistakes kindly, give short clear examples, and end by inviting the learner to continue in German. Never claim to be a human teacher: you are the academy Learning Assistant.',
   mandarin: 'You are a warm, patient and encouraging Mandarin tutor for the Sinophone academy of E-Learn Language Academy. Help learners progress from HSK 1 to HSK 6, with a focus on business Chinese, import-export vocabulary and supplier negotiation. Adapt to the level the learner signals. Correct tones and mistakes kindly, give short examples, and invite the learner to continue in Chinese. Never claim to be a human teacher: you are the academy Learning Assistant.',
@@ -492,9 +435,7 @@ exports.learningAssistant = onCall({ region: REGION }, async (request) => {
   const message = String((request.data && request.data.message) || '').trim().slice(0, ASSISTANT_MAX_LEN);
   if (!message) {
     throw new HttpsError('invalid-argument', 'empty-message');
-  }
-
-  // Garde-fou : 50 messages/jour/utilisateur (compteur Firestore transactionnel)
+  }
   const now = new Date();
   const day = now.toISOString().slice(0, 10);
   const usageRef = db.collection('assistantUsage').doc(`${uid}_${day}`);
@@ -525,8 +466,7 @@ exports.learningAssistant = onCall({ region: REGION }, async (request) => {
     + ', at the learner\'s level, and keep answers concise and encouraging.';
 
   const key = process.env.OPENROUTER_KEY;
-  if (!key) {
-    // Mode dégradé propre : pas de crash, message clair côté client.
+  if (!key) {
     return { reply: '', degraded: true };
   }
 
@@ -560,9 +500,7 @@ exports.learningAssistant = onCall({ region: REGION }, async (request) => {
   }
 });
 
-/* ============================================================
-   JALON 5 — Expiration + notifications + tableau de bord
-   ============================================================ */
+
 function ts(v) {
   if (!v) return null;
   if (v.toMillis) return v.toMillis();
@@ -603,7 +541,7 @@ function planLabel(plan, lang) {
   return ((labels[lang] || labels.en)[plan]) || plan;
 }
 
-/* Emails transactionnels — 3 langues (en/fr/ar), sélection selon interfaceLang. */
+
 const EMAIL = {
   en: {
     paymentSubject: 'ELA — Payment confirmed',
@@ -659,10 +597,7 @@ async function emailForUser(uid) {
   return { email: data.email || null, lang };
 }
 
-/**
- * Vérifie quotidiennement les abonnements : expire ceux dont la date est
- * passée, et envoie un rappel J-7 (log-only si SENDGRID_API_KEY absente).
- */
+
 exports.checkSubscriptionExpiry = onSchedule({ region: 'europe-west1', schedule: 'every day 00:00', timeZone: 'Africa/Lagos' }, async () => {
   const now = new Date();
   const in7 = new Date(now);
@@ -699,7 +634,7 @@ exports.checkSubscriptionExpiry = onSchedule({ region: 'europe-west1', schedule:
   return { expired, reminded };
 });
 
-/** Données du tableau de bord (callable — auth requis). */
+
 exports.getDashboardData = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -717,9 +652,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     amount: subSnap.data().amount,
     startDate: ts(subSnap.data().startDate),
     endDate: ts(subSnap.data().endDate)
-  } : null;
-
-  // Code de parrainage : généré côté serveur s'il est absent (logique Francophone).
+  } : null;
   let referralCode = userSnap.exists ? userSnap.data().referralCode : null;
   if (userSnap.exists && !referralCode) {
     referralCode = 'ELA-' + uid.slice(0, 6).toUpperCase();
@@ -740,10 +673,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     amount: d.data().amount,
     status: d.data().status,
     createdAt: ts(d.data().createdAt)
-  })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-  // --- Enrichissement élève ---
-  // Total sur TOUTES les académies (l'abonnement ouvre le plan entier).
+  })).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   const ACADEMY_ORDER = ['german', 'mandarin', 'english', 'arabic', 'russian'];
   const allLessonsSnap = await db.collection('lessons').where('status', '==', 'approved').get();
   const totalLessons = allLessonsSnap.size;
@@ -762,9 +692,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
   const progSnap = await db.collection('progress').doc(uid).get();
   const completedLessons = progSnap.exists ? (progSnap.data().completedLessons || []) : [];
   const completedSet = {};
-  completedLessons.forEach((id) => { completedSet[id] = true; });
-
-  // Progression par académie (anneaux %).
+  completedLessons.forEach((id) => { completedSet[id] = true; });
   const academyTotals = {};
   allLessonsSnap.forEach((d) => {
     const a = d.data().academy || 'german';
@@ -780,9 +708,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     completed: academyDone[a] || 0,
     total: academyTotals[a] || 0,
     pct: academyTotals[a] ? Math.round(((academyDone[a] || 0) / academyTotals[a]) * 100) : 0
-  }));
-
-  // Prochaine leçon à reprendre (première leçon approuvée non terminée).
+  }));
   let nextLesson = null;
   {
     const sorted = allLessonsSnap.docs
@@ -800,9 +726,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     for (const l of sorted) {
       if (!completedSet[l.id]) { nextLesson = l; break; }
     }
-  }
-
-  // Quiz : meilleurs scores, moyennes et série (streak).
+  }
   const qsSnap = await db.collection('quizScores').where('uid', '==', uid).get();
   const bestQuizScores = qsSnap.docs.map((d) => ({
     quizId: d.data().quizId,
@@ -837,9 +761,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
       streak++;
       cursor = new Date(cursor.getTime() - 86400000);
     }
-  }
-
-  // Certificats délivrés.
+  }
   const certSnap = await db.collection('certificates').where('userId', '==', uid).get();
   const certificates = certSnap.docs.map((d) => ({
     id: d.id,
@@ -860,6 +782,36 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
       .filter((l) => l.scheduledAt && l.scheduledAt > nowMs)
       .sort((a, b) => a.scheduledAt - b.scheduledAt);
     if (upcoming.length) nextLiveClass = upcoming[0];
+  }
+  const completedByLevel = {};
+  {
+    const completedLessonDetails = allLessonsSnap.docs
+      .filter((d) => completedSet[d.id])
+      .map((d) => {
+        const data = d.data() || {};
+        return {
+          id: d.id,
+          level: data.level || '',
+          cecrLevel: data.cecrLevel || data.level || ''
+        };
+      });
+    completedLessonDetails.forEach((l) => {
+      const lvl = l.cecrLevel || l.level || 'A1';
+      if (!completedByLevel[lvl]) completedByLevel[lvl] = 0;
+      completedByLevel[lvl]++;
+    });
+    const totalByLevel = {};
+    allLessonsSnap.forEach((d) => {
+      const data = d.data() || {};
+      const lvl = data.cecrLevel || data.level || 'A1';
+      if (!totalByLevel[lvl]) totalByLevel[lvl] = 0;
+      totalByLevel[lvl]++;
+    });
+    Object.keys(totalByLevel).forEach((lvl) => {
+      const completed = completedByLevel[lvl] || 0;
+      const total = totalByLevel[lvl];
+      completedByLevel[lvl] = total > 0 ? Math.round((completed / total) * 100) : 0;
+    });
   }
 
   return {
@@ -868,6 +820,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
     transactions,
     progress: { completed: completedLessons.length, total: totalLessons },
     academyProgress,
+    completedByLevel,
     nextLesson,
     quizStats: { taken: quizzesTaken, avg: avgScore, streak: streak },
     bestQuizScores,
@@ -876,10 +829,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
   };
 });
 
-/**
- * Lien de réunion (Zoom/Meet) — visible uniquement aux abonnés actifs de la
- * même académie, à partir de 15 minutes avant le début du cours.
- */
+
 exports.getLiveMeetingLink = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -912,16 +862,11 @@ exports.getLiveMeetingLink = onCall({ region: REGION }, async (request) => {
   return { meetingLink: lc.meetingLink, title: lc.title, scheduledAt: scheduledAt.getTime() };
 });
 
-/* ============================================================
-   MISSION ENSEIGNANT — Attribution des rôles (admin only)
-   ============================================================ */
+
 const VALID_ROLES = ['student', 'teacher', 'admin'];
 const VALID_ACADEMIES = ['german', 'mandarin', 'english', 'arabic', 'russian'];
 
-/**
- * Attribue un rôle à un utilisateur (student/teacher/admin). Réservé à l'admin.
- * Un rôle "teacher" exige une académie valide (obligatoire).
- */
+
 exports.setUserRole = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -957,9 +902,7 @@ exports.setUserRole = onCall({ region: REGION }, async (request) => {
   return { ok: true, uid, role };
 });
 
-/* ============================================================
-   INTERFACE ADMIN — validation du contenu
-   ============================================================ */
+
 const CONTENT_COLLECTIONS = ['lessons', 'quizzes', 'liveClasses'];
 
 function previewFor(collection, d) {
@@ -975,7 +918,7 @@ function previewFor(collection, d) {
   return {};
 }
 
-/** File d'attente de validation (admin only) : tout le contenu "pending". */
+
 exports.getAdminQueue = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1010,7 +953,7 @@ exports.getAdminQueue = onCall({ region: REGION }, async (request) => {
   return { items };
 });
 
-/** Approuve ou rejette un contenu (admin only). */
+
 exports.reviewContent = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1049,11 +992,7 @@ exports.reviewContent = onCall({ region: REGION }, async (request) => {
   return { ok: true, docId, status: patch.status };
 });
 
-/* ============================================================
-   INTERFACE ADMIN — données agrégées du panel (réplique FA)
-   Remplace les 6 lectures pleine collection du client :
-   l'agrégation est faite côté serveur, paginée et bornée.
-   ============================================================ */
+
 const ADMIN_PAGE_SIZE = 100;
 
 exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
@@ -1064,9 +1003,7 @@ exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
 
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const weekAgo = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
-
-  // --- Utilisateurs (borné, tri desc) ---
+  const weekAgo = new Date(now.getTime() - 7 * 24 * 3600 * 1000);
   const usersSnap = await db.collection('users')
     .orderBy('createdAt', 'desc').limit(ADMIN_PAGE_SIZE).get();
   const users = usersSnap.docs.map((d) => {
@@ -1081,9 +1018,7 @@ exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
       referralCredit: u.referralCredit || 0,
       createdAt: ts(u.createdAt)
     };
-  });
-
-  // --- Transactions (borné, tri desc) ---
+  });
   const txSnap = await db.collection('transactions')
     .orderBy('createdAt', 'desc').limit(ADMIN_PAGE_SIZE).get();
   const transactions = txSnap.docs.map((d) => {
@@ -1098,16 +1033,12 @@ exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
       status: x.status || 'pending',
       createdAt: ts(x.createdAt)
     };
-  });
-
-  // --- Abonnements ---
+  });
   const subsSnap = await db.collection('subscriptions').get();
   const subscriptions = subsSnap.docs.map((d) => {
     const s = d.data() || {};
     return { uid: d.id, plan: s.plan || 'general', status: s.status || '', endDate: ts(s.endDate) };
-  });
-
-  // --- Live classes à venir (30 jours glissants) ---
+  });
   const horizon = new Date(now.getTime() + 30 * 24 * 3600 * 1000);
   const liveSnap = await db.collection('liveClasses')
     .where('scheduledAt', '>=', now).where('scheduledAt', '<=', horizon)
@@ -1118,9 +1049,7 @@ exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
       id: d.id, title: l.title || '', academy: l.academy || null,
       teacherUid: l.teacherUid || null, scheduledAt: ts(l.scheduledAt), status: l.status || ''
     };
-  });
-
-  // --- Agrégats (KPI + revenus) — calculés ici, jamais côté client ---
+  });
   let revenueThisMonth = 0;
   let revenuePrevMonth = 0;
   let newUsers7d = 0;
@@ -1147,13 +1076,7 @@ exports.getAdminPanelData = onCall({ region: REGION }, async (request) => {
     const d = new Date(t.createdAt);
     const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 
-/* ============================================================
-   INTERFACE TEACHER — soumission de contenu (réplique FA)
-   Les écritures teacher passent par le serveur : mêmes règles
-   que firestore.rules (canCreateContent) appliquées ici.
-   Les documents atterrissent dans lessons/quizzes/liveClasses
-   avec status:'pending' — aucune donnée existante modifiée.
-   ============================================================ */
+
 const MAX_CONTENT_LENGTH = 20000;
 const MAX_QUESTIONS = 50;
 
@@ -1226,9 +1149,7 @@ exports.submitContent = onCall({ region: REGION }, async (request) => {
   const type = data.type;
   if (!['lesson', 'quiz', 'live'].includes(type)) {
     throw new HttpsError('invalid-argument', 'invalid-type');
-  }
-
-  // L'académie est imposée pour un teacher (jamais fournie par le client).
+  }
   const academy = role === 'teacher'
     ? caller.academy
     : (VALID_ACADEMIES.includes(data.academy) ? data.academy : caller.academy || VALID_ACADEMIES[0]);
@@ -1261,9 +1182,7 @@ exports.submitContent = onCall({ region: REGION }, async (request) => {
 });
 
 
-/* ============================================================
-   CURRICULUM — seed + catalogue + cours (réplique FA)
-   ============================================================ */
+
 function slugify(s) {
   return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
@@ -1286,9 +1205,7 @@ async function academyAndSubscription(uid) {
   return { academy, role, active };
 }
 
-/** Règle d'accès (modèle Francophone) :
-    admin → total ; teacher → son académie ; abonné actif → total ;
-    compte gratuit/trial → contenu trial uniquement ; sinon refus. */
+
 function canAccess(access, content) {
   if (!access) return false;
   if (access.role === 'admin') return true;
@@ -1297,12 +1214,7 @@ function canAccess(access, content) {
   return !!access.active;
 }
 
-/* ============================================================
-   seedAcademyA1 — Injection du contenu A1 Foundations (5 académies).
-   Lit les fichiers JSON bundleés dans ./seed-a1/*.json et écrit
-   dans courses / lessons / quizzes (idempotent : IDs déterministes,
-   jamais de doublon, aucune suppression). Admin uniquement.
-   ============================================================ */
+
 exports.seedAcademyA1 = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1379,20 +1291,8 @@ exports.seedAcademyA1 = onCall({ region: REGION }, async (request) => {
 
   return { academies: summary };
 });
-/**
- * Liste des académies accessibles pour l'utilisateur courant.
- * - general        → [users/{uid}.academy] (une seule académie)
- * - premium/business → les 6 académies
- * - admin/teacher  → les 6 académies
- * - sinon          → []
- * Source de vérité serveur pour la garde d'accès des pages académies.
- */
-/**
- * getTrialLessons — Liste publique des leçons d'échantillon (sans auth).
- * Filtre côté serveur sur isTrial == true pour ne retourner que le
- * contenu gratuit, groupé par académie. Les leçons 1-2 sont accessibles
- * instantanément, les leçons 3-6 nécessitent un compte gratuit.
- */
+
+
 exports.getTrialLessons = onCall({ region: REGION }, async () => {
   const academies = ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'];
   const out = {};
@@ -1441,16 +1341,14 @@ exports.getMyAcademies = onCall({ region: REGION }, async (request) => {
   const plan = sub.plan || 'general';
   if (plan === 'premium' || plan === 'business') {
     return { academies: ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU'], plan: plan };
-  }
-
-  // general (ou défaut) : une seule académie
+  }
   const academyKey = u.academy || (Array.isArray(u.academies) && u.academies[0]) || 'german';
   const code = { french: 'FR', francophone: 'FR', fr: 'FR', german: 'DE', de: 'DE', mandarin: 'ZH', chinese: 'ZH', zh: 'ZH', english: 'EN', en: 'EN', arabic: 'AR', ar: 'AR', russian: 'RU', ru: 'RU' }[academyKey] || 'DE';
   return { academies: [code], plan: plan };
 });
 
 
-/** Seed du curriculum (admin only, idempotent : IDs déterministes). */
+
 exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1511,27 +1409,12 @@ exports.seedCurriculum = onCall({ region: REGION }, async (request) => {
   return { courses: nCourses, lessons: nLessons, quizzes: nQuizzes };
 });
 
-/**
- * Seed de la structure arborescente du curriculum par académie
- * (admin only, idempotent, IDs déterministes).
- *
- * Structure : academies/{code}/curriculum/levels/{levelId}/units/{unitId}/modules/{moduleId}/lessons/{lessonId}
- *
- * Squelette uniquement (pas de contenu pédagogique) :
- *   - 6 niveaux par académie (A1→C2 ou HSK1→HSK6)
- *   - 3 unités par niveau
- *   - 3 modules par unité
- *   - 2 leçons par module
- *
- * Retourne le décompte créé par académie.
- */
+
 exports.seedAcademyTree = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
   }
-  await requireAdmin(request.auth.uid);
-
-  // Mapping code → niveaux (miroir de academies.config.js)
+  await requireAdmin(request.auth.uid);
   const ACADEMY_LEVELS = {
     FR: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
     DE: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'],
@@ -1556,8 +1439,7 @@ exports.seedAcademyTree = onCall({ region: REGION }, async (request) => {
     let nLevels = 0, nUnits = 0, nModules = 0, nLessons = 0;
 
     for (const level of levels) {
-      const levelId = code + '_' + level;
-      // Document niveau (sous-collection levels)
+      const levelId = code + '_' + level;
       await db.collection('academies').doc(code)
         .collection('curriculum').doc('singleton')
         .collection('levels').doc(levelId).set({
@@ -1642,15 +1524,7 @@ exports.seedAcademyTree = onCall({ region: REGION }, async (request) => {
 
 
 
-/**
- * Arbre du curriculum d'une académie (callable).
- * Lecture côté serveur (Admin SDK) → ignore les règles Firestore.
- * Structure : { levels: [{ id, level, title, units: [{ id, title, modules: [{ id, title, lessons: [{ id, title }]}] }] }] }
- * - Admin/teacher : accès à toutes les académies.
- * - Student abonné : accès à son académie (ou toutes si plan Premium/Business).
- * - Student non abonné : refus (la garde client checkAcademyAccess
- *   empêche l'appel depuis une académie verrouillée).
- */
+
 exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
   if (!request.auth || !request.auth.uid) {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
@@ -1664,8 +1538,7 @@ exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
   const userSnap = await db.collection('users').doc(uid).get();
   const u = userSnap.exists ? userSnap.data() : {};
   const role = u.role || 'student';
-  if (role === 'admin' || role === 'teacher') {
-    // OK, access to all academies
+  if (role === 'admin' || role === 'teacher') {
   } else {
     const subSnap = await db.collection('subscriptions').doc(uid).get();
     const sub = subSnap.exists ? subSnap.data() : null;
@@ -1676,8 +1549,7 @@ exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
       throw new HttpsError('permission-denied', 'Active subscription required to read curriculum.');
     }
     const plan = sub.plan || 'general';
-    if (plan !== 'premium' && plan !== 'business') {
-      // General path: one academy only
+    if (plan !== 'premium' && plan !== 'business') {
       const keyMap = {
         french: 'FR', francophone: 'FR', fr: 'FR',
         german: 'DE', de: 'DE',
@@ -1692,9 +1564,7 @@ exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
         throw new HttpsError('permission-denied', 'This academy is not included in your subscription.');
       }
     }
-  }
-
-  // Build the tree from Firestore
+  }
   const treeRef = db.collection('academies').doc(code)
     .collection('curriculum').doc('singleton')
     .collection('levels');
@@ -1733,10 +1603,8 @@ exports.getAcademyTree = onCall({ region: REGION }, async (request) => {
 
 
 
-/** Catalogue des cours de l'académie de l'élève (abonné). */
-/** Catalogue public des cours (toutes académies) — sans auth, sans abonnement.
-    Seules les métadonnées (titre/niveau/description) sont exposées ;
-    le contenu des leçons reste derrière abonnement (getCourse + règles). */
+
+
 exports.getCatalog = onCall({ region: REGION }, async () => {
   const snap = await db.collection('courses').where('status', '==', 'approved').get();
   const courses = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, description: d.data().description, category: d.data().category, academy: d.data().academy, learningOutcomes: d.data().learningOutcomes || [], order: d.data().order || 0 }))
@@ -1744,7 +1612,7 @@ exports.getCatalog = onCall({ region: REGION }, async () => {
   return { courses };
 });
 
-/** Liste publique des quizz (métadonnées seules, sans les questions). */
+
 exports.getQuizCatalog = onCall({ region: REGION }, async () => {
   const snap = await db.collection('quizzes').where('status', '==', 'approved').get();
   const quizzes = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, academy: d.data().academy }))
@@ -1752,7 +1620,7 @@ exports.getQuizCatalog = onCall({ region: REGION }, async () => {
   return { quizzes };
 });
 
-/** Liste publique des cours live à venir (sans le lien de réunion). */
+
 exports.getLiveCatalog = onCall({ region: REGION }, async () => {
   const snap = await db.collection('liveClasses').where('status', '==', 'approved').get();
   const now = Date.now();
@@ -1763,8 +1631,7 @@ exports.getLiveCatalog = onCall({ region: REGION }, async () => {
   return { classes };
 });
 
-/** Détail d'un cours : leçons (liste légère, public) + progression + quizz associés.
-    Le contenu des leçons/quizz reste géré par les règles Firestore. */
+
 exports.getCourse = onCall({ region: REGION }, async (request) => {
   const courseId = request.data && request.data.courseId;
   if (!courseId) {
@@ -1797,13 +1664,7 @@ exports.getCourse = onCall({ region: REGION }, async (request) => {
   return { course, lessons, completedLessons, total: lessons.length };
 });
 
-/* ============================================================
-   CERTIFICATS — délégation à la certification centralisée ELA.
-   Ancien flux (PDF inline + collection 'certificates') déplacé
-   dans functions/_legacy/generate-certificate-legacy.js.
-   L'émission passe désormais par ela-certificate-core
-   (ela_certificates + event ISSUED), le PDF par ela-pdf.js.
-   ============================================================ */
+
 exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'quizScores/{docId}' }, async (event) => {
   const data = event.data.after.data();
   if (!data) return;
@@ -1811,9 +1672,7 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   const quizId = data.quizId;
   const total = data.total || 1;
   const bestScore = data.bestScore || 0;
-  if (!uid || !quizId || bestScore / total < 0.8) return;
-
-  // Idempotence : un seul certificat ELA par (élève, quizz).
+  if (!uid || !quizId || bestScore / total < 0.8) return;
   const existing = await db.collection('ela_certificates')
     .where('studentId', '==', uid).where('sourceQuizId', '==', quizId).limit(1).get();
   if (!existing.empty) return;
@@ -1828,8 +1687,7 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   const academyCode = certCore.ACADEMY_KEY_TO_CODE[String(academy).toLowerCase()] || 'FR';
   const percentage = Math.round((bestScore / total) * 100);
 
-  try {
-    // 1) Émission centralisée ELA (event ISSUED écrit par le core).
+  try {
     const cert = await certCore.issueCertificate({
       academyCode: academyCode,
       studentId: uid,
@@ -1840,9 +1698,7 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
       certificateType: 'achievement',
       createdBy: 'trigger:quiz',
       sourceQuizId: quizId
-    });
-
-    // 2) PDF officiel unique (template ela-pdf.js) → Storage.
+    });
     try {
       const pdfBuffer = await require('./ela-pdf.js').makeOfficialPdfBuffer(cert);
       const filePath = 'ela-certificates/' + cert.id + '.pdf';
@@ -1865,8 +1721,157 @@ exports.generateCertificate = onDocumentWritten({ region: REGION, document: 'qui
   return null;
 });
 
-/* ============================================================
-   CERTIFICATS ELA � centralisation (cf. ela-certificates.js)
-   ============================================================ */
+
+exports.seedLiveClasses = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  await requireAdmin(request.auth.uid);
+
+  const now = Date.now();
+  const day = 24 * 3600 * 1000;
+
+  const sampleClasses = [
+    {
+      id: 'live-french-conversation-b1',
+      title: 'French Conversation Workshop — B1',
+      academy: 'german',
+      academyCode: 'FR',
+      cecrLevel: 'B1',
+      description: 'Interactive conversation practice for intermediate learners. Topics: daily life, travel, culture.',
+      teacherUid: null,
+      teacherName: 'Prof. Marie Laurent',
+      scheduledAt: new Date(now + 2 * day),
+      duration: 60,
+      meetingLink: 'https://meet.google.com/abc-defg-hij',
+      maxParticipants: 20,
+      currentParticipants: 0,
+      status: 'approved',
+      createdAt: new Date()
+    },
+    {
+      id: 'live-german-grammar-a2',
+      title: 'German Grammar Masterclass — A2',
+      academy: 'german',
+      academyCode: 'DE',
+      cecrLevel: 'A2',
+      description: 'Focus on German sentence structure, cases (Nominativ, Akkusativ, Dativ) with exercises.',
+      teacherUid: null,
+      teacherName: 'Lehrer Hans Müller',
+      scheduledAt: new Date(now + 3 * day),
+      duration: 45,
+      meetingLink: 'https://zoom.us/j/1234567890',
+      maxParticipants: 15,
+      currentParticipants: 0,
+      status: 'approved',
+      createdAt: new Date()
+    },
+    {
+      id: 'live-english-business-c1',
+      title: 'Business English — C1 Networking',
+      academy: 'english',
+      academyCode: 'EN',
+      cecrLevel: 'C1',
+      description: 'Advanced business communication: presentations, negotiations, and professional networking.',
+      teacherUid: null,
+      teacherName: 'Dr. Sarah Johnson',
+      scheduledAt: new Date(now + 5 * day),
+      duration: 90,
+      meetingLink: 'https://teams.microsoft.com/l/meetup-join/abc123',
+      maxParticipants: 25,
+      currentParticipants: 0,
+      status: 'approved',
+      createdAt: new Date()
+    },
+    {
+      id: 'live-arabic-culture-b2',
+      title: 'Arabic Culture & Language — B2',
+      academy: 'arabic',
+      academyCode: 'AR',
+      cecrLevel: 'B2',
+      description: 'Explore Arabic culture through language: idioms, media, and regional dialects.',
+      teacherUid: null,
+      teacherName: 'أستاذة فاطمة العلي',
+      scheduledAt: new Date(now + 7 * day),
+      duration: 60,
+      meetingLink: 'https://meet.google.com/xyz-abcd-efg',
+      maxParticipants: 18,
+      currentParticipants: 0,
+      status: 'approved',
+      createdAt: new Date()
+    },
+    {
+      id: 'live-mandarin-hsk-a1',
+      title: 'Mandarin HSK Prep — A1 Foundation',
+      academy: 'mandarin',
+      academyCode: 'ZH',
+      cecrLevel: 'A1',
+      description: 'Introduction to Mandarin: tones, pinyin, and basic greetings for HSK 1 preparation.',
+      teacherUid: null,
+      teacherName: '老师 李小龙',
+      scheduledAt: new Date(now + 10 * day),
+      duration: 45,
+      meetingLink: 'https://zoom.us/j/9876543210',
+      maxParticipants: 20,
+      currentParticipants: 0,
+      status: 'approved',
+      createdAt: new Date()
+    }
+  ];
+
+  let seeded = 0;
+  for (const cls of sampleClasses) {
+    const existing = await db.collection('liveClasses').doc(cls.id).get();
+    if (!existing.exists) {
+      await db.collection('liveClasses').doc(cls.id).set(cls);
+      seeded++;
+    }
+  }
+
+  return { seeded, total: sampleClasses.length, message: seeded + ' live classes created (' + (sampleClasses.length - seeded) + ' already existed)' };
+});
+
+
+exports.getTeacherStats = onCall({ region: REGION }, async (request) => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'You must be signed in.');
+  }
+  const uid = request.auth.uid;
+  const userSnap = await db.collection('users').doc(uid).get();
+  const role = userSnap.exists ? (userSnap.data().role || 'student') : 'student';
+  if (role !== 'teacher' && role !== 'admin') {
+    throw new HttpsError('permission-denied', 'teacher-or-admin-only');
+  }
+  const collections = ['lessons', 'quizzes', 'liveClasses'];
+  const stats = { total: 0, pending: 0, approved: 0, rejected: 0, byType: { lesson: 0, quiz: 0, live: 0 } };
+  const recent = [];
+
+  for (const col of collections) {
+    const snap = await db.collection(col).where('teacherUid', '==', uid).get();
+    for (const doc of snap.docs) {
+      const d = doc.data() || {};
+      stats.total++;
+      stats[d.status] = (stats[d.status] || 0) + 1;
+      const type = col === 'lessons' ? 'lesson' : col === 'quizzes' ? 'quiz' : 'live';
+      stats.byType[type]++;
+      recent.push({
+        id: doc.id,
+        type: type,
+        title: d.title || '',
+        academy: d.academy || '',
+        status: d.status || 'pending',
+        createdAt: ts(d.createdAt)
+      });
+    }
+  }
+  recent.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  return {
+    stats,
+    recent: recent.slice(0, 10)
+  };
+});
+
+
 Object.assign(module.exports, require('./ela-certificates.js'));
 

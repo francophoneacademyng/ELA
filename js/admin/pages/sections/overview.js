@@ -33,11 +33,12 @@ export function overviewHtml() {
         '<p>' + t('admin.upcoming') + ' : <strong>' + a.live + '</strong></p></div>';
     }).join('');
 
-    return '<section class="dashboard-section">' +
+    return '<section class="dashboard-section" id="admin-v2-overview">' +
     '<div class="kpi-grid">' + kpis + '</div>' +
     '<div class="dashboard-actions" style="margin:1.5rem 0">' +
       '<button class="btn btn-ghost btn-sm" id="admin-seed-curriculum">' + t('admin.seed') + '</button> ' +
-      '<button class="btn btn-ghost btn-sm" id="admin-seed-tree">' + t('admin.seedTree') + '</button>' +
+      '<button class="btn btn-ghost btn-sm" id="admin-seed-tree">' + t('admin.seedTree') + '</button> ' +
+      '<button class="btn btn-ghost btn-sm" id="admin-seed-live">Seed Live Classes</button>' +
     '</div>' +
     '<h3>' + t('admin.activeSubs') + '</h3><div class="plan-lines">' + plans + '</div>' +
     '<h3>' + t('admin.academiesCount') + '</h3><div class="academy-grid">' + academies + '</div>' +

@@ -1316,15 +1316,24 @@ body {
 .ft-lesson-locked { color: var(--muted-2); }
 .ft-lesson-row .ft-lesson-locked { cursor: pointer; }
 
-/* Badges pills discrets gold — PAS rouge/vert criard */
+/* Badges pills gold premium — texte sombre sur fond or */
 .ft-pill {
   display: inline-flex; align-items: center; gap: 0.35rem;
   padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
   white-space: nowrap; flex-shrink: 0;
 }
-.ft-pill-instant { background: #EDF5F1; color: #065f46; }
-.ft-pill-signup { background: #FDF6E3; color: #92660a; }
+.ft-pill-instant { background: #c9a227; color: #1a1a1a; }
+.ft-pill-signup { background: #c9a227; color: #1a1a1a; }
 .ft-pill-comingSoon { background: #F3EEDC; color: var(--muted-2); }
+
+/* Overlay flouté sur leçons verrouillées (trial leçons 3-6) */
+.ft-lock-overlay {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  border-radius: 8px; pointer-events: none; z-index: 2;
+}
+.ft-lock-icon { font-size: 1.2rem; opacity: 0.7; }
+.ft-lesson-locked { position: relative; }
 
 /* CTA final premium */
 .ft-final {
