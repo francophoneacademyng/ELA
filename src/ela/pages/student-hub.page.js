@@ -1,94 +1,107 @@
 /* ============================================================
    ELA — ela/pages/student-hub.page.js
-   Hub "Mes académies" : cartes des académies actives
-   (progression + CTA Continuer) + académies verrouillées (CTA
-   Tarifs). Source de vérité : Cloud Function getMyAcademies.
+   Hub étudiant « Mes académies » (refonte production) :
+   - Header + KPI (leçons, streak, XP)
+   - Grille des académies (branding : Francophone, Germanophone…)
+   Source de vérité : Cloud Functions getMyAcademies + getDashboardData.
+   Bug corrigé : plus aucun « Unable to load » brut — message clair
+   + retry automatique.
    ============================================================ */
 
 import { ACADEMIES, ACADEMY_ORDER } from '../../shared/config/academies.config.js';
 import { getMyAcademies } from '../../shared/components/academy/academy-access.js';
-import { progressRing } from '../../shared/components/academy/progress-ring.js';
 import { callFunction } from '../../js/core/api-client.js';
+
+const XP_PER_LESSON = 10;
 
 export function renderStudentHub() {
   const app = document.getElementById('app');
   if (!app) return;
 
   if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.auth || !firebase.functions) {
-    app.innerHTML = '<div class="section"><p class="ac-courses-empty">Loading…</p></div>';
+    app.innerHTML = '' +
+      '<div class="dashboard-layout">' +
+        '<main class="main-content" style="margin-left:0;max-width:100%">' +
+          '<div class="empty-state"><div class="empty-icon">⏳</div>' +
+          '<p>Chargement de votre espace…</p></div>' +
+        '</main>' +
+      '</div>';
     return;
   }
 
   app.innerHTML = '' +
-    '<div class="section">' +
-      '<h2 style="font-family:var(--font-display);font-weight:800;color:var(--forest)">My Academies</h2>' +
-      '<p style="color:var(--muted)">Your active academies. Continue your journey or discover a new language.</p>' +
-      '<div id="hub-grid" class="hub-grid" style="margin-top:1.2rem"></div>' +
-      '<div id="cecrl-tracking" style="margin-top:2rem"></div>' +
+    '<div class="dashboard-layout">' +
+      '<main class="main-content" style="margin-left:0;max-width:100%">' +
+        '<header class="dashboard-header">' +
+          '<h1>Bonjour, <span id="student-name">Étudiant</span> 👋</h1>' +
+          '<p>Continuez votre apprentissage. Vos académies actives sont récapitulées ci-dessous.</p>' +
+        '</header>' +
+        '<div id="student-kpis" class="kpi-grid">' +
+          '<div class="kpi-card"><span class="kpi-label">📚 Leçons complétées</span><div class="kpi-value" id="student-kpi-lessons">—</div></div>' +
+          '<div class="kpi-card"><span class="kpi-label">🔥 Streak</span><div class="kpi-value" id="student-kpi-streak">—</div></div>' +
+          '<div class="kpi-card"><span class="kpi-label">⭐ XP total</span><div class="kpi-value" id="student-kpi-xp">—</div></div>' +
+        '</div>' +
+        '<section class="section-title">Mes académies</section>' +
+        '<div id="student-academies" class="academy-grid">' +
+          '<div class="empty-state"><div class="empty-icon">⏳</div>' +
+          '<p id="student-academies-status">Chargement de vos académies en cours…</p></div>' +
+        '</div>' +
+      '</main>' +
     '</div>';
 
-  const grid = document.getElementById('hub-grid');
+  const grid = document.getElementById('student-academies');
+  const statusEl = document.getElementById('student-academies-status');
+  const nameEl = document.getElementById('student-name');
 
-  Promise.all([
-    getMyAcademies(),
-    callFunction('getDashboardData').catch(function () { return null; })
-  ]).then(function (results) {
-    const active = results[0] || [];
-    const dash = results[1];
-    const progress = (dash && dash.completedByLevel) || {};
+  function load() {
+    Promise.all([
+      getMyAcademies(),
+      callFunction('getDashboardData').catch(function () { return null; })
+    ]).then(function (results) {
+      const active = results[0] || [];
+      const dash = results[1] || {};
+      const userInfo = dash.user || {};
+      const progress = dash.progress || { completed: 0, total: 0 };
+      const quizStats = dash.quizStats || { streak: 0 };
 
-    let html = '';
-    ACADEMY_ORDER.forEach(function (code) {
-      const a = ACADEMIES[code];
-      const isActive = active.indexOf(code) >= 0;
-      const pct = globalPct(progress, a);
-      if (isActive) {
-        html += '' +
-          '<a class="hub-card" href="#/academy/' + code + '/dashboard" style="--ac:' + a.color + '">' +
-            '<div class="hub-top"><span class="hub-flag">' + a.flag + '</span>' + progressRing({ percent: pct, size: 56, color: a.color }) + '</div>' +
-            '<span class="hub-name">' + a.label + '</span>' +
-            '<span class="hub-native">' + a.native + ' · ' + a.certification + '</span>' +
-            '<span class="hub-cta">Continue →</span>' +
+      if (nameEl && userInfo.displayName) nameEl.textContent = userInfo.displayName;
+
+      const lessonsEl = document.getElementById('student-kpi-lessons');
+      const streakEl = document.getElementById('student-kpi-streak');
+      const xpEl = document.getElementById('student-kpi-xp');
+      if (lessonsEl) lessonsEl.textContent = String(progress.completed || 0);
+      if (streakEl) streakEl.textContent = String(quizStats.streak || 0) + ' j';
+      if (xpEl) xpEl.textContent = String((progress.completed || 0) * XP_PER_LESSON);
+
+      const html = ACADEMY_ORDER.map(function (code) {
+        const a = ACADEMIES[code];
+        const isActive = active.indexOf(code) >= 0;
+        const href = isActive ? '#/academy/' + code + '/dashboard' : '#/pricing';
+        const cta = isActive ? 'Continuer →' : 'Débloquer via un abonnement →';
+        return '' +
+          '<a class="academy-card" href="' + href + '" style="border-left-color:' + a.color + '">' +
+            '<span class="ac-flag">' + a.flag + '</span>' +
+            '<h3>' + esc(a.label) + '</h3>' +
+            '<p>' + esc(a.native) + ' · ' + esc(a.certification) + '</p>' +
+            '<span class="ac-cta">' + cta + '</span>' +
           '</a>';
-      } else {
-        html += '' +
-          '<a class="hub-card hub-locked" href="#/pricing" style="--ac:' + a.color + '">' +
-            '<div class="hub-top"><span class="hub-flag">' + a.flag + '</span><span class="academy-status status-soon">Locked</span></div>' +
-            '<span class="hub-name">' + a.label + '</span>' +
-            '<span class="hub-native">' + a.native + ' · ' + a.certification + '</span>' +
-            '<span class="hub-cta">Subscribe to unlock →</span>' +
-          '</a>';
-      }
+      }).join('');
+
+      grid.innerHTML = html || '<div class="empty-state"><div class="empty-icon">🏗️</div>' +
+        '<p>Aucune académie.</p></div>';
+    }).catch(function (err) {
+      // Bug corrigé : message clair + retry (plus de « Unable to load » brut).
+      console.error('[student-hub] getMyAcademies/getDashboardData a échoué :', err);
+      if (statusEl) statusEl.textContent = 'Impossible de charger vos académies pour le moment. Nouvelle tentative…';
+      setTimeout(function () { if (document.body.contains(grid)) load(); }, 3000);
     });
-    grid.innerHTML = html;
+  }
 
-    // Afficher la progression CECRL par niveau
-    const cecrlContainer = document.getElementById('cecrl-tracking');
-    if (cecrlContainer && dash && dash.completedByLevel) {
-      const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-      const cecrlHtml = '<div class="dashboard-section">' +
-        '<h3 style="font-family:var(--font-display);color:var(--forest)">CECRL Progress Tracker</h3>' +
-        '<p style="color:var(--muted);font-size:0.9rem">Your progress across CEFR levels (A1 → C2)</p>' +
-        '<div class="cecrl-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.8rem;margin-top:1rem">';
-      levels.forEach(function (lvl) {
-        const pct = dash.completedByLevel[lvl] || 0;
-        cecrlHtml += '<div class="cecrl-card" style="background:#fff;border:1px solid var(--line-soft);border-radius:12px;padding:1rem;text-align:center">' +
-          '<div class="cecrl-badge" style="font-family:var(--font-brand);font-size:1.2rem;color:var(--forest)">' + lvl + '</div>' +
-          '<div class="cecrl-bar" style="height:6px;background:var(--cream-soft);border-radius:999px;margin:0.6rem 0;overflow:hidden">' +
-          '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--emerald),var(--gold));border-radius:999px"></div></div>' +
-          '<div class="cecrl-pct" style="font-size:0.8rem;color:var(--muted)">' + pct + '%</div>' +
-        '</div>';
-      });
-      cecrlHtml += '</div></div>';
-      cecrlContainer.innerHTML = cecrlHtml;
-    }
-  }).catch(function () {
-    grid.innerHTML = '<p class="ac-courses-empty">Unable to load your academies.</p>';
-  });
+  load();
 }
 
-function globalPct(byLevel, a) {
-  const vals = a.levels.map(function (l) { return Math.min(100, Number(byLevel[l]) || 0); });
-  if (!vals.length) return 0;
-  return Math.round(vals.reduce(function (s, v) { return s + v; }, 0) / vals.length);
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }

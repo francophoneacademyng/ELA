@@ -27,6 +27,12 @@ export function fmtNaira(amount) {
   return '₦' + n.toLocaleString('en-NG');
 }
 
+/** Formate un montant en Naira, style FA : « NGN 75,000 » (jamais ₦). */
+export function fmtNgn(amount) {
+  const n = Number(amount) || 0;
+  return 'NGN ' + n.toLocaleString('en-NG');
+}
+
 /** Formate une date selon la langue d'interface courante. */
 export function formatDate(ms, opts) {
   if (!ms) return '—';

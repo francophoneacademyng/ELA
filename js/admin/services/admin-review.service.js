@@ -7,13 +7,17 @@
 import { fetchReviewQueue, submitReview } from '../repositories/content-review.repository.js';
 import { getState, setState } from './admin-state.js';
 
-/** Recharge la file d'attente. */
+/** Recharge la file d'attente.
+ *  NB : l'erreur est relancée au caller mais n'est JAMAIS écrite dans
+ *  state.error — c'est un état local à la file, pas un échec global
+ *  du panel (sinon les pages /admin/* affichent « Impossible de
+ *  charger » alors que getAdminPanelData a réussi). */
 export function refreshQueue() {
   setState({ queueLoading: true });
   return fetchReviewQueue()
-    .then(function (items) { setState({ queue: items, queueLoading: false, error: null }); return items; })
+    .then(function (items) { setState({ queue: items, queueLoading: false }); return items; })
     .catch(function (e) {
-      setState({ queueLoading: false, error: e });
+      setState({ queueLoading: false });
       throw e;
     });
 }

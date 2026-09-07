@@ -1,0 +1,204 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function currentUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function currentUserAcademy() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.academy;
+    }
+
+    function isTeacher() {
+      return isSignedIn() && currentUserRole() == 'teacher';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && currentUserRole() == 'admin';
+    }
+
+    function hasActiveSubscription() {
+      return exists(/databases/$(database)/documents/subscriptions/$(request.auth.uid))
+        && get(/databases/$(database)/documents/subscriptions/$(request.auth.uid)).data.status == 'active'
+        && get(/databases/$(database)/documents/subscriptions/$(request.auth.uid)).data.endDate > request.time;
+    }
+
+    function canCreateContent() {
+      return isTeacher()
+        && request.resource.data.teacherUid == request.auth.uid
+        && request.resource.data.academy == currentUserAcademy()
+        && request.resource.data.status == 'pending';
+    }
+
+    // Abonné actif : lit le contenu approuvé, SANS contrôle d'académie bloquant
+    // (l'abonnement ouvre le plan entier, comme Francophone).
+    function canStudentReadContent() {
+      return isSignedIn()
+        && resource.data.status == 'approved'
+        && hasActiveSubscription();
+    }
+
+    match /users/{uid} {
+      allow create: if isSignedIn()
+                    && request.auth.uid == uid;
+
+      allow read: if isAdmin();
+      allow read: if isSignedIn()
+                   && request.auth.uid == uid;
+
+      // L'utilisateur met à jour son propre document, sans pouvoir changer
+      // son rôle (le rôle est modifié uniquement par l'admin via le serveur).
+      allow update: if isSignedIn()
+                    && request.auth.uid == uid
+                    && request.resource.data.role == resource.data.role;
+
+      allow delete: if false;
+    }
+
+    match /subscriptions/{uid} {
+      allow read: if isAdmin();
+      allow read: if isSignedIn()
+                   && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /transactions/{reference} {
+      allow read: if isAdmin();
+      allow read: if isSignedIn()
+                   && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /newsletterSubscribers/{id} {
+      // Inscription newsletter : email valide + timestamp. Pas d'auth requise.
+      allow create: if request.resource.data.email is string
+                    && request.resource.data.email.size() >= 5
+                    && request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')
+                    && request.resource.data.ts is number;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    match /lessons/{id} {
+      allow create: if canCreateContent();
+      allow read: if isAdmin();
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
+      allow read: if canStudentReadContent();
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
+      allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+    }
+
+    match /quizzes/{id} {
+      allow create: if canCreateContent();
+      allow read: if isAdmin();
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
+      allow read: if canStudentReadContent();
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
+      allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+    }
+
+    match /liveClasses/{id} {
+      allow create: if canCreateContent();
+      allow read: if isAdmin();
+      allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
+      allow read: if canStudentReadContent();
+      allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
+                    && request.resource.data.status == resource.data.status;
+      allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
+    }
+
+    // Cours (contenu propriétaire, status="approved").
+    match /courses/{id} {
+      allow read: if isAdmin();
+      allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
+      allow read: if resource.data.isTrial == true;
+      allow read: if canStudentReadContent();
+      allow create, update, delete: if false;
+    }
+
+    // Progression de l'élève : un document par élève.
+    match /progress/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Scores de quizz : l'élève n'écrit que ses propres scores.
+    match /quizScores/{docId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create, update: if isSignedIn() && request.resource.data.uid == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // Certificats : générés côté serveur ; lecture par le titulaire uniquement.
+    match /certificates/{id} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create, update, delete: if false;
+    }
+
+    // Tracking (Phase 0) : le client ne peut créer que les événements non sensibles
+    // (page_view, registration, trial_started, checkout_started) avec champs validés.
+    // payment_success est écrit UNIQUEMENT par le serveur (webhook Paystack, Admin SDK).
+    match /marketingEvents/{id} {
+      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started']
+                    && request.resource.data.ts is number;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    /* ============================================================
+       CERTIFICATS CENTRALISÉS ELA — ela_certificates
+       - Lecture : titulaire (studentId == uid) OU admin/teacher.
+       - Écriture : UNIQUEMENT via Cloud Functions (Admin SDK) → false.
+       - list (query large) : admin/teacher ; l'élève ne peut que
+         lire ses propres documents (query where studentId == uid).
+       ============================================================ */
+    function isElaStaff() {
+      return isAdmin() || isTeacher();
+    }
+
+    match /ela_certificates/{id} {
+      allow get: if isSignedIn()
+                 && (resource.data.studentId == request.auth.uid || isElaStaff());
+      allow list: if isElaStaff();
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    /* ============================================================
+       AUDIT TRAIL — ela_certificate_events (append-only)
+       - Lecture : super admin ELA (role == 'admin').
+       - Écriture : UNIQUEMENT via Cloud Functions → false.
+       - Jamais de suppression, jamais de mise à jour.
+       ============================================================ */
+    match /ela_certificate_events/{id} {
+      allow read: if isAdmin();
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+        /* ============================================================\
+        ACADEMY CURRICULUM TREE — academies/{code}/curriculum/...
+        Arbre imbriqué (levels/units/modules/lessons).
+        - Lecture/écriture : serveur uniquement (Cloud Functions Admin SDK).
+        - Accès direct client : refusé (les acadéries lecture via getAcademyTree callable).
+        ============================================================ */
+    match /academies/{code}/curriculum/{doc=**} {
+      allow read, write: if false; // Cloud Functions uniquement
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -28,7 +28,7 @@ function renderAuthModal() {
         '<label for="ft-auth-email">Email</label>' +
         '<input type="email" id="ft-auth-email" placeholder="you@example.com" />' +
         '<label for="ft-auth-password">Password</label>' +
-        '<input type="password" id="ft-auth-password" placeholder="At least 6 characters" />' +
+        '<input type="password" id="ft-auth-password" placeholder="At least 8 characters" />' +
         '<div class="ft-modal-actions">' +
           '<button class="ft-cta" id="ft-auth-submit">Create Free Account</button>' +
           '<button class="ft-modal-cancel" id="ft-auth-cancel">Cancel</button>' +
@@ -53,6 +53,15 @@ function escapeHtml(s) {
   });
 }
 
+function ftAuthErrorText(e) {
+  const code = (e && e.code) ? String(e.code).replace('functions/', '') : '';
+  const msg = (e && e.message) ? String(e.message) : '';
+  if (code === 'already-exists' || msg.indexOf('email-in-use') >= 0) return 'An account already exists for this email. Try signing in instead.';
+  if (code === 'resource-exhausted' || msg.indexOf('rate-limit') >= 0) return 'Too many attempts from your connection. Please wait a minute and try again.';
+  if (msg.indexOf('weak-password') >= 0 || msg.indexOf('invalid-email') >= 0 || code === 'invalid-argument') return 'Use a valid email and a password of at least 8 characters.';
+  return 'Account creation failed. Please try again.';
+}
+
 function bindAuthModal() {
   var overlay = document.getElementById('ft-auth-modal');
   if (!overlay) return;
@@ -63,38 +72,48 @@ function bindAuthModal() {
   });
 
   document.getElementById('ft-auth-submit').addEventListener('click', function () {
-    var email = document.getElementById('ft-auth-email').value.trim();
+    var email = document.getElementById('ft-auth-email').value.trim().toLowerCase();
     var password = document.getElementById('ft-auth-password').value;
     var err = document.getElementById('ft-auth-err');
+    var btn = document.getElementById('ft-auth-submit');
 
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       err.textContent = 'Please enter a valid email address.';
       return;
     }
-    if (!password || password.length < 6) {
-      err.textContent = 'Password must be at least 6 characters.';
+    if (!password || password.length < 8) {
+      err.textContent = 'Password must be at least 8 characters.';
       return;
     }
 
-    var fb = window.firebase;
-    fb.auth().createUserWithEmailAndPassword(email, password)
-      .then(function (cred) {
-        return fb.firestore().collection('users').doc(cred.user.uid).set({
+    err.textContent = '';
+    if (btn) btn.disabled = true;
+
+    // Audit inscription (approche hybride) : pré-check d'unicité serveur puis
+    // création 100 % serveur via createAccount (transaction atomique + rate
+    // limit 3/min/IP). Plus aucune écriture Firestore directe du client.
+    callFunction('checkEmailUnique', { email: email })
+      .then(function (r) {
+        if (r && r.exists) return Promise.reject({ code: 'already-exists', message: 'email-in-use' });
+        return callFunction('createAccount', {
           displayName: email.split('@')[0],
           email: email,
-          role: 'student',
-          interfaceLang: 'en',
-          academies: [],
-          trialProgress: { startedAt: Date.now(), lessonsCompleted: [] },
-          createdAt: fb.firestore.FieldValue.serverTimestamp()
+          password: password,
+          source: 'trial'
         });
+      })
+      .then(function () {
+        // createAccount passe par l'Admin SDK → aucune session client.
+        var fb = window.firebase;
+        return fb.auth().signInWithEmailAndPassword(email, password);
       })
       .then(function () {
         closeAuthModal();
         window.location.reload();
       })
       .catch(function (e) {
-        err.textContent = (e && e.message) ? e.message : 'Account creation failed.';
+        if (btn) btn.disabled = false;
+        err.textContent = ftAuthErrorText(e);
       });
   });
 }

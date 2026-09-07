@@ -1,0 +1,9 @@
+﻿[2026-09-05T15:10:01.849Z] ----------------------------------------------------------------------
+[2026-09-05T15:10:01.884Z] Command:       C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:updateUserProfile
+[2026-09-05T15:10:01.891Z] CLI Version:   15.29.0
+[2026-09-05T15:10:01.896Z] Platform:      win32
+[2026-09-05T15:10:01.898Z] Node Version:  v22.23.2
+[2026-09-05T15:10:01.901Z] Detected Agent: unknown
+[2026-09-05T15:10:01.903Z] Time:          Sat Sep 05 2026 17:10:01 GMT+0200 (heure d’été d’Europe centrale)
+[2026-09-05T15:10:01.905Z] ----------------------------------------------------------------------
+

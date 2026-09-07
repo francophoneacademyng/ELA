@@ -1693,6 +1693,27 @@
   }
 
 
+  /* ---------- Aide inscription (audit 2026-09-07) ---------- */
+
+  // Mapping des erreurs des callables createAccount/checkEmailUnique → clé i18n.
+  function signupErrorKey(err) {
+    if (err && err.__emailTaken) return 'register.emailTaken';
+    var code = (err && err.code) ? String(err.code).replace('functions/', '') : '';
+    var msg = (err && err.message) ? String(err.message) : '';
+    if (code === 'already-exists' || msg.indexOf('email-in-use') >= 0 || msg.indexOf('EMAIL_EXISTS') >= 0) return 'register.emailTaken';
+    if (code === 'resource-exhausted' || msg.indexOf('rate-limit') >= 0) return 'register.error.rateLimited';
+    if (code === 'invalid-argument' || msg.indexOf('weak-password') >= 0 || msg.indexOf('invalid-email') >= 0) return 'register.error.invalidInput';
+    return 'register.error';
+  }
+
+  function loginErrorKey(err) {
+    var code = (err && err.code) ? String(err.code).replace('auth/', '') : '';
+    var msg = (err && err.message) ? String(err.message) : '';
+    if (code === 'too-many-requests' || msg.indexOf('too-many-requests') >= 0) return 'login.error.rateLimited';
+    return 'login.error';
+  }
+
+
   /* ---------- Register: 3-step wizard ---------- */
   var registerState = { step: 1, interfaceLang: null, academy: null };
 
@@ -1749,6 +1770,7 @@
   }
 
   function bindRegister() {
+    var submitting = false;   // anti double-clic / race condition
     document.querySelectorAll('[data-choice-lang]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         registerState.interfaceLang = btn.getAttribute('data-choice-lang');
@@ -1773,30 +1795,68 @@
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!window.ELA_FIREBASE_READY) return;
+        if (submitting) return;   // anti double-clic / race condition
         var name = document.getElementById('reg-name').value.trim();
-        var email = document.getElementById('reg-email').value.trim();
+        var email = document.getElementById('reg-email').value.trim().toLowerCase();
         var password = document.getElementById('reg-password').value;
         var referral = document.getElementById('reg-referral').value.trim();
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(function (cred) {
-            return firebase.firestore().collection('users').doc(cred.user.uid).set({
+        var errEl = document.getElementById('reg-error');
+
+        // --- Validation email stricte (regex) ---
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          errEl.textContent = t('register.error.invalidInput');
+          errEl.classList.add('show');
+          return;
+        }
+        // --- Validation mot de passe (8+ au lieu du minlength HTML seul) ---
+        if (!password || password.length < 8) {
+          errEl.textContent = t('register.error.invalidInput');
+          errEl.classList.add('show');
+          return;
+        }
+        errEl.classList.remove('show');
+
+        submitting = true;
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+
+        // --- Approche hybride (audit inscription) : pré-check d'unicité serveur
+        //     (checkEmailUnique) puis création 100 % serveur via createAccount
+        //     (transaction atomique + compensation + rate limit 3/min/IP).
+        //     Le client ne fait PLUS createUserWithEmailAndPassword ni d'écriture
+        //     Firestore directe (firestore.rules interdit désormais users/*).
+        callable('checkEmailUnique')({ email: email })
+          .then(function (res) {
+            if (res && res.data && res.data.exists) throw { __emailTaken: true };
+            return callable('createAccount')({
               displayName: name,
               email: email,
-              role: 'student',
-              interfaceLang: registerState.interfaceLang || ELA_I18N.getLang(),
-              academies: [registerState.academy || 'german'],
+              password: password,
+              referral: referral,
               academy: registerState.academy || 'german',
-              referralCode: 'ELA-' + cred.user.uid.slice(0, 6).toUpperCase(),
-              referralCodeUsed: referral || null,
-              referralCredit: 0,
-              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+              interfaceLang: registerState.interfaceLang || ELA_I18N.getLang()
             });
           })
           .then(function () {
+            // createAccount passe par l'Admin SDK → aucune session client ;
+            // on signe ensuite localement avec les identifiants saisis.
+            return firebase.auth().signInWithEmailAndPassword(email, password);
+          })
+          .then(function () {
+            submitting = false;
+            if (btn) btn.disabled = false;
             if (window.ELAMarketing) window.ELAMarketing.track('registration', { academy: registerState.academy || 'german' });
             alert(t('register.success')); window.location.hash = '#/dashboard';
           })
-          .catch(function () { document.getElementById('reg-error').classList.add('show'); });
+          .catch(function (err) {
+            submitting = false;
+            if (btn) btn.disabled = false;
+            var el = document.getElementById('reg-error');
+            if (el) {
+              el.textContent = t(signupErrorKey(err));
+              el.classList.add('show');
+            }
+          });
       });
     }
   }
@@ -1822,11 +1882,32 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!window.ELA_FIREBASE_READY) return;
-      var email = document.getElementById('login-email').value.trim();
+      var email = document.getElementById('login-email').value.trim().toLowerCase();
       var password = document.getElementById('login-password').value;
+      var errorEl = document.getElementById('login-error');
+      var btn = form.querySelector('button[type="submit"]');
+      if (errorEl) errorEl.classList.remove('show');
+      if (btn) btn.disabled = true;
+
       firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(function () { window.location.hash = '#/dashboard'; })
-        .catch(function () { document.getElementById('login-error').classList.add('show'); });
+        .then(function () {
+          // Cohérence auth ↔ users : ensureProfile (serveur) répare un doc
+          // manquant (orphelin hérité) ou normalise l'email stocké. Jamais
+          // bloquant pour la navigation en cas d'échec.
+          return callable('ensureProfile')({}).then(function () {
+            window.location.hash = '#/dashboard';
+          }).catch(function (err2) {
+            if (window.console) console.warn('ensureProfile non-bloquant :', err2);
+            window.location.hash = '#/dashboard';
+          });
+        })
+        .catch(function (err) {
+          if (btn) btn.disabled = false;
+          if (errorEl) {
+            errorEl.textContent = t(loginErrorKey(err));
+            errorEl.classList.add('show');
+          }
+        });
     });
     afterRender('login');
   }
@@ -1930,10 +2011,9 @@
     var container = document.querySelector('.nav-links');
     if (!container) return;
     var removeRoleLinks = function () {
-      var tEl = document.querySelector('.teacher-nav');
-      var aEl = document.querySelector('.admin-nav');
-      if (tEl) tEl.remove();
-      if (aEl) aEl.remove();
+      // querySelectorAll : supprime TOUS les doublons éventuels (garde anti-duplication).
+      document.querySelectorAll('.teacher-nav').forEach(function (el) { el.remove(); });
+      document.querySelectorAll('.admin-nav').forEach(function (el) { el.remove(); });
     };
     removeRoleLinks();
     if (!window.firebase || !firebase.auth || !firebase.firestore) return;

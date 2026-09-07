@@ -977,11 +977,11 @@ body {
 .admin-hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--forest); line-height: 1.1; margin: 0; }
 .admin-hero .admin-hero-sub { color: var(--muted); font-size: 1rem; margin-top: 0.3rem; }
 
-/* KPI cards */
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.2rem; }
+/* KPI cards — dashboard admin */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 32px; }
 .kpi-card {
-  background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm); padding: 1.2rem 1.3rem;
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 24px;
 }
 .kpi-card .dash-stat-value { font-size: clamp(2rem, 3vw, 2.6rem); }
 .kpi-card .dash-stat-hint { margin-top: 0.4rem; }
@@ -1225,6 +1225,52 @@ body {
 
 
 /* ============================================================
+   CTA HEADER — Bouton "Start free" style Francophone Academy
+   Dégradé corail/orange : #ff5f6d → #ffc371
+   ============================================================ */
+.btn-start-free,
+.header .btn-cta,
+.nav-cta,
+header .cta,
+.nav-links .start-free,
+.nav-right .btn-start-free {
+  background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%) !important;
+  color: #ffffff !important;
+  padding: 10px 24px !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 15px rgba(255, 95, 109, 0.4) !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  line-height: 1.4 !important;
+}
+
+.btn-start-free:hover,
+.header .btn-cta:hover,
+.nav-cta:hover,
+header .cta:hover,
+.nav-links .start-free:hover,
+.nav-right .btn-start-free:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(255, 95, 109, 0.55) !important;
+  filter: brightness(1.08) !important;
+}
+
+.btn-start-free:not(:hover),
+.nav-cta:not(:hover),
+.nav-right .btn-start-free:not(:hover) {
+  background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%) !important;
+}
+
+/* ============================================================
+   FREE TRIAL — Premium pro design system
+/* ============================================================
    FREE TRIAL — Premium pro design system
    Inspiré de francophone.ng : épuré, élégant, pas de cheap
    ============================================================ */
@@ -1394,3 +1440,159 @@ body {
 }
 .ft-newsletter-form input:focus { border-color: var(--emerald); }
 .ft-newsletter-msg { margin-top: 1rem; font-size: 0.9rem; min-height: 1.2rem; }
+
+/* ============================================================
+   ADMIN DASHBOARD — Layout sidebar fixe + contenu principal
+   Écran d'administration : sidebar verte (#064e3b) + cards arrondies
+   ============================================================ */
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #faf9f6;
+}
+
+.sidebar {
+  width: 260px;
+  background: #064e3b !important;
+  color: #ecfdf5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 24px;
+  font-size: 20px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: #ecfdf5;
+}
+
+.sidebar-nav {
+  padding: 16px 0;
+}
+
+.nav-section {
+  padding: 16px 24px 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.nav-item {
+  display: block;
+  padding: 10px 24px;
+  color: #ecfdf5;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+  background: rgba(255,255,255,0.1);
+  border-left-color: #6ee7b7;
+}
+
+.nav-item.active {
+  background: rgba(255,255,255,0.15);
+  border-left-color: #6ee7b7;
+  font-weight: 600;
+}
+
+.main-content {
+  margin-left: 260px;
+  padding: 32px;
+  flex: 1;
+  max-width: 1200px;
+}
+
+/* Cards dans le contexte dashboard admin */
+.dashboard-layout .card,
+.main-content .card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+  border: none;
+}
+
+/* Header dashboard */
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--forest);
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+/* Responsive sidebar admin */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 20px;
+  }
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   BUGFIX — Titres admin en sans-serif (pas de serif géant)
+   ============================================================ */
+h1, h2, h3, .dashboard-header h1, .section-title {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ============================================================
+   BUGFIX — Tableau users : espacement / modale / boutons
+   ============================================================ */
+/* Tableau users — espacement */
+.data-table.fa-style td { padding: 16px !important; white-space: nowrap; }
+.data-table.fa-style td:nth-child(1) { min-width: 220px; }
+.data-table.fa-style td:nth-child(2) { min-width: 100px; }
+.data-table.fa-style td:nth-child(3) { min-width: 120px; }
+.data-table.fa-style td:nth-child(4) { min-width: 80px; }
+.data-table.fa-style td:nth-child(5) { min-width: 90px; }
+.data-table.fa-style td:nth-child(6) { min-width: 80px; }
+
+/* Nom et email sur 2 lignes */
+.user-cell { display: flex; flex-direction: column; gap: 2px; }
+
+/* Modale — overlay fixe */
+.modal-overlay { position: fixed !important; inset: 0 !important; background: rgba(0,0,0,0.45) !important; display: none; align-items: center !important; justify-content: center !important; z-index: 1000 !important; }
+.modal-overlay.active { display: flex !important; }
+.manage-card { background: #fff; border-radius: 16px; padding: 32px; width: 90%; max-width: 440px; box-shadow: 0 25px 80px rgba(0,0,0,0.25); }
+
+/* Boutons modale espacés */
+.manage-actions { display: flex !important; gap: 10px !important; margin-top: 20px !important; justify-content: flex-end !important; flex-wrap: wrap; }

@@ -1,243 +1,172 @@
 /* ============================================================
-   ELA — teacher/pages/teacher.page.js
-   Page #/teacher-v2 : espace enseignant modulaire (forms
-   lesson/quiz/live + mes soumissions). Écritures 100 % via le
-   callable submitContent — plus aucune écriture Firestore directe.
+   ELA - teacher/pages/teacher.page.js  (REFONTE PRODUCTION)
+   Espace enseignant : sidebar + header + bannière académie
+   (branding) + KPIs + actions rapides (pages séparées) +
+   mes soumissions. Formulaire déplacé sur des pages séparées.
    ============================================================ */
 
-import { requireTeacher } from '../../core/auth.service.js';
+import { requireTeacher, getProfile } from '../../core/auth.service.js';
 import { afterRender, toast } from '../../core/dom.js';
-import { t } from '../../core/i18n-helpers.js';
-import { getProfile } from '../../core/auth.service.js';
 import { callFunction } from '../../core/api-client.js';
-import { LessonDraft } from '../models/lesson-draft.model.js';
-import { QuizDraft } from '../models/quiz-draft.model.js';
-import { LiveDraft } from '../models/live-draft.model.js';
-import { submitDraft, refreshSubmissions } from '../services/submission.service.js';
 import { getState, setState, reset } from '../services/teacher-state.js';
-import { quizQuestionCardHtml } from '../components/quiz-question-card.js';
-import { statusBadgeHtml } from '../components/status-badge.js';
+import { refreshSubmissions } from '../services/submission.service.js';
+import { formatDate, escapeHtml } from '../../core/dom.js';
+import { ACADEMIES, codeFromKey } from '../../../src/shared/config/academies.config.js';
 
-let quizDraft = new QuizDraft({ questions: [{}] });
+var TYPE_LABEL = { lesson: 'Leçon', quiz: 'Quiz', live: 'Live' };
 
-/** Point d'entrée de la route. */
+var ACADEMY_CARDS = {
+  FR: { flag: '🇫🇷', name: 'Francophone Academy', sub: 'Français · CECRL' },
+  DE: { flag: '🇩🇪', name: 'Germanophone Academy', sub: 'Deutsch · Goethe-Zertifikat' },
+  ZH: { flag: '🇨🇳', name: 'Sinophone Academy', sub: '中文 · HSK' },
+  EN: { flag: '🇬🇧', name: 'Anglophone Pro Academy', sub: 'English · IELTS' },
+  AR: { flag: '🇸🇦', name: 'Arabophone Academy', sub: 'العربية · ALPT' },
+  RU: { flag: '🇷🇺', name: 'Russophone Academy', sub: 'Русский · TORFL' }
+};
+
 export function renderTeacherPage() {
-  const app = document.getElementById('app');
+  var app = document.getElementById('app');
   if (!app) return;
-
   requireTeacher().then(function (guard) {
     if (!guard.ok) {
-      app.innerHTML = '<div class="container dashboard-section">' +
-        '<h2>' + t('teacher.title') + '</h2>' +
-        '<p class="muted">' + t('admin.forbidden') + '</p>' +
-        '<a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></div>';
+      app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
+        '<div class="empty-state"><div class="empty-icon">🔒</div>' +
+        '<p>Accès réservé aux enseignants et administrateurs.</p>' +
+        '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">Se connecter</a></p>' +
+        '</div></main></div>';
       afterRender('');
       return;
     }
     setState({ profile: guard.profile });
     paint();
     refreshSubmissions();
-    // Charger les stats enseignant
     callFunction('getTeacherStats').then(function (r) {
       setState({ teacherStats: r });
       paint();
-    }).catch(function () { /* silencieux */ });
+    }).catch(function (e) {
+      console.error('[teacher] getTeacherStats échoué :', e);
+      paint();
+    });
   });
 }
-
 function paint() {
-  const app = document.getElementById('app');
+  var app = document.getElementById('app');
   if (!app) return;
-  const s = getState();
-  const academy = s.profile ? s.profile.academy : null;
+  var s = getState();
+  var ac = academyInfo(s.profile);
+  var stats = s.teacherStats && s.teacherStats.stats;
+  var recent = (s.teacherStats && s.teacherStats.recent) || [];
+
+  var kpiCourses = stats ? (stats.approved || 0) : '—';
+  var kpiPending = stats ? (stats.pending || 0) : '—';
+  var kpiLive = stats ? (stats.byType && stats.byType.live || 0) : '—';
+
+  /* --- Progression réelle de l'enseignant (getTeacherStats) --- */
+  var kpiTotal = stats ? (stats.total || 0) : 0;
+  var kpiApproved = stats ? (stats.approved || 0) : 0;
+  var kpiProgress = kpiTotal ? Math.round((kpiApproved / kpiTotal) * 100) : 0;
+  var kpiProgressLabel = kpiTotal
+    ? (kpiApproved + ' approuvés / ' + kpiTotal)
+    : 'Aucune soumission';
+  var teacherLevel = (s.profile && s.profile.level) || 'A1';
+  var teacherLevelName = levelNameFor(teacherLevel, s.profile);
+
+  var subRows = recent.map(function (r) {
+    return '<tr><td>' + escapeHtml(r.title) + '</td>' +
+      '<td>' + (TYPE_LABEL[r.type] || r.type) + '</td>' +
+      '<td>' + (r.createdAt ? formatDate(r.createdAt) : '—') + '</td>' +
+      '<td>' + statusBadge(r.status) + '</td></tr>';
+  }).join('');
+
+  var subTable = '<div class="table-responsive"><table class="data-table" id="teacher-submissions-table">' +
+    '<thead><tr><th>Contenu</th><th>Type</th><th>Date</th><th>Statut</th></tr></thead>' +
+    '<tbody>' + subRows + '</tbody></table></div>';
+  var subEmpty = '<div class="empty-state" id="teacher-submissions-empty">' +
+    '<div class="empty-icon">📭</div>' +
+    '<p>Aucune soumission pour le moment.</p>' +
+    '<p class="empty-sub">Commencez par créer votre première leçon !</p></div>';
 
   app.innerHTML =
-    '<div class="container dashboard-section teacher-page">' +
-      '<h2>' + t('teacher.title') + '</h2>' +
-      '<p class="muted">' + t('teacher.academy') + ' : <strong>' + (academy || '—') + '</strong></p>' +
-      teacherStatsHtml() +
-      lessonFormHtml() +
-      quizFormHtml() +
-      liveFormHtml() +
-      '<h3>' + t('teacher.myContent') + '</h3>' +
-      (s.contentLoading
-        ? '<div class="skeleton" style="height:100px"></div>'
-        : myContentHtml(s.submissions)) +
+    '<div class="dashboard-layout">' +
+      '<aside class="sidebar">' +
+        '<div class="sidebar-brand">ELA Enseignant</div>' +
+        '<nav class="sidebar-nav">' +
+          '<a href="#/teacher" class="nav-item active">🏠 Tableau de bord</a>' +
+          '<div class="nav-section">Contenu</div>' +
+          '<a href="#/teacher/courses" class="nav-item">📚 Mes cours</a>' +
+          '<a href="#/teacher/quizzes" class="nav-item">📝 Mes quiz</a>' +
+          '<a href="#/teacher/live" class="nav-item">🔴 Mes classes Live</a>' +
+          '<div class="nav-section">Gestion</div>' +
+          '<a href="#/teacher/students" class="nav-item">👥 Mes étudiants</a>' +
+          '<a href="#/teacher/stats" class="nav-item">📊 Statistiques</a>' +
+          '<div class="nav-section">Compte</div>' +
+          '<a href="#/teacher/profile" class="nav-item">⚙️ Mon profil</a>' +
+        '</nav>' +
+      '</aside>' +
+      '<main class="main-content">' +
+        '<header class="dashboard-header"><h1>Bonjour, <span id="teacher-name">' +
+          escapeHtml((s.profile && (s.profile.displayName || 'Enseignant')) || 'Enseignant') + '</span> 👋</h1>' +
+          '<p>Bienvenue dans votre espace enseignant.</p></header>' +
+        '<div class="card academy-banner">' +
+          '<div class="academy-banner-flag">' + ac.flag + '</div>' +
+          '<div class="academy-banner-info"><h2>' + ac.name + '</h2>' +
+          '<p id="teacher-academy-sub">' + ac.sub + '</p></div>' +
+        '</div>' +
+        '<section class="kpi-grid">' +
+          kpiCard('📚 Cours publiés', kpiCourses) +
+          kpiCard('⏳ En attente', kpiPending) +
+          kpiCard('👥 Élèves', '—') +
+          kpiCard('🔴 Classes Live', kpiLive) +
+        '</section>' +
+        '<section class="section-title">Mes statistiques</section>' +
+        '<div class="kpi-grid">' +
+          kpiCard('📈 Progression globale', kpiProgress + '%', kpiProgressLabel) +
+          kpiCard('✅ Contenus approuvés', kpiApproved) +
+          kpiCard('📊 Soumissions totales', kpiTotal) +
+          kpiCard('🎯 Niveau actuel', teacherLevel, teacherLevelName) +
+        '</div>' +
+        '<section class="section-title">Actions rapides</section>' +
+        '<div class="action-bar">' +
+          '<a class="btn-primary" href="#/teacher/lesson/new">+ Créer une leçon</a>' +
+          '<a class="btn-primary" href="#/teacher/quiz/new">+ Créer un quiz</a>' +
+          '<a class="btn-primary" href="#/teacher/live/new">+ Créer une classe Live</a>' +
+          '<a class="btn-secondary" href="#/teacher/courses">📚 Voir mes cours</a>' +
+        '</div>' +
+        '<section class="section-title">Mes soumissions</section>' +
+        '<div class="card">' + (recent.length ? subTable : subEmpty) + '</div>' +
+      '</main>' +
     '</div>';
 
-  bindTeacherEvents(app);
   afterRender('teacher');
 }
-
-/** Statistiques enseignant (dashboard cards) */
-function teacherStatsHtml() {
-  const s = getState();
-  const stats = s.teacherStats && s.teacherStats.stats;
-  if (!stats) return '';
-
-  return '<div class="dashboard-section" style="margin-bottom:1.5rem">' +
-    '<h3>' + t('teacher.myStats', 'My Statistics') + '</h3>' +
-    '<div class="kpi-grid">' +
-      '<div class="kpi-card"><span class="kpi-label">' + t('teacher.totalSubmissions', 'Total') + '</span>' +
-        '<strong class="kpi-value">' + stats.total + '</strong></div>' +
-      '<div class="kpi-card"><span class="kpi-label" style="color:var(--gold)">' + t('teacher.pending', 'Pending') + '</span>' +
-        '<strong class="kpi-value">' + (stats.pending || 0) + '</strong></div>' +
-      '<div class="kpi-card"><span class="kpi-label" style="color:var(--emerald)">' + t('teacher.approved', 'Approved') + '</span>' +
-        '<strong class="kpi-value">' + (stats.approved || 0) + '</strong></div>' +
-      '<div class="kpi-card"><span class="kpi-label" style="color:var(--red,#b3261e)">' + t('teacher.rejected', 'Rejected') + '</span>' +
-        '<strong class="kpi-value">' + (stats.rejected || 0) + '</strong></div>' +
-    '</div>' +
-    '<p class="muted" style="margin-top:0.8rem;font-size:0.85rem">' +
-      (stats.byType ? (
-        (stats.byType.lesson || 0) + ' lessons · ' +
-        (stats.byType.quiz || 0) + ' quizzes · ' +
-        (stats.byType.live || 0) + ' live classes'
-      ) : '') +
-    '</p>' +
-  '</div>';
+function kpiCard(label, value, delta) {
+  return '<div class="kpi-card"><span class="kpi-label">' + label + '</span>' +
+    '<div class="kpi-value">' + value + '</div>' +
+    '<div class="kpi-delta">' + (delta || '—') + '</div></div>';
 }
 
-function fieldError(name) {
-  const s = getState();
-  const err = s.formErrors && s.formErrors[name];
-  return err ? '<p class="form-error">' + t(err, err) + '</p>' : '';
+/** Nom lisible du niveau (Beginner / Intermediate…) depuis la config académie. */
+function levelNameFor(level, profile) {
+  var key = profile && profile.academy;
+  var code = codeFromKey(key) || String(key || '').toUpperCase();
+  var a = ACADEMIES[code];
+  if (a && a.levelNames && a.levelNames[level]) return a.levelNames[level];
+  return level === 'A1' ? 'Beginner' : '—';
 }
 
-function lessonFormHtml() {
-  return '<section class="dashboard-section"><h3>' + t('teacher.newLesson') + '</h3>' +
-    '<input type="text" id="tl-title" class="input" placeholder="' + t('teacher.lessonTitle') + '">' +
-    fieldError('title') +
-    '<input type="text" id="tl-desc" class="input" placeholder="' + t('teacher.lessonDesc') + '">' +
-    '<textarea id="tl-content" class="input" rows="6" placeholder="' + t('teacher.lessonContent') + '"></textarea>' +
-    fieldError('content') +
-    '<select id="tl-level" class="input">' +
-      ['beginner', 'intermediate', 'advanced'].map(function (l) {
-        return '<option value="' + l + '">' + t('teacher.level.' + l, l) + '</option>';
-      }).join('') +
-    '</select>' +
-    fieldError('level') +
-    '<button class="btn btn-solid" id="tl-submit">' + t('teacher.submit') + '</button>' +
-  '</section>';
+function academyInfo(profile) {
+  var key = profile && profile.academy;
+  var code = (codeFromKey(key) || String(key || '').toUpperCase());
+  var ac = ACADEMY_CARDS[code] || null;
+  if (ac) return ac;
+  // Fallback : config branding complète via ACADEMIES (sinon neutre).
+  var a2 = ACADEMIES[code];
+  if (a2) return { flag: a2.flag, name: a2.label, sub: a2.native + ' · ' + a2.certification };
+  return { flag: '🌍', name: 'Academy', sub: 'E-Learn Language Academy' };
 }
 
-function quizFormHtml() {
-  const cards = quizDraft.questions.map(function (q, i) {
-    return quizQuestionCardHtml(q, i, quizDraft.questions.length > 1);
-  }).join('');
-  return '<section class="dashboard-section"><h3>' + t('teacher.newQuiz') + '</h3>' +
-    '<input type="text" id="tq-title" class="input" placeholder="' + t('teacher.quizTitle') + '">' +
-    '<div id="tq-questions">' + cards + '</div>' +
-    '<button type="button" class="btn btn-ghost btn-sm" id="tq-add-question">+ ' + t('teacher.addQuestion') + '</button>' +
-    '<button class="btn btn-solid" id="tq-submit">' + t('teacher.submit') + '</button>' +
-  '</section>';
+function statusBadge(status) {
+  var map = { pending: ['badge-wait', 'En attente'], approved: ['badge-ok', 'Approuvé'], rejected: ['badge-ko', 'Rejeté'] };
+  var m = map[status] || ['badge-muted', status || '—'];
+  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
 }
-
-function liveFormHtml() {
-  return '<section class="dashboard-section"><h3>' + t('teacher.newLive') + '</h3>' +
-    '<input type="text" id="tv-title" class="input" placeholder="' + t('teacher.liveTitle') + '">' +
-    fieldError('title') +
-    '<input type="datetime-local" id="tv-date" class="input">' +
-    fieldError('datetime') +
-    '<input type="url" id="tv-link" class="input" placeholder="' + t('teacher.liveLink') + '">' +
-    fieldError('meetingLink') +
-    '<button class="btn btn-solid" id="tv-submit">' + t('teacher.submit') + '</button>' +
-  '</section>';
-}
-
-function myContentHtml(submissions) {
-  if (!submissions || !submissions.length) return '<p class="muted">' + t('teacher.noContent') + '</p>';
-  return '<table class="dash-table"><thead><tr>' +
-    '<th>' + t('admin.title') + '</th><th>' + t('teacher.type.' + 'lesson') + '</th>' +
-    '<th>' + t('admin.date') + '</th><th>' + t('admin.status') + '</th>' +
-    '</tr></thead><tbody>' +
-    submissions.map(function (sub) {
-      return '<tr><td>' + sub.title + '</td>' +
-        '<td>' + t('teacher.type.' + sub.type, sub.type) + '</td>' +
-        '<td>' + new Date(sub.createdAt || 0).toLocaleDateString() + '</td>' +
-        '<td>' + statusBadgeHtml(sub) + '</td></tr>';
-    }).join('') + '</tbody></table>';
-}
-
-/* ---------- Bindings ---------- */
-
-function bindTeacherEvents(app) {
-  // Leçon
-  const tl = document.getElementById('tl-submit');
-  if (tl) tl.addEventListener('click', function () {
-    const draft = LessonDraft.fromForm({
-      title: val('tl-title'), description: val('tl-desc'),
-      content: val('tl-content'), level: val('tl-level')
-    });
-    submitWithFeedback(draft, 'lesson');
-  });
-
-  // Quizz (collecte dynamique des questions depuis le DOM)
-  const addQ = document.getElementById('tq-add-question');
-  if (addQ) addQ.addEventListener('click', function () {
-    collectQuizFromDom();
-    quizDraft.addQuestion({});
-    repaintQuizQuestions();
-  });
-
-  const tq = document.getElementById('tq-submit');
-  if (tq) tq.addEventListener('click', function () {
-    collectQuizFromDom();
-    quizDraft.title = val('tq-title');
-    submitWithFeedback(quizDraft, 'quiz');
-  });
-
-  // Live
-  const tv = document.getElementById('tv-submit');
-  if (tv) tv.addEventListener('click', function () {
-    const draft = LiveDraft.fromForm({
-      title: val('tv-title'), datetime: val('tv-date'), meetingLink: val('tv-link')
-    });
-    submitWithFeedback(draft, 'live');
-  });
-}
-
-function repaintQuizQuestions() {
-  const host = document.getElementById('tq-questions');
-  if (host) host.innerHTML = quizDraft.questions.map(function (q, i) {
-    return quizQuestionCardHtml(q, i, quizDraft.questions.length > 1);
-  }).join('');
-}
-
-/** Lit les champs data-quiz-* du DOM dans quizDraft. */
-function collectQuizFromDom() {
-  const titleEl = document.getElementById('tq-title');
-  if (titleEl) quizDraft.title = titleEl.value;
-  quizDraft.questions.forEach(function (q, i) {
-    const textEl = document.querySelector('[data-quiz-text="' + i + '"]');
-    if (textEl) q.text = textEl.value;
-    for (let oi = 0; oi < 4; oi++) {
-      const optEl = document.querySelector('[data-quiz-option="' + i + '"][data-oi="' + oi + '"]');
-      if (optEl) q.options[oi] = optEl.value;
-    }
-    const correctEl = document.querySelector('[data-quiz-correct="' + i + '"]:checked');
-    if (correctEl) q.correctIndex = Number(correctEl.value);
-  });
-}
-
-/** Soumet puis affiche le résultat (toast + refresh liste). */
-function submitWithFeedback(draft, type) {
-  submitDraft(draft, type).then(function (result) {
-    if (!result.ok) {
-      const firstError = result.errors
-        ? (Array.isArray(result.errors) ? result.errors[0] : Object.keys(result.errors).map(function (k) { return result.errors[k]; })[0])
-        : null;
-      toast(firstError ? t(firstError, firstError) : t('teacher.error'), 'error');
-      paint(); // réaffiche les erreurs de champ
-      return;
-    }
-    toast(t('teacher.submitted'), 'success');
-    quizDraft = new QuizDraft({ questions: [{}] });
-    paint();
-  });
-}
-
-function val(id) {
-  const el = document.getElementById(id);
-  return el ? el.value : '';
-}
-

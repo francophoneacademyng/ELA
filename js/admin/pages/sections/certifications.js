@@ -69,9 +69,16 @@ export function loadCertifications(append) {
     certState.items = append ? certState.items.concat(res.items || []) : (res.items || []);
     certState.nextCursor = (res && res.nextCursor) || null;
     renderTable();
-  }).catch(function () {
+  }).catch(function (err) {
     certState.loading = false;
-    table.innerHTML = '<p class="muted" style="font-size:0.85rem">' + t('admin.certs.loadError') + '</p>';
+    // Erreur réseau/permissions : état calme avec réessai (pas de ⚠️).
+    table.innerHTML =
+      '<div class="empty-state"><div class="empty-icon">📡</div>' +
+      '<h3>Certificats momentanément indisponibles</h3>' +
+      '<p>Le service met plus de temps que prévu à répondre.</p>' +
+      '<button class="btn btn-outline btn-sm" id="ela-cert-retry">🔄 Réessayer</button></div>';
+    const retry = document.getElementById('ela-cert-retry');
+    if (retry) retry.addEventListener('click', function () { loadCertifications(false); });
   });
 }
 function renderTable() {

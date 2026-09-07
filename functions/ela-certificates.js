@@ -20,7 +20,12 @@ const crypto = require('crypto');
 const core = require('./ela-certificate-core.js');
 
 const REGION = 'africa-south1';
-const db = admin.firestore();
+// Firestore paresseux (fix timeout déploiement — voir index.js).
+const db = new Proxy({}, {
+  get: function (_t, prop) {
+    return admin.firestore()[prop];
+  }
+});
 
 /* ---------- Helpers ---------- */
 
