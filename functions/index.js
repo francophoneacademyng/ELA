@@ -128,8 +128,11 @@ const auth = require('./auth');
 const live = require('./live');
 const adm = require('./admin');
 const certificate = require('./certificate');
-const teacher = require('./teacher');
-const elaCert = require('./ela-certificates');
+// TODO: Restaurer quand le refactor certificats/curriculum sera terminé.
+// (fichiers supprimés encore référencés : ela-certificate-core.js, ela-pdf.js,
+// curriculum.js, curriculum-quizzes.js, seed-a1/* — via teacher/ela-certificates)
+// const teacher = require('./teacher');
+// const elaCert = require('./ela-certificates');
 
 exports.healthCheck = core.healthCheck;
 exports.learningAssistant = core.learningAssistant;
@@ -173,8 +176,10 @@ exports.getInvoiceList = mgmt.getInvoiceList;
 exports.getWhatsAppLogs = mgmt.getWhatsAppLogs;
 
 exports.generateCertificate = certificate.generateCertificate;
-exports.listELACertificates = elaCert.listELACertificates;
-exports.revokeELACertificate = elaCert.revokeELACertificate;
+// TODO: Restaurer quand le refactor certificats/curriculum sera terminé.
+// (exports portés par teacher.js / ela-certificates.js → fichiers supprimés)
+// exports.listELACertificates = elaCert.listELACertificates;
+// exports.revokeELACertificate = elaCert.revokeELACertificate;
 
-exports.getTeacherStats = teacher.getTeacherStats;
+// exports.getTeacherStats = teacher.getTeacherStats;
 
