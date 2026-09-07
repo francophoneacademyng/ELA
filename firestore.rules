@@ -45,8 +45,12 @@ service cloud.firestore {
     }
 
     match /users/{uid} {
-      allow create: if isSignedIn()
-                    && request.auth.uid == uid;
+      // Audit inscription (2026-09-07) : la création d'un compte passe
+      // EXCLUSIVEMENT par les Cloud Functions createAccount/ensureProfile
+      // (Admin SDK → bypass des règles). Le client ne peut plus créer son
+      // propre document → plus d'escalade possible vers role 'admin'/'teacher'
+      // ni de champ forgé (referralCredit, firstPaymentDone, …).
+      allow create: if false;
 
       allow read: if isAdmin();
       allow read: if isSignedIn()
@@ -59,6 +63,19 @@ service cloud.firestore {
                     && request.resource.data.role == resource.data.role;
 
       allow delete: if false;
+    }
+
+    // Index d'unicité des emails (créé par createAccount, Admin SDK).
+    // Jamais lisible/écrivable depuis le client (anti-énumération) ;
+    // l'unicité exposée passe par la callable checkEmailUnique (rate-limitée).
+    match /emails/{email} {
+      allow read, write: if false; // Cloud Functions uniquement
+    }
+
+    // Rate limiting inscriptions : hash sha256(IP) → jamais d'IP en clair,
+    // jamais lisible/écrivable par le client.
+    match /signupAttempts/{hash} {
+      allow read, write: if false; // Cloud Functions uniquement
     }
 
     match /subscriptions/{uid} {
