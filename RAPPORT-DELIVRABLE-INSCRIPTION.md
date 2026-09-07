@@ -644,3 +644,67 @@ function serverTimestamp() {
 - `functions\ela-pdf.js`, `functions\curriculum.js`, `functions\curriculum-quizzes.js`, `functions\seed-a1\*.json` (absents — requis à l'exécution par certaines fonctions)
 
 Conséquence : `firebase deploy --only functions` (même ciblé sur les 3 callables) échouera à la **découverte** tant que `ela-certificate-core.js` n'est pas restauré (ou les requires retirés). Remédiation possible (à valider) : restaurer depuis `HEAD` via `git show HEAD:functions/ela-certificate-core.js > functions/ela-certificate-core.js` (+ `ela-pdf.js`, `curriculum.js`, `curriculum-quizzes.js`, données `seed-a1/`).
+
+---
+
+## 14. FERMETURE — Commits Git effectués (correspond aux sections 12-16 demandées)
+
+> Les sections 12 (GO validation) et 13 (smoke-test) existent déjà plus haut ; les rubriques demandées sont donc numérotées 14-18 ci-dessous, dans le même ordre que ta demande.
+
+### 14.1 Commit Git effectué (hash) — demandé « section 12 »
+
+Branche `master`. 4 commits locaux :
+
+| Hash | Message |
+|---|---|
+| `01a6d73` | `v2.9: Audit inscription sécurisée — CF createAccount/checkEmailUnique/ensureProfile, rules, rate limiting, normalisation, i18n fr/en/ar` (106 fichiers) |
+| `f559973` | `feat(functions): script one-shot backfill emails/* pour comptes existants (idempotent, dry-run)` |
+| `2267872` | `fix(functions): commente les imports cassés du refactor certificats/curriculum (TODO restoration)` |
+| `19c532b` | `clean(rules): suppression du bloc userEmails obsolète` |
+
+⚠️ **Push non exécutable** : aucun remote git configuré (`git push origin master` → `fatal: 'origin' does not appear to be a git repository`). Pour pousser (à faire par toi) :
+```powershell
+git remote add origin <URL_du_depot_ELA>
+git push -u origin master
+```
+
+### 14.2 Backfill emails/* créé — demandé « section 13 »
+
+- **Fichier** : `functions\backfill-emails.js` (script one-shot, **jamais déployé en CF**).
+- **Rôle** : itère `admin.auth().listUsers` (batchs de 1000), crée `emails/{email}` = `{uid, createdAt: serverTimestamp()}` pour chaque compte existant (email `trim().toLowerCase()`, regex), **skip si déjà présent** (idempotent), log créés/déjà présents/invalides/sans-email, option `--dry-run`.
+- **Test local** : `node -c functions\backfill-emails.js` ✅.
+- **Mode d'emploi** :
+  ```powershell
+  # Émulateur (aucun impact prod)
+  $env:FIRESTORE_EMULATOR_HOST="127.0.0.1:8080"; $env:FIREBASE_AUTH_EMULATOR_HOST="127.0.0.1:9099"
+  node functions/backfill-emails.js --dry-run
+  # Production (credentials Admin requis : GOOGLE_APPLICATION_CREDENTIALS ou `gcloud auth application-default login`)
+  node functions/backfill-emails.js
+  ```
+
+### 14.3 Imports cassés commentés — demandé « section 14 »
+
+`functions\index.js` — commentés **définitivement** (`//`), avec commentaire `// TODO: Restaurer quand le refactor certificats/curriculum sera terminé.` :
+- requires : `teacher` (→ `ela-certificates.js` → `ela-certificate-core.js`/`ela-pdf.js` absents) et `ela-certificates`.
+- exports associés : `listELACertificates`, `revokeELACertificate`, `getTeacherStats`.
+- Fichiers supprimés concernés (à restaurer au refactor) : `ela-certificate-core.js`, `ela-pdf.js`, `curriculum.js`, `curriculum-quizzes.js`, `seed-a1/*`.
+
+Vérifié : `node -c functions\index.js` ✅, **`require('./index.js')` LOAD OK**, et exports actifs :
+`createAccount`/`checkEmailUnique`/`ensureProfile` = `function` ✅. Les autres exports (core/payment/auth/live/admin/management/certificate) restent actifs.
+
+### 14.4 userEmails nettoyé des rules — demandé « section 15 »
+
+- Bloc `match /userEmails/{email} { ... }` **supprimé** de `firestore.rules` (remplacé par `emails/*` serveur-only).
+- Équilibre des accolades validé par compilation réelle : `firebase deploy --only firestore:rules` → « rules file firestore.rules compiled successfully ».
+- Backup conservé : `firestore.rules.pre-go.bak` (+ `firestore.rules.inscription-audit.bak`, `firestore.rules.bak`).
+
+### 14.5 Checklist test F12 live (pour demain) — demandé « section 16 »
+
+Sur https://ela-academy-7f868.web.app (ou https://elaacademy.ng) :
+1. **Inscription réelle** (wizard #/register) → doc `users/{uid}` + `emails/{email}` créés, redirection dashboard.
+2. **Doublon** : réinscrire le même email en casse différente → message « email déjà utilisé » (`register.emailTaken`), aucune création.
+3. **Rate limit** : 4e tentative d'inscription en 1 minute → « trop de tentatives » (`register.error.rateLimited`).
+4. **Login orphelin** : se connecter à un ancien compte sans doc `users` (si existant) → doc recréé par `ensureProfile` (email lowercased).
+5. **Free trial** : modal Create Free Account → mot de passe 8+, inscription OK, déblocage des 24 leçons.
+6. Vérifier console F12 : aucune erreur réseau (fonctions ciblées `africa-south1`).
+7. (Si besoin) lancer le backfill de la section 14.2, puis à terme finaliser le refactor certificats/curriculum et restaurer les TODO de la section 14.3.
