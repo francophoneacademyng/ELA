@@ -2075,36 +2075,12 @@
         nav.classList.toggle('scrolled', window.scrollY > 8);
       }, { passive: true });
       var toggle = document.querySelector('.nav-toggle');
-
-      /* Mission ELA — fermeture automatique du menu mobile.
-         Retire la classe .open (le backdrop .nav-backdrop disparait
-         via CSS), re-synchronise aria-expanded et restaure le scroll. */
-      function closeMobileMenu() {
-        if (nav) nav.classList.remove('open');
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
-      }
-
       if (toggle) {
         toggle.addEventListener('click', function () {
           var open = nav.classList.toggle('open');
           toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
         });
       }
-
-      /* Fermeture au clic sur n'importe quel lien du drawer
-         (delegation : couvre aussi les liens injectes plus tard,
-         ex. teacher/admin ajoutes par updateTeacherNav). */
-      var links = document.querySelector('.nav-links');
-      if (links) {
-        links.addEventListener('click', function (ev) {
-          var t = ev.target;
-          if (t && t.closest && t.closest('a')) closeMobileMenu();
-        });
-      }
-
-      /* Fermeture au clic sur le backdrop sombre. */
-      var backdrop = document.querySelector('.nav-backdrop');
-      if (backdrop) backdrop.addEventListener('click', closeMobileMenu);
     }
 
     ELA_I18N.init().then(function () {
@@ -2114,69 +2090,4 @@
     });
     ELA_I18N.onChange(function () { route(); });
   });
-
-  /* ---------- Mission ELA — PWA : prompt d'installation ----------
-     Ecoute beforeinstallprompt, stocke l'evenement (window.deferredPrompt)
-     et affiche une banniere "Installer ELA sur votre telephone". */
-  var pwaBanner = null;
-
-  function ensurePwaBanner() {
-    if (pwaBanner) return pwaBanner;
-    pwaBanner = document.createElement('div');
-    pwaBanner.className = 'pwa-install-banner hidden';
-    pwaBanner.setAttribute('role', 'dialog');
-    pwaBanner.setAttribute('aria-label', 'Installer ELA');
-    pwaBanner.innerHTML = '' +
-      '<div class="pwa-install-text">' +
-        '<strong>Installer ELA</strong>' +
-        '<span>Installer ELA sur votre téléphone pour y accéder à tout moment.</span>' +
-      '</div>' +
-      '<div class="pwa-install-actions">' +
-        '<button type="button" class="btn btn-sm btn-gold-vivid" data-pwa-install>Installer</button>' +
-        '<button type="button" class="pwa-install-close" data-pwa-close aria-label="Fermer">&times;</button>' +
-      '</div>';
-    document.body.appendChild(pwaBanner);
-
-    var installBtn = pwaBanner.querySelector('[data-pwa-install]');
-    if (installBtn) {
-      installBtn.addEventListener('click', function () {
-        var deferred = window.deferredPrompt;
-        if (!deferred) return;
-        deferred.prompt();
-        deferred.userChoice.then(function () {
-          window.deferredPrompt = null;
-          hidePwaBanner();
-        });
-      });
-    }
-    var closeBtn = pwaBanner.querySelector('[data-pwa-close]');
-    if (closeBtn) closeBtn.addEventListener('click', hidePwaBanner);
-    return pwaBanner;
-  }
-
-  function showPwaBanner() {
-    var b = ensurePwaBanner();
-    if (b) b.classList.remove('hidden');
-  }
-
-  function hidePwaBanner() {
-    if (pwaBanner) pwaBanner.classList.add('hidden');
-  }
-
-  function isStandalonePwa() {
-    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
-      || window.navigator.standalone === true;
-  }
-
-  if (!isStandalonePwa() && 'onbeforeinstallprompt' in window) {
-    window.addEventListener('beforeinstallprompt', function (e) {
-      e.preventDefault();
-      window.deferredPrompt = e;
-      showPwaBanner();
-    });
-    window.addEventListener('appinstalled', function () {
-      window.deferredPrompt = null;
-      hidePwaBanner();
-    });
-  }
 })();
