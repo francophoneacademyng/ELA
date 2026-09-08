@@ -33,7 +33,7 @@ export function renderStudentHub() {
     '<div class="dashboard-layout">' +
       '<main class="main-content" style="margin-left:0;max-width:100%">' +
         '<header class="dashboard-header">' +
-          '<h1>Bonjour, <span id="student-name">Apprenant</span> 👋</h1>' +
+          '<h1>Bonjour, <span id="student-name">Étudiant</span> 👋</h1>' +
           '<p>Continuez votre apprentissage. Vos académies actives sont récapitulées ci-dessous.</p>' +
         '</header>' +
         '<div id="student-kpis" class="kpi-grid">' +
@@ -64,10 +64,7 @@ export function renderStudentHub() {
       const progress = dash.progress || { completed: 0, total: 0 };
       const quizStats = dash.quizStats || { streak: 0 };
 
-      if (nameEl) {
-        nameEl.textContent = (userInfo && (userInfo.displayName || userInfo.name))
-          || (userInfo && userInfo.email ? userInfo.email.split('@')[0] : 'Apprenant');
-      }
+      if (nameEl && userInfo.displayName) nameEl.textContent = userInfo.displayName;
 
       const lessonsEl = document.getElementById('student-kpi-lessons');
       const streakEl = document.getElementById('student-kpi-streak');

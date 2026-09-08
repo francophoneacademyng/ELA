@@ -19,13 +19,7 @@
   <meta name="twitter:title" content="E-Learn Language Academy — One Academy. Five Languages.">
   <meta name="twitter:description" content="Learn German, Arabic, Mandarin, Russian or Professional English with real teachers, live classes and certificates.">
   <meta name="twitter:image" content="https://elaacademy.ng/assets/img/og-image.png">
-  <meta name="theme-color" content="#064e3b">
-  <!-- Mission ELA — PWA : manifest + metas d'installation mobile -->
-  <link rel="manifest" href="/manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" href="/icon-192.png">
+  <meta name="theme-color" content="#0B6B4F">
   <link rel="icon" type="image/svg+xml" href="assets/img/ela-logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,9 +64,6 @@
       <a href="#/register" class="btn btn-start-free" data-i18n="nav.cta">Start free</a>
     </div>
   </header>
-
-  <!-- Backdrop sombre du menu mobile (visible quand .nav est .open) -->
-  <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
   <!-- App root: pages are rendered here by js/app.js -->
   <main id="app" tabindex="-1"></main>

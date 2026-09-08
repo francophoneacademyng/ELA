@@ -747,11 +747,7 @@
       function buildDashboard(d) {
     var sub = d.subscription;
     var now = Date.now();
-    /* Mission ELA — saluer par le nom de l'utilisateur (jamais un
-       libelle generique du type "Academie"). */
-    var userData = d.user || {};
-    var greetingName = (userData && (userData.displayName || userData.name))
-      || (userData && userData.email ? userData.email.split('@')[0] : 'Apprenant');
+    var firstName = ((d.user && d.user.displayName) || '').split(' ')[0];
     var prog = d.progress || { completed: 0, total: 0 };
     var scores = d.bestQuizScores || [];
     var nxt = d.nextLiveClass;
@@ -771,7 +767,7 @@
     var heroCtaLabel = nextLesson ? t('dashboard.continue') : t('dashboard.goToCourses');
     var heroHtml = '<div class="dash-hero">' +
       '<div class="dash-hero-text">' +
-        '<h1 class="greeting">' + t('dashboard.hello') + ', <em>' + escapeHtml(greetingName) + '</em>!</h1>' +
+        '<h1 class="greeting">' + t('dashboard.hello') + (firstName ? ', <em>' + escapeHtml(firstName) + '</em>' : '') + '!</h1>' +
         '<p class="dash-hero-sub">' + t('dashboard.heroPhrase') + '</p>' +
         '<div class="dash-hero-next">' +
           '<span class="next-label">' + t('dashboard.nextStep') + '</span>' +
@@ -2060,13 +2056,6 @@
     if (window.ELA_FIREBASE_READY && window.firebase) {
       firebase.initializeApp(window.ELA_FIREBASE_CONFIG);
       firebase.auth().onAuthStateChanged(function () { updateTeacherNav(); });
-    }
-
-    /* Mission ELA — PWA : enregistrement du Service Worker au demarrage. */
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(function (err) {
-        if (window.console) console.warn('SW registration failed:', err);
-      });
     }
 
     var nav = document.querySelector('.nav');
