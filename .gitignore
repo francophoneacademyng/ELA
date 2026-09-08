@@ -8,3 +8,21 @@ firestore-debug.log
 firebase-debug.log
 ui-debug.log
 pubsub-debug.log
+# Secrets et credentials
+service-account.json
+service-account.json.json
+*.key
+*.pem
+
+# Logs contenant des secrets
+*.log
+deploy-*.log
+
+# Environnement
+.env
+.env.local
+.env.production
+
+# Firebase
+.firebase/
+firebase-debug.log
