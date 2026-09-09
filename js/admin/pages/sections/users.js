@@ -13,8 +13,8 @@ export function usersHtml(query) {
   const s = getState();
   const q = String(query || '');
   const rows = s.users.filter(function (u) { return u.matches(q); }).map(function (u) {
-    return '<tr><td>' + escapeHtml(u.displayName()) + '</td>' +
-      '<td>' + escapeHtml(u.email) + '</td>' +
+    return '<tr><td><span class="user-name">' + escapeHtml(u.displayName()) + '</span></td>' +
+      '<td><span class="user-email">' + escapeHtml(u.email) + '</span></td>' +
       '<td>' + roleBadgeHtml(u.role) + '</td>' +
       '<td>' + (u.academy ? escapeHtml(u.academy) : '—') + '</td>' +
       '<td>' + formatDate(u.createdAt) + '</td></tr>';

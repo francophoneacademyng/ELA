@@ -64,7 +64,7 @@ function bindVerifier(app) {
       out.innerHTML = '<div class="table-responsive"><table class="data-table">' +
         '<thead><tr><th>ID</th><th>Étudiant</th><th>Académie</th><th>Niveau</th><th>Statut</th></tr></thead>' +
         '<tbody><tr><td>' + escapeHtml(data.id || id) + '</td>' +
-        '<td>' + escapeHtml(data.studentName || data.studentId || '—') + '</td>' +
+        '<td><span class="user-name">' + escapeHtml(data.studentName || data.studentId || '—') + '</span></td>' +
         '<td>' + escapeHtml(data.academyCode || '—') + '</td>' +
         '<td>' + escapeHtml(data.level || data.cecrl || '—') + '</td>' +
         '<td>' + badge + '</td></tr></tbody></table></div>';

@@ -32,8 +32,8 @@ export function renderAdminTeachers() {
     renderContent: function (s) {
       const teachers = (s.users || []).filter(function (u) { return u.role === 'teacher'; });
       const rows = teachers.map(function (u) {
-        return '<tr><td>' + escapeHtml(u.displayName()) + '</td>' +
-          '<td>' + escapeHtml(u.email) + '</td>' +
+        return '<tr><td><span class="user-name">' + escapeHtml(u.displayName()) + '</span></td>' +
+          '<td><span class="user-email">' + escapeHtml(u.email) + '</span></td>' +
           '<td>' + (academyMap[u.academy] || escapeHtml(u.academy) || '—') + '</td>' +
           '<td>' + roleBadgeHtml(u.role) + '</td>' +
           '<td>' + formatDate(u.createdAt) + '</td></tr>';

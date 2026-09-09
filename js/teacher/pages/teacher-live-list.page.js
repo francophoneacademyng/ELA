@@ -44,7 +44,7 @@ function listInner() {
       '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/live/new">+ Programmer ma première classe</a></p></div>';
   }
   var rows = list.map(function (s) {
-    return '<tr><td>' + escapeHtml(s.title) + '</td>' +
+    return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
       '<td>' + (s.createdAt ? formatDate(s.createdAt) : '—') + '</td>' +
       '<td>' + (s.isApproved() ? '<span class="muted">Communiqué aux étudiants</span>'
         : '<span class="muted">Après validation</span>') + '</td>' +

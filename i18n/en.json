@@ -281,7 +281,7 @@
   "admin.submitted": "Submitted",
   "admin.questions": "questions",
   "admin.liveAt": "Scheduled",
-    "admin.seed": "Seed curriculum",
+  "admin.seed": "Seed curriculum",
   "admin.seeded": "Curriculum seeded:",
   "admin.seedTree": "Seed academy tree",
   "admin.seedTreeDone": "Tree seeded:",
@@ -517,5 +517,6 @@
   "admin.certs.issued": "Issued",
   "admin.certs.status": "Status",
   "admin.certs.reasonRequired": "A reason of at least 3 characters is required.",
-  "admin.certs.revokeError": "Revocation failed."
+  "admin.certs.revokeError": "Revocation failed.",
+  "meta.title": "E-Learn Language Academy — One Academy. Five Languages."
 }

@@ -281,7 +281,7 @@
   "admin.submitted": "تاريخ الإرسال",
   "admin.questions": "أسئلة",
   "admin.liveAt": "مقرر في",
-    "admin.seed": "توليد المنهج",
+  "admin.seed": "توليد المنهج",
   "admin.seeded": "تم توليد المنهج:",
   "admin.seedTree": "توليد شجرة الأكاديمية",
   "admin.seedTreeDone": "تم توليد الشجرة:",
@@ -501,7 +501,7 @@
   "dashboard.elaCertsVerify": "تحقق",
   "admin.certs.title": "الشهادات",
   "admin.certs.allAcademies": "كل الأكاديميات",
-  "admin.certs.francophone": "Francophone Academy",
+  "admin.certs.francophone": "الأكاديمية الفرنكوفونية",
   "admin.certs.allStatuses": "كل الحالات",
   "admin.certs.more": "المزيد",
   "admin.certs.revokeTitle": "إلغاء الشهادة",
@@ -517,5 +517,6 @@
   "admin.certs.issued": "تاريخ الإصدار",
   "admin.certs.status": "الحالة",
   "admin.certs.reasonRequired": "السبب إلزامي.",
-  "admin.certs.revokeError": "فشل الإلغاء."
+  "admin.certs.revokeError": "فشل الإلغاء.",
+  "meta.title": "أكاديمية إي-ليرن للغات — أكاديمية واحدة. خمس لغات."
 }

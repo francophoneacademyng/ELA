@@ -31,7 +31,7 @@ function layoutHtml(profile) {
     '<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem">' +
       '<div style="width:56px;height:56px;border-radius:50%;background:var(--forest);color:#fff;' +
         'display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700">' + initials + '</div>' +
-      '<div><strong>' + esc(p.displayName || 'Enseignant') + '</strong>' +
+      '<div><strong class="user-name">' + esc(p.displayName || 'Enseignant') + '</strong>' +
         '<p class="muted" style="margin:0">' + academyLabel + '</p></div>' +
     '</div>' +
     '<div style="margin-bottom:0.9rem">' +

@@ -95,9 +95,9 @@ function layoutHtml(queue) {
         ? '<button class="btn btn-solid btn-sm" data-approve="' + it.key() + '" style="margin-right:6px">Approuver</button>' +
           '<button class="btn btn-ghost btn-sm" data-reject="' + it.key() + '">Rejeter</button>'
         : '<span class="muted">—</span>';
-      return '<tr><td>' + escapeHtml(it.title) + '</td>' +
+      return '<tr><td><span class="user-name">' + escapeHtml(it.title) + '</span></td>' +
         '<td>' + (COL_TYPE[it.collection] || it.collection || '—') + '</td>' +
-        '<td>' + escapeHtml(it.teacherName || '—') + '</td>' +
+        '<td><span class="user-name">' + escapeHtml(it.teacherName || '—') + '</span></td>' +
         '<td>' + (it.submittedAt ? formatDate(it.submittedAt) : '—') + '</td>' +
         '<td>' + statut + '</td>' +
         '<td>' + actions + '</td></tr>';

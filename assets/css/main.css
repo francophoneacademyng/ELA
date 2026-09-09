@@ -4,6 +4,23 @@
    Type: Oranienbaum (display serif) · Archivo Black (brand) · Quattrocento Sans (body)
    ============================================================ */
 
+/* ============================================
+   ELA — RÈGLE : Aucun nom en texte dégradé
+   Les noms d'utilisateurs, élèves, enseignants,
+   titres de cours et identifiants ELA doivent
+   toujours être en texte plein.
+   ============================================ */
+.user-name, .student-name, .teacher-name,
+.instructor-name, .profile-name, .course-title,
+.ela-id, .learner-name, .id-ela {
+    color: #111827 !important;
+    font-weight: 600 !important;
+    -webkit-text-fill-color: initial !important;
+    background-clip: initial !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
 :root {
   --emerald: #0B6B4F;
   --emerald-deep: #095540;
@@ -1530,9 +1547,9 @@ header .cta:hover,
 
 .dashboard-header h1 {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
-  color: var(--forest);
+  color: #111827;
   margin: 0;
 }
 
@@ -1596,6 +1613,44 @@ h1, h2, h3, .dashboard-header h1, .section-title {
 
 /* Boutons modale espacés */
 .manage-actions { display: flex !important; gap: 10px !important; margin-top: 20px !important; justify-content: flex-end !important; flex-wrap: wrap; }
+
+/* ============================================================
+   ACCESSIBILITÉ (WCAG) — Contraste des textes d'identité.
+   RÈGLE D'OR : aucun nom dégradé. Tout nom d'élève, d'enseignant,
+   d'utilisateur ou titre de cours → #111827 · font-weight 600.
+   Interdiction de background-clip:text, linear-gradient sur du
+   texte, -webkit-text-fill-color: transparent, opacity < 1 ou
+   couleur claire (rgba(0,0,0,.x)) sur un nom.
+   Emails / dates / métadonnées secondaires → #6b7280.
+   ============================================================ */
+.dashboard-layout .user-name,
+.data-table .user-name,
+.content-card .user-name {
+  color: #111827 !important;
+  font-weight: 600 !important;
+  font-style: normal !important;
+  text-decoration: none !important;
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #111827 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+.dashboard-layout .user-email,
+.data-table .user-email {
+  color: #6b7280 !important;
+  font-weight: 400 !important;
+  font-size: 13px !important;
+}
+/* Identifiant ELA (colonne IDENTIFIANT) en texte plein lisible. */
+.dashboard-layout .id-ela {
+  color: #111827 !important;
+  font-weight: 600 !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #111827 !important;
+  filter: none !important;
+}
 
 /* ============================================================
    ===  BEGIN: MOBILE HARMONIZATION + PWA (ELA) ================
@@ -1818,3 +1873,43 @@ h1, h2, h3, .dashboard-header h1, .section-title {
 /* ============================================================
    ===  END: PWA INSTALL BANNER ================================
    ============================================================ */
+
+/* ============================================================
+   RTL � Arabe (dir="rtl")
+   Miroir des coquilles fixed-sidebar (admin / enseignant) et
+   s�curit� du header public. Les flexbox s'inversent d�j�
+   automatiquement ; on inverse ici les positions fixes & marges.
+   ============================================================ */
+[dir="rtl"] .sidebar {
+  left: auto;
+  right: 0;
+  border-left: none;
+  border-right: none;
+}
+[dir="rtl"] .main-content {
+  margin-left: 0;
+  margin-right: 260px;
+}
+[dir="rtl"] .nav-item {
+  border-left: none;
+  border-right: 3px solid transparent;
+}
+[dir="rtl"] .nav-item:hover,
+[dir="rtl"] .nav-item.active {
+  border-left: none;
+  border-right-color: #6ee7b7;
+}
+[dir="rtl"] .sidebar-brand,
+[dir="rtl"] .nav-item,
+[dir="rtl"] .nav-section {
+  text-align: right;
+}
+/* Ic�nes Font Awesome : ne pas inverser les fl�ches directionnelles */
+[dir="rtl"] .fa-arrow-right, [dir="rtl"] .fa-arrow-left {
+  transform: scaleX(-1);
+}
+@media (max-width: 768px) {
+  [dir="rtl"] .sidebar {
+    position: relative;
+  }
+}

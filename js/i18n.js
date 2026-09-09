@@ -29,6 +29,10 @@ window.ELA_I18N = (function () {
       var base = el.getAttribute('data-wa-base');
       if (dict[key] && base) el.setAttribute('href', base + '?text=' + encodeURIComponent(dict[key]));
     });
+    /* Titre de page + meta description localisés (clés meta.*). */
+    if (dict['meta.title']) document.title = dict['meta.title'];
+    var desc = document.querySelector('meta[name="description"]');
+    if (desc && dict['meta.description']) desc.setAttribute('content', dict['meta.description']);
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === current);
     });

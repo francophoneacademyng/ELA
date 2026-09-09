@@ -52,7 +52,7 @@ function layoutHtml(s) {
   var rows = (s.transactions || []).slice(0, 20).map(function (tx) {
     var u = (s.users || []).filter(function (x) { return x.id === tx.uid; })[0];
     return '<tr><td>' + formatDate(tx.createdAt) + '</td>' +
-      '<td>' + escapeHtml(u ? u.displayName() : (tx.uid || '—')) + '</td>' +
+      '<td><span class="user-name">' + escapeHtml(u ? u.displayName() : (tx.uid || '—')) + '</span></td>' +
       '<td>' + escapeHtml(tx.plan || '—') + '</td>' +
       '<td>' + fmtNaira(tx.amount) + '</td>' +
       '<td>' + statusBadgeHtml(tx.status) + '</td></tr>';

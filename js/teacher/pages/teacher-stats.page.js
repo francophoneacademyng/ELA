@@ -53,7 +53,7 @@ function paint(r) {
       '<p class="empty-sub">Créez votre premier contenu pour voir vos statistiques évoluer.</p></div>';
   } else {
     var rows = recent.map(function (x) {
-      return '<tr><td>' + escapeHtml(x.title) + '</td>' +
+      return '<tr><td><span class="user-name">' + escapeHtml(x.title) + '</span></td>' +
         '<td>' + (TYPE_LABEL[x.type] || x.type || '—') + '</td>' +
         '<td>' + (x.createdAt ? formatDate(x.createdAt) : '—') + '</td>' +
         '<td>' + statusBadge(x.status) + '</td></tr>';

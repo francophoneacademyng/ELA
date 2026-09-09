@@ -112,7 +112,7 @@ function rowsHtml(users) {
     return '<tr>' +
       '<td><div class="user-cell"><span class="user-name">' + escapeHtml(u.displayName()) + '</span>' +
         '<span class="user-email">' + escapeHtml(u.email || '—') + '</span></div></td>' +
-      '<td style="font-family:monospace;font-size:13px;color:#6b7280;">' + id + '</td>' +
+      '<td class="id-ela" style="font-family:monospace;font-size:13px;">' + id + '</td>' +
       '<td><span class="badge-plan ' + (PLAN_CLASS[plan] || 'badge-free') + '">' + (PLAN_LABEL[plan] || plan) + '</span></td>' +
       '<td style="color:#6b7280;font-size:13px;">' + (activeSub ? formatDate(s.endDate) : '—') + '</td>' +
       '<td style="color:#6b7280;font-size:13px;">' + joined + '</td>' +

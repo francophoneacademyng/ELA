@@ -40,8 +40,8 @@ function paint(r) {
     return;
   }
   var rows = students.map(function (st) {
-    return '<tr><td>' + esc(st.displayName || st.name || '—') + '</td>' +
-      '<td>' + esc(st.email || '—') + '</td>' +
+    return '<tr><td><span class="user-name">' + esc(st.displayName || st.name || '—') + '</span></td>' +
+      '<td><span class="user-email">' + esc(st.email || '—') + '</span></td>' +
       '<td>' + (typeof st.progress === 'number' ? st.progress + ' %' : '—') + '</td>' +
       '<td>' + (st.lastActive ? new Date(st.lastActive).toLocaleDateString('fr-FR') : '—') + '</td></tr>';
   }).join('');

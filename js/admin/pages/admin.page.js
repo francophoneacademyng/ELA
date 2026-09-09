@@ -107,9 +107,9 @@ function paint() {
   var loopback = s.queue || [];
   var valRows = loopback.map(function (it) {
     var key = it.key();
-    return '<tr><td>' + escapeHtml(it.title) + '</td>' +
+    return '<tr><td><span class="user-name">' + escapeHtml(it.title) + '</span></td>' +
       '<td>' + (COL_TYPE[it.collection] || it.collection) + '</td>' +
-      '<td>' + escapeHtml(it.teacherName || '—') + '</td>' +
+      '<td><span class="user-name">' + escapeHtml(it.teacherName || '—') + '</span></td>' +
       '<td>' + (it.submittedAt ? formatDate(it.submittedAt) : '—') + '</td>' +
       '<td><span class="badge badge-wait">En attente</span></td>' +
       '<td><button class="btn btn-solid btn-sm" data-approve="' + key + '" style="margin-right:6px">Approuver</button>' +

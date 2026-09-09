@@ -72,7 +72,7 @@ function paint() {
   var teacherLevelName = levelNameFor(teacherLevel, s.profile);
 
   var subRows = recent.map(function (r) {
-    return '<tr><td>' + escapeHtml(r.title) + '</td>' +
+    return '<tr><td><span class="user-name">' + escapeHtml(r.title) + '</span></td>' +
       '<td>' + (TYPE_LABEL[r.type] || r.type) + '</td>' +
       '<td>' + (r.createdAt ? formatDate(r.createdAt) : '—') + '</td>' +
       '<td>' + statusBadge(r.status) + '</td></tr>';

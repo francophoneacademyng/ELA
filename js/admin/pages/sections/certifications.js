@@ -98,7 +98,7 @@ function renderTable() {
         : '<span class="badge badge-gold">' + esc(c.status || '') + '</span>';
     return '<tr>' +
       '<td style="font-family:monospace;font-size:0.78rem">' + esc(c.id) + '</td>' +
-      '<td>' + esc(c.studentName) + '</td>' +
+      '<td><span class="user-name">' + esc(c.studentName) + '</span></td>' +
       '<td>' + esc(c.academyLabel || c.academyCode || '') + '</td>' +
       '<td>' + esc(c.cecrLevel || '') + '</td>' +
       '<td>' + esc(c.certificateType || '') + '</td>' +

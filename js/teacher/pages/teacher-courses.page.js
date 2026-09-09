@@ -70,7 +70,7 @@ function listInner() {
       '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/lesson/new">+ Créer mon premier cours</a></p></div>';
   } else {
     var rows = list.map(function (s) {
-      return '<tr><td>' + escapeHtml(s.title) + '</td>' +
+      return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
         '<td>' + (s.createdAt ? formatDate(s.createdAt) : '—') + '</td>' +
         '<td>' + statusBadge(s.status) + '</td>' +
         '<td>' + (s.isApproved() ? '<span class="muted">Publiée ✓</span>'

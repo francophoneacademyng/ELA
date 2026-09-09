@@ -66,7 +66,7 @@ function layoutHtml(s) {
       return '<tr>' +
         '<td style="font-family:monospace;font-size:13px;color:#6b7280;">' + escapeHtml(tx.id || '—') + '</td>' +
         '<td style="font-weight:600;">' + fmtNgn(tx.amount) + '</td>' +
-        '<td style="color:#6b7280;font-size:13px;">' + escapeHtml(u ? u.displayName() : (tx.uid || '—')) + '</td>' +
+        '<td><span class="user-name">' + escapeHtml(u ? u.displayName() : (tx.uid || '—')) + '</span></td>' +
         '<td><span class="badge-plan ' + statusCls + '">' + statusLabel + '</span></td>' +
         '<td style="color:#6b7280;font-size:13px;">' + formatDate(tx.createdAt) + '</td>' +
       '</tr>';

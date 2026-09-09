@@ -37,8 +37,8 @@ export function validationHtml() {
       '</div>'
       : '';
     return '<div class="content-card">' +
-      '<div class="content-card-head"><h4>' + escapeHtml(it.title) + '</h4>' + statusBadgeHtml('pending') + '</div>' +
-      '<p class="muted">' + escapeHtml(it.teacherName || '—') + ' · ' +
+      '<div class="content-card-head"><h4><span class="user-name">' + escapeHtml(it.title) + '</span></h4>' + statusBadgeHtml('pending') + '</div>' +
+      '<p class="muted"><span class="user-name">' + escapeHtml(it.teacherName || '—') + '</span> · ' +
         (it.academy ? escapeHtml(it.academy) : '—') + ' · ' + formatDateTime(it.submittedAt) + '</p>' +
       previewHtml(it) +
       '<div class="content-actions">' +
