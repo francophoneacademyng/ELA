@@ -1,13 +1,20 @@
-/* ============================================================
-   ELA — academies/base/pages/dashboard.factory.js
-   Fabrique du dashboard immersif d'une académie.
+﻿/* ============================================================
+   ELA â€” academies/base/pages/dashboard.factory.js
+   Fabrique du dashboard immersif d'une acadÃ©mie.
    ============================================================ */
 
-import { mountShell } from '../../../shared/components/academy/academy-shell.js';
+import { mountShell, academyDisplayName } from '../../../shared/components/academy/academy-shell.js';
 import { checkAcademyAccess } from '../../../shared/components/academy/academy-access.js';
 import { levelCards } from '../../../shared/components/academy/level-cards.js';
 import { progressRing } from '../../../shared/components/academy/progress-ring.js';
 import { callFunction } from '../../../js/core/api-client.js';
+import { t } from '../../../js/core/i18n-helpers.js';
+
+function fmt(key, map) {
+  let v = t(key);
+  for (const k in map) v = v.split('{' + k + '}').join(map[k]);
+  return v;
+}
 
 export function createDashboardPage(code) {
   return function renderAcademyDashboard() {
@@ -24,7 +31,7 @@ export function createDashboardPage(code) {
         const mine = courses.filter(function (c) { return c.academy === a.key; });
 
         /* Progression par niveau : part des cours du niveau (base plate
-           courses/lessons — sera affinée avec le curriculum arborescent). */
+           courses/lessons â€” sera affinÃ©e avec le curriculum arborescent). */
         const progressByLevel = {};
         a.levels.forEach(function (l) { progressByLevel[l] = 0; });
         const doneByLevel = (dash && dash.completedByLevel) || null;
@@ -36,18 +43,18 @@ export function createDashboardPage(code) {
 
         const content = '' +
           '<div class="hub-top">' +
-            '<h3>Continuez l\'apprentissage</h3>' +
-            '<a class="btn btn-solid btn-sm" href="#/academy/' + code + '/courses">My Courses</a>' +
+            '<h3>' + t('academies.dashboard.continue') + '</h3>' +
+            '<a class="btn btn-solid btn-sm" href="#/academy/' + code + '/courses">' + t('academies.shell.courses') + '</a>' +
           '</div>' +
           (mine.length
             ? '<a class="academy-row" href="#/course?id=' + encodeURIComponent(mine[0].id) + '">' +
                 '<span class="academy-num">01</span>' +
                 '<span class="academy-name">' + esc(mine[0].title) + '<span class="native">' + esc(mine[0].level) + '</span></span>' +
                 '<span class="academy-desc">' + esc(mine[0].description || '') + '</span>' +
-                '<span class="academy-status status-open">Resume</span>' +
+                '<span class="academy-status status-open">' + t('academies.dashboard.resumeChip') + '</span>' +
               '</a>'
-            : '<p class="ac-courses-empty">Your first lesson will appear here as soon as the curriculum is published.</p>') +
-          '<h3>Your journey — ' + esc(a.certification) + '</h3>' +
+            : '<p class="ac-courses-empty">' + t('academies.dashboard.noCourse') + '</p>') +
+          '<h3>' + fmt('academies.dashboard.journey', { cert: a.certification }) + '</h3>' +
           levelCards({
             levels: a.levels, levelNames: a.levelNames,
             unlockedIndex: a.levels.length - 1,
@@ -55,7 +62,7 @@ export function createDashboardPage(code) {
             baseHref: '#/academy/' + code + '/courses',
             certificationLabel: a.certification
           }) +
-          '<h3>Global progression</h3>' +
+          '<h3>' + t('dashboard.overallProgress') + '</h3>' +
           progressRing({ percent: globalPercent(progressByLevel), size: 96, color: a.color });
 
         mountShell({
@@ -66,7 +73,7 @@ export function createDashboardPage(code) {
       });
     }).catch(function () {
       const app = document.getElementById('app');
-      if (app) app.innerHTML = '<p class="ac-courses-empty">Unable to load this academy page. Please try again.</p>';
+      if (app) app.innerHTML = '<p class="ac-courses-empty">' + t('academies.loadError') + '</p>';
     });
   };
 }
@@ -77,16 +84,16 @@ function globalPercent(progressByLevel) {
   return Math.round(vals.reduce(function (s, v) { return s + v; }, 0) / vals.length);
 }
 
-/** Vue "académie non incluse dans votre abonnement". */
+/** Vue "acadÃ©mie non incluse dans votre abonnement". */
 export function renderLockedView(root, academy, opts) {
   const color = (academy && academy.color) || '#0B6B4F';
   root.innerHTML = '' +
     '<div class="section" style="max-width:640px;margin:0 auto;text-align:center">' +
-      '<span style="font-size:2.4rem">' + ((academy && academy.flag) || '🔒') + '</span>' +
-      '<h2 style="font-family:var(--font-display);color:var(--forest)">' + esc((academy && academy.label) || 'Academy') + '</h2>' +
-      '<p style="color:var(--muted)">' + ((opts && opts.message) || 'This academy is not included in your current subscription.') + '</p>' +
-      '<a class="btn btn-solid" href="#/pricing" style="background:' + color + '">See pricing</a> ' +
-      '<a class="btn" href="#/dashboard">Back to my academies</a>' +
+      '<span style="font-size:2.4rem">' + ((academy && academy.flag) || 'ðŸ”’') + '</span>' +
+      '<h2 style="font-family:var(--font-display);color:var(--forest)">' + esc(academyDisplayName(academy && academy.code, (academy && academy.label) || 'Academy')) + '</h2>' +
+      '<p style="color:var(--muted)">' + ((opts && opts.message) || t('academies.dashboard.lockedMessage')) + '</p>' +
+      '<a class="btn btn-solid" href="#/pricing" style="background:' + color + '">' + t('academies.dashboard.seePricing') + '</a> ' +
+      '<a class="btn" href="#/dashboard">' + t('academies.dashboard.backToHub') + '</a>' +
     '</div>';
   window.scrollTo(0, 0);
 }

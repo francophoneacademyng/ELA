@@ -5,6 +5,7 @@
    ============================================================ */
 
 import { ACADEMY_ORDER } from '../shared/config/academies.config.js';
+import { t } from '../js/core/i18n-helpers.js';
 
 export function registerAcademyRoutes() {
   if (typeof window === 'undefined' || !window.ELA_ROUTE_HANDLERS) return;
@@ -26,7 +27,7 @@ export function registerAcademyRoutes() {
         if (typeof fn === 'function') fn();
       }).catch(function (e) {
         const app = document.getElementById('app');
-        if (app) app.innerHTML = '<p class="ac-courses-empty">Page load error.</p>';
+        if (app) app.innerHTML = '<p class="ac-courses-empty">' + t('academies.loadError') + '</p>';
       });
     };
   }

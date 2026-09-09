@@ -8,15 +8,17 @@
 
 import { renderTeacherShell } from './teacher-shell.js';
 import { callFunction } from '../../core/api-client.js';
+import { formatDate } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 
 export function renderTeacherStudents() {
   renderTeacherShell({
     active: '#/teacher/students',
-    title: 'Mes étudiants 👥',
-    subtitle: 'Progression et activité de vos apprenants.',
+    title: t('teacher.students.title'),
+    subtitle: t('teacher.students.subtitle'),
     renderContent: function () {
       return '<div class="card" data-students-list>' +
-        '<div class="empty-state"><div class="empty-icon">⏳</div><p>Chargement…</p></div>' +
+        '<div class="empty-state"><div class="empty-icon">⏳</div><p>' + t('teacher.students.loading') + '</p></div>' +
       '</div>';
     },
     onBind: function () {
@@ -35,18 +37,18 @@ function paint(r) {
   var students = r.students || [];
   if (!students.length) {
     box.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div>' +
-      '<p>Aucun étudiant inscrit à vos contenus pour le moment.</p>' +
-      '<p class="empty-sub">Dès qu\'un étudiant suivra vos cours, sa progression apparaîtra ici.</p></div>';
+      '<p>' + t('teacher.students.empty') + '</p>' +
+      '<p class="empty-sub">' + t('teacher.students.emptySub') + '</p></div>';
     return;
   }
   var rows = students.map(function (st) {
     return '<tr><td><span class="user-name">' + esc(st.displayName || st.name || '—') + '</span></td>' +
       '<td><span class="user-email">' + esc(st.email || '—') + '</span></td>' +
       '<td>' + (typeof st.progress === 'number' ? st.progress + ' %' : '—') + '</td>' +
-      '<td>' + (st.lastActive ? new Date(st.lastActive).toLocaleDateString('fr-FR') : '—') + '</td></tr>';
+      '<td>' + (st.lastActive ? formatDate(st.lastActive) : '—') + '</td></tr>';
   }).join('');
   box.innerHTML = '<div class="table-responsive"><table class="data-table">' +
-    '<thead><tr><th>Nom</th><th>Email</th><th>Progression</th><th>Dernière activité</th></tr></thead>' +
+    '<thead><tr><th>' + t('admin.name') + '</th><th>' + t('admin.email') + '</th><th>' + t('dashboard.progress') + '</th><th>' + t('teacher.students.col.lastActive') + '</th></tr></thead>' +
     '<tbody>' + rows + '</tbody></table></div>';
 }
 

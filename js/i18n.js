@@ -1,9 +1,9 @@
 /* ============================================================
-   ELA — i18n engine (interface language: en / fr / ar)
+   ELA — i18n engine (interface languages: en / fr / ar / de / es / zh)
    - Loads i18n/<lang>.json
    - Applies [data-i18n] keys to static shell (nav, footer, announce)
    - Pages are rendered by app.js using ELA_I18N.t(key)
-   - Sets <html lang> and dir (rtl for Arabic)
+   - Sets <html lang> and dir (rtl for Arabic, ltr otherwise)
    ============================================================ */
 
 window.ELA_I18N = (function () {

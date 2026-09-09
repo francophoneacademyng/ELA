@@ -5,6 +5,7 @@
 
 import { requireTeacher } from '../../core/auth.service.js';
 import { afterRender, toast } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { setState } from '../services/teacher-state.js';
 import { submitDraft } from '../services/submission.service.js';
 import { QuizDraft } from '../models/quiz-draft.model.js';
@@ -23,17 +24,21 @@ export function renderTeacherQuizNew() {
   });
 }
 
+function fmt(n, key) {
+  return t(key).replace('{n}', n);
+}
+
 function shell() {
   return '' +
     '<div class="dashboard-layout"><main class="main-content">' +
-      '<header class="dashboard-header"><h1>Créer un quiz 📝</h1>' +
-      '<p><a class="btn-secondary" href="#/teacher">← Retour au tableau de bord</a></p></header>' +
+      '<header class="dashboard-header"><h1>' + t('teacher.quiz.newTitle') + '</h1>' +
+      '<p><a class="btn-secondary" href="#/teacher">' + t('teacher.backToDashboard') + '</a></p></header>' +
       '<div class="card ela-teacher-form">' +
-        '<div class="form-field"><label>Titre du quiz</label>' +
-          '<input type="text" id="tq-title" class="input" placeholder="Ex : Quiz A1 — Vocabulaire de base"></div>' +
+        '<div class="form-field"><label>' + t('teacher.quiz.field.title') + '</label>' +
+          '<input type="text" id="tq-title" class="input" placeholder="' + t('teacher.quiz.titlePlaceholder') + '"></div>' +
         '<div id="tq-questions">' + questionBlock(0) + '</div>' +
-        '<button class="btn-secondary" id="tq-add" type="button">+ Ajouter une question</button> ' +
-        '<button class="btn-primary" id="tq-submit" type="button">Soumettre pour validation</button>' +
+        '<button class="btn-secondary" id="tq-add" type="button">' + t('teacher.quiz.addQuestion') + '</button> ' +
+        '<button class="btn-primary" id="tq-submit" type="button">' + t('teacher.submit') + '</button>' +
       '</div>' +
     '</main></div>';
 }
@@ -41,18 +46,18 @@ function shell() {
 function questionBlock(i) {
   var opts = '';
   for (var o = 0; o < 4; o++) {
-    opts += '<div class="form-field" style="margin-bottom:8px"><label>Option ' + (o + 1) +
-      (o === 0 ? ' (correcte par défaut)' : '') + '</label>' +
-      '<input type="text" class="input" data-quiz-option="' + i + '" data-oi="' + o + '" placeholder="Réponse"></div>';
+    opts += '<div class="form-field" style="margin-bottom:8px"><label>' + fmt(o + 1, 'teacher.quiz.optionLabel') +
+      (o === 0 ? t('teacher.quiz.defaultCorrect') : '') + '</label>' +
+      '<input type="text" class="input" data-quiz-option="' + i + '" data-oi="' + o + '" placeholder="' + t('teacher.quiz.answerPlaceholder') + '"></div>';
   }
   return '<div class="form-field" style="border-top:1px solid #eee;padding-top:12px;margin-top:12px">' +
-    '<label>Question ' + (i + 1) + '</label>' +
-    '<textarea class="input" data-quiz-text="' + i + '" placeholder="Énoncé de la question…"></textarea>' +
+    '<label>' + fmt(i + 1, 'teacher.quiz.questionLabel') + '</label>' +
+    '<textarea class="input" data-quiz-text="' + i + '" placeholder="' + t('teacher.questionText') + '…"></textarea>' +
     opts +
-    '<div class="form-field"><label>Réponse correcte</label>' +
+    '<div class="form-field"><label>' + t('teacher.quiz.correctAnswer') + '</label>' +
       '<select class="input" data-quiz-correct="' + i + '">' +
-        '<option value="0">Option 1</option><option value="1">Option 2</option>' +
-        '<option value="2">Option 3</option><option value="3">Option 4</option>' +
+        '<option value="0">' + fmt(1, 'teacher.quiz.optionChoice') + '</option><option value="1">' + fmt(2, 'teacher.quiz.optionChoice') + '</option>' +
+        '<option value="2">' + fmt(3, 'teacher.quiz.optionChoice') + '</option><option value="3">' + fmt(4, 'teacher.quiz.optionChoice') + '</option>' +
       '</select></div>' +
   '</div>';
 }
@@ -83,20 +88,20 @@ function bindQuiz(app) {
     submitDraft(draft, 'quiz').then(function (result) {
       if (!result.ok) {
         var first = Array.isArray(result.errors) ? result.errors[0] : null;
-        toast(first || 'Quiz incomplet : titre + au moins une question avec 4 options.', 'error');
+        toast(first || t('teacher.quiz.incomplete'), 'error');
         return;
       }
-      toast('Quiz soumis pour validation ✅', 'success');
+      toast(t('teacher.quiz.submittedToast'), 'success');
       window.location.hash = '#/teacher';
-    }).catch(function () { toast('Erreur lors de la soumission.', 'error'); });
+    }).catch(function () { toast(t('teacher.error.submit'), 'error'); });
   });
 }
 
 function forbidden(app) {
   app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
     '<div class="empty-state"><div class="empty-icon">🔒</div>' +
-    '<p>Accès réservé aux enseignants.</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">Se connecter</a></p>' +
+    '<p>' + t('teacher.gate.teacherOnly') + '</p>' +
+    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
     '</div></main></div>';
   afterRender('');
 }

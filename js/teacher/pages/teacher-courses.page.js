@@ -7,6 +7,7 @@
 
 import { renderTeacherShell } from './teacher-shell.js';
 import { escapeHtml, formatDate, toast } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/teacher-state.js';
 import { refreshSubmissions } from '../services/submission.service.js';
 
@@ -15,8 +16,8 @@ var filter = 'all';
 export function renderTeacherCourses() {
   renderTeacherShell({
     active: '#/teacher/courses',
-    title: 'Mes cours 📚',
-    subtitle: 'Vos leçons et leur statut de validation.',
+    title: t('teacher.courses.title'),
+    subtitle: t('teacher.courses.subtitle'),
     renderContent: function () { return layoutHtml(); },
     onBind: function (app) {
       app.querySelectorAll('[data-course-filter]').forEach(function (b) {
@@ -26,7 +27,7 @@ export function renderTeacherCourses() {
         });
       });
       refreshSubmissions().then(repaint).catch(function () {
-        toast('Impossible de charger vos cours.', 'error');
+        toast(t('teacher.error.submit'), 'error');
       });
     }
   });
@@ -49,6 +50,13 @@ function layoutHtml() {
   return '<div class="card" data-course-list>' + listInner() + '</div>';
 }
 
+function filterLabel(f) {
+  return f[0] === 'all' ? t('admin.content.filter.all')
+    : f[0] === 'approved' ? t('teacher.status.approved')
+    : f[0] === 'pending' ? t('teacher.status.pending')
+    : t('teacher.status.rejected');
+}
+
 function listInner() {
   var list = items();
   var counts = { all: 0, approved: 0, pending: 0, rejected: 0 };
@@ -57,7 +65,7 @@ function listInner() {
     counts.all++; counts[s.status] = (counts[s.status] || 0) + 1;
   });
 
-  var filters = [['all', 'Tous'], ['approved', 'Approuvés'], ['pending', 'En attente'], ['rejected', 'Rejetés']]
+  var filters = [['all', filterLabel(['all'])], ['approved', filterLabel(['approved'])], ['pending', filterLabel(['pending'])], ['rejected', filterLabel(['rejected'])]]
     .map(function (f) {
       return '<button class="filter-btn' + (filter === f[0] ? ' active' : '') +
         '" data-course-filter="' + f[0] + '">' + f[1] + ' (' + (counts[f[0]] || 0) + ')</button>';
@@ -66,27 +74,31 @@ function listInner() {
   var body;
   if (!list.length) {
     body = '<div class="empty-state"><div class="empty-icon">📭</div>' +
-      '<p>Aucun cours dans cette catégorie pour le moment.</p>' +
-      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/lesson/new">+ Créer mon premier cours</a></p></div>';
+      '<p>' + t('teacher.courses.empty') + '</p>' +
+      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/lesson/new">' + t('teacher.courses.emptyCTA') + '</a></p></div>';
   } else {
     var rows = list.map(function (s) {
       return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
         '<td>' + (s.createdAt ? formatDate(s.createdAt) : '—') + '</td>' +
         '<td>' + statusBadge(s.status) + '</td>' +
-        '<td>' + (s.isApproved() ? '<span class="muted">Publiée ✓</span>'
-          : '<span class="muted">Validation en cours</span>') + '</td></tr>';
+        '<td>' + (s.isApproved() ? '<span class="muted">' + t('teacher.courses.published') + '</span>'
+          : '<span class="muted">' + t('teacher.courses.pending') + '</span>') + '</td></tr>';
     }).join('');
     body = '<div class="table-responsive"><table class="data-table">' +
-      '<thead><tr><th>Titre</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead>' +
+      '<thead><tr><th>' + t('admin.col.title') + '</th><th>' + t('admin.col.date') + '</th><th>' + t('admin.col.status') + '</th><th>' + t('teacher.courses.col.action') + '</th></tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div>';
   }
 
   return '<div class="chart-filters" style="margin-bottom:1rem">' + filters + '</div>' + body +
-    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/lesson/new">+ Nouveau cours</a></div>';
+    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/lesson/new">' + t('teacher.courses.new') + '</a></div>';
 }
 
 function statusBadge(status) {
-  var map = { pending: ['badge-wait', 'En attente'], approved: ['badge-ok', 'Approuvé'], rejected: ['badge-ko', 'Rejeté'] };
-  var m = map[status] || ['badge-muted', status || '—'];
+  var map = {
+    pending: ['badge-wait', t('teacher.status.pending')],
+    approved: ['badge-ok', t('teacher.status.approved')],
+    rejected: ['badge-ko', t('teacher.status.rejected')]
+  };
+  var m = map[status] || ['badge-muted', String(status || '—')];
   return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
 }

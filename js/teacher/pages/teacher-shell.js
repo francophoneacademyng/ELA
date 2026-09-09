@@ -6,6 +6,7 @@
 
 import { requireTeacher, getProfile } from '../../core/auth.service.js';
 import { afterRender, escapeHtml } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { setState } from '../services/teacher-state.js';
 
 /* --- Sidebar partagée, avec l'item actif mis en surbrillance. --- */
@@ -14,18 +15,18 @@ export function teacherSidebarHtml(active) {
     return '<a href="' + href + '" class="nav-item' + (active === href ? ' active' : '') + '">' + label + '</a>';
   }
   return '' +
-    '<div class="sidebar-brand">ELA Enseignant</div>' +
+    '<div class="sidebar-brand">' + t('teacher.sidebar.brand') + '</div>' +
     '<nav class="sidebar-nav">' +
-      a('#/teacher', '🏠 Tableau de bord') +
-      '<div class="nav-section">Contenu</div>' +
-      a('#/teacher/courses', '📚 Mes cours') +
-      a('#/teacher/quizzes', '📝 Mes quiz') +
-      a('#/teacher/live', '🔴 Mes classes Live') +
-      '<div class="nav-section">Gestion</div>' +
-      a('#/teacher/students', '👥 Mes étudiants') +
-      a('#/teacher/stats', '📊 Statistiques') +
-      '<div class="nav-section">Compte</div>' +
-      a('#/teacher/profile', '⚙️ Mon profil') +
+      a('#/teacher', '🏠 ' + t('teacher.sidebar.dashboard')) +
+      '<div class="nav-section">' + t('teacher.navGroup.content') + '</div>' +
+      a('#/teacher/courses', '📚 ' + t('teacher.sidebar.courses')) +
+      a('#/teacher/quizzes', '📝 ' + t('teacher.sidebar.quizzes')) +
+      a('#/teacher/live', '🔴 ' + t('teacher.sidebar.live')) +
+      '<div class="nav-section">' + t('teacher.navGroup.management') + '</div>' +
+      a('#/teacher/students', '👥 ' + t('teacher.sidebar.students')) +
+      a('#/teacher/stats', '📊 ' + t('teacher.sidebar.stats')) +
+      '<div class="nav-section">' + t('teacher.navGroup.account') + '</div>' +
+      a('#/teacher/profile', '⚙️ ' + t('teacher.sidebar.profile')) +
     '</nav>';
 }
 
@@ -33,8 +34,8 @@ export function teacherSidebarHtml(active) {
 export function forbiddenTeacher(app) {
   app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
     '<div class="empty-state"><div class="empty-icon">🔒</div>' +
-    '<p>Accès réservé aux enseignants et administrateurs.</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">Se connecter</a></p>' +
+    '<p>' + t('teacher.gate.body') + '</p>' +
+    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
     '</div></main></div>';
   afterRender('');
 }

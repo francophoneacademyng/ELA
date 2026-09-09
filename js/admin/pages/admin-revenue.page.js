@@ -8,6 +8,7 @@
 
 import { renderAdminShell } from './admin-shell.js';
 import { fmtNaira, formatDate, escapeHtml } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/admin-state.js';
 import { buildKpis, buildRevenueSeries } from '../services/admin-metrics.service.js';
 import { statusBadgeHtml } from '../components/badge.js';
@@ -17,8 +18,8 @@ var range = 30;
 export function renderAdminRevenue() {
   renderAdminShell({
     active: '#/admin/revenue',
-    title: 'Revenus 💰',
-    subtitle: 'Performance financière de la plateforme.',
+    title: t('admin.revenue'),
+    subtitle: t('admin.revenue.subtitle'),
     renderContent: function (s) { return layoutHtml(s); },
     onBind: function (app) {
       app.querySelectorAll('[data-rev-range]').forEach(function (b) {
@@ -29,6 +30,12 @@ export function renderAdminRevenue() {
       });
     }
   });
+}
+
+function fmtKey(key, map) {
+  var v = t(key);
+  for (var k in map) v = v.split('{' + k + '}').join(map[k]);
+  return v;
 }
 
 function layoutHtml(s) {
@@ -58,31 +65,32 @@ function layoutHtml(s) {
       '<td>' + statusBadgeHtml(tx.status) + '</td></tr>';
   }).join('');
 
+  var trend = (k.revenueTrendPct > 0 ? '+' : '') + k.revenueTrendPct + ' % ' + t('admin.vsLastMonth');
+
   return '' +
     '<section class="kpi-grid">' +
-      kpi('💰 Revenus du mois', fmtNaira(k.revenueThisMonth),
-        (k.revenueTrendPct > 0 ? '+' : '') + k.revenueTrendPct + ' % vs mois dernier') +
-      kpi('📅 Revenus ' + year, fmtNaira(yearTotal), 'Total cumulé de l\'année') +
-      kpi('💎 Moyenne / abonnement', avgPerSub ? fmtNaira(avgPerSub) : '—',
-        k.activeSubs + ' abonnement(s) actif(s)') +
+      kpi(t('admin.monthRevenue'), fmtNaira(k.revenueThisMonth), trend) +
+      kpi(fmtKey('admin.revenue.kpi.year', { year: year }), fmtNaira(yearTotal), t('admin.revenue.kpi.yearSub')) +
+      kpi(t('admin.revenue.kpi.avg'), avgPerSub ? fmtNaira(avgPerSub) : '—',
+        fmtKey('admin.revenue.kpi.avgSub', { count: k.activeSubs })) +
     '</section>' +
-    '<section class="section-title">Évolution (' + range + ' jours)</section>' +
+    '<section class="section-title">' + fmtKey('admin.revenue.evolution', { days: range }) + '</section>' +
     '<div class="card">' +
       '<div class="chart-filters">' +
-        '<button class="filter-btn' + (range === 7 ? ' active' : '') + '" data-rev-range="7">7 jours</button>' +
-        '<button class="filter-btn' + (range === 30 ? ' active' : '') + '" data-rev-range="30">30 jours</button>' +
-        '<button class="filter-btn' + (range === 90 ? ' active' : '') + '" data-rev-range="90">90 jours</button>' +
+        '<button class="filter-btn' + (range === 7 ? ' active' : '') + '" data-rev-range="7">' + t('admin.revenue.days7') + '</button>' +
+        '<button class="filter-btn' + (range === 30 ? ' active' : '') + '" data-rev-range="30">' + t('admin.revenue.days30') + '</button>' +
+        '<button class="filter-btn' + (range === 90 ? ' active' : '') + '" data-rev-range="90">' + t('admin.revenue.days90') + '</button>' +
       '</div>' +
       '<div class="bar-chart">' + bars + '</div>' +
     '</div>' +
-    '<section class="section-title">Paiements récents</section>' +
+    '<section class="section-title">' + t('admin.revenue.recent') + '</section>' +
     '<div class="card">' +
       (s.transactions && s.transactions.length
         ? '<div class="table-responsive"><table class="data-table">' +
-          '<thead><tr><th>Date</th><th>Utilisateur</th><th>Formule</th><th>Montant</th><th>Statut</th></tr></thead>' +
+          '<thead><tr><th>' + t('admin.revenue.col.date') + '</th><th>' + t('admin.revenue.col.user') + '</th><th>' + t('admin.revenue.col.plan') + '</th><th>' + t('admin.revenue.col.amount') + '</th><th>' + t('admin.revenue.col.status') + '</th></tr></thead>' +
           '<tbody>' + rows + '</tbody></table></div>'
         : '<div class="empty-state"><div class="empty-icon">💸</div>' +
-          '<p>Aucun paiement enregistré pour le moment.</p></div>') +
+          '<p>' + t('admin.revenue.empty') + '</p></div>') +
     '</div>';
 }
 

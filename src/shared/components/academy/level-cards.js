@@ -1,8 +1,25 @@
-/* ============================================================
-   ELA — shared/components/academy/level-cards.js
-   Cartes de niveaux (A1→C2 / HSK1→HSK6) avec états
-   déverrouillé / verrouillé / terminé.
+﻿/* ============================================================
+   ELA â€” shared/components/academy/level-cards.js
+   Cartes de niveaux (A1â†’C2 / HSK1â†’HSK6) avec Ã©tats
+   dÃ©verrouillÃ© / verrouillÃ© / terminÃ©.
    ============================================================ */
+
+import { t } from '../../../js/core/i18n-helpers.js';
+
+var LEVEL_KEYS = {
+  'Beginner': 'academies.level.beginner',
+  'Elementary': 'academies.level.elementary',
+  'Intermediate': 'academies.level.intermediate',
+  'Upper Intermediate': 'academies.level.upper',
+  'Advanced': 'academies.level.advanced',
+  'Mastery': 'academies.level.mastery'
+};
+
+/** Traduit un nom de niveau affiché (libellé) sans toucher au code technique. */
+export function levelDisplayName(name) {
+  const key = LEVEL_KEYS[String(name || '')];
+  return key ? t(key) : (name || '');
+}
 
 /**
  * @param {{levels:string[], levelNames:Object, unlockedIndex:number,
@@ -24,13 +41,13 @@ export function levelCards(opts) {
   levels.forEach(function (level, i) {
     const pct = Math.max(0, Math.min(100, Number(progress[level]) || 0));
     const state = i <= unlockedIndex ? (pct >= 100 ? 'done' : 'open') : 'locked';
-    const icon = state === 'locked' ? '🔒' : (state === 'done' ? '✓' : '▶');
+    const icon = state === 'locked' ? 'ðŸ”’' : (state === 'done' ? 'âœ“' : 'â–¶');
     html += '' +
       '<a class="ac-level-card ac-' + state + '" ' +
          (state === 'locked' ? '' : 'href="' + baseHref + '?level=' + encodeURIComponent(level) + '" ') +
          'style="--ac:' + color + '">' +
         '<span class="ac-level-badge">' + level + '</span>' +
-        '<span class="ac-level-name">' + (names[level] || '') + '</span>' +
+        '<span class="ac-level-name">' + levelDisplayName(names[level]) + '</span>' +
         '<span class="ac-level-state" aria-hidden="true">' + icon + '</span>' +
         '<span class="ac-level-track"><span class="ac-level-fill" style="width:' + pct + '%"></span></span>' +
         '<span class="ac-level-pct">' + pct + '%</span>' +
@@ -38,7 +55,7 @@ export function levelCards(opts) {
   });
   html += '</div>';
   if (cert) {
-    html += '<p class="ac-levels-cert">Certification de référence : <strong>' + cert + '</strong></p>';
+    html += '<p class="ac-levels-cert">' + t('academies.dashboard.referenceCert').replace('{cert}', cert) + '</p>';
   }
   return html;
 }

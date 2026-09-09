@@ -8,12 +8,21 @@
 import { renderAdminShell } from './admin-shell.js';
 import { escapeHtml, formatDate, toast } from '../../core/dom.js';
 import { callFunction } from '../../core/api-client.js';
+import { t } from '../../core/i18n-helpers.js';
+
+var PROGRAM_OPTIONS = [
+  ['General Path', 'pricing.general'],
+  ['Premium Path', 'pricing.premium'],
+  ['Business French', 'pricing.business']
+];
+var DURATION_OPTIONS = ['1 mois', '3 mois', '6 mois'];
+var DURATION_KEYS = { '1 mois': 'checkout.month.1', '3 mois': 'checkout.month.3', '6 mois': 'checkout.month.6' };
 
 export function renderAdminInvoices() {
   renderAdminShell({
     active: '#/admin/invoices',
-    title: 'Factures personnalisées 📄',
-    subtitle: 'Facturation manuelle.',
+    title: t('admin.invoices.title'),
+    subtitle: t('admin.invoices.subtitle'),
     renderContent: function () { return layoutHtml(); },
     onBind: function () {
       const newBtn = document.getElementById('btn-new-invoice');
@@ -36,38 +45,44 @@ function layoutHtml() {
   return '<div style="margin-bottom:24px;">' +
     '<button class="btn-primary" id="btn-new-invoice" ' +
       'style="background:#064e3b;color:#fff;padding:10px 20px;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;">' +
-      '+ Nouvelle facture personnalisée</button></div>' +
+      t('admin.invoices.new') + '</button></div>' +
   '<div class="card"><div class="table-responsive"><table class="data-table fa-style">' +
-    '<thead><tr><th>FACTURE</th><th>CLIENT</th><th>PROGRAMME</th><th>DURÉE</th><th>FRÉQ.</th><th>MONTANT</th><th>STATUT</th><th>DATE</th><th>ACTIONS</th></tr></thead>' +
-    '<tbody id="invoices-tbody"><tr><td colspan="9" style="text-align:center;padding:48px;color:#6b7280;">Chargement…</td></tr></tbody>' +
+    '<thead><tr><th>' + t('admin.invoices.col.invoice') + '</th><th>' + t('admin.invoices.col.client') + '</th><th>' + t('admin.invoices.col.program') + '</th><th>' + t('admin.invoices.col.duration') + '</th><th>' + t('admin.invoices.col.frequency') + '</th><th>' + t('admin.payments.col.amount') + '</th><th>' + t('admin.invoices.col.status') + '</th><th>' + t('admin.invoices.col.date') + '</th><th>' + t('admin.invoices.col.actions') + '</th></tr></thead>' +
+    '<tbody id="invoices-tbody"><tr><td colspan="9" style="text-align:center;padding:48px;color:#6b7280;">' + t('common.loading') + '</td></tr></tbody>' +
   '</table></div>' +
   '<div class="empty-state-premium" id="invoices-empty" style="display:none;">' +
     '<div style="font-size:48px;margin-bottom:16px;">📄</div>' +
-    '<h3 style="margin:0 0 8px;font-size:18px;color:#111827;">Aucune facture personnalisée</h3>' +
-    '<p style="margin:0;color:#6b7280;font-size:14px;">Créez votre première facture avec le bouton ci-dessus.</p>' +
+    '<h3 style="margin:0 0 8px;font-size:18px;color:#111827;">' + t('admin.invoices.empty.title') + '</h3>' +
+    '<p style="margin:0;color:#6b7280;font-size:14px;">' + t('admin.invoices.empty.body') + '</p>' +
   '</div></div>' +
   invoiceModalHtml();
+}
+
+function programOptsHtml() {
+  return PROGRAM_OPTIONS.map(function (p) {
+    return '<option value="' + p[0] + '">' + t(p[1]) + '</option>';
+  }).join('');
+}
+
+function durationOptsHtml() {
+  return DURATION_OPTIONS.map(function (d) {
+    return '<option value="' + d + '">' + t(DURATION_KEYS[d]) + '</option>';
+  }).join('');
 }
 
 function invoiceModalHtml() {
   return '<div class="modal-overlay" id="invoice-modal">' +
     '<div class="manage-card">' +
-      '<h2>Nouvelle facture personnalisée</h2>' +
-      '<div class="form-row"><label>Nom du client</label><input type="text" id="inv-name" class="manage-input" placeholder="Ex. Hamadama R."></div>' +
-      '<div class="form-row"><label>Email du client</label><input type="email" id="inv-email" class="manage-input" placeholder="client@gmail.com"></div>' +
-      '<div class="form-row"><label>Programme</label><select id="inv-program" class="manage-select">' +
-        '<option value="General Path">General Path</option>' +
-        '<option value="Premium Path">Premium Path</option>' +
-        '<option value="Business French">Business French</option></select></div>' +
-      '<div class="form-row"><label>Durée</label><select id="inv-duration" class="manage-select">' +
-        '<option value="1 mois">1 mois</option>' +
-        '<option value="3 mois">3 mois</option>' +
-        '<option value="6 mois">6 mois</option></select></div>' +
-      '<div class="form-row"><label>Fréquence des cours</label><input type="text" id="inv-frequency" class="manage-input" placeholder="Ex. 2 séances / semaine"></div>' +
-      '<div class="form-row"><label>Montant (NGN)</label><input type="number" id="inv-amount" class="manage-input" min="1" placeholder="75000"></div>' +
+      '<h2>' + t('admin.invoices.modalTitle') + '</h2>' +
+      '<div class="form-row"><label>' + t('admin.invoices.clientName') + '</label><input type="text" id="inv-name" class="manage-input" placeholder="Ex. Hamadama R."></div>' +
+      '<div class="form-row"><label>' + t('admin.invoices.clientEmail') + '</label><input type="email" id="inv-email" class="manage-input" placeholder="client@gmail.com"></div>' +
+      '<div class="form-row"><label>' + t('admin.plan') + '</label><select id="inv-program" class="manage-select">' + programOptsHtml() + '</select></div>' +
+      '<div class="form-row"><label>' + t('admin.duration') + '</label><select id="inv-duration" class="manage-select">' + durationOptsHtml() + '</select></div>' +
+      '<div class="form-row"><label>' + t('admin.invoices.frequency') + '</label><input type="text" id="inv-frequency" class="manage-input" placeholder="Ex. 2 séances / semaine"></div>' +
+      '<div class="form-row"><label>' + t('admin.amount') + ' (NGN)</label><input type="number" id="inv-amount" class="manage-input" min="1" placeholder="75000"></div>' +
       '<div class="manage-actions">' +
-        '<button class="btn-manage-cancel" id="inv-cancel">Annuler</button>' +
-        '<button class="btn-manage-save" id="inv-create">Créer la facture</button>' +
+        '<button class="btn-manage-cancel" id="inv-cancel">' + t('admin.cancel') + '</button>' +
+        '<button class="btn-manage-save" id="inv-create">' + t('admin.invoices.create') + '</button>' +
       '</div>' +
     '</div>' +
   '</div>';
@@ -91,7 +106,7 @@ function createInvoice() {
   const email = String(document.getElementById('inv-email').value || '').trim();
   const amount = Number(document.getElementById('inv-amount').value);
   if (!email || !amount || amount <= 0) {
-    toast('Renseignez un email client et un montant valide.', 'error');
+    toast(t('admin.invoices.error.required'), 'error');
     return;
   }
   const btn = document.getElementById('inv-create');
@@ -105,11 +120,22 @@ function createInvoice() {
     amount: amount
   }).then(function () {
     document.getElementById('invoice-modal').classList.remove('active');
-    toast('Facture créée ✅', 'success');
+    toast(t('admin.invoices.created') + ' ✅', 'success');
     loadInvoices();
   }).catch(function (err) {
-    toast('Erreur : ' + ((err && (err.code || err.message)) || 'Création impossible'), 'error');
+    toast(t('admin.invoices.error.create') + ' : ' + ((err && (err.code || err.message)) || '—'), 'error');
   }).then(function () { btn.disabled = false; });
+}
+
+function invoiceStatusLabel(status) {
+  if (status === 'pending') return t('admin.status.pending');
+  if (status === 'paid') return t('admin.invoices.paid');
+  if (status === 'cancelled') return t('admin.status.cancelled');
+  return String(status || '—');
+}
+
+function invoiceStatusClass(status) {
+  return status === 'pending' ? 'badge-pending' : status === 'paid' ? 'badge-general' : 'badge-free';
 }
 
 function paintInvoices(invoices) {
@@ -131,8 +157,7 @@ function paintInvoices(invoices) {
       '<td style="color:#6b7280;font-size:13px;">' + escapeHtml(inv.duration || '—') + '</td>' +
       '<td style="color:#6b7280;font-size:13px;">' + escapeHtml(inv.frequency || '—') + '</td>' +
       '<td style="font-weight:600;">NGN ' + Number(inv.amount).toLocaleString('en-NG') + '</td>' +
-      '<td><span class="badge-plan ' + (inv.status === 'pending' ? 'badge-pending' : inv.status === 'paid' ? 'badge-general' : 'badge-free') + '">' +
-        (inv.status === 'pending' ? 'En attente' : inv.status) + '</span></td>' +
+      '<td><span class="badge-plan ' + invoiceStatusClass(inv.status) + '">' + invoiceStatusLabel(inv.status) + '</span></td>' +
       '<td style="color:#6b7280;font-size:13px;">' + formatDate(inv.createdAt) + '</td>' +
       '<td>' + invoiceActionsHtml(inv) + '</td>' +
     '</tr>';
@@ -146,9 +171,9 @@ function invoiceLink(inv) {
 
 function invoiceActionsHtml(inv) {
   const num = escapeHtml(inv.invoiceNumber);
-  return '<button class="btn-action-sm" data-inv-link="' + escapeHtml(invoiceLink(inv)) + '">🔗 Lien</button>' +
-    '<button class="btn-action-sm" data-inv-mail="' + escapeHtml(inv.clientEmail) + '" data-inv-num="' + num + '">✉️ Email</button>' +
-    '<button class="btn-action-sm" data-inv-wa="' + escapeHtml(invoiceLink(inv)) + '" data-inv-num="' + num + '">📱 WhatsApp</button>';
+  return '<button class="btn-action-sm" data-inv-link="' + escapeHtml(invoiceLink(inv)) + '">🔗 ' + t('admin.link') + '</button>' +
+    '<button class="btn-action-sm" data-inv-mail="' + escapeHtml(inv.clientEmail) + '" data-inv-num="' + num + '">' + t('admin.invoices.actions.email') + '</button>' +
+    '<button class="btn-action-sm" data-inv-wa="' + escapeHtml(invoiceLink(inv)) + '" data-inv-num="' + num + '">' + t('admin.invoices.actions.whatsapp') + '</button>';
 }
 
 function bindInvoiceActions() {
@@ -156,7 +181,7 @@ function bindInvoiceActions() {
     btn.addEventListener('click', function () {
       const link = btn.getAttribute('data-inv-link');
       if (navigator.clipboard) {
-        navigator.clipboard.writeText(link).then(function () { toast('Lien copié ✅', 'success'); });
+        navigator.clipboard.writeText(link).then(function () { toast(t('admin.invoices.linkCopied') + ' ✅', 'success'); });
       } else {
         toast(link, 'info');
       }
@@ -165,13 +190,13 @@ function bindInvoiceActions() {
   document.querySelectorAll('[data-inv-mail]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       window.location.href = 'mailto:' + btn.getAttribute('data-inv-mail') +
-        '?subject=' + encodeURIComponent('Votre facture ELA ' + btn.getAttribute('data-inv-num')) +
-        '&body=' + encodeURIComponent('Bonjour,\n\nVeuillez trouver votre facture personnalisée ELA ici : ' + invoiceLink({ invoiceNumber: btn.getAttribute('data-inv-num') }) + '\n\nE-Learn Language Academy');
+        '?subject=' + encodeURIComponent(t('admin.invoices.mailSubject') + ' ' + btn.getAttribute('data-inv-num')) +
+        '&body=' + encodeURIComponent(t('admin.invoices.mailBody').replace('{link}', invoiceLink({ invoiceNumber: btn.getAttribute('data-inv-num') })) + '\n\nE-Learn Language Academy');
     });
   });
   document.querySelectorAll('[data-inv-wa]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      window.open('https://wa.me/?text=' + encodeURIComponent('Votre facture ELA ' + btn.getAttribute('data-inv-num') + ' : ' + btn.getAttribute('data-inv-wa')), '_blank');
+      window.open('https://wa.me/?text=' + encodeURIComponent(t('admin.invoices.mailBody').replace('{link}', btn.getAttribute('data-inv-wa')) + ' (' + btn.getAttribute('data-inv-num') + ')'), '_blank');
     });
   });
 }

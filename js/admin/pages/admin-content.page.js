@@ -9,11 +9,17 @@
 import { renderAdminShell } from './admin-shell.js';
 import { escapeHtml, formatDate, toast } from '../../core/dom.js';
 import { callFunction } from '../../core/api-client.js';
+import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/admin-state.js';
 import { refreshQueue, approveItem, rejectItem } from '../services/admin-review.service.js';
 import { rejectModalHtml, openRejectModal, bindRejectModal } from '../components/reject-modal.js';
 
-var COL_TYPE = { lessons: 'Leçon', quizzes: 'Quiz', liveClasses: 'Live' };
+var COL_TYPE_KEY = { lessons: 'teacher.type.lesson', quizzes: 'teacher.type.quiz', liveClasses: 'teacher.type.live' };
+
+function typeLabel(collection) {
+  var key = COL_TYPE_KEY[collection];
+  return key ? t(key) : (collection || '—');
+}
 
 /* Mémoire de session : éléments traités depuis cette page
    (la file serveur ne contient que les contenus en attente). */
@@ -23,8 +29,8 @@ var filter = 'all';
 export function renderAdminContent() {
   renderAdminShell({
     active: '#/admin/content',
-    title: 'Contenu 📚',
-    subtitle: 'Bibliothèque de cours et leçons.',
+    title: t('admin.content.title'),
+    subtitle: t('admin.content.subtitle'),
     renderContent: function (s) { return kpisHtml() + layoutHtml(s.queue || []); },
     onBind: function (app) { loadStats(); bindContentEvents(app); }
   });
@@ -48,16 +54,16 @@ function setVal(id, v) {
 
 function kpisHtml() {
   return '<div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 24px;">' +
-    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">COURS</div>' +
+    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">' + t('admin.content.kpi.courses') + '</div>' +
       '<div class="kpi-value" id="content-courses">…</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">PUBLIÉS</div>' +
+    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">' + t('admin.content.kpi.published') + '</div>' +
       '<div class="kpi-value" id="content-published">…</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">BROUILLONS</div>' +
+    '<div class="kpi-card"><div class="kpi-label" style="font-size:11px;">' + t('admin.content.kpi.drafts') + '</div>' +
       '<div class="kpi-value" id="content-drafts">…</div></div>' +
   '</div>' +
   '<div style="display:flex;gap:12px;margin-bottom:24px;">' +
-    '<a class="btn btn-outline btn-sm" href="#/teacher/lesson/new">📹 Ouvrir le studio vidéo</a>' +
-    '<a class="btn btn-outline btn-sm" href="#/teacher/courses">🎬 Bibliothèque vidéo</a>' +
+    '<a class="btn btn-outline btn-sm" href="#/teacher/lesson/new">' + t('admin.content.openStudio') + '</a>' +
+    '<a class="btn btn-outline btn-sm" href="#/teacher/courses">' + t('admin.content.videoLibrary') + '</a>' +
   '</div>' + rejectModalHtml();
 }
 
@@ -71,7 +77,7 @@ function layoutHtml(queue) {
   };
   var items = lists[filter] || lists.all;
 
-  var filters = [['all', 'Tous'], ['pending', 'En attente'], ['approved', 'Approuvé'], ['rejected', 'Rejeté']]
+  var filters = [['all', t('admin.content.filter.all')], ['pending', t('teacher.status.pending')], ['approved', t('teacher.status.approved')], ['rejected', t('teacher.status.rejected')]]
     .map(function (f) {
       return '<button class="filter-btn' + (filter === f[0] ? ' active' : '') +
         '" data-content-filter="' + f[0] + '">' + f[1] + ' (' + lists[f[0]].length + ')</button>';
@@ -81,29 +87,29 @@ function layoutHtml(queue) {
   if (!items.length) {
     body = '<div class="empty-state"><div class="empty-icon">🎉</div>' +
       '<p>' + (filter === 'pending' || filter === 'all'
-        ? 'Tout est à jour — Aucun contenu en attente de validation.'
-        : 'Aucun élément dans cette catégorie pour le moment.') + '</p></div>';
+        ? t('admin.content.upToDate')
+        : t('admin.content.emptyFilter')) + '</p></div>';
   } else {
     var rows = items.map(function (it) {
       var isPending = !!(it.key && typeof it.key === 'function'); // ContentItem de la file
       var statut = isPending
-        ? '<span class="badge badge-wait">En attente</span>'
+        ? '<span class="badge badge-wait">' + t('teacher.status.pending') + '</span>'
         : (it.status === 'approved'
-          ? '<span class="badge badge-ok">Approuvé</span>'
-          : '<span class="badge badge-ko">Rejeté</span>');
+          ? '<span class="badge badge-ok">' + t('teacher.status.approved') + '</span>'
+          : '<span class="badge badge-ko">' + t('teacher.status.rejected') + '</span>');
       var actions = isPending
-        ? '<button class="btn btn-solid btn-sm" data-approve="' + it.key() + '" style="margin-right:6px">Approuver</button>' +
-          '<button class="btn btn-ghost btn-sm" data-reject="' + it.key() + '">Rejeter</button>'
+        ? '<button class="btn btn-solid btn-sm" data-approve="' + it.key() + '" style="margin-right:6px">' + t('admin.approve') + '</button>' +
+          '<button class="btn btn-ghost btn-sm" data-reject="' + it.key() + '">' + t('admin.reject') + '</button>'
         : '<span class="muted">—</span>';
       return '<tr><td><span class="user-name">' + escapeHtml(it.title) + '</span></td>' +
-        '<td>' + (COL_TYPE[it.collection] || it.collection || '—') + '</td>' +
+        '<td>' + typeLabel(it.collection) + '</td>' +
         '<td><span class="user-name">' + escapeHtml(it.teacherName || '—') + '</span></td>' +
         '<td>' + (it.submittedAt ? formatDate(it.submittedAt) : '—') + '</td>' +
         '<td>' + statut + '</td>' +
         '<td>' + actions + '</td></tr>';
     }).join('');
     body = '<div class="table-responsive"><table class="data-table">' +
-      '<thead><tr><th>Contenu</th><th>Type</th><th>Auteur</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead>' +
+      '<thead><tr><th>' + t('admin.content.col.title') + '</th><th>' + t('admin.content.col.type') + '</th><th>' + t('admin.content.col.author') + '</th><th>' + t('admin.col.date') + '</th><th>' + t('admin.col.status') + '</th><th>' + t('admin.action') + '</th></tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div>';
   }
 
@@ -133,9 +139,9 @@ function bindContentEvents(app) {
     if (isApprove) {
       approveItem(item).then(function () {
         remember(item, 'approved');
-        toast('Contenu approuvé ✅', 'success');
+        toast(t('admin.approved') + ' ✅', 'success');
         renderAdminContent();
-      }).catch(function () { toast("Erreur lors de l'approbation.", 'error'); });
+      }).catch(function () { toast(t('admin.approveError'), 'error'); });
     } else {
       openRejectModal(key);
     }
@@ -148,10 +154,10 @@ function bindContentEvents(app) {
     if (!item) return Promise.resolve();
     return rejectItem(item, reason).then(function () {
       remember(item, 'rejected');
-      toast('Contenu rejeté ❌', 'success');
+      toast(t('admin.rejected') + ' ❌', 'success');
       renderAdminContent();
     }).catch(function (e2) {
-      toast(e2 && e2.code === 'reason-required' ? 'Un motif est requis.' : 'Erreur lors du rejet.', 'error');
+      toast(e2 && e2.code === 'reason-required' ? t('admin.reasonRequired') : t('admin.rejectError'), 'error');
     });
   });
 }

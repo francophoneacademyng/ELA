@@ -1,34 +1,38 @@
-/* ============================================================
-   ELA — shared/components/academy/quiz-cards.js
-   Cartes de quiz par niveau — badge "20 questions — certificat à 80 %".
+﻿/* ============================================================
+   ELA â€” shared/components/academy/quiz-cards.js
+   Cartes de quiz par niveau â€” badge Â« 20 questions â€” certificate Ã  80 % Â».
    ============================================================ */
 
 import { QUIZ_QUESTIONS, QUIZ_PASS_SCORE } from '../../config/academies.config.js';
+import { t } from '../../../js/core/i18n-helpers.js';
 
 /**
  * @param {{quizzes:Array<{id,title,level,academy}>, levels?:string[]}} opts
- * Les quiz sont groupés par niveau dans l'ordre du référentiel.
+ * Les quiz sont groupÃ©s par niveau dans l'ordre du rÃ©fÃ©rentiel.
  */
 export function quizCards(opts) {
   const quizzes = (opts && opts.quizzes) || [];
   const levels = (opts && opts.levels) || [];
   if (!quizzes.length) {
-    return '<p class="ac-courses-empty">No quiz available yet.</p>';
+    return '<p class="ac-courses-empty">' + t('academies.quiz.empty') + '</p>';
   }
+  const badge = t('academies.quiz.badge')
+    .replace('{n}', QUIZ_QUESTIONS)
+    .replace('{p}', QUIZ_PASS_SCORE);
   let html = '<div class="ac-quiz-grid">';
   quizzes.forEach(function (q) {
     html += '' +
       '<a class="ac-quiz-card" href="#/quiz?id=' + encodeURIComponent(q.id) + '">' +
         '<span class="ac-quiz-level">' + escapeHtml(q.level || '') + '</span>' +
         '<span class="ac-quiz-title">' + escapeHtml(q.title || '') + '</span>' +
-        '<span class="ac-quiz-badge">' + QUIZ_QUESTIONS + ' questions — certificate at ' + QUIZ_PASS_SCORE + '%</span>' +
+        '<span class="ac-quiz-badge">' + badge + '</span>' +
       '</a>';
   });
   html += '</div>';
   return html;
 }
 
-/** Trie les quiz selon l'ordre des niveaux du référentiel. */
+/** Trie les quiz selon l'ordre des niveaux du rÃ©fÃ©rentiel. */
 export function sortQuizzesByLevel(quizzes, levels) {
   const order = {};
   (levels || []).forEach(function (l, i) { order[String(l).toUpperCase()] = i; });

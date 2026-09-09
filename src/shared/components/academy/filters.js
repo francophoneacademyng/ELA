@@ -1,13 +1,23 @@
-/* ============================================================
-   ELA — shared/components/academy/filters.js
-   Filtres de catégorie (Grammar/Vocabulary/…) et de niveau
-   (All/A1/…/C2 ou HSK1→6). Rendu + binding des handlers.
+﻿/* ============================================================
+   ELA â€” shared/components/academy/filters.js
+   Filtres de catÃ©gorie (Grammar/Vocabulary/â€¦) et de niveau
+   (All/A1/â€¦/C2 ou HSK1â†’6). Rendu + binding des handlers.
+   Les valeurs techniques (data-*) restent inchangÃ©es ; seuls
+   les libellÃ©s affichÃ©s sont localisÃ©s.
    ============================================================ */
 
 import { CATEGORY_FILTERS } from '../../config/academies.config.js';
+import { t } from '../../../js/core/i18n-helpers.js';
+
+function catLabel(c) {
+  if (c === 'All') return t('academies.filter.all');
+  var key = 'academies.filter.cat.' + c;
+  var val = t(key);
+  return val === key ? c : val;
+}
 
 /**
- * Rend les deux rangées de filtres.
+ * Rend les deux rangÃ©es de filtres.
  * @param {{levels:string[], activeCategory?:string, activeLevel?:string}} opts
  */
 export function renderFilters(opts) {
@@ -18,12 +28,13 @@ export function renderFilters(opts) {
   let html = '<div class="ac-filters">';
   html += '<div class="ac-filter-row" data-filter-group="category">';
   CATEGORY_FILTERS.forEach(function (c) {
-    html += '<button type="button" class="ac-filter-btn' + (c === activeCat ? ' active' : '') + '" data-filter-category="' + c + '">' + c + '</button>';
+    html += '<button type="button" class="ac-filter-btn' + (c === activeCat ? ' active' : '') + '" data-filter-category="' + c + '">' + catLabel(c) + '</button>';
   });
   html += '</div>';
   html += '<div class="ac-filter-row" data-filter-group="level">';
   ['All'].concat(levels).forEach(function (l) {
-    html += '<button type="button" class="ac-filter-btn ac-filter-level' + (l === activeLevel ? ' active' : '') + '" data-filter-level="' + l + '">' + l + '</button>';
+    const show = l === 'All' ? t('academies.filter.all') : l;
+    html += '<button type="button" class="ac-filter-btn ac-filter-level' + (l === activeLevel ? ' active' : '') + '" data-filter-level="' + l + '">' + show + '</button>';
   });
   html += '</div></div>';
   return html;
@@ -52,7 +63,7 @@ export function bindFilters(root, onSelect) {
   });
 }
 
-/** Applique les filtres à une liste de cours. */
+/** Applique les filtres Ã  une liste de cours. */
 export function applyCourseFilters(courses, category, level) {
   return (courses || []).filter(function (c) {
     const okCat = category === 'All' || String(c.category || '').toLowerCase() === String(category).toLowerCase();

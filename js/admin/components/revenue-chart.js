@@ -1,8 +1,10 @@
 /* ============================================================
    ELA — admin/components/revenue-chart.js
    Graphe de revenus en SVG pur (réplique du graphe admin existant,
-   extrait en composant paramétrable — fin de duplication).
+   sans dépendance graphique).
    ============================================================ */
+
+import { t } from '../../core/i18n-helpers.js';
 
 import { fmtNaira } from '../../core/dom.js';
 
@@ -34,6 +36,6 @@ export function revenueChartHtml(series) {
     return '<text x="' + x + '" y="' + (H - 2) + '" text-anchor="middle" class="rev-label">' + d.label + '</text>';
   }).join('');
 
-  return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="revenue-chart" role="img" aria-label="revenue">' +
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" class="revenue-chart" role="img" aria-label="' + t('admin.revenue') + '">' +
     bars + labels + '</svg>';
 }

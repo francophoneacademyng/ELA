@@ -110,10 +110,11 @@
             '<h1>' + t('hero.title.1') + '<br><em>' + t('hero.title.2') + '</em></h1>' +
             '<div class="hero-langs">' +
               '<span>Deutsch</span><span class="sep">·</span>' +
-              '<span>中文</span><span class="sep">·</span>' +
+              '<span>Español</span><span class="sep">·</span>' +
               '<span>English</span><span class="sep">·</span>' +
               '<span>العربية</span><span class="sep">·</span>' +
-              '<span>Русский</span>' +
+              '<span>中文</span><span class="sep">·</span>' +
+              '<span>Français</span>' +
             '</div>' +
           '</div>' +
           '<div class="hero-side reveal" style="transition-delay:120ms">' +
@@ -712,7 +713,7 @@
           ? '<span class="badge badge-emerald">Valid</span>'
           : '<span class="badge badge-red">' + escapeHtml(c.status || '') + '</span>';
         var qr = c.qrDataUrl
-          ? '<img src="' + c.qrDataUrl + '" alt="QR verification" width="56" height="56" style="border:1px solid var(--line-soft);border-radius:6px;flex-shrink:0">'
+          ? '<img src="' + c.qrDataUrl + '" alt="' + t('dashboard.qrAlt') + '" width="56" height="56" style="border:1px solid var(--line-soft);border-radius:6px;flex-shrink:0">'
           : '';
         return '<div class="ela-cert-card" style="display:flex;align-items:center;gap:0.9rem;padding:0.7rem 0;border-top:1px solid var(--line-soft)">' +
           qr +
@@ -885,10 +886,9 @@
     var liveCard;
     if (nxt) {
       var d0 = new Date(nxt.scheduledAt);
-      var mNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      liveCard = '<div class="live-mini">' +
+      var liveCard = '<div class="live-mini">' +
         '<div class="live-mini-top">' +
-          '<div class="live-date"><span class="live-date-day">' + d0.getDate() + '</span><span class="live-date-month">' + mNames[d0.getMonth()] + '</span></div>' +
+          '<div class="live-date"><span class="live-date-day">' + d0.getDate() + '</span><span class="live-date-month">' + String(d0.toLocaleDateString(ELA_I18N.getLang(), { month: 'short' })).toUpperCase() + '</span></div>' +
           '<div class="live-info">' +
             '<span class="badge badge-gold"><span class="live-dot" style="margin-inline-end:0.4rem"></span>' + t('dashboard.liveSoon') + '</span>' +
             '<h4>' + escapeHtml(nxt.title) + '</h4>' +
@@ -1736,6 +1736,9 @@
           '<button type="button" class="choice" data-choice-lang="en"><span class="choice-name">English</span><span class="choice-tag">EN</span></button>' +
           '<button type="button" class="choice" data-choice-lang="fr"><span class="choice-name">Français</span><span class="choice-tag">FR</span></button>' +
           '<button type="button" class="choice" data-choice-lang="ar"><span class="choice-name">العربية</span><span class="choice-tag">AR</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="de"><span class="choice-name">Deutsch</span><span class="choice-tag">DE</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="es"><span class="choice-name">Español</span><span class="choice-tag">ES</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="zh"><span class="choice-name">中文</span><span class="choice-tag">ZH</span></button>' +
         '</div>';
     } else if (s.step === 2) {
       body = '<h3 class="auth-title" style="font-size:1.8rem">' + t('register.step2') + '</h3>' +
@@ -2133,7 +2136,7 @@
       '</div>' +
       '<div class="pwa-install-actions">' +
         '<button type="button" class="btn btn-sm btn-gold-vivid" data-pwa-install>Installer</button>' +
-        '<button type="button" class="pwa-install-close" data-pwa-close aria-label="Fermer">&times;</button>' +
+        '<button type="button" class="pwa-install-close" data-pwa-close aria-label="' + t('common.close') + '">&times;</button>' +
       '</div>';
     document.body.appendChild(pwaBanner);
 

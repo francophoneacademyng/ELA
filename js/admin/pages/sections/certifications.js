@@ -26,9 +26,9 @@ export function certificationsHtml() {
         '</select>' +
         '<select id="ela-cert-filter-status" class="input" style="padding:0.35rem 0.5rem">' +
           '<option value="">' + t('admin.certs.allStatuses') + '</option>' +
-          '<option value="active">active</option>' +
-          '<option value="revoked">revoked</option>' +
-          '<option value="expired">expired</option>' +
+          '<option value="active">' + t('admin.status.active') + '</option>' +
+          '<option value="revoked">' + t('admin.status.revoked') + '</option>' +
+          '<option value="expired">' + t('admin.status.expired') + '</option>' +
         '</select>' +
         '<button type="button" class="btn btn-outline btn-sm" id="ela-cert-refresh">' + t('admin.refresh') + '</button>' +
       '</div>' +
@@ -91,11 +91,14 @@ function renderTable() {
     return;
   }
   const rows = certState.items.map(function (c) {
+    const statusLabel = c.status === 'active' ? t('admin.status.active')
+      : c.status === 'revoked' ? t('admin.status.revoked')
+      : c.status === 'expired' ? t('admin.status.expired') : esc(c.status || '');
     const pill = c.status === 'active'
-      ? '<span class="badge badge-emerald">active</span>'
+      ? '<span class="badge badge-emerald">' + statusLabel + '</span>'
       : c.status === 'revoked'
-        ? '<span class="badge badge-red">revoked</span>'
-        : '<span class="badge badge-gold">' + esc(c.status || '') + '</span>';
+        ? '<span class="badge badge-red">' + statusLabel + '</span>'
+        : '<span class="badge badge-gold">' + statusLabel + '</span>';
     return '<tr>' +
       '<td style="font-family:monospace;font-size:0.78rem">' + esc(c.id) + '</td>' +
       '<td><span class="user-name">' + esc(c.studentName) + '</span></td>' +

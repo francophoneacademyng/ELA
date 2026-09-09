@@ -7,18 +7,19 @@
 
 import { renderTeacherShell } from './teacher-shell.js';
 import { escapeHtml, formatDate, toast } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/teacher-state.js';
 import { refreshSubmissions } from '../services/submission.service.js';
 
 export function renderTeacherQuizzes() {
   renderTeacherShell({
     active: '#/teacher/quizzes',
-    title: 'Mes quiz 📝',
-    subtitle: 'Vos quiz et leur statut de validation.',
+    title: t('teacher.quizzes.title'),
+    subtitle: t('teacher.quizzes.subtitle'),
     renderContent: function () { return layoutHtml(); },
     onBind: function (app) {
       refreshSubmissions().then(repaint).catch(function () {
-        toast('Impossible de charger vos quiz.', 'error');
+        toast(t('teacher.error.submit'), 'error');
       });
     }
   });
@@ -39,24 +40,28 @@ function listInner() {
   var list = (getState().submissions || []).filter(function (s) { return s.type === 'quiz'; });
   if (!list.length) {
     return '<div class="empty-state"><div class="empty-icon">📝</div>' +
-      '<p>Aucun quiz pour le moment.</p>' +
-      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/quiz/new">+ Créer mon premier quiz</a></p></div>';
+      '<p>' + t('teacher.quizzes.empty') + '</p>' +
+      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/quiz/new">' + t('teacher.quizzes.emptyCTA') + '</a></p></div>';
   }
   var rows = list.map(function (s) {
     return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
       '<td>' + (s.createdAt ? formatDate(s.createdAt) : '—') + '</td>' +
       '<td>' + statusBadge(s.status) + '</td>' +
-      '<td>' + (s.isApproved() ? '<span class="muted">Publié ✓</span>'
-        : '<span class="muted">Validation en cours</span>') + '</td></tr>';
+      '<td>' + (s.isApproved() ? '<span class="muted">' + t('teacher.quizzes.published') + '</span>'
+        : '<span class="muted">' + t('teacher.quizzes.pending') + '</span>') + '</td></tr>';
   }).join('');
   return '<div class="table-responsive"><table class="data-table">' +
-    '<thead><tr><th>Titre</th><th>Date</th><th>Statut</th><th>Action</th></tr></thead>' +
+    '<thead><tr><th>' + t('admin.col.title') + '</th><th>' + t('admin.col.date') + '</th><th>' + t('admin.col.status') + '</th><th>' + t('teacher.courses.col.action') + '</th></tr></thead>' +
     '<tbody>' + rows + '</tbody></table></div>' +
-    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/quiz/new">+ Nouveau quiz</a></div>';
+    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/quiz/new">' + t('teacher.quizzes.new') + '</a></div>';
 }
 
 function statusBadge(status) {
-  var map = { pending: ['badge-wait', 'En attente'], approved: ['badge-ok', 'Approuvé'], rejected: ['badge-ko', 'Rejeté'] };
-  var m = map[status] || ['badge-muted', status || '—'];
+  var map = {
+    pending: ['badge-wait', t('teacher.status.pending')],
+    approved: ['badge-ok', t('teacher.status.approved')],
+    rejected: ['badge-ko', t('teacher.status.rejected')]
+  };
+  var m = map[status] || ['badge-muted', String(status || '—')];
   return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
 }

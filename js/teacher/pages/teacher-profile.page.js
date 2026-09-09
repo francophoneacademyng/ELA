@@ -10,13 +10,16 @@
 import { renderTeacherShell } from './teacher-shell.js';
 import { getProfile } from '../../core/auth.service.js';
 import { toast } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { ACADEMIES, codeFromKey } from '../../../src/shared/config/academies.config.js';
+
+var ACADEMY_OPT = { FR: 'francophone', DE: 'germanophone', ZH: 'sinophone', EN: 'anglophone', AR: 'arabophone', RU: 'russophone' };
 
 export function renderTeacherProfile() {
   renderTeacherShell({
     active: '#/teacher/profile',
-    title: 'Mon profil ⚙️',
-    subtitle: 'Vos informations personnelles.',
+    title: t('teacher.profile.title'),
+    subtitle: t('teacher.profile.subtitle'),
     renderContent: function (profile) { return layoutHtml(profile); },
     onBind: function () { bindSave(); }
   });
@@ -31,23 +34,23 @@ function layoutHtml(profile) {
     '<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem">' +
       '<div style="width:56px;height:56px;border-radius:50%;background:var(--forest);color:#fff;' +
         'display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700">' + initials + '</div>' +
-      '<div><strong class="user-name">' + esc(p.displayName || 'Enseignant') + '</strong>' +
+      '<div><strong class="user-name">' + esc(p.displayName || t('admin.teacher')) + '</strong>' +
         '<p class="muted" style="margin:0">' + academyLabel + '</p></div>' +
     '</div>' +
     '<div style="margin-bottom:0.9rem">' +
-      '<label for="tp-name" style="display:block;font-weight:600;margin-bottom:0.3rem">Nom affiché</label>' +
+      '<label for="tp-name" style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('teacher.profile.displayName') + '</label>' +
       '<input type="text" id="tp-name" class="input" style="width:100%" value="' + esc(p.displayName || '') + '">' +
     '</div>' +
     '<div style="margin-bottom:0.9rem">' +
-      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">Email</label>' +
+      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('admin.email') + '</label>' +
       '<input type="text" class="input" style="width:100%" value="' + esc(p.email || '') + '" readonly disabled>' +
     '</div>' +
     '<div style="margin-bottom:0.9rem">' +
-      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">Académie</label>' +
+      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('admin.academy') + '</label>' +
       '<input type="text" class="input" style="width:100%" value="' + esc(academyLabel) + '" readonly disabled>' +
-      '<p class="muted" style="margin:0.3rem 0 0;font-size:0.8rem">L\'académie est attribuée par l\'administration.</p>' +
+      '<p class="muted" style="margin:0.3rem 0 0;font-size:0.8rem">' + t('teacher.profile.academyHint') + '</p>' +
     '</div>' +
-    '<button class="btn btn-solid" id="tp-save">Enregistrer</button>' +
+    '<button class="btn btn-solid" id="tp-save">' + t('admin.save') + '</button>' +
   '</div>';
 }
 
@@ -57,18 +60,18 @@ function bindSave() {
   btn.addEventListener('click', function () {
     var name = (document.getElementById('tp-name') || {}).value || '';
     name = name.trim();
-    if (!name) { toast('Le nom ne peut pas être vide.', 'error'); return; }
+    if (!name) { toast(t('teacher.profile.nameEmpty'), 'error'); return; }
     getProfile().then(function (profile) {
-      if (!profile || !profile.uid) { toast('Profil introuvable.', 'error'); return; }
+      if (!profile || !profile.uid) { toast(t('teacher.profile.saveError'), 'error'); return; }
       var db = window.firebase && window.firebase.firestore;
-      if (!db) { toast('Service indisponible.', 'error'); return; }
+      if (!db) { toast(t('teacher.profile.serviceUnavailable'), 'error'); return; }
       btn.disabled = true;
       return db().collection('users').doc(profile.uid).update({ displayName: name })
         .then(function () {
-          toast('Profil enregistré ✅', 'success');
+          toast(t('teacher.profile.saved') + ' ✅', 'success');
           return getProfile(true); // invalide le cache
         })
-        .catch(function () { toast("Erreur lors de l'enregistrement.", 'error'); })
+        .catch(function () { toast(t('teacher.profile.saveError'), 'error'); })
         .then(function () { btn.disabled = false; });
     });
   });
@@ -76,8 +79,10 @@ function bindSave() {
 
 function academyOf(key) {
   var code = codeFromKey(key) || String(key || '').toUpperCase();
+  var opt = ACADEMY_OPT[code];
+  if (opt) return t('academies.option.' + opt);
   var a = ACADEMIES[code];
-  return a ? a.label : 'Non assignée';
+  return a ? a.label : t('teacher.profile.notAssigned');
 }
 
 function esc(s) {

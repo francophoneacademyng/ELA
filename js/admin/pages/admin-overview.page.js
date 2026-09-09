@@ -7,14 +7,15 @@
 
 import { renderAdminShell } from './admin-shell.js';
 import { fmtNgn } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { callFunction } from '../../core/api-client.js';
 import { getState } from '../services/admin-state.js';
 
 export function renderAdminOverview() {
   renderAdminShell({
     active: '#/admin/overview',
-    title: 'Vue d\'ensemble',
-    subtitle: 'Activité globale de la plateforme.',
+    title: t('admin.overview'),
+    subtitle: t('admin.overview.subtitle'),
     renderContent: function () { return kpisHtml({ courses: '…' }); },
     onBind: function () { loadCourseStats(); paint(); }
   });
@@ -58,12 +59,12 @@ function set(id, val) {
 
 function kpisHtml(stats) {
   return '<div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">' +
-    kpi('💰 REVENUS DU MOIS', 'ov-revenue', 'NGN 0') +
-    kpi('👥 ÉTUDIANTS ACTIFS', 'ov-students', '0') +
-    kpi('👨‍🏫 ENSEIGNANTS', 'ov-teachers', '0') +
-    kpi('📚 COURS', 'ov-courses', String(stats.courses || 0)) +
-    kpi('🆕 INSCRIPTIONS (7J)', 'ov-new', '0') +
-    kpi('🎁 PARRAINAGES', 'ov-referrals', '0') +
+    kpi(t('admin.overview.kpi.revenue'), 'ov-revenue', 'NGN 0') +
+    kpi(t('admin.overview.kpi.students'), 'ov-students', '0') +
+    kpi(t('admin.overview.kpi.teachers'), 'ov-teachers', '0') +
+    kpi(t('admin.overview.kpi.courses'), 'ov-courses', String(stats.courses || 0)) +
+    kpi(t('admin.overview.kpi.signups'), 'ov-new', '0') +
+    kpi(t('admin.overview.kpi.referrals'), 'ov-referrals', '0') +
   '</div>';
 }
 

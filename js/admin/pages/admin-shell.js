@@ -7,6 +7,7 @@
 
 import { requireAdmin } from '../../core/auth.service.js';
 import { afterRender } from '../../core/dom.js';
+import { t } from '../../core/i18n-helpers.js';
 import { fetchAdminPanelData } from '../repositories/admin-data.repository.js';
 import { refreshQueue } from '../services/admin-review.service.js';
 import { getState, setState } from '../services/admin-state.js';
@@ -17,25 +18,25 @@ export function adminSidebarHtml(active) {
     return '<a href="' + href + '" class="nav-item' + (active === href ? ' active' : '') + '">' + label + '</a>';
   }
   return '' +
-    '<div class="sidebar-brand">ELA Admin</div>' +
+    '<div class="sidebar-brand">' + t('admin.shell.title.brand') + '</div>' +
     '<nav class="sidebar-nav">' +
-      a('#/admin/overview', '🏠 Vue d\'ensemble') +
-      '<div class="nav-section">Gestion</div>' +
-      a('#/admin/live', '🔴 Classes Live') +
-      a('#/admin/users', '👥 Utilisateurs') +
-      a('#/admin/teachers', '👨‍🏫 Enseignants') +
-      a('#/admin/academies', '🎓 Académies') +
-      '<div class="nav-section">Contenu & Comm.</div>' +
-      a('#/admin/content', '📚 Contenu') +
-      a('#/admin/whatsapp', '💬 WhatsApp') +
-      '<div class="nav-section">Finance</div>' +
-      a('#/admin/payments', '💳 Paiements') +
-      a('#/admin/referrals', '🎁 Parrainages') +
-      a('#/admin/invoices', '📄 Factures perso.') +
-      '<div class="nav-section">Certifications</div>' +
-      a('#/admin/certificates', '🏆 Certificats') +
-      '<div class="nav-section">Système</div>' +
-      a('#/admin/tools', '🛠 Outils système') +
+      a('#/admin/overview', '🏠 ' + t('admin.overview')) +
+      '<div class="nav-section">' + t('admin.navGroup.gestion') + '</div>' +
+      a('#/admin/live', '🔴 ' + t('admin.live')) +
+      a('#/admin/users', '👥 ' + t('admin.users')) +
+      a('#/admin/teachers', '👨‍🏫 ' + t('admin.teachers')) +
+      a('#/admin/academies', '🎓 ' + t('admin.academies')) +
+      '<div class="nav-section">' + t('admin.navGroup.content') + '</div>' +
+      a('#/admin/content', '📚 ' + t('admin.content')) +
+      a('#/admin/whatsapp', '💬 ' + t('admin.whatsapp')) +
+      '<div class="nav-section">' + t('admin.navGroup.finance') + '</div>' +
+      a('#/admin/payments', '💳 ' + t('admin.payments')) +
+      a('#/admin/referrals', '🎁 ' + t('admin.referrals')) +
+      a('#/admin/invoices', '📄 ' + t('admin.invoices')) +
+      '<div class="nav-section">' + t('admin.navGroup.certifications') + '</div>' +
+      a('#/admin/certificates', '🏆 ' + t('admin.certificates')) +
+      '<div class="nav-section">' + t('admin.navGroup.system') + '</div>' +
+      a('#/admin/tools', '🛠 ' + t('admin.tools')) +
     '</nav>';
 }
 
@@ -43,8 +44,8 @@ export function adminSidebarHtml(active) {
 export function forbiddenAdmin(app) {
   app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
     '<div class="empty-state"><div class="empty-icon">🔒</div>' +
-    '<p>Accès réservé aux administrateurs.</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">Se connecter</a></p>' +
+    '<p>' + t('admin.gate.body') + '</p>' +
+    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
     '</div></main></div>';
   afterRender('');
 }
@@ -89,36 +90,36 @@ function adminStateHtml(s) {
   if (!e) {
     // Résultat vide : la plateforme n'a pas encore de données.
     return '<div class="empty-state"><div class="empty-icon">🌱</div>' +
-      '<h3>La plateforme démarre</h3>' +
-      '<p>Aucune donnée à afficher pour le moment. Les statistiques apparaîtront dès les premiers comptes et paiements.</p>' +
-      '<button class="btn btn-outline btn-sm" id="admin-retry-load">🔄 Rafraîchir</button></div>';
+      '<h3>' + t('admin.empty.startup.title') + '</h3>' +
+      '<p>' + t('admin.empty.startup.body') + '</p>' +
+      '<button class="btn btn-outline btn-sm" id="admin-retry-load">🔄 ' + t('admin.refresh') + '</button></div>';
   }
 
   if (code === 'permission-denied') {
     return '<div class="empty-state"><div class="empty-icon">🔑</div>' +
-      '<h3>Accès administrateur requis</h3>' +
-      '<p>Votre compte n\'a pas encore le rôle administrateur côté serveur. Contactez un administrateur existant pour l\'obtenir.</p></div>';
+      '<h3>' + t('admin.forbidden.title') + '</h3>' +
+      '<p>' + t('admin.forbidden.body') + '</p></div>';
   }
 
   if (code === 'unauthenticated') {
     return '<div class="empty-state"><div class="empty-icon">⏳</div>' +
-      '<h3>Session expirée</h3>' +
-      '<p>Reconnectez-vous pour accéder au panel d\'administration.</p>' +
-      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">Se connecter</a></p></div>';
+      '<h3>' + t('admin.session.expired') + '</h3>' +
+      '<p>' + t('admin.session.expired.body') + '</p>' +
+      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p></div>';
   }
 
   // Indisponibilité passagère (fonction non déployée, réseau, quota…)
   return '<div class="empty-state"><div class="empty-icon">📡</div>' +
-    '<h3>Données momentanément indisponibles</h3>' +
-    '<p>Le service met un peu plus de temps que prévu à répondre. Réessayez dans quelques instants.</p>' +
-    '<button class="btn btn-outline btn-sm" id="admin-retry-load">🔄 Réessayer</button></div>';
+    '<h3>' + t('admin.unavailable.title') + '</h3>' +
+    '<p>' + t('admin.unavailable.body') + '</p>' +
+    '<button class="btn btn-outline btn-sm" id="admin-retry-load">🔄 ' + t('admin.unavailable.retry') + '</button></div>';
 }
 
 /** (Ré)essaie le chargement puis réaffiche la page. */
 function retryLoad(config) {
   return function () {
     const btn = document.getElementById('admin-retry-load');
-    if (btn) { btn.disabled = true; btn.textContent = 'Chargement…'; }
+    if (btn) { btn.disabled = true; btn.textContent = t('common.loading'); }
     ensureAdminData().then(function () { renderAdminShell(config); });
   };
 }

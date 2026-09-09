@@ -4,18 +4,20 @@
    de la validation de contenu. Aucun prompt()/alert() nulle part.
    ============================================================ */
 
+import { t } from '../../core/i18n-helpers.js';
+
 /** HTML de la modale (à injecter une fois dans la page). */
 export function rejectModalHtml() {
   return '<div class="modal-overlay" id="reject-modal">' +
     '<div class="manage-card">' +
-      '<h2>Rejeter ce contenu</h2>' +
-      '<div class="form-row"><label>Motif du rejet (obligatoire)</label>' +
+      '<h2>' + t('admin.rejectModal.title') + '</h2>' +
+      '<div class="form-row"><label>' + t('admin.rejectModal.reasonRequired') + '</label>' +
         '<textarea id="reject-reason" class="manage-input" rows="4" ' +
-        'placeholder="Expliquez pourquoi ce contenu est rejeté…" ' +
+        'placeholder="' + t('admin.rejectModal.placeholder') + '" ' +
         'style="resize:vertical;font-family:inherit;"></textarea></div>' +
       '<div class="manage-actions">' +
-        '<button class="btn-manage-cancel" id="reject-cancel">Annuler</button>' +
-        '<button class="btn-manage-save" id="reject-confirm" style="background:#991b1b;">Confirmer le rejet</button>' +
+        '<button class="btn-manage-cancel" id="reject-cancel">' + t('admin.cancel') + '</button>' +
+        '<button class="btn-manage-save" id="reject-confirm" style="background:#991b1b;">' + t('admin.rejectModal.confirm') + '</button>' +
       '</div>' +
     '</div>' +
   '</div>';

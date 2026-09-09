@@ -1,12 +1,13 @@
-/* ============================================================
-   ELA — academies/base/pages/quiz.factory.js
-   Fabrique de la page Quiz & Assessments d'une académie.
+﻿/* ============================================================
+   ELA â€” academies/base/pages/quiz.factory.js
+   Fabrique de la page Quiz & Assessments d'une acadÃ©mie.
    ============================================================ */
 
 import { mountShell } from '../../../shared/components/academy/academy-shell.js';
 import { checkAcademyAccess } from '../../../shared/components/academy/academy-access.js';
 import { quizCards, sortQuizzesByLevel } from '../../../shared/components/academy/quiz-cards.js';
 import { callFunction } from '../../../js/core/api-client.js';
+import { t } from '../../../js/core/i18n-helpers.js';
 import { renderLockedView } from './dashboard.factory.js';
 
 export function createQuizPage(code) {
@@ -24,22 +25,21 @@ export function createQuizPage(code) {
         mountShell({
           code: code, label: a.label, native: a.native, flag: a.flag,
           color: a.color, certification: a.certification, activePage: 'quiz',
-          contentHtml: '<h3>Quiz & Assessments</h3>' +
-            '<p class="ac-header-cert" style="margin:0 0 1rem">20 questions — certificate at 80%</p>' +
+          contentHtml: '<h3>' + t('academies.shell.quiz') + '</h3>' +
             (quizzes.length
               ? quizCards({ quizzes: quizzes, levels: a.levels })
-              : '<p class="ac-courses-empty">No quiz available yet for this academy.</p>')
+              : '<p class="ac-courses-empty">' + t('academies.quiz.emptyAcademy') + '</p>')
         });
       }).catch(function () {
         mountShell({
           code: code, label: a.label, native: a.native, flag: a.flag,
           color: a.color, certification: a.certification, activePage: 'quiz',
-          contentHtml: '<p class="ac-courses-empty">Quiz indisponibles pour le moment.</p>'
+          contentHtml: '<p class="ac-courses-empty">' + t('academies.quiz.unavailable') + '</p>'
         });
       });
     }).catch(function () {
       const app = document.getElementById('app');
-      if (app) app.innerHTML = '<p class="ac-courses-empty">Unable to load this academy page. Please try again.</p>';
+      if (app) app.innerHTML = '<p class="ac-courses-empty">' + t('academies.loadError') + '</p>';
     });
   };
 }

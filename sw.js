@@ -1,6 +1,6 @@
 /* ============================================================
    ELA — Service Worker (PWA)
-   Version du cache : ela-pwa-v2
+   Version du cache : ela-pwa-v3
    Strategie :
      - Cache-First pour les assets statiques (CSS, JS, fonts,
        images clefs).
@@ -8,7 +8,7 @@
        sur le cache puis sur index.html (SPA hash-routing).
    ============================================================ */
 
-var CACHE_NAME = 'ela-pwa-v2';
+var CACHE_NAME = 'ela-pwa-v3';
 
 var PRECACHE_URLS = [
   '/',
