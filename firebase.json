@@ -14,7 +14,8 @@
       "*.zip",
       "package.json",
       "package-lock.json",
-      "*-debug.log"
+      "*-debug.log",
+      "*.log"
     ],
     "redirects": [
       {
