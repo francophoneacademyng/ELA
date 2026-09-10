@@ -308,6 +308,22 @@
   var checkoutState = { plan: null, duration: null, referralCode: '', preview: null, loading: false };
   var checkoutDebounce = null;
 
+  /* Suivi d'abandon de checkout (GA4) : armé à l'affichage du checkout,
+     désarmé dès que l'utilisateur part vers Paystack. */
+  var checkoutAbandon = { armed: false, active: false, paid: false };
+  function armCheckoutAbandon() {
+    checkoutAbandon.active = true;
+    checkoutAbandon.paid = false;
+    if (checkoutAbandon.armed) return;
+    checkoutAbandon.armed = true;
+    window.addEventListener('pagehide', function () {
+      if (checkoutAbandon.active && !checkoutAbandon.paid && window.ELAMarketing) {
+        window.ELAMarketing.track('checkout_abandoned', {});
+      }
+      checkoutAbandon.active = false;
+    });
+  }
+
   function renderCheckoutSummary() {
     var line = document.getElementById('checkout-price-line');
     var pay = document.getElementById('checkout-pay');
@@ -458,6 +474,7 @@
         init({ plan: checkoutState.plan, duration: checkoutState.duration, referralCode: checkoutState.referralCode })
           .then(function (r) {
             if (r.data && r.data.authorizationUrl) {
+              checkoutAbandon.paid = true;
               window.location.href = r.data.authorizationUrl;
             } else {
               err.classList.add('show');
@@ -482,6 +499,7 @@
     afterRender('pricing');
     refreshCheckoutPreview();
     if (window.ELAMarketing) window.ELAMarketing.track('checkout_started', { plan: checkoutState.plan || 'general', duration: checkoutState.duration || 1 });
+    armCheckoutAbandon();
   }
 
   /* ---------- Payment result ---------- */

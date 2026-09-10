@@ -35,8 +35,12 @@ window.ELAMarketing = (function () {
   }
   function g(event, params) { if (gaOn && window.gtag) window.gtag('event', event, params || {}); }
 
-  /* ---------- Firestore marketingEvents (create-only) ---------- */
+  /* ---------- Firestore marketingEvents (create-only) ----------
+     Seuls les événements autorisés par firestore.rules sont écrits en base ;
+     les autres restent GA4-only (évite des écritures refusées inutiles). */
+  var FS_EVENTS = ['page_view', 'registration', 'trial_started', 'checkout_started'];
   function fsLog(event, data) {
+    if (FS_EVENTS.indexOf(event) < 0) return;
     try {
       if (window.firebase && window.firebase.firestore) {
         var doc = { event: event, ts: Date.now() };
