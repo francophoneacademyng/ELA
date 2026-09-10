@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>Vérifier un certificat — E-Learn Language Academy</title>
-<meta name="description" content="Vérification publique de l'authenticité des certificats délivrés par E-Learn Language Academy (ELA).">
+<link rel="canonical" href="https://elaacademy.ng/verify.html">
+<title>Verify a certificate — E-Learn Language Academy</title>
+<meta name="description" content="Public verification of the authenticity of certificates issued by E-Learn Language Academy (ELA).">
 <style>
   :root { --forest:#063D2C; --emerald:#0B6B4F; --gold:#C9A227; --cream:#FAF6EC; --muted:#5f7d70; --line:#e3e8e5; --red:#b3261e; }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -31,6 +32,9 @@
   .msg { text-align:center; color:var(--muted); font-size:0.9rem; padding:1rem 0; }
   .error { color:var(--red); font-size:0.85rem; text-align:center; margin-top:0.5rem; }
   footer { text-align:center; color:var(--muted); font-size:0.75rem; margin-top:1.2rem; }
+  .lang { text-align:center; margin-top:0.6rem; font-size:0.8rem; }
+  .lang a { color:var(--emerald); text-decoration:none; margin:0 0.3rem; }
+  .lang a.active { font-weight:700; text-decoration:underline; }
   @media (max-width:480px){ .card{ padding:1.3rem; } .row{ flex-direction:column; gap:0.1rem; } .row dd{ text-align:left; } }
 </style>
 </head>
@@ -39,61 +43,115 @@
   <div class="brand">
     <span class="logo">ELA</span>
     <div class="bar"></div>
-    <p>E-Learn Language Academy — Seule institution certifiante officielle</p>
+    <p id="brand-sub">E-Learn Language Academy — ELA certificate verification</p>
   </div>
-  <h1>Vérification de certificat</h1>
+  <h1 id="heading">Verify a certificate</h1>
   <form class="search" id="form">
     <input id="cert-id" type="text" placeholder="ELA-FR-B1-8X92KD" autocomplete="off" spellcheck="false">
-    <button type="submit">Vérifier</button>
+    <button type="submit" id="submit-btn">Verify</button>
   </form>
   <p class="error" id="error" style="display:none"></p>
   <section class="result" id="result">
-    <p class="msg">Saisissez le numéro figurant sur le certificat (ex&nbsp;: ELA-FR-B1-8X92KD).</p>
+    <p class="msg" id="initial-msg">Enter the number printed on the certificate (e.g. ELA-FR-B1-8X92KD).</p>
   </section>
-  <footer>La vérification interroge exclusivement l'autorité de certification ELA.<br>© E-Learn Language Academy</footer>
+  <div class="lang"><a href="?lang=en" data-l="en">EN</a> · <a href="?lang=fr" data-l="fr">FR</a></div>
+  <footer id="footer">Verification queries only the official ELA certification authority.<br>© E-Learn Language Academy</footer>
 </main>
 <script>
 (function () {
   var result = document.getElementById('result');
+  var L = {
+    en: {
+      title: 'Verify a certificate — E-Learn Language Academy',
+      desc: 'Public verification of the authenticity of certificates issued by E-Learn Language Academy (ELA).',
+      brand: 'E-Learn Language Academy — ELA certificate verification',
+      heading: 'Verify a certificate',
+      submit: 'Verify',
+      initial: 'Enter the number printed on the certificate (e.g. ELA-FR-B1-8X92KD).',
+      checking: 'Checking…',
+      notFoundBadge: 'Not found',
+      notFound: 'No ELA certificate matches this number.',
+      valid: 'Valid — authentic certificate',
+      revoked: 'Revoked / invalid',
+      service: 'Service temporarily unavailable. Please try again.',
+      footer: 'Verification queries only the official ELA certification authority.<br>© E-Learn Language Academy',
+      rows: { certificateId: 'Certificate no.', studentName: 'Holder', institution: 'Institution', academyLabel: 'Academy', cecrLevel: 'CEFR level', issueDate: 'Issued on', expiryDate: 'Valid until', status: 'Status' }
+    },
+    fr: {
+      title: 'Vérifier un certificat — E-Learn Language Academy',
+      desc: "Vérification publique de l'authenticité des certificats délivrés par E-Learn Language Academy (ELA).",
+      brand: 'E-Learn Language Academy — Vérification des certificats ELA',
+      heading: 'Vérification de certificat',
+      submit: 'Vérifier',
+      initial: 'Saisissez le numéro figurant sur le certificat (ex : ELA-FR-B1-8X92KD).',
+      checking: 'Vérification en cours…',
+      notFoundBadge: 'Introuvable',
+      notFound: 'Aucun certificat ELA ne correspond à ce numéro.',
+      valid: 'Valide — Certificat authentique',
+      revoked: 'Révoqué / invalide',
+      service: 'Service momentanément indisponible. Réessayez.',
+      footer: "La vérification interroge exclusivement l'autorité de certification ELA.<br>© E-Learn Language Academy",
+      rows: { certificateId: 'N° de certificat', studentName: 'Titulaire', institution: 'Institution', academyLabel: 'Académie', cecrLevel: 'Niveau CECR', issueDate: 'Délivré le', expiryDate: "Valide jusqu'au", status: 'Statut' }
+    }
+  };
 
-  function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
+  function detectLang() {
+    var q = new URLSearchParams(window.location.search).get('lang');
+    if (q === 'fr' || q === 'en') return q;
+    return (navigator.language || 'en').toLowerCase().indexOf('fr') === 0 ? 'fr' : 'en';
+  }
+  var lang = detectLang();
+  var s = L[lang];
+
+  document.documentElement.setAttribute('lang', lang);
+  document.title = s.title;
+  var md = document.querySelector('meta[name="description"]');
+  if (md) md.setAttribute('content', s.desc);
+  document.getElementById('brand-sub').textContent = s.brand;
+  document.getElementById('heading').textContent = s.heading;
+  document.getElementById('submit-btn').textContent = s.submit;
+  document.getElementById('initial-msg').textContent = s.initial;
+  document.getElementById('footer').innerHTML = s.footer;
+  document.querySelectorAll('.lang a').forEach(function (a) {
+    a.classList.toggle('active', a.getAttribute('data-l') === lang);
+  });
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (ch) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
     });
   }
-
   function row(label, value) {
     return '<div class="row"><dt>' + label + '</dt><dd>' + esc(value || '—') + '</dd></div>';
   }
 
-  /* Appel UNIQUEMENT l'endpoint HTTPS officiel — jamais de lecture
-     Firestore directe. Aucune donnée sensible n'est retournée. */
+  /* Appel UNIQUEMENT l'endpoint HTTPS officiel — jamais de lecture Firestore directe. */
   function verify(id) {
-    result.innerHTML = '<p class="msg">Vérification en cours…</p>';
+    result.innerHTML = '<p class="msg">' + s.checking + '</p>';
     fetch('/verifyELACertificate?id=' + encodeURIComponent(id))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (!d || d.found === false) {
-          result.innerHTML = '<div class="center"><span class="badge invalid">Introuvable</span>' +
-            '<p class="msg">Aucun certificat ELA ne correspond à ce numéro.</p></div>';
+          result.innerHTML = '<div class="center"><span class="badge invalid">' + s.notFoundBadge + '</span>' +
+            '<p class="msg">' + s.notFound + '</p></div>';
           return;
         }
         var badge = d.valid
-          ? '<span class="badge valid">Valid — Certificat authentique</span>'
-          : '<span class="badge invalid">Révoqué / invalide</span>';
+          ? '<span class="badge valid">' + s.valid + '</span>'
+          : '<span class="badge invalid">' + s.revoked + '</span>';
         result.innerHTML =
           '<div class="center" style="margin-bottom:0.8rem">' + badge + '</div>' +
-          row('N° de certificat', d.certificateId) +
-          row('Titulaire', d.studentName) +
-          row('Institution', d.institution) +
-          row('Académie', d.academyLabel) +
-          row('Niveau CECRL', d.cecrLevel) +
-          row('Délivré le', d.issueDate) +
-          row('Valide jusqu’au', d.expiryDate) +
-          row('Statut', d.status);
+          row(s.rows.certificateId, d.certificateId) +
+          row(s.rows.studentName, d.studentName) +
+          row(s.rows.institution, d.institution) +
+          row(s.rows.academyLabel, d.academyLabel) +
+          row(s.rows.cecrLevel, d.cecrLevel) +
+          row(s.rows.issueDate, d.issueDate) +
+          row(s.rows.expiryDate, d.expiryDate) +
+          row(s.rows.status, d.status);
       })
       .catch(function () {
-        result.innerHTML = '<p class="msg">Service momentanément indisponible. Réessayez.</p>';
+        result.innerHTML = '<p class="msg">' + s.service + '</p>';
       });
   }
 
@@ -104,7 +162,6 @@
     verify(id);
   });
 
-  /* Support direct /verify.html?id=ELA-XXX */
   var q = new URLSearchParams(window.location.search).get('id');
   if (q) {
     document.getElementById('cert-id').value = q.toUpperCase();
