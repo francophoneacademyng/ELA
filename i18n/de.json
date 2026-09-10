@@ -960,5 +960,6 @@
   "inst.point.3": "Fortschrittsberichte für dein Team",
   "inst.point.4": "Verifizierbare ELA-Zertifikate",
   "inst.cta": "Interesse anmelden",
-  "inst.note": "Wir verwenden deine E-Mail nur, um dich zum institutionellen Programm zu kontaktieren."
+  "inst.note": "Wir verwenden deine E-Mail nur, um dich zum institutionellen Programm zu kontaktieren.",
+  "footer.verify": "Zertifikat prüfen"
 }

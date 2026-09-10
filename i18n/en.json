@@ -960,5 +960,6 @@
   "inst.point.3": "Progress reporting for your team",
   "inst.point.4": "Verifiable ELA certificates",
   "inst.cta": "Register your interest",
-  "inst.note": "We will only use your email to contact you about the institutional programme."
+  "inst.note": "We will only use your email to contact you about the institutional programme.",
+  "footer.verify": "Verify a certificate"
 }

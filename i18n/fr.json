@@ -960,5 +960,6 @@
   "inst.point.3": "Suivi de progression pour ton équipe",
   "inst.point.4": "Certificats ELA vérifiables",
   "inst.cta": "Manifester mon intérêt",
-  "inst.note": "Ton email ne servira qu’à te contacter au sujet du programme institutionnel."
+  "inst.note": "Ton email ne servira qu’à te contacter au sujet du programme institutionnel.",
+  "footer.verify": "Vérifier un certificat"
 }

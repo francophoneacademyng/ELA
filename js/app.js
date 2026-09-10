@@ -1807,7 +1807,7 @@
           '<button type="button" class="choice" data-choice-lang="fr"><span class="choice-name">Français</span><span class="choice-tag">FR</span></button>' +
           '<button type="button" class="choice" data-choice-lang="ar"><span class="choice-name">العربية</span><span class="choice-tag">AR</span></button>' +
           '<button type="button" class="choice" data-choice-lang="de"><span class="choice-name">Deutsch</span><span class="choice-tag">DE</span></button>' +
-          '<button type="button" class="choice" data-choice-lang="es"><span class="choice-name">Español</span><span class="choice-tag">ES</span></button>' +
+          '<button type="button" class="choice" data-choice-lang="ru"><span class="choice-name">Русский</span><span class="choice-tag">RU</span></button>' +
           '<button type="button" class="choice" data-choice-lang="zh"><span class="choice-name">中文</span><span class="choice-tag">ZH</span></button>' +
         '</div>';
     } else if (s.step === 2) {

@@ -960,5 +960,6 @@
   "inst.point.3": "为你的团队提供进度报告",
   "inst.point.4": "可核验的 ELA 证书",
   "inst.cta": "登记意向",
-  "inst.note": "我们仅使用你的邮箱就机构课程与你联系。"
+  "inst.note": "我们仅使用你的邮箱就机构课程与你联系。",
+  "footer.verify": "验证证书"
 }
