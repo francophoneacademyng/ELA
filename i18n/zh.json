@@ -961,5 +961,12 @@
   "inst.point.4": "可核验的 ELA 证书",
   "inst.cta": "登记意向",
   "inst.note": "我们仅使用你的邮箱就机构课程与你联系。",
-  "footer.verify": "验证证书"
+  "footer.verify": "验证证书",
+  "inst.field.org": "机构名称",
+  "inst.field.role": "您的职位",
+  "inst.field.learners": "学员人数",
+  "inst.field.languages": "所需语言",
+  "inst.field.email": "工作邮箱",
+  "inst.form.ok": "谢谢 — 我们将就机构课程与您联系。",
+  "inst.form.error": "请填写必填项并提供有效邮箱。"
 }

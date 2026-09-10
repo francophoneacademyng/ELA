@@ -961,5 +961,12 @@
   "inst.point.4": "Verifizierbare ELA-Zertifikate",
   "inst.cta": "Interesse anmelden",
   "inst.note": "Wir verwenden deine E-Mail nur, um dich zum institutionellen Programm zu kontaktieren.",
-  "footer.verify": "Zertifikat prüfen"
+  "footer.verify": "Zertifikat prüfen",
+  "inst.field.org": "Organisation",
+  "inst.field.role": "Ihre Rolle",
+  "inst.field.learners": "Anzahl der Lernenden",
+  "inst.field.languages": "Benötigte Sprachen",
+  "inst.field.email": "Geschäftliche E-Mail",
+  "inst.form.ok": "Danke — wir kontaktieren Sie zum institutionellen Programm.",
+  "inst.form.error": "Bitte füllen Sie die Pflichtfelder mit einer gültigen E-Mail aus."
 }

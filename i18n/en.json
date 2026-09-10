@@ -961,5 +961,12 @@
   "inst.point.4": "Verifiable ELA certificates",
   "inst.cta": "Register your interest",
   "inst.note": "We will only use your email to contact you about the institutional programme.",
-  "footer.verify": "Verify a certificate"
+  "footer.verify": "Verify a certificate",
+  "inst.field.org": "Organisation",
+  "inst.field.role": "Your role",
+  "inst.field.learners": "Number of learners",
+  "inst.field.languages": "Languages needed",
+  "inst.field.email": "Work email",
+  "inst.form.ok": "Thank you — we will contact you about the institutional programme.",
+  "inst.form.error": "Please complete the required fields with a valid email."
 }

@@ -961,5 +961,12 @@
   "inst.point.4": "Certificados ELA verificables",
   "inst.cta": "Registrar mi interés",
   "inst.note": "Solo usaremos tu correo para contactarte sobre el programa institucional.",
-  "footer.verify": "Verificar un certificado"
+  "footer.verify": "Verificar un certificado",
+  "inst.field.org": "Organización",
+  "inst.field.role": "Tu cargo",
+  "inst.field.learners": "Número de estudiantes",
+  "inst.field.languages": "Idiomas necesarios",
+  "inst.field.email": "Correo profesional",
+  "inst.form.ok": "Gracias — te contactaremos sobre el programa institucional.",
+  "inst.form.error": "Completa los campos obligatorios con un correo válido."
 }

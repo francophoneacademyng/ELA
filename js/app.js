@@ -1176,11 +1176,55 @@
           '<li>' + CHECK_SVG + t('inst.point.3') + '</li>' +
           '<li>' + CHECK_SVG + t('inst.point.4') + '</li>' +
         '</ul>' +
-        captureFormHtml(null, null, 'inst.cta') +
+        '<form id="inst-form" class="card" style="margin-top:1.2rem;display:grid;gap:0.8rem">' +
+          '<div class="field"><label for="inst-org">' + t('inst.field.org') + ' *</label><input id="inst-org" type="text" required></div>' +
+          '<div class="field"><label for="inst-role">' + t('inst.field.role') + '</label><input id="inst-role" type="text"></div>' +
+          '<div class="field"><label for="inst-learners">' + t('inst.field.learners') + '</label><input id="inst-learners" type="number" min="1"></div>' +
+          '<div class="field"><label for="inst-languages">' + t('inst.field.languages') + '</label><input id="inst-languages" type="text"></div>' +
+          '<div class="field"><label for="inst-email">' + t('inst.field.email') + ' *</label><input id="inst-email" type="email" required></div>' +
+          '<p class="form-error" id="inst-error">' + t('inst.form.error') + '</p>' +
+          '<button class="btn btn-solid" type="submit">' + t('inst.cta') + ARROW_SVG + '</button>' +
+        '</form>' +
+        '<p id="inst-msg" style="color:var(--emerald);font-size:0.9rem;margin-top:0.6rem"></p>' +
         '<p style="color:var(--muted);font-size:0.85rem;margin-top:0.8rem">' + t('inst.note') + '</p>' +
       '</section>';
     afterRender('institutions');
-    bindWaitlist('b2b-interest');
+    bindInstitutionsForm();
+  }
+
+  function bindInstitutionsForm() {
+    var form = document.getElementById('inst-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = (document.getElementById('inst-email').value || '').trim().toLowerCase();
+      var org = (document.getElementById('inst-org').value || '').trim();
+      var role = (document.getElementById('inst-role').value || '').trim();
+      var learnersRaw = (document.getElementById('inst-learners').value || '').trim();
+      var languages = (document.getElementById('inst-languages').value || '').trim();
+      var err = document.getElementById('inst-error');
+      var msg = document.getElementById('inst-msg');
+      var btn = form.querySelector('button[type="submit"]');
+      if (!org || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (err) err.classList.add('show');
+        return;
+      }
+      if (err) err.classList.remove('show');
+      if (!window.ELA_FIREBASE_READY || !window.firebase || !window.firebase.firestore) {
+        if (err) { err.textContent = t('inst.form.error'); err.classList.add('show'); }
+        return;
+      }
+      var doc = { email: email, ts: Date.now(), source: 'b2b-interest', org: org, role: role, languages: languages };
+      var learners = parseInt(learnersRaw, 10);
+      if (!isNaN(learners)) doc.learners = learners;
+      if (btn) btn.disabled = true;
+      window.firebase.firestore().collection('newsletterSubscribers').add(doc).then(function () {
+        if (msg) msg.textContent = t('inst.form.ok');
+        form.reset();
+      }).catch(function () {
+        if (err) { err.textContent = t('inst.form.error'); err.classList.add('show'); }
+      }).then(function () { if (btn) btn.disabled = false; });
+    });
   }
 
 
@@ -1260,7 +1304,8 @@
           '<button type="submit" class="btn btn-solid">' + t(ctaKey) + '</button>' +
         '</form>' +
         '<p data-waitlist-msg style="margin-top:0.6rem;font-size:0.9rem"></p>' +
-      '</div>';
+      '</div>' +
+      '<p style="margin-top:1rem"><a class="btn btn-outline" href="#/free-trial">' + t('nav.freeTrial') + ' →</a></p>';
   }
 
   function waitlistFormHtml() {

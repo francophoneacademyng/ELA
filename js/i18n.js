@@ -49,7 +49,9 @@ window.ELA_I18N = (function () {
     var desc = document.querySelector('meta[name="description"]');
     if (desc && dict['meta.description']) desc.setAttribute('content', dict['meta.description']);
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === current);
+      var isActive = btn.getAttribute('data-lang') === current;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
   }
 
