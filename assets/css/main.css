@@ -1875,9 +1875,9 @@ h1, h2, h3, .dashboard-header h1, .section-title {
    ============================================================ */
 
 /* ============================================================
-   RTL — Arabe (dir="rtl")
+   RTL ï¿½ Arabe (dir="rtl")
    Miroir des coquilles fixed-sidebar (admin / enseignant) et
-   sécurité du header public. Les flexbox s'inversent déjà
+   sï¿½curitï¿½ du header public. Les flexbox s'inversent dï¿½jï¿½
    automatiquement ; on inverse ici les positions fixes & marges.
    ============================================================ */
 [dir="rtl"] .sidebar {
@@ -1904,7 +1904,7 @@ h1, h2, h3, .dashboard-header h1, .section-title {
 [dir="rtl"] .nav-section {
   text-align: right;
 }
-/* Icônes Font Awesome : ne pas inverser les flèches directionnelles */
+/* Icï¿½nes Font Awesome : ne pas inverser les flï¿½ches directionnelles */
 [dir="rtl"] .fa-arrow-right, [dir="rtl"] .fa-arrow-left {
   transform: scaleX(-1);
 }
@@ -1912,4 +1912,245 @@ h1, h2, h3, .dashboard-header h1, .section-title {
   [dir="rtl"] .sidebar {
     position: relative;
   }
+}
+
+/* ============================================================
+   ACADEMIES â€” Grille catalogue premium 3 x 2 (page #/academies)
+   Desktop 3 colonnes / tablette 2 / mobile 1. RTL-safe.
+   Cartes de hauteur egale, CTA aligne en bas.
+   ============================================================ */
+.academies-grid-section {
+  border-top: 1px solid var(--line);
+}
+
+.academies-head {
+  max-width: 64ch;
+  margin-bottom: clamp(2.2rem, 4vw, 3.2rem);
+}
+.academies-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: var(--forest);
+}
+.academies-sub {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  max-width: 62ch;
+}
+
+/* La vraie grille 3 x 2 */
+.academies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.4vw, 1.9rem);
+  align-items: stretch;
+  padding: 0;
+  margin-top: 0;
+}
+
+/* Carte : colonne souple, hauteur egale, CTA pousse en bas */
+.academies-grid .academy-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  padding: clamp(1.5rem, 2.2vw, 2rem);
+  background: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow 0.24s var(--ease), transform 0.24s var(--ease), border-color 0.24s var(--ease);
+}
+.academies-grid .academy-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: var(--accent, var(--gold));
+}
+.academies-grid .academy-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--line);
+}
+
+/* Ligne haute : numero + code (+ badge phare) */
+.academy-card-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+.academy-card-number {
+  font-family: var(--font-brand);
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  color: var(--muted-2);
+}
+.academy-card-code {
+  font-family: var(--font-brand);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  line-height: 1.1;
+  color: var(--accent, var(--emerald));
+  background: rgba(6, 61, 44, 0.04);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  padding: 0.22rem 0.62rem;
+  unicode-bidi: isolate;
+}
+.badge-flagship {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--forest);
+  background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 100%);
+  border-radius: 999px;
+  padding: 0.3rem 0.62rem;
+  white-space: nowrap;
+}
+
+/* Hierarchie du contenu */
+.academy-card-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 1.9vw, 1.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--forest);
+}
+.academy-card-lang {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: var(--muted);
+  unicode-bidi: plaintext;
+}
+.academy-card-desc {
+  margin-top: 0.9rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  flex: 1 1 auto;
+}
+.academy-card-cert {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: var(--muted-2);
+}
+.academy-card-cert strong {
+  color: var(--forest);
+  font-weight: 700;
+}
+
+/* CTA unique, pleine largeur, cible tactile >= 48px */
+.btn-subscribe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 1.25rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  background: var(--forest);
+  border: 1.5px solid var(--forest);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-subscribe:hover {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(11, 107, 79, 0.22);
+}
+.btn-subscribe:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* AcadÃ©mie phare : distinguÃ©e sans casser l'Ã©quilibre */
+.academies-grid .academy-flagship {
+  border-color: rgba(201, 162, 39, 0.55);
+  box-shadow: 0 4px 10px rgba(6, 61, 44, 0.06), 0 18px 44px rgba(201, 162, 39, 0.16);
+}
+.academies-grid .academy-flagship::before {
+  background: linear-gradient(90deg, var(--gold-vivid), var(--accent));
+}
+
+/* CTA de bas de page */
+.academies-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: clamp(2.4rem, 4vw, 3.2rem);
+}
+
+/* Tablette : 2 colonnes (768px inclus â€” iPad portrait) */
+@media (max-width: 1024px) {
+  .academies-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.4vw, 1.9rem);
+    padding: 0;
+  }
+}
+
+/* Mobile : 1 colonne, aucun scroll horizontal */
+@media (max-width: 767px) {
+  .academies-grid {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    padding: 0;
+  }
+  .academies-grid .academy-card {
+    padding: 1.5rem 1.35rem;
+  }
+  .academy-card-head {
+    flex-wrap: wrap;
+  }
+  .academy-card-title {
+    font-size: 1.45rem;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+  .btn-subscribe {
+    min-height: 50px;
+  }
+}
+
+/* ============================================================
+   NAV â€” anti-debordement horizontal
+   Les 8 liens + selecteur 6 langues + CTA ne tiennent pas sur
+   une seule ligne entre ~721px et ~1200px. On autorise le
+   retour a la ligne au lieu de creer un scroll horizontal.
+   ============================================================ */
+@media (max-width: 1200px) {
+  .nav { flex-wrap: wrap; row-gap: 0.5rem; }
+  .nav-links { flex-wrap: wrap; }
+  .nav-right { flex-wrap: wrap; justify-content: flex-end; }
+}
+@media (max-width: 480px) {
+  .lang-switch { max-width: 100%; }
+  .lang-btn { padding: 0.3rem 0.5rem; }
 }
