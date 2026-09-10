@@ -107,6 +107,7 @@ window.ELAMarketing = (function () {
     if (href.indexOf('#/register') === 0) g('cta_signup_click', { page: page });
     else if (href.indexOf('#/pricing') === 0) g('cta_pricing_click', { page: page });
     else if (href.indexOf('#/live') === 0) g('cta_live_click', { page: page });
+    else if (href.indexOf('#/free-trial') === 0) g('cta_free_trial_click', { page: page });
     else if (href.indexOf('wa.me') > -1) g('whatsapp_click', { page: page });
   }, true);
 

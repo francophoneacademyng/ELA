@@ -42,7 +42,7 @@ export function renderAcademiesPublic() {
 
   app.innerHTML = '' +
     '<div class="section academies academies-grid-section">' +
-      '<h2 style="font-family:var(--font-display);font-weight:800;color:var(--forest)">' + t('academies.marketing.title') + '</h2>' +
+      '<h1 style="font-family:var(--font-display);font-weight:800;color:var(--forest)">' + t('academies.marketing.title') + '</h1>' +
       '<p style="color:var(--muted);max-width:60ch">' + t('academies.marketing.sub') + '</p>' +
       '<div class="academies-grid">' +
         cards +

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://elaacademy.ng/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://elaacademy.ng/#/academies</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://elaacademy.ng/#/pricing</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://elaacademy.ng/#/courses</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://elaacademy.ng/#/quiz</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://elaacademy.ng/#/live</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://elaacademy.ng/#/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://elaacademy.ng/#/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://elaacademy.ng/#/refund</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url>
+    <loc>https://elaacademy.ng/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://elaacademy.ng/verify.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>

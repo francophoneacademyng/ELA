@@ -1,6 +1,9 @@
 {
-  "name": "ELA — Académie de langues en ligne",
+  "name": "E-Learn Language Academy (ELA)",
   "short_name": "ELA",
+  "description": "Online language school: learn French, German, Mandarin, English, Arabic or Russian with real teachers, live classes and verifiable certificates.",
+  "lang": "en",
+  "dir": "ltr",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF6EC",

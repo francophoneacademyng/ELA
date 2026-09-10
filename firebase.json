@@ -15,7 +15,17 @@
       "package.json",
       "package-lock.json",
       "*-debug.log",
-      "*.log"
+      "*.log",
+      "service-account*.json",
+      "*.bak",
+      "_*",
+      "*.ps1",
+      "*.exe",
+      "*.err",
+      "*.bat",
+      "find-error.js",
+      "fix-syntax.js",
+      "deploy-log.txt"
     ],
     "redirects": [
       {

@@ -264,17 +264,17 @@ const EMAIL = {
     paymentSubject: 'ELA — Payment confirmed',
     expiredSubject: 'ELA — Subscription expired',
     renewSubject: 'ELA — Your subscription renews soon',
-    payment: (p) => 'E-Learn Language Academy (ELA)\n\nThank you for your payment.\n\nPlan: ' + p.plan + '\nDuration: ' + p.duration + ' month(s)\nAmount: NGN ' + p.amount + '\nReference: ' + p.reference + '\n\nYour subscription is now active. Welcome to ELA.\n\nE-Learn Language Academy — One Academy. Five Languages.',
-    expired: 'E-Learn Language Academy (ELA)\n\nYour subscription has expired. Renew to keep learning.\n\nE-Learn Language Academy — One Academy. Five Languages.',
-    renew: 'E-Learn Language Academy (ELA)\n\nYour subscription renews in 7 days or less. Keep your learning uninterrupted.\n\nE-Learn Language Academy — One Academy. Five Languages.'
+    payment: (p) => 'E-Learn Language Academy (ELA)\n\nThank you for your payment.\n\nPlan: ' + p.plan + '\nDuration: ' + p.duration + ' month(s)\nAmount: NGN ' + p.amount + '\nReference: ' + p.reference + '\n\nYour subscription is now active. Welcome to ELA.\n\nE-Learn Language Academy — One Academy. Six Languages.',
+    expired: 'E-Learn Language Academy (ELA)\n\nYour subscription has expired. Renew to keep learning.\n\nE-Learn Language Academy — One Academy. Six Languages.',
+    renew: 'E-Learn Language Academy (ELA)\n\nYour subscription renews in 7 days or less. Keep your learning uninterrupted.\n\nE-Learn Language Academy — One Academy. Six Languages.'
   },
   fr: {
     paymentSubject: 'ELA — Paiement confirmé',
     expiredSubject: 'ELA — Abonnement expiré',
     renewSubject: 'ELA — Votre abonnement arrive à échéance',
-    payment: (p) => 'E-Learn Language Academy (ELA)\n\nMerci pour votre paiement.\n\nFormule : ' + p.plan + '\nDurée : ' + p.duration + ' mois\nMontant : NGN ' + p.amount + '\nRéférence : ' + p.reference + '\n\nVotre abonnement est désormais actif. Bienvenue chez ELA.\n\nE-Learn Language Academy — Une académie. Cinq langues.',
-    expired: 'E-Learn Language Academy (ELA)\n\nVotre abonnement a expiré. Renouvelez pour continuer à apprendre.\n\nE-Learn Language Academy — Une académie. Cinq langues.',
-    renew: 'E-Learn Language Academy (ELA)\n\nVotre abonnement arrive à échéance dans 7 jours ou moins. Gardez votre apprentissage ininterrompu.\n\nE-Learn Language Academy — Une académie. Cinq langues.'
+    payment: (p) => 'E-Learn Language Academy (ELA)\n\nMerci pour votre paiement.\n\nFormule : ' + p.plan + '\nDurée : ' + p.duration + ' mois\nMontant : NGN ' + p.amount + '\nRéférence : ' + p.reference + '\n\nVotre abonnement est désormais actif. Bienvenue chez ELA.\n\nE-Learn Language Academy — Une académie. Six langues.',
+    expired: 'E-Learn Language Academy (ELA)\n\nVotre abonnement a expiré. Renouvelez pour continuer à apprendre.\n\nE-Learn Language Academy — Une académie. Six langues.',
+    renew: 'E-Learn Language Academy (ELA)\n\nVotre abonnement arrive à échéance dans 7 jours ou moins. Gardez votre apprentissage ininterrompu.\n\nE-Learn Language Academy — Une académie. Six langues.'
   },
   ar: {
     paymentSubject: 'ELA — تم تأكيد الدفع',
@@ -362,7 +362,7 @@ exports.getDashboardData = onCall({ region: REGION }, async (request) => {
 
   // --- Enrichissement élève ---
   // Total sur TOUTES les académies (l'abonnement ouvre le plan entier).
-  const ACADEMY_ORDER = ['german', 'mandarin', 'english', 'arabic', 'russian'];
+  const ACADEMY_ORDER = ['french', 'german', 'mandarin', 'english', 'arabic', 'russian'];
   const allLessonsSnap = await db.collection('lessons').where('status', '==', 'approved').get();
   const totalLessons = allLessonsSnap.size;
 

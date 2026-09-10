@@ -341,4 +341,5 @@ export function renderFreeTrial() {
 
   bindNewsletter();
   bindAuthModal();
+  if (window.ELAMarketing) window.ELAMarketing.track('free_trial_view', {});
 }

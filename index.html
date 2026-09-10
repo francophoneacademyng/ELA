@@ -3,23 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Learn Language Academy — One Academy. Five Languages.</title>
-  <meta name="description" content="Learn German, Arabic, Mandarin, Russian or Professional English with real teachers, live classes and certificates. E-Learn Language Academy (ELA), Nigeria.">
+  <title>E-Learn Language Academy — One Academy. Six Languages.</title>
+  <meta name="description" content="Learn French, German, Mandarin, English, Arabic or Russian online with real teachers, live classes and verifiable certificates. E-Learn Language Academy (ELA), Nigeria.">
+  <link rel="canonical" href="https://elaacademy.ng/">
+  <meta name="robots" content="index,follow,max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="E-Learn Language Academy">
-  <meta property="og:title" content="E-Learn Language Academy — One Academy. Five Languages.">
-  <meta property="og:description" content="Learn German, Arabic, Mandarin, Russian or Professional English with real teachers, live classes and certificates.">
+  <meta property="og:title" content="E-Learn Language Academy — One Academy. Six Languages.">
+  <meta property="og:description" content="Learn French, German, Mandarin, English, Arabic or Russian online with real teachers, live classes and verifiable certificates.">
   <meta property="og:url" content="https://elaacademy.ng/">
   <meta property="og:locale" content="en_NG">
+  <meta property="og:locale:alternate" content="fr_NG">
+  <meta property="og:locale:alternate" content="ar_NG">
+  <meta property="og:locale:alternate" content="de_DE">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta property="og:locale:alternate" content="zh_CN">
   <meta property="og:image" content="https://elaacademy.ng/assets/img/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:type" content="image/png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="E-Learn Language Academy — One Academy. Five Languages.">
-  <meta name="twitter:description" content="Learn German, Arabic, Mandarin, Russian or Professional English with real teachers, live classes and certificates.">
+  <meta name="twitter:title" content="E-Learn Language Academy — One Academy. Six Languages.">
+  <meta name="twitter:description" content="Learn French, German, Mandarin, English, Arabic or Russian online with real teachers, live classes and verifiable certificates.">
   <meta name="twitter:image" content="https://elaacademy.ng/assets/img/og-image.png">
   <meta name="theme-color" content="#064e3b">
+  <!-- Données structurées (SEO) : entité de marque + site + FAQ (contenu réel de la page Pricing). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "EducationalOrganization",
+        "@id": "https://elaacademy.ng/#organization",
+        "name": "E-Learn Language Academy",
+        "alternateName": "ELA Academy",
+        "url": "https://elaacademy.ng/",
+        "logo": "https://elaacademy.ng/assets/img/ela-logo.svg",
+        "email": "contact@elaacademy.ng",
+        "areaServed": "NG",
+        "knowsLanguage": ["en", "fr", "ar", "de", "es", "zh"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://elaacademy.ng/#website",
+        "url": "https://elaacademy.ng/",
+        "name": "E-Learn Language Academy",
+        "publisher": { "@id": "https://elaacademy.ng/#organization" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://elaacademy.ng/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Is the first lesson really free?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Every academy offers a free trial lesson so you can experience a live class before you subscribe." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do subscriptions work?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Choose a plan for 1, 3 or 6 months. You unlock all lessons, quizzes and live classes in your academy." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I learn more than one language?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Your subscription covers one academy. Add another language with an additional subscription." }
+          },
+          {
+            "@type": "Question",
+            "name": "Will I receive a certificate?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Complete a course and pass its quizzes to earn a certificate for that level." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <!-- Mission ELA — PWA : manifest + metas d'installation mobile -->
   <link rel="manifest" href="/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,7 +95,7 @@
 <body>
   <!-- Announcement bar -->
   <div class="announce" id="announce">
-    <span data-i18n="announce.text">All five academies — now enrolling.</span>
+    <span data-i18n="announce.text">Six academies. Six languages. One account.</span>
   </div>
 
   <!-- Navigation -->
@@ -90,6 +150,7 @@
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer.academies">Academies</h4>
+        <a href="#/academies" data-i18n="footer.academy.french">Francophone — Français</a>
         <a href="#/academies" data-i18n="footer.academy.german">Germanophone — Deutsch</a>
         <a href="#/academies" data-i18n="footer.academy.mandarin">Sinophone — 中文</a>
         <a href="#/academies" data-i18n="footer.academy.english">Anglophone Pro — English</a>
@@ -102,6 +163,7 @@
         <a href="#/pricing" data-i18n="nav.pricing">Pricing</a>
         <a href="#/register" data-i18n="footer.freeLesson">Free first lesson</a>
         <a href="#/login" data-i18n="nav.login">Sign in</a>
+        <a href="#/institutions" data-i18n="footer.institutions">For schools &amp; companies</a>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer.contact">Contact</h4>

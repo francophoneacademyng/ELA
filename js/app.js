@@ -63,6 +63,7 @@
 
   /* ---------- Academies data ---------- */
   var ACADEMIES = [
+    { key: 'french',   native: 'Français', accent: 'var(--accent-french)',   open: true },
     { key: 'german',   native: 'Deutsch',  accent: 'var(--accent-german)',   open: true },
     { key: 'mandarin', native: '中文',      accent: 'var(--accent-mandarin)', open: true },
     { key: 'english',  native: 'English',  accent: 'var(--accent-english)',  open: true },
@@ -83,7 +84,7 @@
       ? '<span class="badge badge-emerald">' + t('academies.open') + '</span>'
       : '<span class="badge badge-muted">' + t('academies.soon') + '</span>';
     return '' +
-      '<a class="academy-card reveal" href="#/register" style="--accent:' + a.accent + ';transition-delay:' + (i * 60) + 'ms">' +
+      '<a class="academy-card reveal" href="#/academies" style="--accent:' + a.accent + ';transition-delay:' + (i * 60) + 'ms">' +
         '<span class="num">0' + (i + 1) + '</span>' +
         '<span class="name">' + t('academies.' + a.key + '.name') +
           '<span class="native">' + a.native + '</span></span>' +
@@ -96,10 +97,6 @@
 
   function renderHome() {
     var cards = ACADEMIES.map(academyRow).join('');
-    var testimonials = [1, 2, 3].map(function (n) {
-      return '<div class="testimonial reveal"><p class="quote">' + t('testimonials.' + n + '.quote') + '</p>' +
-        '<p class="who">' + t('testimonials.' + n + '.name') + '</p></div>';
-    }).join('');
 
     app.innerHTML = '' +
       // — HERO sombre —
@@ -109,12 +106,12 @@
             '<p class="hero-kicker">' + t('hero.kicker') + '</p>' +
             '<h1>' + t('hero.title.1') + '<br><em>' + t('hero.title.2') + '</em></h1>' +
             '<div class="hero-langs">' +
+              '<span>Français</span><span class="sep">·</span>' +
               '<span>Deutsch</span><span class="sep">·</span>' +
-              '<span>Español</span><span class="sep">·</span>' +
+              '<span>中文</span><span class="sep">·</span>' +
               '<span>English</span><span class="sep">·</span>' +
               '<span>العربية</span><span class="sep">·</span>' +
-              '<span>中文</span><span class="sep">·</span>' +
-              '<span>Français</span>' +
+              '<span>Русский</span>' +
             '</div>' +
           '</div>' +
           '<div class="hero-side reveal" style="transition-delay:120ms">' +
@@ -153,16 +150,6 @@
             '<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80&auto=format&fit=crop" alt="' + t('experience.imgAlt') + '" loading="lazy" decoding="async" width="1200" height="900">' +
           '</div>' +
         '</div>' +
-      '</section>' +
-
-      // — Témoignages —
-      '<section class="section">' +
-        '<p class="section-label reveal">' + t('testimonials.label') + '</p>' +
-        '<h2 class="section-title reveal">' + t('testimonials.title.1') + '<br><em>' + t('testimonials.title.2') + '</em></h2>' +
-        '<div class="human-img wide reveal" style="margin-top:2rem">' +
-          '<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80&auto=format&fit=crop" alt="' + t('experience.imgAlt') + '" loading="lazy" decoding="async" width="1600" height="610">' +
-        '</div>' +
-        '<div class="testimonial-grid">' + testimonials + '</div>' +
       '</section>' +
 
       // — Mission —
@@ -222,11 +209,12 @@
     app.innerHTML = '' +
       '<section class="section academies">' +
         '<p class="section-label reveal">' + t('academies.label') + '</p>' +
-        '<h2 class="section-title reveal">' +
-          t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h2>' +
+        '<h1 class="section-title reveal">' +
+          t('academies.title.1') + '<br><em>' + t('academies.title.2') + '</em></h1>' +
         '<div class="academy-grid">' + cards + '</div>' +
       '</section>';
     afterRender('academies');
+    if (window.ELAMarketing) window.ELAMarketing.track('academy_view', {});
   }
 
   function priceCell(amount, save) {
@@ -252,12 +240,21 @@
         '<div class="pricing-head">' +
           '<div class="reveal">' +
             '<p class="section-label">' + t('pricing.label') + '</p>' +
-            '<h2 class="section-title">' + t('pricing.title.1') + '<br><em>' + t('pricing.title.2') + '</em></h2>' +
+            '<h1 class="section-title">' + t('pricing.title.1') + '<br><em>' + t('pricing.title.2') + '</em></h1>' +
           '</div>' +
           '<p class="reveal" style="color:var(--muted);max-width:36ch">' + t('pricing.lead') + '</p>' +
         '</div>' +
         '<div class="reveal" style="margin:-1.5rem 0 2.5rem">' +
           '<div class="setup-banner" style="margin:0">' + t('pricing.perLanguage') + '</div>' +
+        '</div>' +
+        '<div class="pricing-trust reveal">' +
+          '<ul class="mission-list">' +
+            '<li>' + CHECK_SVG + t('pricing.trust.1') + '</li>' +
+            '<li>' + CHECK_SVG + t('pricing.trust.2') + '</li>' +
+            '<li>' + CHECK_SVG + t('pricing.trust.3') + '</li>' +
+            '<li>' + CHECK_SVG + t('pricing.trust.4') + '</li>' +
+            '<li>' + CHECK_SVG + t('pricing.trust.5') + '</li>' +
+          '</ul>' +
         '</div>' +
         '<div class="price-scroll reveal">' +
           '<table class="price-table">' +
@@ -293,6 +290,7 @@
       '</section>';
     afterRender('pricing');
     bindFaq();
+    if (window.ELAMarketing) window.ELAMarketing.track('pricing_view', {});
   }
 
   function bindFaq() {
@@ -371,6 +369,7 @@
         '<section class="auth-wrap">' +
           '<h1 class="auth-title">' + t('checkout.title') + '</h1>' +
           '<p class="auth-sub">' + t('checkout.signInRequired') + '</p>' +
+          '<p class="auth-sub" style="color:var(--muted);font-size:0.9rem">' + t('checkout.reassurance') + '</p>' +
           '<div class="hero-actions">' +
             '<a class="btn btn-solid" href="#/login">' + t('checkout.signInLink') + '</a>' +
             '<a class="btn btn-outline" href="#/register">' + t('login.registerLink') + '</a>' +
@@ -1146,6 +1145,26 @@
     afterRender('');
   }
 
+  /* ---------- Institutions (B2B — préparation honnête, sans offre inventée) ---------- */
+  function renderInstitutions() {
+    app.innerHTML = '' +
+      '<section class="section">' +
+        '<p class="section-label">' + t('nav.institutions') + '</p>' +
+        '<h1 class="section-title">' + t('inst.title') + '</h1>' +
+        '<p style="color:var(--muted);max-width:60ch">' + t('inst.sub') + '</p>' +
+        '<ul class="mission-list" style="margin-top:1.4rem">' +
+          '<li>' + CHECK_SVG + t('inst.point.1') + '</li>' +
+          '<li>' + CHECK_SVG + t('inst.point.2') + '</li>' +
+          '<li>' + CHECK_SVG + t('inst.point.3') + '</li>' +
+          '<li>' + CHECK_SVG + t('inst.point.4') + '</li>' +
+        '</ul>' +
+        captureFormHtml(null, null, 'inst.cta') +
+        '<p style="color:var(--muted);font-size:0.85rem;margin-top:0.8rem">' + t('inst.note') + '</p>' +
+      '</section>';
+    afterRender('institutions');
+    bindWaitlist('b2b-interest');
+  }
+
 
   /* ---------- Student learning module (phase 2) ---------- */
   function getHashParam(name) {
@@ -1210,6 +1229,53 @@
     afterRender('');
   }
 
+  /* ----- Waitlist capture (courses/live en préparation) -----
+     Écrit dans newsletterSubscribers (même collection que la newsletter),
+     avec une source dédiée pour permettre une relance ciblée. */
+  function captureFormHtml(titleKey, subKey, ctaKey) {
+    return '' +
+      '<div class="card" style="margin-top:1rem">' +
+        (titleKey ? '<h3 class="auth-title" style="font-size:1.2rem">' + t(titleKey) + '</h3>' : '') +
+        (subKey ? '<p class="auth-sub" style="margin-bottom:0.9rem">' + t(subKey) + '</p>' : '') +
+        '<form class="ft-newsletter-form" data-waitlist-form>' +
+          '<input type="email" data-waitlist-email required placeholder="' + t('waitlist.placeholder') + '" />' +
+          '<button type="submit" class="btn btn-solid">' + t(ctaKey) + '</button>' +
+        '</form>' +
+        '<p data-waitlist-msg style="margin-top:0.6rem;font-size:0.9rem"></p>' +
+      '</div>';
+  }
+
+  function waitlistFormHtml() {
+    return captureFormHtml('waitlist.title', 'waitlist.sub', 'waitlist.cta');
+  }
+
+  function bindWaitlist(source) {
+    document.querySelectorAll('[data-waitlist-form]').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var input = form.querySelector('[data-waitlist-email]');
+        var msg = form.parentElement.querySelector('[data-waitlist-msg]');
+        var email = ((input && input.value) || '').trim().toLowerCase();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          if (msg) { msg.textContent = t('waitlist.error'); msg.style.color = '#b91c1c'; }
+          return;
+        }
+        if (!window.ELA_FIREBASE_READY || !window.firebase || !window.firebase.firestore) {
+          if (msg) { msg.textContent = t('waitlist.error'); msg.style.color = '#b91c1c'; }
+          return;
+        }
+        window.firebase.firestore().collection('newsletterSubscribers').add({
+          email: email, ts: Date.now(), source: source || 'waitlist'
+        }).then(function () {
+          if (msg) { msg.textContent = t('waitlist.ok'); msg.style.color = '#065f46'; }
+          form.reset();
+        }).catch(function () {
+          if (msg) { msg.textContent = t('waitlist.error'); msg.style.color = '#b91c1c'; }
+        });
+      });
+    });
+  }
+
   /* ----- Courses catalog ----- */
   function renderCourses() {
     if (!window.ELA_FIREBASE_READY || !window.firebase || !firebase.functions) {
@@ -1224,15 +1290,17 @@
     callable('getCatalog')().then(function (r) {
       renderCatalog((r.data && r.data.courses) || []);
     }).catch(function () {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div>' + waitlistFormHtml() + '</section>';
       afterRender('courses');
+      bindWaitlist('courses-waitlist');
     });
   }
 
   function renderCatalog(courses) {
     if (!courses.length) {
-      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div></section>';
+      app.innerHTML = '<section class="auth-wrap teacher-wrap"><h1 class="auth-title">' + t('courses.title') + '</h1><div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('courses.empty') + '</p></div></div>' + waitlistFormHtml() + '</section>';
       afterRender('courses');
+      bindWaitlist('courses-waitlist');
       return;
     }
     var byAcademy = {};
@@ -1306,6 +1374,7 @@
         '<p class="auth-alt"><a href="#/courses">' + t('common.back') + '</a></p>' +
       '</section>';
     afterRender('');
+    if (window.ELAMarketing) window.ELAMarketing.track('course_view', { courseId: (course && course.id) || '' });
   }
 
   /* ----- Lesson detail ----- */
@@ -1678,10 +1747,11 @@
     app.innerHTML = '' +
       '<section class="auth-wrap teacher-wrap">' +
         '<h1 class="auth-title">' + t('live.title') + '</h1>' +
-        (sorted.length ? html : '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('live.empty') + '</p></div></div>') +
+        (sorted.length ? html : '<div class="card"><div class="empty-state" style="padding:1.4rem 0"><p style="margin:0">' + t('live.empty') + '</p></div></div>' + waitlistFormHtml()) +
         '<p class="auth-alt"><a href="#/">' + t('common.back') + '</a></p>' +
       '</section>';
     afterRender('live');
+    if (!sorted.length) bindWaitlist('live-waitlist');
 
     document.querySelectorAll('[data-join]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -1947,6 +2017,7 @@
     '/terms': renderTerms,
     '/privacy': renderPrivacy,
     '/refund': renderRefund,
+    '/institutions': renderInstitutions,
     /* '/teacher' et '/admin' : gérés par js/routes-v2.js (ELA_ROUTE_HANDLERS) */
     '/courses': renderCourses,
     '/course': renderCourse,
@@ -1966,8 +2037,14 @@
     '/teacher': 'nav.teacher', '/admin': 'nav.admin',
     '/checkout': 'checkout.title', '/register': 'nav.cta', '/login': 'nav.login',
     '/terms': 'footer.terms', '/privacy': 'footer.privacy', '/refund': 'footer.refundPolicy',
+    '/institutions': 'nav.institutions',
+    '/free-trial': 'nav.freeTrial',
     '/payment-success': 'payment.result.title.success'
   };
+
+  /* Routes privées / applicatives : jamais indexées (SPA mono-URL → meta robots dynamique). */
+  var PRIVATE_PATHS = ['/dashboard', '/assistant', '/admin', '/teacher', '/checkout',
+    '/login', '/register', '/payment/result', '/payment-success'];
 
   function updateMeta(path) {
     var title = t(PAGE_TITLES[path] || 'nav.home');
@@ -1975,6 +2052,13 @@
     var meta = document.querySelector('meta[name="description"]');
     if (meta && t('meta.description') !== 'meta.description') {
       meta.setAttribute('content', t('meta.description'));
+    }
+    var robots = document.querySelector('meta[name="robots"]');
+    if (robots) {
+      var isPrivate = PRIVATE_PATHS.some(function (p) {
+        return path === p || path.indexOf(p + '/') === 0;
+      });
+      robots.setAttribute('content', isPrivate ? 'noindex,nofollow' : 'index,follow,max-image-preview:large');
     }
   }
 
