@@ -146,12 +146,24 @@ corrects (`الأكاديمية الفرنكوفونية`, `العربية`), **
 
 ## 8. Production
 
-- Commit : `feat(academies): grille 3x2 responsive, cartes, CTA, RTL, anti-scroll`
-- Firebase Hosting : `ela-academy-7f868` — déploiement et vérification décrits
-  ci-dessous.
+- Commit : `f50a7b1` — `feat(academies): grille 3x2 responsive, cartes premium, CTA alignes, RTL, anti-scroll`
+- Firebase Hosting : `ela-academy-7f868` — **deploy complete**
+  - URL : https://elaacademy.ng/ (et https://ela-academy-7f868.web.app)
+  - 164 fichiers traités, 3 nouveaux uploadés, version publiée.
 
-### Vérification production
-À compléter après déploiement (voir section mise à jour en fin de fichier).
+### Vérification production (CDP sur le site live)
+| Contexte | Cartes | Colonnes | Ordre | Scroll horizontal |
+|---|---|---|---|---|
+| Desktop (1440) | 6 | 3 | FR,DE,ZH,EN,AR,RU | non |
+| Tablette (900) | 6 | 2 | FR,DE,ZH,EN,AR,RU | non |
+| Mobile (390) | 6 | 1 | FR,DE,ZH,EN,AR,RU | non |
+| RTL arabe (1280) | 6 | 3 | flux droite→gauche | non |
+
+- `sw.js` servi en production : `ela-pwa-v5` — **OK**.
+- CSS servi : `repeat(3, minmax(0, 1fr))`, `@media max-width:1024px`,
+  `@media max-width:767px`, `@media max-width:1200px` (nav) — **OK**.
+- JS servi : `.academy-card-code`, `russophone`, aucune trace ES — **OK**.
+- **PROD OK : true**.
 
 ---
 
