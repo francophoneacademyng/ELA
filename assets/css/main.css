@@ -201,6 +201,10 @@ body {
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
 .hero .btn-outline { color: var(--cream); border-color: rgba(250, 246, 236, 0.55); }
 .hero .btn-outline:hover { background: rgba(250, 246, 236, 0.1); border-color: var(--cream); color: var(--cream); }
+.hero-side .hero-trust {
+  margin: 1.2rem 0 0; font-size: 0.82rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(250, 246, 236, 0.62);
+}
 .hero-langs {
   margin-top: 2.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem;
   font-family: var(--font-display); font-size: 1.25rem; color: var(--cream);
@@ -2085,6 +2089,41 @@ h1, h2, h3, .dashboard-header h1, .section-title {
   box-shadow: 0 8px 20px rgba(11, 107, 79, 0.22);
 }
 .btn-subscribe:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Actions de carte : CTA principal + essai gratuit secondaire */
+.academy-card-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.academy-card-actions .btn-subscribe {
+  margin-top: 0;
+}
+.academy-card-try {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--forest);
+  text-decoration: none;
+  border-radius: 999px;
+  border: 1px solid var(--line-soft);
+  background: rgba(6, 61, 44, 0.03);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.academy-card-try:hover {
+  background: rgba(6, 61, 44, 0.07);
+  border-color: var(--line);
+}
+.academy-card-try:focus-visible {
   outline: 3px solid var(--gold);
   outline-offset: 2px;
 }

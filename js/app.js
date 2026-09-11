@@ -117,9 +117,10 @@
           '<div class="hero-side reveal" style="transition-delay:120ms">' +
             '<p>' + t('hero.lead') + '</p>' +
             '<div class="hero-actions">' +
-              '<a class="btn btn-gold-vivid" href="#/register">' + t('hero.cta.primary') + ARROW_SVG + '</a>' +
+              '<a class="btn btn-gold-vivid" href="#/free-trial">' + t('hero.cta.primary') + ARROW_SVG + '</a>' +
               '<a class="btn btn-outline" href="#/academies">' + t('hero.cta.secondary') + '</a>' +
             '</div>' +
+            '<p class="hero-trust">' + t('trial.hero.micro') + '</p>' +
           '</div>' +
         '</div>' +
       '</section>' +
@@ -197,7 +198,7 @@
         '<div class="inner">' +
           '<h2 class="section-title">' + t('finalCta.title.1') + '<br><em>' + t('finalCta.title.2') + '</em></h2>' +
           '<p>' + t('finalCta.sub') + '</p>' +
-          '<div class="hero-actions"><a class="btn btn-gold-vivid" href="#/register">' + t('finalCta.button') + ARROW_SVG + '</a></div>' +
+          '<div class="hero-actions"><a class="btn btn-gold-vivid" href="#/free-trial">' + t('finalCta.button') + ARROW_SVG + '</a></div>' +
         '</div>' +
       '</section>';
 
@@ -274,7 +275,7 @@
         '<div class="pricing-note reveal">' +
           '<p>' + t('pricing.note') + '</p>' +
           '<div class="hero-actions">' +
-            '<a class="btn btn-gold" href="#/register">' + t('pricing.cta') + ARROW_SVG + '</a>' +
+            '<a class="btn btn-gold" href="#/free-trial">' + t('pricing.cta') + ARROW_SVG + '</a>' +
             '<a class="btn btn-solid" href="#/checkout">' + t('pricing.subscribe') + '</a>' +
           '</div>' +
         '</div>' +
@@ -451,12 +452,14 @@
     document.querySelectorAll('[data-plan]').forEach(function (b) {
       b.addEventListener('click', function () {
         checkoutState.plan = b.getAttribute('data-plan');
+        if (window.ELAMarketing) window.ELAMarketing.track('plan_selected', { plan: checkoutState.plan, duration: checkoutState.duration || 1 });
         renderCheckout();
       });
     });
     document.querySelectorAll('[data-duration]').forEach(function (b) {
       b.addEventListener('click', function () {
         checkoutState.duration = parseInt(b.getAttribute('data-duration'), 10);
+        if (window.ELAMarketing) window.ELAMarketing.track('plan_selected', { plan: checkoutState.plan || 'general', duration: checkoutState.duration });
         renderCheckout();
       });
     });
@@ -1195,6 +1198,12 @@
   function bindInstitutionsForm() {
     var form = document.getElementById('inst-form');
     if (!form) return;
+    var instStarted = false;
+    form.addEventListener('input', function () {
+      if (instStarted) return;
+      instStarted = true;
+      if (window.ELAMarketing) window.ELAMarketing.track('institution_form_start', {});
+    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var email = (document.getElementById('inst-email').value || '').trim().toLowerCase();
@@ -1220,6 +1229,7 @@
       if (btn) btn.disabled = true;
       window.firebase.firestore().collection('newsletterSubscribers').add(doc).then(function () {
         if (msg) msg.textContent = t('inst.form.ok');
+        if (window.ELAMarketing) window.ELAMarketing.track('institution_form_submit', { learners: doc.learners || 0, languages: languages });
         form.reset();
       }).catch(function () {
         if (err) { err.textContent = t('inst.form.error'); err.classList.add('show'); }
@@ -1914,6 +1924,7 @@
     document.querySelectorAll('[data-choice-lang]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         registerState.interfaceLang = btn.getAttribute('data-choice-lang');
+        if (window.ELAMarketing) window.ELAMarketing.track('registration_step_complete', { step: 1, interfaceLang: registerState.interfaceLang });
         ELA_I18N.setLang(registerState.interfaceLang).then(function () {
           registerState.step = 2;
           renderRegister();
@@ -1923,6 +1934,7 @@
     document.querySelectorAll('[data-choice-academy]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         registerState.academy = btn.getAttribute('data-choice-academy');
+        if (window.ELAMarketing) window.ELAMarketing.track('registration_step_complete', { step: 2, academy: registerState.academy });
         registerState.step = 3;
         renderRegister();
       });
@@ -1985,7 +1997,11 @@
           .then(function () {
             submitting = false;
             if (btn) btn.disabled = false;
-            if (window.ELAMarketing) window.ELAMarketing.track('registration', { academy: registerState.academy || 'german' });
+            if (window.ELAMarketing) {
+              window.ELAMarketing.track('registration_step_complete', { step: 3, academy: registerState.academy || 'german' });
+              if (referral) window.ELAMarketing.track('referral_applied', { academy: registerState.academy || 'german' });
+              window.ELAMarketing.track('registration', { academy: registerState.academy || 'german' });
+            }
             alert(t('register.success')); window.location.hash = '#/dashboard';
           })
           .catch(function (err) {

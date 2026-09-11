@@ -63,7 +63,10 @@ export function renderAcademiesPublic() {
         '<span class="academy-card-lang" dir="auto">' + escapeHtml(a.native) + '</span>' +
         '<p class="academy-card-desc">' + escapeHtml(cardDescription(a)) + '</p>' +
         '<p class="academy-card-cert">' + certLine(a) + '</p>' +
-        '<a class="btn-subscribe" href="#/pricing" aria-label="' + subscribe + ' \u2013 ' + label + '">' + subscribe + '</a>' +
+        '<div class="academy-card-actions">' +
+          '<a class="btn-subscribe" href="#/pricing" aria-label="' + subscribe + ' \u2013 ' + label + '">' + subscribe + '</a>' +
+          '<a class="academy-card-try" href="#/free-trial">' + escapeHtml(t('nav.freeTrial')) + '</a>' +
+        '</div>' +
       '</article>';
   });
 
@@ -79,7 +82,7 @@ export function renderAcademiesPublic() {
       '</div>' +
       '<div class="academies-actions">' +
         '<a class="btn btn-solid" href="#/pricing">' + escapeHtml(t('academies.dashboard.seePricing')) + '</a>' +
-        '<a class="btn btn-start-free" href="#/register">' + escapeHtml(t('nav.cta')) + '</a>' +
+        '<a class="btn btn-start-free" href="#/free-trial">' + escapeHtml(t('nav.cta')) + '</a>' +
       '</div>' +
     '</div>';
   afterRender('academies');

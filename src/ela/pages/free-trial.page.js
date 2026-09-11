@@ -52,6 +52,7 @@ function closeAuthModal() {
 function openAuthModal() {
   var overlay = document.getElementById('ft-auth-modal');
   if (overlay) overlay.classList.add('active');
+  if (window.ELAMarketing) window.ELAMarketing.track('signup_modal_open', { source: 'free-trial' });
 }
 
 function escapeHtml(s) {
@@ -210,7 +211,7 @@ function renderAcademyCard(code, a, lessons, type, isAuth) {
     lessons.forEach(function (l) {
       const title = l.title || (t('trial.lessonFallback') + ' ' + l.order);
       if (type === 'instant') {
-        rows += '<a class="ft-lesson-row ft-lesson-open" href="#/lesson/' + l.id + '" data-lesson-id="' + l.id + '">' +
+        rows += '<a class="ft-lesson-row ft-lesson-open" href="#/lesson?id=' + encodeURIComponent(l.id) + '" data-lesson-id="' + l.id + '" data-academy="' + code + '">' +
           '<span class="ft-lesson-title">' + escapeHtml(title) + '</span>' +
           '<span class="ft-pill ft-pill-instant">' + t('trial.startNow') + '</span>' +
         '</a>';
@@ -251,6 +252,19 @@ function bindLessonClicks(isAuth) {
   lockedRows.forEach(function (row) {
     row.addEventListener('click', function () {
       openAuthModal();
+    });
+  });
+
+  var openRows = document.querySelectorAll('.ft-lesson-open');
+  openRows.forEach(function (row) {
+    row.addEventListener('click', function () {
+      if (window.ELAMarketing) {
+        window.ELAMarketing.track('trial_lesson_started', {
+          lessonId: row.getAttribute('data-lesson-id') || '',
+          academy: row.getAttribute('data-academy') || '',
+          access: 'instant'
+        });
+      }
     });
   });
 }
