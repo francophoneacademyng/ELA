@@ -1,6 +1,7 @@
 {
   "hosting": {
     "public": ".",
+    "cleanUrls": true,
     "ignore": [
       "firebase.json",
       ".firebaserc",
@@ -25,6 +26,7 @@
       "*.bat",
       "find-error.js",
       "fix-syntax.js",
+      "scripts/**",
       "deploy-log.txt"
     ],
     "redirects": [

@@ -1001,5 +1001,7 @@
   "leadMagnets.form.error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
   "leadMagnets.thankyou.title": "تم!",
   "leadMagnets.thankyou.body": "دليلك جاهز بالأسفل. الخطوة التالية: ابدأ تجربتك المجانية.",
-  "leadMagnets.thankyou.toast": "تم فتح الدليل. نتمنى لك التوفيق!"
+  "leadMagnets.thankyou.toast": "تم فتح الدليل. نتمنى لك التوفيق!",
+  "notFound.title": "الصفحة غير موجودة",
+  "notFound.sub": "الصفحة التي تبحث عنها غير موجودة."
 }

@@ -1001,5 +1001,7 @@
   "leadMagnets.form.error": "Une erreur s'est produite. Veuillez réessayer.",
   "leadMagnets.thankyou.title": "C'est fait !",
   "leadMagnets.thankyou.body": "Votre guide est prêt ci-dessous. Prochaine étape : commencez votre essai gratuit.",
-  "leadMagnets.thankyou.toast": "Guide débloqué. Bonne lecture !"
+  "leadMagnets.thankyou.toast": "Guide débloqué. Bonne lecture !",
+  "notFound.title": "Page introuvable",
+  "notFound.sub": "La page que vous recherchez n'existe pas."
 }

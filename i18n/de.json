@@ -1001,5 +1001,7 @@
   "leadMagnets.form.error": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
   "leadMagnets.thankyou.title": "Geschafft!",
   "leadMagnets.thankyou.body": "Dein Leitfaden ist unten bereit. Nächster Schritt: Starte deinen kostenlosen Test.",
-  "leadMagnets.thankyou.toast": "Leitfaden freigeschaltet. Viel Erfolg!"
+  "leadMagnets.thankyou.toast": "Leitfaden freigeschaltet. Viel Erfolg!",
+  "notFound.title": "Seite nicht gefunden",
+  "notFound.sub": "Die gesuchte Seite existiert nicht."
 }

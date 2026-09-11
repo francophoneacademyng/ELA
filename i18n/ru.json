@@ -1001,5 +1001,7 @@
   "leadMagnets.form.error": "Что-то пошло не так. Попробуйте ещё раз.",
   "leadMagnets.thankyou.title": "Готово!",
   "leadMagnets.thankyou.body": "Ваше руководство готово ниже. Следующий шаг: начните бесплатную пробу.",
-  "leadMagnets.thankyou.toast": "Руководство открыто. Удачи!"
+  "leadMagnets.thankyou.toast": "Руководство открыто. Удачи!",
+  "notFound.title": "Страница не найдена",
+  "notFound.sub": "Запрашиваемая страница не найдена."
 }

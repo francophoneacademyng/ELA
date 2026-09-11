@@ -1001,5 +1001,7 @@
   "leadMagnets.form.error": "Something went wrong. Please try again.",
   "leadMagnets.thankyou.title": "You're in!",
   "leadMagnets.thankyou.body": "Your guide is ready below. Next step: start your free trial.",
-  "leadMagnets.thankyou.toast": "Guide unlocked. Enjoy!"
+  "leadMagnets.thankyou.toast": "Guide unlocked. Enjoy!",
+  "notFound.title": "Page not found",
+  "notFound.sub": "The page you are looking for does not exist."
 }

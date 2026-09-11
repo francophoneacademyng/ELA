@@ -48,9 +48,15 @@ export function formatDateTime(ms) {
   catch (e) { return new Date(ms).toLocaleString(); }
 }
 
-/** Paramètre de query d'un hash (#/route?key=value). */
+/** Paramètre de query d'une URL propre (/route?key=value) ou héritée (#/route?key=value). */
 export function getHashParam(name) {
-  const hash = (typeof window !== 'undefined' && window.location.hash) || '';
+  if (typeof window === 'undefined') return null;
+  const search = window.location.search || '';
+  if (search.charAt(0) === '?') {
+    const fromSearch = new URLSearchParams(search).get(name);
+    if (fromSearch !== null) return fromSearch;
+  }
+  const hash = window.location.hash || '';
   const qi = hash.indexOf('?');
   if (qi < 0) return null;
   return new URLSearchParams(hash.slice(qi + 1)).get(name);

@@ -66,14 +66,38 @@ window.ELA_I18N = (function () {
         localStorage.setItem('ela-lang', lang);
         document.documentElement.setAttribute('lang', lang);
         document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        /* Mission 6 — SEO international : refléter la langue dans l'URL
+           (?lang=fr) pour des alternates hreflang réels. */
+        try {
+          var url = new URL(window.location.href);
+          if (lang === 'en') url.searchParams.delete('lang');
+          else url.searchParams.set('lang', lang);
+          window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+        } catch (e) { /* ignore */ }
         applyStatic();
         listeners.forEach(function (fn) { fn(lang); });
       })
       .catch(function (err) { console.error('i18n load failed:', err); });
   }
 
+  /* Langue demandée dans l'URL : ?lang=fr ou #/route?lang=fr. */
+  function langFromUrl() {
+    try {
+      var sp = new URLSearchParams(window.location.search || '');
+      var l = sp.get('lang');
+      if (l && ACTIVE_LANGS.indexOf(l) >= 0) return l;
+      var hash = window.location.hash || '';
+      var qi = hash.indexOf('?');
+      if (qi >= 0) {
+        var hl = new URLSearchParams(hash.slice(qi + 1)).get('lang');
+        if (hl && ACTIVE_LANGS.indexOf(hl) >= 0) return hl;
+      }
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+
   function init() {
-    var saved = localStorage.getItem('ela-lang') || 'en';
+    var saved = langFromUrl() || localStorage.getItem('ela-lang') || 'en';
     if (ACTIVE_LANGS.indexOf(saved) < 0) saved = 'en';
     document.querySelectorAll('.lang-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { setLang(btn.getAttribute('data-lang')); });

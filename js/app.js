@@ -1239,7 +1239,14 @@
 
 
   /* ---------- Student learning module (phase 2) ---------- */
+  /* Lit un paramètre de requête, que l'URL soit propre (?id=) ou
+     héritée (#/route?id=). Compatibilité totale Mission 6. */
   function getHashParam(name) {
+    var search = window.location.search || '';
+    if (search.charAt(0) === '?') {
+      var fromSearch = new URLSearchParams(search).get(name);
+      if (fromSearch !== null) return fromSearch;
+    }
     var hash = window.location.hash || '';
     var qi = hash.indexOf('?');
     if (qi < 0) return null;
@@ -2075,6 +2082,9 @@
     document.querySelectorAll('.nav-links a').forEach(function (a) {
       a.classList.toggle('active', a.getAttribute('data-nav') === route);
     });
+    /* Mission 6 — SEO : expose des hrefs propres et crawlables
+       (/academies) au lieu des liens hérités (#/academies). */
+    rewriteInternalLinks();
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (en.isIntersecting) { en.target.classList.add('visible'); observer.unobserve(en.target); }
@@ -2130,9 +2140,11 @@
     '/payment-success': 'payment.result.title.success'
   };
 
-  /* Routes privées / applicatives : jamais indexées (SPA mono-URL → meta robots dynamique). */
+  /* Routes privées / applicatives : jamais indexées (meta robots dynamique + noindex).
+     Mission 6 : /course, /lesson, /quiz sont derrière abonnement → non indexables. */
   var PRIVATE_PATHS = ['/dashboard', '/assistant', '/admin', '/teacher', '/checkout',
-    '/login', '/register', '/payment/result', '/payment-success'];
+    '/login', '/register', '/payment/result', '/payment-success',
+    '/course', '/lesson', '/quiz'];
 
   /* Meta descriptions propres aux pages lead magnets (pages publiques indexables). */
   var LEAD_MAGNET_META = {
@@ -2145,36 +2157,177 @@
     '/lead-magnets/ru': 'Free TORFL Russian study guide: A1 checklist, Cyrillic quick-start and scholarship document checklist for study in Russia.'
   };
 
+  /* ============================================================
+     MISSION 6 — SEO : URLs propres + compatibilité hash
+     ------------------------------------------------------------
+     - Les URLs publiques sont désormais /academies, /pricing, …
+     - Les anciens liens #/academies restent supportés : au chargement
+       ils sont convertis en URL propre (history.replaceState) sans
+       rechargement.
+     - Les liens internes générés en #/… sont réécrits en URL propre
+       après chaque rendu (afterRender → rewriteInternalLinks).
+     - Un intercepteur de clic évite le rechargement complet.
+     ============================================================ */
+  var SITE_ORIGIN = 'https://elaacademy.ng';
+  var HREFLANG_LANGS = ['en', 'fr', 'ar', 'de', 'ru', 'zh'];
+
+  /* Pages publiques réellement indexables (servies en URL propre). */
+  var PUBLIC_SEO_PATHS = ['/', '/academies', '/pricing', '/free-trial', '/courses', '/live',
+    '/institutions', '/lead-magnets', '/lead-magnets/fr', '/lead-magnets/de', '/lead-magnets/zh',
+    '/lead-magnets/en', '/lead-magnets/ar', '/lead-magnets/ru', '/terms', '/privacy', '/refund'];
+
+  function setAttr(sel, attr, value) {
+    var el = document.querySelector(sel);
+    if (el) el.setAttribute(attr, value);
+  }
+
+  function normalizePath(p) {
+    if (!p) return '/';
+    p = String(p);
+    if (p.charAt(0) !== '/') p = '/' + p;
+    if (p.length > 1 && p.charAt(p.length - 1) === '/') p = p.slice(0, -1);
+    return p;
+  }
+
+  function isPrivatePath(path) {
+    return PRIVATE_PATHS.some(function (p) { return path === p || path.indexOf(p + '/') === 0; });
+  }
+  function isPublicSeoPath(path) { return PUBLIC_SEO_PATHS.indexOf(path) !== -1; }
+  function isKnownPath(path) {
+    if (path === '/') return true;
+    if (ROUTES[path]) return true;
+    return !!(window.ELA_ROUTE_HANDLERS && typeof window.ELA_ROUTE_HANDLERS[path] === 'function');
+  }
+
+  /* Chemin issu du hash hérité (#/route?x) ou null si absent. */
+  function pathFromHash() {
+    var hash = window.location.hash || '';
+    if (hash.indexOf('#/') !== 0) return null;
+    var rest = hash.slice(1);
+    var qi = rest.indexOf('?');
+    return normalizePath(qi >= 0 ? rest.slice(0, qi) : rest);
+  }
+
+  function queryFromHash() {
+    var hash = window.location.hash || '';
+    var qi = hash.indexOf('?');
+    return qi >= 0 ? hash.slice(qi + 1) : '';
+  }
+
+  function cleanUrlFromHash(href) {
+    return href.slice(1) || '/';
+  }
+
+  /* Réécrit les liens internes #/… en URL propre (crawlable). */
+  function rewriteInternalLinks() {
+    document.querySelectorAll('a[href^="#/"]').forEach(function (a) {
+      a.setAttribute('href', cleanUrlFromHash(a.getAttribute('href')));
+    });
+  }
+
+  /* Navigation SPA sans rechargement. */
+  function navigate(url, replace) {
+    try {
+      if (replace) window.history.replaceState({}, '', url);
+      else window.history.pushState({}, '', url);
+    } catch (e) {
+      window.location.href = url;
+      return;
+    }
+    route();
+  }
+
+  function updateHreflang(path) {
+    document.querySelectorAll('link[rel="alternate"][data-ela-hreflang]').forEach(function (l) { l.remove(); });
+    if (!isPublicSeoPath(path)) return;
+    var base = SITE_ORIGIN + (path === '/' ? '/' : path);
+    HREFLANG_LANGS.forEach(function (l) {
+      var link = document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', l);
+      link.setAttribute('href', base + '?lang=' + l);
+      link.setAttribute('data-ela-hreflang', '1');
+      document.head.appendChild(link);
+    });
+    var xd = document.createElement('link');
+    xd.setAttribute('rel', 'alternate');
+    xd.setAttribute('hreflang', 'x-default');
+    xd.setAttribute('href', base);
+    xd.setAttribute('data-ela-hreflang', '1');
+    document.head.appendChild(xd);
+  }
+
+  /* Titres SEO distincts (pages lead magnets) — sinon t(PAGE_TITLES). */
+  var SEO_TITLES = {
+    '/lead-magnets': 'Free Language Exam Prep Guides',
+    '/lead-magnets/fr': 'Free CECRL French Study Guide',
+    '/lead-magnets/de': 'Free Goethe-Zertifikat Study Guide',
+    '/lead-magnets/zh': 'Free HSK Chinese Study Guide',
+    '/lead-magnets/en': 'Free IELTS Study Guide and Checklist',
+    '/lead-magnets/ar': 'Free Gulf Business Arabic Guide',
+    '/lead-magnets/ru': 'Free TORFL Russian Study Guide'
+  };
+
   function updateMeta(path) {
-    var title = t(PAGE_TITLES[path] || 'nav.home');
-    document.title = title + ' — E-Learn Language Academy';
-    var meta = document.querySelector('meta[name="description"]');
-    if (meta) {
-      var lmDesc = LEAD_MAGNET_META[path];
-      if (lmDesc) meta.setAttribute('content', lmDesc);
-      else if (t('meta.description') !== 'meta.description') meta.setAttribute('content', t('meta.description'));
+    var title = SEO_TITLES[path] || t(PAGE_TITLES[path] || 'nav.home');
+    var fullTitle = title + ' — E-Learn Language Academy';
+    document.title = fullTitle;
+
+    var desc = LEAD_MAGNET_META[path];
+    if (!desc && t('meta.description') !== 'meta.description') desc = t('meta.description');
+    if (desc) setAttr('meta[name="description"]', 'content', desc);
+
+    var robots = (isPrivatePath(path) || !isKnownPath(path))
+      ? 'noindex,nofollow'
+      : 'index,follow,max-image-preview:large';
+    setAttr('meta[name="robots"]', 'content', robots);
+
+    var lang = (window.ELA_I18N && ELA_I18N.getLang) ? ELA_I18N.getLang() : 'en';
+    var base = SITE_ORIGIN + (path === '/' ? '/' : path);
+    var canonical = (isPublicSeoPath(path) && lang !== 'en') ? (base + '?lang=' + lang) : base;
+    setAttr('link[rel="canonical"]', 'href', canonical);
+    setAttr('meta[property="og:url"]', 'content', canonical);
+    setAttr('meta[property="og:title"]', 'content', fullTitle);
+    setAttr('meta[name="twitter:title"]', 'content', fullTitle);
+    if (desc) {
+      setAttr('meta[property="og:description"]', 'content', desc);
+      setAttr('meta[name="twitter:description"]', 'content', desc);
     }
-    var robots = document.querySelector('meta[name="robots"]');
-    if (robots) {
-      var isPrivate = PRIVATE_PATHS.some(function (p) {
-        return path === p || path.indexOf(p + '/') === 0;
-      });
-      robots.setAttribute('content', isPrivate ? 'noindex,nofollow' : 'index,follow,max-image-preview:large');
-    }
+    updateHreflang(path);
+  }
+
+  function renderNotFound(path) {
+    document.title = t('notFound.title') + ' — E-Learn Language Academy';
+    setAttr('meta[name="robots"]', 'content', 'noindex,follow');
+    app.innerHTML = '' +
+      '<section class="auth-wrap">' +
+        '<h1 class="auth-title">' + t('notFound.title') + '</h1>' +
+        '<p class="auth-sub">' + t('notFound.sub') + '</p>' +
+        '<div class="hero-actions">' +
+          '<a class="btn btn-solid" href="/">' + t('nav.home') + '</a>' +
+          '<a class="btn btn-outline" href="/academies">' + t('nav.academies') + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('');
   }
 
   function route() {
-    var hash = window.location.hash.replace(/^#/, '') || '/';
-    var qi = hash.indexOf('?');
-    var path = qi >= 0 ? hash.slice(0, qi) : hash;
-    /* Redirection #/academies?trial=true → #/free-trial */
-    if (path === '/academies' && qi >= 0) {
-      var qs = hash.slice(qi + 1);
-      var params = new URLSearchParams(qs);
-      if (params.get('trial') === 'true') {
-        window.location.hash = '#/free-trial';
-        return;
-      }
+    var hashPath = pathFromHash();
+    var path, query;
+    if (hashPath !== null) {
+      /* Lien hérité #/route → URL propre, sans rechargement. */
+      path = hashPath;
+      query = queryFromHash();
+      var clean = path + (query ? '?' + query : '');
+      try { window.history.replaceState({}, '', clean); } catch (e) { /* ignore */ }
+    } else {
+      path = normalizePath(window.location.pathname || '/');
+      query = (window.location.search || '').replace(/^\?/, '');
+    }
+    /* Redirection héritée /academies?trial=true → /free-trial */
+    if (path === '/academies' && query && new URLSearchParams(query).get('trial') === 'true') {
+      navigate('/free-trial', true);
+      return;
     }
     updateMeta(path);
     /* Routes v2 (refactor admin/teacher) : handlers enregistrés par js/routes-v2.js */
@@ -2182,7 +2335,35 @@
       window.ELA_ROUTE_HANDLERS[path]();
       return;
     }
-    (ROUTES[path] || renderHome)();
+    if (ROUTES[path]) { ROUTES[path](); return; }
+    renderNotFound(path);
+  }
+
+  /* Intercepteur de clics : navigation SPA pour les liens internes
+     (URL propre ou hash hérité). Laisse passer : externes, ancres,
+     nouveaux onglets, téléchargements, mailto/tel, fichiers. */
+  function onDocumentClick(ev) {
+    if (ev.defaultPrevented) return;
+    if (ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a = ev.target && ev.target.closest ? ev.target.closest('a') : null;
+    if (!a) return;
+    if (a.target && a.target !== '' && a.target !== '_self') return;
+    if (a.hasAttribute('download')) return;
+    var href = a.getAttribute('href') || '';
+    if (!href) return;
+    if (href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) return;
+    if (href.charAt(0) === '#') {
+      if (href.indexOf('#/') !== 0) return;
+      ev.preventDefault();
+      navigate(cleanUrlFromHash(href));
+      return;
+    }
+    var url;
+    try { url = new URL(href, window.location.origin); } catch (e) { return; }
+    if (url.origin !== window.location.origin) return;
+    if (/\.[a-z0-9]+$/i.test(url.pathname)) return; // fichier statique (.html, .pdf, …)
+    ev.preventDefault();
+    navigate(url.pathname + url.search + url.hash);
   }
 
   /* ---------- Boot ---------- */
@@ -2298,7 +2479,10 @@
     ELA_I18N.init().then(function () {
       route();
       updateTeacherNav();
+      /* Compatibilité hash hérité + navigation propre (Mission 6). */
       window.addEventListener('hashchange', route);
+      window.addEventListener('popstate', route);
+      document.addEventListener('click', onDocumentClick, true);
     });
     ELA_I18N.onChange(function () { route(); });
   });

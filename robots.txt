@@ -1,4 +1,20 @@
 User-agent: *
 Allow: /
 
+# Zones privées / applicatives : jamais indexées.
+Disallow: /admin
+Disallow: /teacher
+Disallow: /dashboard
+Disallow: /assistant
+Disallow: /checkout
+Disallow: /login
+Disallow: /register
+Disallow: /payment/result
+Disallow: /payment-success
+# /course (détail) est privé ; /courses (catalogue) reste public.
+Disallow: /course
+Allow: /courses
+Disallow: /lesson
+Disallow: /quiz
+
 Sitemap: https://elaacademy.ng/sitemap.xml

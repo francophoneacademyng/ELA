@@ -2,10 +2,20 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
+  <!-- Mission 6 : les routes imbriquées (/lead-magnets/de) doivent résoudre
+       les assets depuis la racine, pas depuis le dossier courant. -->
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-Learn Language Academy — One Academy. Six Languages.</title>
   <meta name="description" content="Learn French, German, Mandarin, English, Arabic or Russian online with real teachers, live classes and verifiable certificates. E-Learn Language Academy (ELA), Nigeria.">
   <link rel="canonical" href="https://elaacademy.ng/">
+  <link rel="alternate" hreflang="en" href="https://elaacademy.ng/?lang=en" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="fr" href="https://elaacademy.ng/?lang=fr" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="ar" href="https://elaacademy.ng/?lang=ar" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="de" href="https://elaacademy.ng/?lang=de" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="ru" href="https://elaacademy.ng/?lang=ru" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="zh" href="https://elaacademy.ng/?lang=zh" data-ela-hreflang="1">
+  <link rel="alternate" hreflang="x-default" href="https://elaacademy.ng/" data-ela-hreflang="1">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="E-Learn Language Academy">
@@ -182,6 +192,15 @@
 
   <!-- App root: pages are rendered here by js/app.js -->
   <main id="app" tabindex="-1"></main>
+
+  <!-- Contenu statique de repli (crawlers sans JS) -->
+  <noscript>
+    <section class="section">
+      <h1 class="section-title">E-Learn Language Academy — Six Languages</h1>
+      <p>Learn French, German, Mandarin, English, Arabic or Russian online with real teachers, live classes and verifiable certificates.</p>
+      <p><a href="/academies">Academies</a> · <a href="/free-trial">Free Trial</a> · <a href="/pricing">Pricing</a> · <a href="/lead-magnets">Free guides</a></p>
+    </section>
+  </noscript>
 
   <!-- Footer -->
   <footer class="footer">

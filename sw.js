@@ -8,7 +8,7 @@
        sur le cache puis sur index.html (SPA hash-routing).
    ============================================================ */
 
-var CACHE_NAME = 'ela-pwa-v5';
+var CACHE_NAME = 'ela-pwa-v6';
 
 var PRECACHE_URLS = [
   '/',
