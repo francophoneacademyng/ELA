@@ -1971,6 +1971,7 @@
         submitting = true;
         var btn = form.querySelector('button[type="submit"]');
         if (btn) btn.disabled = true;
+        if (window.ELAMarketing) window.ELAMarketing.track('registration_started', { academy: registerState.academy || 'german', locale: ELA_I18N.getLang() });
 
         // --- Approche hybride (audit inscription) : pré-check d'unicité serveur
         //     (checkEmailUnique) puis création 100 % serveur via createAccount
@@ -2001,6 +2002,7 @@
               window.ELAMarketing.track('registration_step_complete', { step: 3, academy: registerState.academy || 'german' });
               if (referral) window.ELAMarketing.track('referral_applied', { academy: registerState.academy || 'german' });
               window.ELAMarketing.track('registration', { academy: registerState.academy || 'german' });
+              window.ELAMarketing.track('registration_completed', { academy: registerState.academy || 'german', locale: ELA_I18N.getLang() });
             }
             alert(t('register.success')); window.location.hash = '#/dashboard';
           })
@@ -2118,6 +2120,13 @@
     '/terms': 'footer.terms', '/privacy': 'footer.privacy', '/refund': 'footer.refundPolicy',
     '/institutions': 'nav.institutions',
     '/free-trial': 'nav.freeTrial',
+    '/lead-magnets': 'nav.guides',
+    '/lead-magnets/fr': 'nav.guides',
+    '/lead-magnets/de': 'nav.guides',
+    '/lead-magnets/zh': 'nav.guides',
+    '/lead-magnets/en': 'nav.guides',
+    '/lead-magnets/ar': 'nav.guides',
+    '/lead-magnets/ru': 'nav.guides',
     '/payment-success': 'payment.result.title.success'
   };
 
@@ -2125,12 +2134,25 @@
   var PRIVATE_PATHS = ['/dashboard', '/assistant', '/admin', '/teacher', '/checkout',
     '/login', '/register', '/payment/result', '/payment-success'];
 
+  /* Meta descriptions propres aux pages lead magnets (pages publiques indexables). */
+  var LEAD_MAGNET_META = {
+    '/lead-magnets': 'Free checklists, study planners and exam guides for IELTS, Goethe, HSK, CECRL, ALPT and TORFL — built for Nigerian and African learners.',
+    '/lead-magnets/fr': 'Free CECRL French study guide: level-by-level checklist, study plan and exam tips for African learners preparing to study or work abroad.',
+    '/lead-magnets/de': 'Free Goethe-Zertifikat prep guide: A1–B1 checklist, study planner and exam tips for Nigerian and African learners heading to Germany.',
+    '/lead-magnets/zh': 'Free HSK Chinese study guide with level checklist, study plan and practical supplier phrases for learners preparing for China study or trade.',
+    '/lead-magnets/en': 'Free IELTS study guide: band-by-band checklist, study plan and exam tips for learners targeting study, work or migration abroad.',
+    '/lead-magnets/ar': 'Free Gulf business Arabic phrasebook and etiquette guide: essential phrases, transliteration and level guidance for beginners.',
+    '/lead-magnets/ru': 'Free TORFL Russian study guide: A1 checklist, Cyrillic quick-start and scholarship document checklist for study in Russia.'
+  };
+
   function updateMeta(path) {
     var title = t(PAGE_TITLES[path] || 'nav.home');
     document.title = title + ' — E-Learn Language Academy';
     var meta = document.querySelector('meta[name="description"]');
-    if (meta && t('meta.description') !== 'meta.description') {
-      meta.setAttribute('content', t('meta.description'));
+    if (meta) {
+      var lmDesc = LEAD_MAGNET_META[path];
+      if (lmDesc) meta.setAttribute('content', lmDesc);
+      else if (t('meta.description') !== 'meta.description') meta.setAttribute('content', t('meta.description'));
     }
     var robots = document.querySelector('meta[name="robots"]');
     if (robots) {

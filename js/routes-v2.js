@@ -36,6 +36,8 @@ import { registerAcademyRoutes } from '../src/academies/registry.js';
 import { renderStudentHub } from '../src/ela/pages/student-hub.page.js';
 import { renderAcademiesPublic } from '../src/ela/pages/academies-public.page.js';
 import { renderFreeTrial } from '../src/ela/pages/free-trial.page.js';
+import { renderLeadMagnetsIndex, renderLeadMagnetPage } from '../src/ela/pages/lead-magnets.page.js';
+import { LEAD_MAGNET_SLUGS } from '../src/ela/data/lead-magnets.data.js';
 
 if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS = window.ELA_ROUTE_HANDLERS || {};
@@ -73,6 +75,11 @@ if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS['/dashboard'] = renderStudentHub;
   window.ELA_ROUTE_HANDLERS['/academies'] = renderAcademiesPublic;
   window.ELA_ROUTE_HANDLERS['/free-trial'] = renderFreeTrial;
+  /* Lead magnets (hub + une landing par académie). ES reste masqué. */
+  window.ELA_ROUTE_HANDLERS['/lead-magnets'] = renderLeadMagnetsIndex;
+  LEAD_MAGNET_SLUGS.forEach(function (slug) {
+    window.ELA_ROUTE_HANDLERS['/lead-magnets/' + slug] = function () { renderLeadMagnetPage(slug); };
+  });
   /* Académies immersives (6 langues) */
   registerAcademyRoutes();
 }

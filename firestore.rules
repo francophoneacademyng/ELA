@@ -102,6 +102,19 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    // Lead magnets : capture email + consentement explicite + académie autorisée.
+    // ES (espagnol) est volontairement absent de la liste (académie masquée).
+    match /leadMagnetLeads/{id} {
+      allow create: if request.resource.data.email is string
+                    && request.resource.data.email.size() >= 5
+                    && request.resource.data.email.matches('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')
+                    && request.resource.data.consent == true
+                    && request.resource.data.academy in ['FR', 'DE', 'ZH', 'EN', 'AR', 'RU']
+                    && request.resource.data.ts is number;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
+
     match /lessons/{id} {
       allow create: if canCreateContent();
       allow read: if isAdmin();
@@ -169,7 +182,7 @@ service cloud.firestore {
     // (page_view, registration, trial_started, checkout_started) avec champs validés.
     // payment_success est écrit UNIQUEMENT par le serveur (webhook Paystack, Admin SDK).
     match /marketingEvents/{id} {
-      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started']
+      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started', 'lead_magnet_view', 'lead_magnet_start', 'lead_captured', 'lead_magnet_download', 'registration_started', 'registration_completed']
                     && request.resource.data.ts is number;
       allow read: if isAdmin();
       allow update, delete: if false;

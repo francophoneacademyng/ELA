@@ -38,7 +38,9 @@ window.ELAMarketing = (function () {
   /* ---------- Firestore marketingEvents (create-only) ----------
      Seuls les événements autorisés par firestore.rules sont écrits en base ;
      les autres restent GA4-only (évite des écritures refusées inutiles). */
-  var FS_EVENTS = ['page_view', 'registration', 'trial_started', 'checkout_started'];
+  var FS_EVENTS = ['page_view', 'registration', 'trial_started', 'checkout_started',
+    'lead_magnet_view', 'lead_magnet_start', 'lead_captured', 'lead_magnet_download',
+    'registration_started', 'registration_completed'];
   function fsLog(event, data) {
     if (FS_EVENTS.indexOf(event) < 0) return;
     try {
@@ -111,6 +113,7 @@ window.ELAMarketing = (function () {
     if (href.indexOf('#/register') === 0) g('cta_signup_click', { page: page });
     else if (href.indexOf('#/pricing') === 0) g('cta_pricing_click', { page: page });
     else if (href.indexOf('#/live') === 0) g('cta_live_click', { page: page });
+    else if (href.indexOf('#/lead-magnets') === 0) g('cta_lead_magnet_click', { page: page });
     else if (href.indexOf('#/free-trial') === 0) g('cta_free_trial_click', { page: page });
     else if (href.indexOf('wa.me') > -1) g('whatsapp_click', { page: page });
   }, true);
