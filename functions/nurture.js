@@ -31,6 +31,9 @@ const db = new Proxy({}, {
 
 const REGION = 'africa-south1';
 const SCHEDULER_REGION = 'europe-west1';
+/* Région de l'endpoint HTTP : doit être supportée par Firebase Hosting
+   pour le rewrite /unsubscribe (africa-south1 ne l'est pas). */
+const HTTP_REGION = 'europe-west1';
 const SITE = 'https://elaacademy.ng';
 const LEADS = 'leadMagnetLeads';
 const FROM_NAME = 'E-Learn Language Academy';
@@ -444,7 +447,7 @@ function unsubscribePage(title, message) {
     '</main></body></html>';
 }
 
-exports.nurtureUnsubscribe = onRequest({ region: REGION }, async (req, res) => {
+exports.nurtureUnsubscribe = onRequest({ region: HTTP_REGION }, async (req, res) => {
   const token = String((req.query && req.query.token) || '');
   const data = verifyToken(token);
   if (!data) {
