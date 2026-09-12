@@ -113,8 +113,8 @@ function deliverContent(m) {
       '<h3 class="lm-h3">' + escapeHtml(t('leadMagnets.phrasesTitle', 'Essential phrases')) + '</h3>' +
       phraseTable(m) +
       '<div class="lm-actions">' +
-        '<button type="button" class="lm-cta" id="lm-download">' + escapeHtml(t('leadMagnets.download', 'Download the checklist (.txt)')) + '</button>' +
-        '<a class="lm-cta-ghost" href="#/free-trial">' + escapeHtml(t('leadMagnets.cta.trial', 'Start free trial')) + '</a>' +
+        '<a class="lm-cta" id="lm-trial-cta" href="/free-trial">' + escapeHtml(t('leadMagnets.cta.trial', 'Start free trial')) + '</a>' +
+        '<button type="button" class="lm-cta-ghost" id="lm-download">' + escapeHtml(t('leadMagnets.download', 'Download the checklist (.txt)')) + '</button>' +
       '</div>' +
     '</div>';
 }
@@ -263,6 +263,13 @@ function bindForm(m, c) {
             const ok = downloadText('ELA-' + m.code + '-guide.txt', buildDownloadText(m, c));
             if (ok) track('lead_magnet_download', { lead_magnet_id: m.slug, academy: academy, delivery_channel: 'onpage' });
             else toast(t('leadMagnets.downloadError', 'Download unavailable on this device.'), 'info');
+          });
+        }
+        track('thankyou_view', { lead_magnet_id: m.slug, academy: academy });
+        const trialCta = document.getElementById('lm-trial-cta');
+        if (trialCta) {
+          trialCta.addEventListener('click', function () {
+            track('trial_cta_click', { lead_magnet_id: m.slug, academy: academy, position: 'thankyou' });
           });
         }
         toast(t('leadMagnets.thankyou.toast', 'Guide unlocked. Enjoy!'), 'success');

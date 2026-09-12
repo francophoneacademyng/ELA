@@ -47,6 +47,10 @@
         "destination": "https://africa-south1-ela-academy-7f868.cloudfunctions.net/verifyELACertificate"
       },
       {
+        "source": "/unsubscribe",
+        "destination": "https://africa-south1-ela-academy-7f868.cloudfunctions.net/nurtureUnsubscribe"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

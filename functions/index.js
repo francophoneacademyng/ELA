@@ -128,6 +128,7 @@ const auth = require('./auth');
 const live = require('./live');
 const adm = require('./admin');
 const certificate = require('./certificate');
+const nurture = require('./nurture');
 // TODO: Restaurer quand le refactor certificats/curriculum sera terminé.
 // (fichiers supprimés encore référencés : ela-certificate-core.js, ela-pdf.js,
 // curriculum.js, curriculum-quizzes.js, seed-a1/* — via teacher/ela-certificates)
@@ -176,6 +177,13 @@ exports.getInvoiceList = mgmt.getInvoiceList;
 exports.getWhatsAppLogs = mgmt.getWhatsAppLogs;
 
 exports.generateCertificate = certificate.generateCertificate;
+/* Mission 7 — Nurturing email des leads (envoi désactivé par défaut :
+   NURTURE_SEND_ENABLED doit valoir "true"). */
+exports.nurtureOnLeadCreated = nurture.nurtureOnLeadCreated;
+exports.nurtureScheduler = nurture.nurtureScheduler;
+exports.nurtureOnUserCreated = nurture.nurtureOnUserCreated;
+exports.nurtureOnSubscriptionActive = nurture.nurtureOnSubscriptionActive;
+exports.nurtureUnsubscribe = nurture.nurtureUnsubscribe;
 // TODO: Restaurer quand le refactor certificats/curriculum sera terminé.
 // (exports portés par teacher.js / ela-certificates.js → fichiers supprimés)
 // exports.listELACertificates = elaCert.listELACertificates;

@@ -182,7 +182,7 @@ service cloud.firestore {
     // (page_view, registration, trial_started, checkout_started) avec champs validés.
     // payment_success est écrit UNIQUEMENT par le serveur (webhook Paystack, Admin SDK).
     match /marketingEvents/{id} {
-      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started', 'lead_magnet_view', 'lead_magnet_start', 'lead_captured', 'lead_magnet_download', 'registration_started', 'registration_completed']
+      allow create: if request.resource.data.event in ['page_view', 'registration', 'trial_started', 'checkout_started', 'lead_magnet_view', 'lead_magnet_start', 'lead_captured', 'lead_magnet_download', 'registration_started', 'registration_completed', 'plan_selected', 'thankyou_view', 'trial_cta_click']
                     && request.resource.data.ts is number;
       allow read: if isAdmin();
       allow update, delete: if false;
