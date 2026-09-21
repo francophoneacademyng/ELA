@@ -27,15 +27,30 @@ var KPI_ICONS = {
   streak: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2c1 4-4 6-4 11a4 4 0 0 0 8 0c0-2-.8-3.4-1.6-4.6C13.5 10 15 9 12 2z"/></svg>',
   xp: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15 9 22 9.3 16.5 13.8 18.5 21 12 17 5.5 21 7.5 13.8 2 9.3 9 9"/></svg>'
 };
-/* Icônes SVG des états vides / chargement. */
+/* Icônes des états vides / chargement. */
 var ICON_CLOCK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
 var ICON_SPARK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>';
+var ICON_LOCK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>';
 var PROFILE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 
 function kpiCard(icon, labelKey, valueId) {
   return '<div class="kpi-card student-kpi">' +
     '<span class="kpi-label student-kpi-label"><span class="student-kpi-icon" aria-hidden="true">' + KPI_ICONS[icon] + '</span>' + t(labelKey) + '</span>' +
     '<div class="kpi-value" id="' + valueId + '">—</div></div>';
+}
+
+/* État « connexion requise » : jamais de loader infini pour un
+   visiteur non connecté (Firebase Auth = source de vérité). */
+function renderSignInRequired(app) {
+  app.innerHTML = '' +
+    '<div class="dashboard-layout">' +
+      '<main class="main-content" style="margin-left:0;max-width:100%">' +
+        '<div class="empty-state student-empty"><div class="empty-icon" aria-hidden="true">' + ICON_LOCK + '</div>' +
+          '<p role="status">' + t('profile.authRequired') + '</p>' +
+          '<p><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
+        '</div>' +
+      '</main>' +
+    '</div>';
 }
 
 export function renderStudentHub() {
@@ -50,6 +65,14 @@ export function renderStudentHub() {
           '<p>' + t('common.loading') + '</p></div>' +
         '</main>' +
       '</div>';
+    return;
+  }
+
+  /* Garde d'authentification (S-01) : Firebase Auth reste la source
+     de vérité. Un visiteur non connecté voit un état explicite au
+     lieu d'un chargement infini (les callables exigent une session). */
+  if (!firebase.auth().currentUser) {
+    renderSignInRequired(app);
     return;
   }
 
@@ -122,6 +145,9 @@ export function renderStudentHub() {
     }).catch(function (err) {
       // Bug corrigé : message clair + retry (plus de « Unable to load » brut).
       console.error('[student-hub] getMyAcademies/getDashboardData a échoué :', err);
+      // Non authentifié (session expirée) : état de connexion, jamais de boucle.
+      var code = (err && err.code) ? String(err.code) : '';
+      if (code.indexOf('unauthenticated') >= 0) { renderSignInRequired(app); return; }
       if (statusEl) {
         statusEl.textContent = t('dashboard.academiesError');
         statusEl.classList.add('ac-status-error');
