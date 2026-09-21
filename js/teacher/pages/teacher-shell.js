@@ -5,9 +5,10 @@
    ============================================================ */
 
 import { requireTeacher, getProfile } from '../../core/auth.service.js';
-import { afterRender, escapeHtml } from '../../core/dom.js';
+import { afterRender } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
 import { setState } from '../services/teacher-state.js';
+import { TI } from '../components/teacher-icons.js';
 
 /* --- Sidebar partagée, avec l'item actif mis en surbrillance. --- */
 export function teacherSidebarHtml(active) {
@@ -17,25 +18,27 @@ export function teacherSidebarHtml(active) {
   return '' +
     '<div class="sidebar-brand">' + t('teacher.sidebar.brand') + '</div>' +
     '<nav class="sidebar-nav">' +
-      a('#/teacher', '🏠 ' + t('teacher.sidebar.dashboard')) +
+      a('#/teacher', '<span class="nav-icon">' + TI.dashboard + '</span> ' + t('teacher.sidebar.dashboard')) +
       '<div class="nav-section">' + t('teacher.navGroup.content') + '</div>' +
-      a('#/teacher/courses', '📚 ' + t('teacher.sidebar.courses')) +
-      a('#/teacher/quizzes', '📝 ' + t('teacher.sidebar.quizzes')) +
-      a('#/teacher/live', '🔴 ' + t('teacher.sidebar.live')) +
+      a('#/teacher/courses', '<span class="nav-icon">' + TI.book + '</span> ' + t('teacher.sidebar.courses')) +
+      a('#/teacher/quizzes', '<span class="nav-icon">' + TI.quiz + '</span> ' + t('teacher.sidebar.quizzes')) +
+      a('#/teacher/live', '<span class="nav-icon">' + TI.live + '</span> ' + t('teacher.sidebar.live')) +
       '<div class="nav-section">' + t('teacher.navGroup.management') + '</div>' +
-      a('#/teacher/students', '👥 ' + t('teacher.sidebar.students')) +
-      a('#/teacher/stats', '📊 ' + t('teacher.sidebar.stats')) +
+      a('#/teacher/students', '<span class="nav-icon">' + TI.users + '</span> ' + t('teacher.sidebar.students')) +
+      a('#/teacher/stats', '<span class="nav-icon">' + TI.chart + '</span> ' + t('teacher.sidebar.stats')) +
       '<div class="nav-section">' + t('teacher.navGroup.account') + '</div>' +
-      a('#/teacher/profile', '⚙️ ' + t('teacher.sidebar.profile')) +
+      a('#/teacher/profile', '<span class="nav-icon">' + TI.settings + '</span> ' + t('teacher.sidebar.profile')) +
     '</nav>';
 }
 
 /** Bloc « accès refusé » (partagé par toutes les pages enseignant). */
-export function forbiddenTeacher(app) {
+export function forbiddenTeacher(app, ctaHref, ctaLabel) {
+  var href = (typeof ctaHref === 'string' && ctaHref) ? ctaHref : '#/login';
+  var label = (typeof ctaLabel === 'string' && ctaLabel) ? ctaLabel : t('nav.login');
   app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
-    '<div class="empty-state"><div class="empty-icon">🔒</div>' +
+    '<div class="empty-state teacher-empty"><div class="empty-icon">' + TI.lock + '</div>' +
     '<p>' + t('teacher.gate.body') + '</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
+    '<p style="margin-top:12px"><a class="btn-primary" href="' + href + '">' + label + '</a></p>' +
     '</div></main></div>';
   afterRender('');
 }
@@ -71,6 +74,8 @@ function write(app, config, content) {
         '<header class="dashboard-header"><h1>' + config.title + '</h1>' +
           (config.subtitle ? '<p>' + config.subtitle + '</p>' : '') +
         '</header>' +
+        (config.backButton ? '<a class="back-link" href="' + config.backButton + '">' +
+          TI.back + ' ' + t('teacher.backToDashboard') + '</a>' : '') +
         content +
       '</main>' +
     '</div>';

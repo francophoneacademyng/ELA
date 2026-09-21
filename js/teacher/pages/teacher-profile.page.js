@@ -30,27 +30,26 @@ function layoutHtml(profile) {
   var academyLabel = academyOf(p.academy);
   var initials = String(p.displayName || p.email || '?').trim().charAt(0).toUpperCase();
 
-  return '<div class="card" style="max-width:640px">' +
-    '<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem">' +
-      '<div style="width:56px;height:56px;border-radius:50%;background:var(--forest);color:#fff;' +
-        'display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:700">' + initials + '</div>' +
+  return '<div class="card ela-teacher-form">' +
+    '<div class="profile-head">' +
+      '<div class="profile-avatar">' + initials + '</div>' +
       '<div><strong class="user-name">' + esc(p.displayName || t('admin.teacher')) + '</strong>' +
-        '<p class="muted" style="margin:0">' + academyLabel + '</p></div>' +
+        '<p class="muted">' + academyLabel + '</p></div>' +
     '</div>' +
-    '<div style="margin-bottom:0.9rem">' +
-      '<label for="tp-name" style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('teacher.profile.displayName') + '</label>' +
-      '<input type="text" id="tp-name" class="input" style="width:100%" value="' + esc(p.displayName || '') + '">' +
+    '<div class="form-field">' +
+      '<label for="tp-name">' + t('teacher.profile.displayName') + '</label>' +
+      '<input type="text" id="tp-name" class="input" value="' + esc(p.displayName || '') + '">' +
     '</div>' +
-    '<div style="margin-bottom:0.9rem">' +
-      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('admin.email') + '</label>' +
-      '<input type="text" class="input" style="width:100%" value="' + esc(p.email || '') + '" readonly disabled>' +
+    '<div class="form-field">' +
+      '<label>' + t('admin.email') + '</label>' +
+      '<input type="text" class="input" value="' + esc(p.email || '') + '" readonly disabled>' +
     '</div>' +
-    '<div style="margin-bottom:0.9rem">' +
-      '<label style="display:block;font-weight:600;margin-bottom:0.3rem">' + t('admin.academy') + '</label>' +
-      '<input type="text" class="input" style="width:100%" value="' + esc(academyLabel) + '" readonly disabled>' +
-      '<p class="muted" style="margin:0.3rem 0 0;font-size:0.8rem">' + t('teacher.profile.academyHint') + '</p>' +
+    '<div class="form-field">' +
+      '<label>' + t('admin.academy') + '</label>' +
+      '<input type="text" class="input" value="' + esc(academyLabel) + '" readonly disabled>' +
+      '<p class="muted form-hint">' + t('teacher.profile.academyHint') + '</p>' +
     '</div>' +
-    '<button class="btn btn-solid" id="tp-save">' + t('admin.save') + '</button>' +
+    '<button class="btn-primary" id="tp-save">' + t('admin.save') + '</button>' +
   '</div>';
 }
 
@@ -68,7 +67,7 @@ function bindSave() {
       btn.disabled = true;
       return db().collection('users').doc(profile.uid).update({ displayName: name })
         .then(function () {
-          toast(t('teacher.profile.saved') + ' ✅', 'success');
+          toast(t('teacher.profile.saved'), 'success');
           return getProfile(true); // invalide le cache
         })
         .catch(function () { toast(t('teacher.profile.saveError'), 'error'); })

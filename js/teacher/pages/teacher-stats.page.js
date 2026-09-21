@@ -10,6 +10,7 @@ import { renderTeacherShell } from './teacher-shell.js';
 import { escapeHtml, formatDate, toast } from '../../core/dom.js';
 import { callFunction } from '../../core/api-client.js';
 import { t } from '../../core/i18n-helpers.js';
+import { TI, TEACHER_BADGE_ICONS } from '../components/teacher-icons.js';
 
 function typeLabel(type) {
   var key = type === 'lesson' ? 'teacher.type.lesson' : type === 'quiz' ? 'teacher.type.quiz' : type === 'live' ? 'teacher.type.live' : null;
@@ -23,7 +24,7 @@ export function renderTeacherStats() {
     subtitle: t('teacher.stats.subtitle'),
     renderContent: function () {
       return '<div class="card" data-stats-box>' +
-        '<div class="empty-state"><div class="empty-icon">⏳</div><p>' + t('teacher.students.loading') + '</p></div></div>';
+        '<div class="empty-state"><div class="empty-icon">' + TI.clock + '</div><p>' + t('teacher.students.loading') + '</p></div></div>';
     },
     onBind: function () {
       callFunction('getTeacherStats').then(function (r) {
@@ -52,7 +53,7 @@ function paint(r) {
 
   var recentHtml;
   if (!recent.length) {
-    recentHtml = '<div class="empty-state"><div class="empty-icon">📊</div>' +
+    recentHtml = '<div class="empty-state"><div class="empty-icon">' + TI.chart + '</div>' +
       '<p>' + t('teacher.stats.empty') + '</p>' +
       '<p class="empty-sub">' + t('teacher.stats.emptySub') + '</p></div>';
   } else {
@@ -67,8 +68,8 @@ function paint(r) {
       '<tbody>' + rows + '</tbody></table></div>';
   }
 
-  box.innerHTML = '<section class="kpi-grid" style="margin-bottom:1.5rem">' + kpis + '</section>' +
-    '<section class="section-title">' + t('teacher.stats.activity') + '</section>' + recentHtml;
+  box.innerHTML = '<section class="kpi-grid">' + kpis + '</section>' +
+    '<section class="dashboard-section-title">' + t('teacher.stats.activity') + '</section>' + recentHtml;
 }
 
 function kpi(label, value) {
@@ -78,10 +79,10 @@ function kpi(label, value) {
 
 function statusBadge(status) {
   var map = {
-    pending: ['badge-wait', t('teacher.status.pending')],
-    approved: ['badge-ok', t('teacher.status.approved')],
-    rejected: ['badge-ko', t('teacher.status.rejected')]
+    pending: ['badge-wait', t('teacher.status.pending'), TEACHER_BADGE_ICONS.pending],
+    approved: ['badge-ok', t('teacher.status.approved'), TEACHER_BADGE_ICONS.approved],
+    rejected: ['badge-ko', t('teacher.status.rejected'), TEACHER_BADGE_ICONS.rejected]
   };
-  var m = map[status] || ['badge-muted', String(status || '—')];
-  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+  var m = map[status] || ['badge-muted', String(status || '—'), ''];
+  return '<span class="badge ' + m[0] + '">' + (m[2] ? m[2] + ' ' : '') + m[1] + '</span>';
 }

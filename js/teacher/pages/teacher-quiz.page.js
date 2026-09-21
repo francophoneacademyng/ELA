@@ -3,24 +3,21 @@
    Page dédiée « Créer un quiz » (questions dynamiques).
    ============================================================ */
 
-import { requireTeacher } from '../../core/auth.service.js';
-import { afterRender, toast } from '../../core/dom.js';
+import { renderTeacherShell } from './teacher-shell.js';
+import { toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
-import { setState } from '../services/teacher-state.js';
 import { submitDraft } from '../services/submission.service.js';
 import { QuizDraft } from '../models/quiz-draft.model.js';
 
 var qCount = 1;
 
 export function renderTeacherQuizNew() {
-  var app = document.getElementById('app');
-  if (!app) return;
-  requireTeacher().then(function (guard) {
-    if (!guard.ok) { forbidden(app); return; }
-    setState({ profile: guard.profile });
-    app.innerHTML = shell();
-    afterRender('');
-    bindQuiz(app);
+  renderTeacherShell({
+    active: '#/teacher/quizzes',
+    title: t('teacher.quiz.newTitle'),
+    backButton: '#/teacher',
+    renderContent: function () { return formHtml(); },
+    onBind: function () { bindQuiz(); }
   });
 }
 
@@ -28,31 +25,29 @@ function fmt(n, key) {
   return t(key).replace('{n}', n);
 }
 
-function shell() {
-  return '' +
-    '<div class="dashboard-layout"><main class="main-content">' +
-      '<header class="dashboard-header"><h1>' + t('teacher.quiz.newTitle') + '</h1>' +
-      '<p><a class="btn-secondary" href="#/teacher">' + t('teacher.backToDashboard') + '</a></p></header>' +
-      '<div class="card ela-teacher-form">' +
-        '<div class="form-field"><label>' + t('teacher.quiz.field.title') + '</label>' +
-          '<input type="text" id="tq-title" class="input" placeholder="' + t('teacher.quiz.titlePlaceholder') + '"></div>' +
-        '<div id="tq-questions">' + questionBlock(0) + '</div>' +
-        '<button class="btn-secondary" id="tq-add" type="button">' + t('teacher.quiz.addQuestion') + '</button> ' +
-        '<button class="btn-primary" id="tq-submit" type="button">' + t('teacher.submit') + '</button>' +
-      '</div>' +
-    '</main></div>';
+function formHtml() {
+  return '<div class="card ela-teacher-form">' +
+    '<div class="form-field"><label for="tq-title">' + t('teacher.quiz.field.title') + '</label>' +
+      '<input type="text" id="tq-title" class="input" placeholder="' + t('teacher.quiz.titlePlaceholder') + '"></div>' +
+    '<div id="tq-questions">' + questionBlock(0) + '</div>' +
+    '<div class="action-bar">' +
+      '<button class="btn-secondary" id="tq-add" type="button">' + t('teacher.quiz.addQuestion') + '</button>' +
+      '<button class="btn-primary" id="tq-submit" type="button">' + t('teacher.submit') + '</button>' +
+    '</div>' +
+  '</div>';
 }
 
 function questionBlock(i) {
   var opts = '';
   for (var o = 0; o < 4; o++) {
-    opts += '<div class="form-field" style="margin-bottom:8px"><label>' + fmt(o + 1, 'teacher.quiz.optionLabel') +
+    opts += '<div class="form-field form-field-sm"><label>' + fmt(o + 1, 'teacher.quiz.optionLabel') +
       (o === 0 ? t('teacher.quiz.defaultCorrect') : '') + '</label>' +
       '<input type="text" class="input" data-quiz-option="' + i + '" data-oi="' + o + '" placeholder="' + t('teacher.quiz.answerPlaceholder') + '"></div>';
   }
-  return '<div class="form-field" style="border-top:1px solid #eee;padding-top:12px;margin-top:12px">' +
-    '<label>' + fmt(i + 1, 'teacher.quiz.questionLabel') + '</label>' +
-    '<textarea class="input" data-quiz-text="' + i + '" placeholder="' + t('teacher.questionText') + '…"></textarea>' +
+  return '<div class="quiz-question-card">' +
+    '<div class="quiz-question-head"><strong>' + t('teacher.question') + ' ' + (i + 1) + '</strong></div>' +
+    '<div class="form-field"><label>' + fmt(i + 1, 'teacher.quiz.questionLabel') + '</label>' +
+    '<textarea class="input" data-quiz-text="' + i + '" placeholder="' + t('teacher.questionText') + '…"></textarea></div>' +
     opts +
     '<div class="form-field"><label>' + t('teacher.quiz.correctAnswer') + '</label>' +
       '<select class="input" data-quiz-correct="' + i + '">' +
@@ -62,7 +57,7 @@ function questionBlock(i) {
   '</div>';
 }
 
-function bindQuiz(app) {
+function bindQuiz() {
   var add = document.getElementById('tq-add');
   if (add) add.addEventListener('click', function () {
     var host = document.getElementById('tq-questions');
@@ -95,15 +90,6 @@ function bindQuiz(app) {
       window.location.hash = '#/teacher';
     }).catch(function () { toast(t('teacher.error.submit'), 'error'); });
   });
-}
-
-function forbidden(app) {
-  app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
-    '<div class="empty-state"><div class="empty-icon">🔒</div>' +
-    '<p>' + t('teacher.gate.teacherOnly') + '</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
-    '</div></main></div>';
-  afterRender('');
 }
 
 function val(id) {

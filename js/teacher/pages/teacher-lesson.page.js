@@ -4,22 +4,19 @@
    Formulaire simple, soumission via submitDraft (serveur).
    ============================================================ */
 
-import { requireTeacher } from '../../core/auth.service.js';
-import { afterRender, toast } from '../../core/dom.js';
+import { renderTeacherShell } from './teacher-shell.js';
+import { toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
-import { setState } from '../services/teacher-state.js';
 import { submitDraft } from '../services/submission.service.js';
 import { LessonDraft, LESSON_LEVELS } from '../models/lesson-draft.model.js';
 
 export function renderTeacherLessonNew() {
-  var app = document.getElementById('app');
-  if (!app) return;
-  requireTeacher().then(function (guard) {
-    if (!guard.ok) { forbidden(app); return; }
-    setState({ profile: guard.profile });
-    app.innerHTML = shell();
-    afterRender('');
-    bindLesson(app);
+  renderTeacherShell({
+    active: '#/teacher/courses',
+    title: t('teacher.lesson.newTitle'),
+    backButton: '#/teacher',
+    renderContent: function () { return formHtml(); },
+    onBind: function () { bindLesson(); }
   });
 }
 
@@ -28,29 +25,24 @@ function levelLabel(l) {
   return key ? t(key) : (String(l).charAt(0).toUpperCase() + String(l).slice(1));
 }
 
-function shell() {
+function formHtml() {
   var levelOpts = LESSON_LEVELS.map(function (l) {
     return '<option value="' + l + '">' + levelLabel(l) + '</option>';
   }).join('');
-  return '' +
-    '<div class="dashboard-layout"><main class="main-content">' +
-      '<header class="dashboard-header"><h1>' + t('teacher.lesson.newTitle') + '</h1>' +
-      '<p><a class="btn-secondary" href="#/teacher">' + t('teacher.backToDashboard') + '</a></p></header>' +
-      '<div class="card ela-teacher-form">' +
-        '<div class="form-field"><label>' + t('teacher.lesson.field.title') + '</label>' +
-          '<input type="text" id="tl-title" class="input" placeholder="' + t('teacher.lesson.titlePlaceholder') + '"></div>' +
-        '<div class="form-field"><label>' + t('teacher.lesson.field.description') + '</label>' +
-          '<textarea id="tl-desc" class="input" placeholder="' + t('teacher.lessonDesc') + '"></textarea></div>' +
-        '<div class="form-field"><label>' + t('teacher.lesson.field.content') + '</label>' +
-          '<textarea id="tl-content" class="input" style="min-height:180px" placeholder="' + t('teacher.lessonContent') + '…"></textarea></div>' +
-        '<div class="form-field"><label>' + t('teacher.lesson.field.level') + '</label>' +
-          '<select id="tl-level" class="input">' + levelOpts + '</select></div>' +
-        '<button class="btn-primary" id="tl-submit">' + t('teacher.submit') + '</button>' +
-      '</div>' +
-    '</main></div>';
+  return '<div class="card ela-teacher-form">' +
+    '<div class="form-field"><label for="tl-title">' + t('teacher.lesson.field.title') + '</label>' +
+      '<input type="text" id="tl-title" class="input" placeholder="' + t('teacher.lesson.titlePlaceholder') + '"></div>' +
+    '<div class="form-field"><label for="tl-desc">' + t('teacher.lesson.field.description') + '</label>' +
+      '<textarea id="tl-desc" class="input" placeholder="' + t('teacher.lessonDesc') + '"></textarea></div>' +
+    '<div class="form-field"><label for="tl-content">' + t('teacher.lesson.field.content') + '</label>' +
+      '<textarea id="tl-content" class="input input-tall" placeholder="' + t('teacher.lessonContent') + '…"></textarea></div>' +
+    '<div class="form-field"><label for="tl-level">' + t('teacher.lesson.field.level') + '</label>' +
+      '<select id="tl-level" class="input">' + levelOpts + '</select></div>' +
+    '<button class="btn-primary" id="tl-submit">' + t('teacher.submit') + '</button>' +
+  '</div>';
 }
 
-function bindLesson(app) {
+function bindLesson() {
   var btn = document.getElementById('tl-submit');
   if (!btn) return;
   btn.addEventListener('click', function () {
@@ -76,15 +68,6 @@ function submitWithFeedback(draft, type) {
   }).catch(function () {
     toast(t('teacher.error.submit'), 'error');
   });
-}
-
-function forbidden(app) {
-  app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
-    '<div class="empty-state"><div class="empty-icon">🔒</div>' +
-    '<p>' + t('teacher.gate.teacherOnly') + '</p>' +
-    '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
-    '</div></main></div>';
-  afterRender('');
 }
 
 function val(id) {

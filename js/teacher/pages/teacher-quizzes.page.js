@@ -10,6 +10,7 @@ import { escapeHtml, formatDate, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/teacher-state.js';
 import { refreshSubmissions } from '../services/submission.service.js';
+import { TEACHER_BADGE_ICONS, TI } from '../components/teacher-icons.js';
 
 export function renderTeacherQuizzes() {
   renderTeacherShell({
@@ -39,9 +40,9 @@ function layoutHtml() {
 function listInner() {
   var list = (getState().submissions || []).filter(function (s) { return s.type === 'quiz'; });
   if (!list.length) {
-    return '<div class="empty-state"><div class="empty-icon">📝</div>' +
+    return '<div class="empty-state"><div class="empty-icon">' + TI.empty + '</div>' +
       '<p>' + t('teacher.quizzes.empty') + '</p>' +
-      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/quiz/new">' + t('teacher.quizzes.emptyCTA') + '</a></p></div>';
+      '<p class="empty-cta"><a class="btn-primary" href="#/teacher/quiz/new">' + t('teacher.quizzes.emptyCTA') + '</a></p></div>';
   }
   var rows = list.map(function (s) {
     return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
@@ -53,15 +54,15 @@ function listInner() {
   return '<div class="table-responsive"><table class="data-table">' +
     '<thead><tr><th>' + t('admin.col.title') + '</th><th>' + t('admin.col.date') + '</th><th>' + t('admin.col.status') + '</th><th>' + t('teacher.courses.col.action') + '</th></tr></thead>' +
     '<tbody>' + rows + '</tbody></table></div>' +
-    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/quiz/new">' + t('teacher.quizzes.new') + '</a></div>';
+    '<div class="list-cta"><a class="btn-primary" href="#/teacher/quiz/new">' + t('teacher.quizzes.new') + '</a></div>';
 }
 
 function statusBadge(status) {
   var map = {
-    pending: ['badge-wait', t('teacher.status.pending')],
-    approved: ['badge-ok', t('teacher.status.approved')],
-    rejected: ['badge-ko', t('teacher.status.rejected')]
+    pending: ['badge-wait', t('teacher.status.pending'), TEACHER_BADGE_ICONS.pending],
+    approved: ['badge-ok', t('teacher.status.approved'), TEACHER_BADGE_ICONS.approved],
+    rejected: ['badge-ko', t('teacher.status.rejected'), TEACHER_BADGE_ICONS.rejected]
   };
-  var m = map[status] || ['badge-muted', String(status || '—')];
-  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+  var m = map[status] || ['badge-muted', String(status || '—'), ''];
+  return '<span class="badge ' + m[0] + '">' + (m[2] ? m[2] + ' ' : '') + m[1] + '</span>';
 }

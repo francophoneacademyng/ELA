@@ -10,6 +10,7 @@ import { escapeHtml, formatDate, toast } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
 import { getState } from '../services/teacher-state.js';
 import { refreshSubmissions } from '../services/submission.service.js';
+import { TEACHER_BADGE_ICONS, TI } from '../components/teacher-icons.js';
 
 var filter = 'all';
 
@@ -73,9 +74,9 @@ function listInner() {
 
   var body;
   if (!list.length) {
-    body = '<div class="empty-state"><div class="empty-icon">📭</div>' +
+    body = '<div class="empty-state"><div class="empty-icon">' + TI.empty + '</div>' +
       '<p>' + t('teacher.courses.empty') + '</p>' +
-      '<p style="margin-top:12px"><a class="btn btn-solid" href="#/teacher/lesson/new">' + t('teacher.courses.emptyCTA') + '</a></p></div>';
+      '<p class="empty-cta"><a class="btn-primary" href="#/teacher/lesson/new">' + t('teacher.courses.emptyCTA') + '</a></p></div>';
   } else {
     var rows = list.map(function (s) {
       return '<tr><td><span class="user-name">' + escapeHtml(s.title) + '</span></td>' +
@@ -89,16 +90,16 @@ function listInner() {
       '<tbody>' + rows + '</tbody></table></div>';
   }
 
-  return '<div class="chart-filters" style="margin-bottom:1rem">' + filters + '</div>' + body +
-    '<div style="margin-top:1rem"><a class="btn btn-solid" href="#/teacher/lesson/new">' + t('teacher.courses.new') + '</a></div>';
+  return '<div class="chart-filters">' + filters + '</div>' + body +
+    '<div class="list-cta"><a class="btn-primary" href="#/teacher/lesson/new">' + t('teacher.courses.new') + '</a></div>';
 }
 
 function statusBadge(status) {
   var map = {
-    pending: ['badge-wait', t('teacher.status.pending')],
-    approved: ['badge-ok', t('teacher.status.approved')],
-    rejected: ['badge-ko', t('teacher.status.rejected')]
+    pending: ['badge-wait', t('teacher.status.pending'), TEACHER_BADGE_ICONS.pending],
+    approved: ['badge-ok', t('teacher.status.approved'), TEACHER_BADGE_ICONS.approved],
+    rejected: ['badge-ko', t('teacher.status.rejected'), TEACHER_BADGE_ICONS.rejected]
   };
-  var m = map[status] || ['badge-muted', String(status || '—')];
-  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+  var m = map[status] || ['badge-muted', String(status || '—'), ''];
+  return '<span class="badge ' + m[0] + '">' + (m[2] ? m[2] + ' ' : '') + m[1] + '</span>';
 }

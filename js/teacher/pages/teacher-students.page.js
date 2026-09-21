@@ -10,6 +10,7 @@ import { renderTeacherShell } from './teacher-shell.js';
 import { callFunction } from '../../core/api-client.js';
 import { formatDate } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
+import { TI } from '../components/teacher-icons.js';
 
 export function renderTeacherStudents() {
   renderTeacherShell({
@@ -18,7 +19,7 @@ export function renderTeacherStudents() {
     subtitle: t('teacher.students.subtitle'),
     renderContent: function () {
       return '<div class="card" data-students-list>' +
-        '<div class="empty-state"><div class="empty-icon">⏳</div><p>' + t('teacher.students.loading') + '</p></div>' +
+        '<div class="empty-state"><div class="empty-icon">' + TI.clock + '</div><p>' + t('teacher.students.loading') + '</p></div>' +
       '</div>';
     },
     onBind: function () {
@@ -36,7 +37,7 @@ function paint(r) {
   if (!box) return;
   var students = r.students || [];
   if (!students.length) {
-    box.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div>' +
+    box.innerHTML = '<div class="empty-state"><div class="empty-icon">' + TI.users + '</div>' +
       '<p>' + t('teacher.students.empty') + '</p>' +
       '<p class="empty-sub">' + t('teacher.students.emptySub') + '</p></div>';
     return;

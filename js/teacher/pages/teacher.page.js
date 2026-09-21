@@ -13,6 +13,7 @@ import { getState, setState, reset } from '../services/teacher-state.js';
 import { refreshSubmissions } from '../services/submission.service.js';
 import { formatDate, escapeHtml } from '../../core/dom.js';
 import { ACADEMIES, codeFromKey } from '../../../src/shared/config/academies.config.js';
+import { TI, TEACHER_BADGE_ICONS } from '../components/teacher-icons.js';
 
 var ACADEMY_OPT = { FR: 'francophone', DE: 'germanophone', ZH: 'sinophone', EN: 'anglophone', AR: 'arabophone', RU: 'russophone' };
 var ACADEMY_FLAG = { FR: '🇫🇷', DE: '🇩🇪', ZH: '🇨🇳', EN: '🇬🇧', AR: '🇸🇦', RU: '🇷🇺' };
@@ -33,9 +34,9 @@ export function renderTeacherPage() {
   requireTeacher().then(function (guard) {
     if (!guard.ok) {
       app.innerHTML = '<div class="dashboard-layout"><main class="main-content">' +
-        '<div class="empty-state"><div class="empty-icon">🔒</div>' +
+        '<div class="empty-state teacher-empty"><div class="empty-icon">' + TI.lock + '</div>' +
         '<p>' + t('teacher.gate.body') + '</p>' +
-        '<p style="margin-top:12px"><a class="btn btn-solid" href="#/login">' + t('nav.login') + '</a></p>' +
+        '<p class="empty-cta"><a class="btn-primary" href="#/login">' + t('nav.login') + '</a></p>' +
         '</div></main></div>';
       afterRender('');
       return;
@@ -85,7 +86,7 @@ function paint() {
     '<thead><tr><th>' + t('admin.content.col.title') + '</th><th>' + t('admin.content.col.type') + '</th><th>' + t('admin.col.date') + '</th><th>' + t('admin.col.status') + '</th></tr></thead>' +
     '<tbody>' + subRows + '</tbody></table></div>';
   var subEmpty = '<div class="empty-state" id="teacher-submissions-empty">' +
-    '<div class="empty-icon">📭</div>' +
+    '<div class="empty-icon">' + TI.empty + '</div>' +
     '<p>' + t('teacher.noContent') + '</p>' +
     '<p class="empty-sub">' + t('teacher.dashboard.emptyCTA') + '</p></div>';
 
@@ -94,16 +95,16 @@ function paint() {
       '<aside class="sidebar">' +
         '<div class="sidebar-brand">' + t('teacher.sidebar.brand') + '</div>' +
         '<nav class="sidebar-nav">' +
-          '<a href="#/teacher" class="nav-item active">🏠 ' + t('teacher.sidebar.dashboard') + '</a>' +
+          '<a href="#/teacher" class="nav-item active"><span class="nav-icon">' + TI.dashboard + '</span> ' + t('teacher.sidebar.dashboard') + '</a>' +
           '<div class="nav-section">' + t('teacher.navGroup.content') + '</div>' +
-          '<a href="#/teacher/courses" class="nav-item">📚 ' + t('teacher.sidebar.courses') + '</a>' +
-          '<a href="#/teacher/quizzes" class="nav-item">📝 ' + t('teacher.sidebar.quizzes') + '</a>' +
-          '<a href="#/teacher/live" class="nav-item">🔴 ' + t('teacher.sidebar.live') + '</a>' +
+          '<a href="#/teacher/courses" class="nav-item"><span class="nav-icon">' + TI.book + '</span> ' + t('teacher.sidebar.courses') + '</a>' +
+          '<a href="#/teacher/quizzes" class="nav-item"><span class="nav-icon">' + TI.quiz + '</span> ' + t('teacher.sidebar.quizzes') + '</a>' +
+          '<a href="#/teacher/live" class="nav-item"><span class="nav-icon">' + TI.live + '</span> ' + t('teacher.sidebar.live') + '</a>' +
           '<div class="nav-section">' + t('teacher.navGroup.management') + '</div>' +
-          '<a href="#/teacher/students" class="nav-item">👥 ' + t('teacher.sidebar.students') + '</a>' +
-          '<a href="#/teacher/stats" class="nav-item">📊 ' + t('teacher.sidebar.stats') + '</a>' +
+          '<a href="#/teacher/students" class="nav-item"><span class="nav-icon">' + TI.users + '</span> ' + t('teacher.sidebar.students') + '</a>' +
+          '<a href="#/teacher/stats" class="nav-item"><span class="nav-icon">' + TI.chart + '</span> ' + t('teacher.sidebar.stats') + '</a>' +
           '<div class="nav-section">' + t('teacher.navGroup.account') + '</div>' +
-          '<a href="#/teacher/profile" class="nav-item">⚙️ ' + t('teacher.sidebar.profile') + '</a>' +
+          '<a href="#/teacher/profile" class="nav-item"><span class="nav-icon">' + TI.settings + '</span> ' + t('teacher.sidebar.profile') + '</a>' +
         '</nav>' +
       '</aside>' +
       '<main class="main-content">' +
@@ -116,26 +117,26 @@ function paint() {
           '<p id="teacher-academy-sub">' + ac.sub + '</p></div>' +
         '</div>' +
         '<section class="kpi-grid">' +
-          kpiCard('📚 ' + t('teacher.dashboard.kpi.published'), kpiCourses) +
-          kpiCard('⏳ ' + t('teacher.dashboard.kpi.pending'), kpiPending) +
-          kpiCard('👥 ' + t('teacher.dashboard.kpi.students'), '—') +
-          kpiCard('🔴 ' + t('teacher.dashboard.kpi.live'), kpiLive) +
+          kpiCard(t('teacher.dashboard.kpi.published'), kpiCourses) +
+          kpiCard(t('teacher.dashboard.kpi.pending'), kpiPending) +
+          kpiCard(t('teacher.dashboard.kpi.students'), '—') +
+          kpiCard(t('teacher.dashboard.kpi.live'), kpiLive) +
         '</section>' +
-        '<section class="section-title">' + t('teacher.dashboard.section.stats') + '</section>' +
+        '<section class="dashboard-section-title">' + t('teacher.dashboard.section.stats') + '</section>' +
         '<div class="kpi-grid">' +
-          kpiCard('📈 ' + t('dashboard.overallProgress'), kpiProgress + '%', kpiProgressLabel) +
-          kpiCard('✅ ' + t('teacher.dashboard.kpi.approved'), kpiApproved) +
-          kpiCard('📊 ' + t('teacher.dashboard.kpi.total'), kpiTotal) +
-          kpiCard('🎯 ' + t('teacher.dashboard.kpi.level'), teacherLevel, teacherLevelName) +
+          kpiCard(t('dashboard.overallProgress'), kpiProgress + '%', kpiProgressLabel) +
+          kpiCard(t('teacher.dashboard.kpi.approved'), kpiApproved) +
+          kpiCard(t('teacher.dashboard.kpi.total'), kpiTotal) +
+          kpiCard(t('teacher.dashboard.kpi.level'), teacherLevel, teacherLevelName) +
         '</div>' +
-        '<section class="section-title">' + t('teacher.dashboard.quickActions') + '</section>' +
+        '<section class="dashboard-section-title">' + t('teacher.dashboard.quickActions') + '</section>' +
         '<div class="action-bar">' +
           '<a class="btn-primary" href="#/teacher/lesson/new">' + t('teacher.dashboard.newLesson') + '</a>' +
           '<a class="btn-primary" href="#/teacher/quiz/new">' + t('teacher.dashboard.newQuiz') + '</a>' +
           '<a class="btn-primary" href="#/teacher/live/new">' + t('teacher.dashboard.newLive') + '</a>' +
           '<a class="btn-secondary" href="#/teacher/courses">' + t('teacher.dashboard.viewCourses') + '</a>' +
         '</div>' +
-        '<section class="section-title">' + t('teacher.myContent') + '</section>' +
+        '<section class="dashboard-section-title">' + t('teacher.myContent') + '</section>' +
         '<div class="card">' + (recent.length ? subTable : subEmpty) + '</div>' +
       '</main>' +
     '</div>';
@@ -167,10 +168,10 @@ function academyInfo(profile) {
 
 function statusBadge(status) {
   var map = {
-    pending: ['badge-wait', t('teacher.status.pending')],
-    approved: ['badge-ok', t('teacher.status.approved')],
-    rejected: ['badge-ko', t('teacher.status.rejected')]
+    pending: ['badge-wait', t('teacher.status.pending'), TEACHER_BADGE_ICONS.pending],
+    approved: ['badge-ok', t('teacher.status.approved'), TEACHER_BADGE_ICONS.approved],
+    rejected: ['badge-ko', t('teacher.status.rejected'), TEACHER_BADGE_ICONS.rejected]
   };
-  var m = map[status] || ['badge-muted', String(status || '—')];
-  return '<span class="badge ' + m[0] + '">' + m[1] + '</span>';
+  var m = map[status] || ['badge-muted', String(status || '—'), ''];
+  return '<span class="badge ' + m[0] + '">' + (m[2] ? m[2] + ' ' : '') + m[1] + '</span>';
 }
