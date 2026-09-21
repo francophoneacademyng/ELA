@@ -30,6 +30,7 @@ var KPI_ICONS = {
 /* Icônes SVG des états vides / chargement. */
 var ICON_CLOCK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
 var ICON_SPARK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>';
+var PROFILE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 
 function kpiCard(icon, labelKey, valueId) {
   return '<div class="kpi-card student-kpi">' +
@@ -58,6 +59,9 @@ export function renderStudentHub() {
         '<header class="dashboard-header">' +
           '<h1>' + t('dashboard.hello') + ', <span id="student-name">' + t('dashboard.learner') + '</span></h1>' +
           '<p>' + t('dashboard.hubSubtitle') + '</p>' +
+          '<a class="student-header-link" href="#/profile" aria-label="' + t('profile.title') + '">' +
+            '<span class="student-kpi-icon" aria-hidden="true">' + PROFILE_ICON + '</span>' + t('profile.title') +
+          '</a>' +
         '</header>' +
         '<div id="student-kpis" class="kpi-grid">' +
           kpiCard('lessons', 'dashboard.kpi.lessons', 'student-kpi-lessons') +

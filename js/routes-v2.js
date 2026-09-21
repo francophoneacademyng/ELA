@@ -34,6 +34,7 @@ import { renderTeacherQuizNew } from './teacher/pages/teacher-quiz.page.js';
 import { renderTeacherLiveNew } from './teacher/pages/teacher-live.page.js';
 import { registerAcademyRoutes } from '../src/academies/registry.js';
 import { renderStudentHub } from '../src/ela/pages/student-hub.page.js';
+import { renderStudentProfile } from '../src/ela/pages/student-profile.page.js';
 import { renderAcademiesPublic } from '../src/ela/pages/academies-public.page.js';
 import { renderFreeTrial } from '../src/ela/pages/free-trial.page.js';
 import { renderLeadMagnetsIndex, renderLeadMagnetPage } from '../src/ela/pages/lead-magnets.page.js';
@@ -73,6 +74,7 @@ if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS['/teacher/live/new'] = renderTeacherLiveNew;
   /* Hub étudiant + page publique académies */
   window.ELA_ROUTE_HANDLERS['/dashboard'] = renderStudentHub;
+  window.ELA_ROUTE_HANDLERS['/profile'] = renderStudentProfile;
   window.ELA_ROUTE_HANDLERS['/academies'] = renderAcademiesPublic;
   window.ELA_ROUTE_HANDLERS['/free-trial'] = renderFreeTrial;
   /* Lead magnets (hub + une landing par académie). ES reste masqué. */
