@@ -1,33 +1,42 @@
 ﻿/* ============================================================
-   ELA â€” shared/components/academy/academy-shell.js
-   Coque immersive d'une acadÃ©mie : sidebar de navigation
+   ELA — shared/components/academy/academy-shell.js
+   Coque immersive d'une académie : sidebar de navigation
    (Dashboard, My Courses, Quiz, Live, Certificates) + header
-   colorÃ© (drapeau, label, rÃ©fÃ©rentiel) + zone de contenu.
+   coloré (drapeau, label, référentiel) + zone de contenu.
    ============================================================ */
 
 import { t } from '../../../js/core/i18n-helpers.js';
 
 var OPT_KEY = { FR: 'francophone', DE: 'germanophone', ZH: 'sinophone', EN: 'anglophone', AR: 'arabophone', RU: 'russophone' };
 
-/** Nom affichÃ© traduit d'une acadÃ©mie Ã  partir de son code. */
+/** Nom affiché traduit d'une académie à partir de son code. */
 export function academyDisplayName(code, fallback) {
   var opt = OPT_KEY[String(code || '').toUpperCase()];
   return opt ? t('academies.option.' + opt) : (fallback || code || '');
 }
 
+/* Icônes SVG inline (trait currentColor, harmonisées Teacher Area). */
+var ICONS = {
+  dashboard: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
+  courses: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  quiz: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  live: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>',
+  certificates: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="6"/><path d="M15.5 13l1.5 9-5-3-5 3 1.5-9"/></svg>'
+};
+
 /**
  * Construit le HTML de la coque.
  * @param {{code:string, label:string, native:string, flag:string, color:string,
  *          certification:string, activePage:string, contentHtml:string}} opts
- * activePage âˆˆ dashboard | courses | quiz | live | certificates
+ * activePage ∈ dashboard | courses | quiz | live | certificates
  */
 export function academyShell(opts) {
   const pages = [
-    { id: 'dashboard', icon: 'â—§', key: 'academies.shell.dashboard' },
-    { id: 'courses', icon: 'â–¤', key: 'academies.shell.courses' },
-    { id: 'quiz', icon: 'âœŽ', key: 'academies.shell.quiz' },
-    { id: 'live', icon: 'â—‰', key: 'academies.shell.live' },
-    { id: 'certificates', icon: 'â–', key: 'academies.shell.certificates' }
+    { id: 'dashboard', icon: ICONS.dashboard, key: 'academies.shell.dashboard' },
+    { id: 'courses', icon: ICONS.courses, key: 'academies.shell.courses' },
+    { id: 'quiz', icon: ICONS.quiz, key: 'academies.shell.quiz' },
+    { id: 'live', icon: ICONS.live, key: 'academies.shell.live' },
+    { id: 'certificates', icon: ICONS.certificates, key: 'academies.shell.certificates' }
   ];
   const active = (opts && opts.activePage) || 'dashboard';
   const href = function (p) { return '#/academy/' + (opts.code) + '/' + p; };
@@ -35,7 +44,8 @@ export function academyShell(opts) {
 
   let nav = '';
   pages.forEach(function (p) {
-    nav += '<a class="ac-nav-item' + (p.id === active ? ' active' : '') + '" href="' + href(p.id) + '">' +
+    nav += '<a class="ac-nav-item' + (p.id === active ? ' active' : '') + '" href="' + href(p.id) + '"' +
+      (p.id === active ? ' aria-current="page"' : '') + '>' +
       '<span class="ac-nav-icon" aria-hidden="true">' + p.icon + '</span>' + t(p.key) + '</a>';
   });
 

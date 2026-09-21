@@ -2581,3 +2581,59 @@ header .cta:hover,
   .kpi-grid { grid-template-columns: 1fr 1fr; }
   .action-bar .btn-primary, .action-bar .btn-secondary { width: 100%; }
 }
+
+/* ============================================================
+   STUDENT AREA — harmonisation UI (Phase 1, scope Student/Academy)
+   Ne touche ni aux styles Public ni aux styles Teacher.
+   ============================================================ */
+
+/* --- Icônes SVG dans la sidebar d'académie --- */
+.ac-nav-icon { display: inline-flex; align-items: center; justify-content: center; }
+.ac-nav-icon svg { display: block; }
+
+/* --- Focus visible cohérent (Academy/Student) --- */
+.ac-nav-item:focus-visible,
+.ac-filter-btn:focus-visible,
+.ac-level-card:focus-visible,
+.ac-quiz-card:focus-visible,
+.ac-course-row:focus-visible,
+.academy-card:focus-visible {
+  outline: 2px solid var(--ac, var(--emerald));
+  outline-offset: 2px;
+}
+
+/* --- KPI Student (icônes SVG harmonisées) --- */
+.student-kpi-label { display: inline-flex; align-items: center; gap: 0.45rem; }
+.student-kpi-icon { display: inline-flex; align-items: center; color: var(--ac, var(--emerald)); }
+.student-kpi-icon svg { display: block; }
+.student-empty .empty-icon svg { display: block; }
+
+/* --- Statut d'erreur du hub étudiant --- */
+.ac-status-error { color: #b3261e; font-weight: 600; }
+
+/* --- Navigation Academy : mobile compact horizontal scrollable ---
+   (<= 768px : pas de longue colonne verticale, pas d'overflow
+   horizontal de la page ; la nav défile sur elle-même) --- */
+@media (max-width: 768px) {
+  .ac-shell { width: 100%; max-width: 100%; }
+  .ac-sidebar {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    padding: 0.9rem; min-width: 0; max-width: 100%;
+  }
+  .ac-brand-academy { flex-direction: row; align-items: center; gap: 0.6rem; }
+  .ac-flag { font-size: 1.3rem; }
+  .ac-nav {
+    flex-direction: row; flex-wrap: nowrap;
+    overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; margin-top: 0;
+  }
+  .ac-nav-item { flex: 0 0 auto; white-space: nowrap; padding: 0.45rem 0.7rem; font-size: 0.85rem; }
+  .ac-header { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+}
+
+/* Grilles Academy : pas de débordement horizontal mobile */
+@media (max-width: 768px) {
+  .ac-levels, .ac-quiz-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .ac-filter-row { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ac-filter-btn { flex: 0 0 auto; white-space: nowrap; }
+}

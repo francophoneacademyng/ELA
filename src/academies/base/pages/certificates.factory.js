@@ -1,8 +1,8 @@
 ﻿/* ============================================================
-   ELA â€” academies/base/pages/certificates.factory.js
-   Fabrique de la page Certificates d'une acadÃ©mie.
-   Liste les certificats ELA Ã©mis pour cette acadÃ©mie (via
-   listELACertificates â€” le filtrage par academyCode est cÃ´tÃ©
+   ELA — academies/base/pages/certificates.factory.js
+   Fabrique de la page Certificates d'une académie.
+   Liste les certificats ELA émis pour cette académie (via
+   listELACertificates — le filtrage par academyCode est côté
    serveur).
    ============================================================ */
 
@@ -16,7 +16,7 @@ function statusLabel(status) {
   if (status === 'active') return t('admin.status.active');
   if (status === 'revoked') return t('admin.status.revoked');
   if (status === 'expired') return t('admin.status.expired');
-  return String(status || 'â€”');
+  return String(status || '—');
 }
 
 export function createCertificatesPage(code) {
@@ -31,12 +31,12 @@ export function createCertificatesPage(code) {
         let listHtml;
         if (certs.length) {
           listHtml = '<div class="academies">';
-          certs.forEach(function (c) {
+          certs.forEach(function (c, i) {
             listHtml += '' +
               '<div class="academy-row" style="pointer-events:none">' +
-                '<span class="academy-num">â–</span>' +
-                '<span class="academy-name">ELA ' + esc(c.academyCode) + ' Â· ' + esc(c.cecrLevel || '') + '</span>' +
-                '<span class="academy-desc">' + esc(c.studentName || '') + ' Â· ' + esc(c.issueDate || '') + '</span>' +
+                '<span class="academy-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+                '<span class="academy-name">ELA ' + esc(c.academyCode) + ' · ' + esc(c.cecrLevel || '') + '</span>' +
+                '<span class="academy-desc">' + esc(c.studentName || '') + ' · ' + esc(c.issueDate || '') + '</span>' +
                 '<span class="academy-status status-open">' + statusLabel(c.status) + '</span>' +
               '</div>';
           });

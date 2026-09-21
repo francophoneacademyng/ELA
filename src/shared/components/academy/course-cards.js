@@ -1,6 +1,6 @@
 ﻿/* ============================================================
-   ELA â€” shared/components/academy/course-cards.js
-   Cartes de cours â€” rÃ©utilise le style Ã©ditorial .academy-row.
+   ELA — shared/components/academy/course-cards.js
+   Cartes de cours — réutilise le style éditorial .academy-row.
    ============================================================ */
 
 import { t } from '../../../js/core/i18n-helpers.js';

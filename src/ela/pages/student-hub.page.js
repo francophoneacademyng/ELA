@@ -21,6 +21,22 @@ function academyLabel(code, fallback) {
   return opt ? t('academies.option.' + opt) : (fallback || code || '');
 }
 
+/* Icônes SVG inline pour les KPI (trait currentColor, harmonisées ELA). */
+var KPI_ICONS = {
+  lessons: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  streak: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2c1 4-4 6-4 11a4 4 0 0 0 8 0c0-2-.8-3.4-1.6-4.6C13.5 10 15 9 12 2z"/></svg>',
+  xp: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polygon points="12 2 15 9 22 9.3 16.5 13.8 18.5 21 12 17 5.5 21 7.5 13.8 2 9.3 9 9"/></svg>'
+};
+/* Icônes SVG des états vides / chargement. */
+var ICON_CLOCK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+var ICON_SPARK = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>';
+
+function kpiCard(icon, labelKey, valueId) {
+  return '<div class="kpi-card student-kpi">' +
+    '<span class="kpi-label student-kpi-label"><span class="student-kpi-icon" aria-hidden="true">' + KPI_ICONS[icon] + '</span>' + t(labelKey) + '</span>' +
+    '<div class="kpi-value" id="' + valueId + '">—</div></div>';
+}
+
 export function renderStudentHub() {
   const app = document.getElementById('app');
   if (!app) return;
@@ -29,7 +45,7 @@ export function renderStudentHub() {
     app.innerHTML = '' +
       '<div class="dashboard-layout">' +
         '<main class="main-content" style="margin-left:0;max-width:100%">' +
-          '<div class="empty-state"><div class="empty-icon">⏳</div>' +
+          '<div class="empty-state student-empty"><div class="empty-icon">' + ICON_CLOCK + '</div>' +
           '<p>' + t('common.loading') + '</p></div>' +
         '</main>' +
       '</div>';
@@ -40,18 +56,18 @@ export function renderStudentHub() {
     '<div class="dashboard-layout">' +
       '<main class="main-content" style="margin-left:0;max-width:100%">' +
         '<header class="dashboard-header">' +
-          '<h1>' + t('dashboard.hello') + ', <span id="student-name">' + t('dashboard.learner') + '</span> 👋</h1>' +
+          '<h1>' + t('dashboard.hello') + ', <span id="student-name">' + t('dashboard.learner') + '</span></h1>' +
           '<p>' + t('dashboard.hubSubtitle') + '</p>' +
         '</header>' +
         '<div id="student-kpis" class="kpi-grid">' +
-          '<div class="kpi-card"><span class="kpi-label">📚 ' + t('dashboard.kpi.lessons') + '</span><div class="kpi-value" id="student-kpi-lessons">—</div></div>' +
-          '<div class="kpi-card"><span class="kpi-label">🔥 ' + t('dashboard.kpi.streak') + '</span><div class="kpi-value" id="student-kpi-streak">—</div></div>' +
-          '<div class="kpi-card"><span class="kpi-label">⭐ ' + t('dashboard.kpi.xp') + '</span><div class="kpi-value" id="student-kpi-xp">—</div></div>' +
+          kpiCard('lessons', 'dashboard.kpi.lessons', 'student-kpi-lessons') +
+          kpiCard('streak', 'dashboard.kpi.streak', 'student-kpi-streak') +
+          kpiCard('xp', 'dashboard.kpi.xp', 'student-kpi-xp') +
         '</div>' +
         '<section class="section-title">' + t('dashboard.myAcademies') + '</section>' +
         '<div id="student-academies" class="academy-grid">' +
-          '<div class="empty-state"><div class="empty-icon">⏳</div>' +
-          '<p id="student-academies-status">' + t('dashboard.academiesLoading') + '</p></div>' +
+          '<div class="empty-state student-empty"><div class="empty-icon">' + ICON_CLOCK + '</div>' +
+          '<p id="student-academies-status" role="status" aria-live="polite">' + t('dashboard.academiesLoading') + '</p></div>' +
         '</div>' +
       '</main>' +
     '</div>';
@@ -97,12 +113,15 @@ export function renderStudentHub() {
           '</a>';
       }).join('');
 
-      grid.innerHTML = html || '<div class="empty-state"><div class="empty-icon">🏗️</div>' +
+      grid.innerHTML = html || '<div class="empty-state student-empty"><div class="empty-icon">' + ICON_SPARK + '</div>' +
         '<p>' + t('dashboard.noAcademies') + '</p></div>';
     }).catch(function (err) {
       // Bug corrigé : message clair + retry (plus de « Unable to load » brut).
       console.error('[student-hub] getMyAcademies/getDashboardData a échoué :', err);
-      if (statusEl) statusEl.textContent = t('dashboard.academiesError');
+      if (statusEl) {
+        statusEl.textContent = t('dashboard.academiesError');
+        statusEl.classList.add('ac-status-error');
+      }
       setTimeout(function () { if (document.body.contains(grid)) load(); }, 3000);
     });
   }

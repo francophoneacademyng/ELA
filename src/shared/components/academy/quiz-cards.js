@@ -1,6 +1,6 @@
 ﻿/* ============================================================
-   ELA â€” shared/components/academy/quiz-cards.js
-   Cartes de quiz par niveau â€” badge Â« 20 questions â€” certificate Ã  80 % Â».
+   ELA — shared/components/academy/quiz-cards.js
+   Cartes de quiz par niveau — badge « 20 questions — certificat à 80 % ».
    ============================================================ */
 
 import { QUIZ_QUESTIONS, QUIZ_PASS_SCORE } from '../../config/academies.config.js';
@@ -8,7 +8,7 @@ import { t } from '../../../js/core/i18n-helpers.js';
 
 /**
  * @param {{quizzes:Array<{id,title,level,academy}>, levels?:string[]}} opts
- * Les quiz sont groupÃ©s par niveau dans l'ordre du rÃ©fÃ©rentiel.
+ * Les quiz sont groupés par niveau dans l'ordre du référentiel.
  */
 export function quizCards(opts) {
   const quizzes = (opts && opts.quizzes) || [];
@@ -32,7 +32,7 @@ export function quizCards(opts) {
   return html;
 }
 
-/** Trie les quiz selon l'ordre des niveaux du rÃ©fÃ©rentiel. */
+/** Trie les quiz selon l'ordre des niveaux du référentiel. */
 export function sortQuizzesByLevel(quizzes, levels) {
   const order = {};
   (levels || []).forEach(function (l, i) { order[String(l).toUpperCase()] = i; });

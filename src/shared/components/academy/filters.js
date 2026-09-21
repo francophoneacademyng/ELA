@@ -1,7 +1,7 @@
 ﻿/* ============================================================
-   ELA â€” shared/components/academy/filters.js
-   Filtres de catÃ©gorie (Grammar/Vocabulary/â€¦) et de niveau
-   (All/A1/â€¦/C2 ou HSK1â†’6). Rendu + binding des handlers.
+   ELA — shared/components/academy/filters.js
+   Filtres de catégorie (Grammar/Vocabulary/…) et de niveau
+   (All/A1/…/C2 ou HSK1→6). Rendu + binding des handlers.
    Les valeurs techniques (data-*) restent inchangÃ©es ; seuls
    les libellÃ©s affichÃ©s sont localisÃ©s.
    ============================================================ */
@@ -26,15 +26,17 @@ export function renderFilters(opts) {
   const activeLevel = (opts && opts.activeLevel) || 'All';
 
   let html = '<div class="ac-filters">';
-  html += '<div class="ac-filter-row" data-filter-group="category">';
+  html += '<div class="ac-filter-row" data-filter-group="category" role="group">';
   CATEGORY_FILTERS.forEach(function (c) {
-    html += '<button type="button" class="ac-filter-btn' + (c === activeCat ? ' active' : '') + '" data-filter-category="' + c + '">' + catLabel(c) + '</button>';
+    const active = c === activeCat;
+    html += '<button type="button" class="ac-filter-btn' + (active ? ' active' : '') + '" data-filter-category="' + c + '" aria-pressed="' + active + '">' + catLabel(c) + '</button>';
   });
   html += '</div>';
-  html += '<div class="ac-filter-row" data-filter-group="level">';
+  html += '<div class="ac-filter-row" data-filter-group="level" role="group">';
   ['All'].concat(levels).forEach(function (l) {
     const show = l === 'All' ? t('academies.filter.all') : l;
-    html += '<button type="button" class="ac-filter-btn ac-filter-level' + (l === activeLevel ? ' active' : '') + '" data-filter-level="' + l + '">' + show + '</button>';
+    const active = l === activeLevel;
+    html += '<button type="button" class="ac-filter-btn ac-filter-level' + (active ? ' active' : '') + '" data-filter-level="' + l + '" aria-pressed="' + active + '">' + show + '</button>';
   });
   html += '</div></div>';
   return html;
@@ -50,14 +52,22 @@ export function bindFilters(root, onSelect) {
   root.querySelectorAll('[data-filter-category]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       category = btn.getAttribute('data-filter-category');
-      root.querySelectorAll('[data-filter-category]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+      root.querySelectorAll('[data-filter-category]').forEach(function (b) {
+        const on = b === btn;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
       if (typeof onSelect === 'function') onSelect({ category: category, level: level });
     });
   });
   root.querySelectorAll('[data-filter-level]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       level = btn.getAttribute('data-filter-level');
-      root.querySelectorAll('[data-filter-level]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+      root.querySelectorAll('[data-filter-level]').forEach(function (b) {
+        const on = b === btn;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
       if (typeof onSelect === 'function') onSelect({ category: category, level: level });
     });
   });
