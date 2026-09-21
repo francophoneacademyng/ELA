@@ -1602,29 +1602,22 @@
     afterRender('quiz');
 
     var db = firebase.firestore();
-    // Lecture directe : les règles décident (trial → public, sinon admin/teacher/abonné).
-    db.collection('quizzes').doc(id).get().then(function (snap) {
-      if (!snap.exists || !snap.data().questions || !snap.data().questions.length) {
+    // SÉCURITÉ (mission quiz) : le rendu passe par le callable getPublicQuiz
+    // (questions SANS correctIndex, entitlement vérifié côté serveur).
+    // La lecture directe quizzes/{id} n'est plus possible côté élève :
+    // les règles n'autorisent plus cette lecture (les corrigés restent
+    // serveur, soumis via submitAssessmentAttempt).
+    callable('getPublicQuiz')({ quizId: id }).then(function (r) {
+      var data = (r.data && r.data.quiz) || null;
+      if (!data || !data.questions || !data.questions.length) {
         app.innerHTML = '<section class="auth-wrap"><h1 class="auth-title">' + t('courses.quizzes') + '</h1><p class="auth-sub">' + t('courses.empty') + '</p></section>';
         afterRender('quiz');
         return;
       }
-      var qz = snap.data();
-      contentAccess(qz).then(function (allowed) {
-        if (!allowed) {
-          app.innerHTML = '' +
-            '<section class="auth-wrap"><h1 class="auth-title">' + t('lesson.lockedTitle') + '</h1>' +
-            '<p class="auth-sub">' + t('lesson.lockedSub') + '</p>' +
-            '<div class="hero-actions"><a class="btn btn-gold" href="#/pricing">' + t('lesson.lockedCta') + '</a></div>' +
-            '<p class="auth-alt"><a href="#/quiz">' + t('common.back') + '</a></p></section>';
-          afterRender('quiz');
-          return;
-        }
-        quizState.quiz = { id: id, data: qz };
-        quizState.current = 0;
-        quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
-        renderQuizQuestion();
-      });
+      quizState.quiz = { id: id, data: data };
+      quizState.current = 0;
+      quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
+      renderQuizQuestion();
     }).catch(function () {
       if (!user) {
         studentSignInRequired(t('courses.quizzes'));
@@ -1708,29 +1701,122 @@
     var next = document.getElementById('quiz-next');
     if (next) next.addEventListener('click', function () { quizState.current++; renderQuizQuestion(); });
     var sub = document.getElementById('quiz-submit');
-    if (sub) sub.addEventListener('click', submitQuiz);
+    if (sub) sub.addEventListener('click', submitQuizSecure);
   }
 
+  // PHASE 1B (local, non déployé) : voie sécurisée serveur.
+  // startAssessmentAttempt → questions publiques SANS correctIndex →
+  // submitAssessmentAttempt → note calculée serveur (results).
+  // Le chemin historique submitQuiz (client→quizScores) est conservé
+  // ci-dessous pour compatibilité jusqu'à la migration approuvée.
+  function submitQuizSecure() {
+    var qz = quizState.quiz;
+    var fns = firebase.functions('africa-south1');
+    app.innerHTML = skeletonLoading();
+    afterRender('quiz');
+    fns.httpsCallable('startAssessmentAttempt')({ quizId: qz.id }).then(function (s) {
+      var attemptId = s.data && s.data.attemptId;
+      var serverQuestions = (s.data && s.data.questions) || [];
+      // Sécurité/cohérence : les questions retournées par le serveur sont
+      // dans l'ordre mélangé de la TENTATIVE (questionOrder). On remappe
+      // les réponses locales (saisies sur le rendu public) vers cet ordre
+      // en alignant les intitulés ; en cas d'ambiguïté (doublon/inconnu),
+      // on bascule sur l'alignement positionnel. Le serveur valide la
+      // longueur et calcule seul le score — aucun score client envoyé.
+      var answers = new Array(serverQuestions.length).fill(null);
+      var matched = 0, ambiguous = false;
+      var seenTitles = {};
+      for (var sq = 0; sq < serverQuestions.length; sq++) {
+        var st = String(serverQuestions[sq].text || '');
+        if (seenTitles[st]) { ambiguous = true; break; }
+        seenTitles[st] = true;
+      }
+      if (!ambiguous) {
+        for (var sqi = 0; sqi < serverQuestions.length; sqi++) {
+          var sqTitle = String(serverQuestions[sqi].text || '');
+          var localIdx = -1;
+          for (var lq = 0; lq < qz.data.questions.length; lq++) {
+            if (String(qz.data.questions[lq].text || '') === sqTitle) { localIdx = lq; break; }
+          }
+          if (localIdx !== -1) { answers[sqi] = quizState.answers[localIdx]; matched++; }
+        }
+      }
+      if (ambiguous || matched !== serverQuestions.length) {
+        // Repli : alignement positionnel (ordre d'affichage = ordre serveur
+        // si le quiz n'a pas changé entre-temps).
+        answers = quizState.answers.slice(0, serverQuestions.length);
+      }
+      return fns.httpsCallable('submitAssessmentAttempt')({ attemptId: attemptId, answers: answers });
+    }).then(function (r) {
+      var d = r.data || {};
+      renderQuizResultSecure(d.score || 0, d.total || 0, d.percentage || 0, !!d.passed);
+    }).catch(function (err) {
+      // PHASE 1C : AUCUN repli legacy. Une erreur sécurisée = état
+      // professionnel + retry. submitQuiz() n'est JAMAIS appelé ici.
+      renderQuizSecureError(err);
+    });
+  }
+
+  // PHASE 1C : état d'erreur premium — jamais de repli legacy, jamais
+  // de score client. Retry sécurisé ou retour cours.
+  function renderQuizSecureError(err) {
+    var code = (err && err.code) ? String(err.code) : 'unavailable';
+    var msg = t('quiz.secureErrorMsg');
+    if (code === 'permission-denied') msg = t('quiz.secureErrorDenied');
+    if (code === 'deadline-exceeded') msg = t('quiz.secureErrorExpired');
+    app.innerHTML = '' +
+      '<section class="auth-wrap teacher-wrap">' +
+        '<h1 class="auth-title" style="text-align:center">' + t('quiz.secureErrorTitle') + '</h1>' +
+        '<div class="card" style="margin-top:1rem;text-align:center">' +
+          '<p style="font-size:1.05rem;color:var(--forest)">' + msg + '</p>' +
+          '<p class="auth-sub" style="margin-top:0.5rem">' + t('quiz.secureErrorHint') + '</p></div>' +
+        '<div class="hero-actions" style="margin-top:1.2rem;justify-content:center">' +
+          '<button type="button" class="btn btn-solid" id="quiz-retry-secure">' + t('quiz.retry') + '</button>' +
+          '<a class="btn btn-outline" href="#/courses">' + t('common.back') + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('quiz');
+    document.getElementById('quiz-retry-secure').addEventListener('click', function () {
+      quizState.current = 0;
+      if (quizState.quiz && quizState.quiz.data && quizState.quiz.data.questions) {
+        quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
+      }
+      renderQuizQuestion();
+    });
+  }
+
+  function renderQuizResultSecure(score, total, percentage, passed) {
+    app.innerHTML = '' +
+      '<section class="auth-wrap teacher-wrap">' +
+        '<h1 class="auth-title" style="text-align:center">' + escapeHtml(quizState.quiz.data.title) + '</h1>' +
+        '<div class="quiz-result-score"><div class="score">' + score + '<span> / ' + total + '</span></div></div>' +
+        '<p class="auth-sub" style="font-size:1.1rem;margin-top:0.8rem;text-align:center">' + percentage + '% — ' + t('quiz.best') + ' ' + score + '/' + total + '</p>' +
+        '<div class="card" style="margin-top:1rem;text-align:center"><p style="font-size:1.05rem;color:var(--forest)">' +
+          (passed ? t('quiz.passed') : t('quiz.tryAgainMsg')) + '</p>' +
+          '<p class="auth-sub" style="margin-top:0.5rem">' + t('quiz.secureGraded') + '</p></div>' +
+        '<div class="hero-actions" style="margin-top:1.2rem;justify-content:center">' +
+          '<button type="button" class="btn btn-solid" id="quiz-retry">' + t('quiz.retry') + '</button>' +
+          '<a class="btn btn-outline" href="#/courses">' + t('common.back') + '</a>' +
+        '</div>' +
+      '</section>';
+    afterRender('quiz');
+    document.getElementById('quiz-retry').addEventListener('click', function () {
+      quizState.current = 0;
+      quizState.answers = new Array(quizState.quiz.data.questions.length).fill(null);
+      renderQuizQuestion();
+    });
+  }
+
+  // LEGACY (conservé pour compat, SANS autorité) : l'historique écrivait
+  // le score calculé côté client dans quizScores. Les nouvelles règles
+  // locales interdisent cette écriture ; submitQuizSecure est la voie
+  // par défaut. Ne pas utiliser pour une éligibilité certificat.
   function submitQuiz() {
     var qz = quizState.quiz;
     var total = qz.data.questions.length;
     var correct = 0;
     qz.data.questions.forEach(function (q, i) { if (quizState.answers[i] === q.correctIndex) correct++; });
-
-    var uid = firebase.auth().currentUser.uid;
-    var db = firebase.firestore();
-    var docId = uid + '_' + qz.id;
-    db.collection('quizScores').doc(docId).get().then(function (existing) {
-      var best = correct;
-      if (existing.exists && existing.data().bestScore > best) best = existing.data().bestScore;
-      return db.collection('quizScores').doc(docId).set({
-        uid: uid, quizId: qz.id, title: qz.data.title, score: correct, total: total, bestScore: best, updatedAt: new Date()
-      }, { merge: true }).then(function () { return best; });
-    }).then(function (best) {
-      renderQuizResult(correct, total, best);
-    }).catch(function () {
-      renderQuizResult(correct, total, correct);
-    });
+    renderQuizResult(correct, total, correct);
   }
 
   function renderQuizResult(correct, total, best) {

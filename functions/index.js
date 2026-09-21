@@ -123,6 +123,9 @@ async function computePricing(uid, plan, duration, referralCode) {
 /** Health check — vérifier que les fonctions répondent après déploiement */
 
 const core = require('./core');
+const assessment = require('./assessment');
+const eligibility = require('./eligibility');
+const quizbank = require('./quizbank');
 const payment = require('./payment');
 const auth = require('./auth');
 const live = require('./live');
@@ -146,6 +149,7 @@ exports.seedAcademyTree = core.seedAcademyTree;
 exports.getAcademyTree = core.getAcademyTree;
 exports.getCatalog = core.getCatalog;
 exports.getQuizCatalog = core.getQuizCatalog;
+exports.getPublicQuiz = core.getPublicQuiz;
 exports.getCourse = core.getCourse;
 
 exports.initializePayment = payment.initializePayment;
@@ -177,6 +181,120 @@ exports.getInvoiceList = mgmt.getInvoiceList;
 exports.getWhatsAppLogs = mgmt.getWhatsAppLogs;
 
 exports.generateCertificate = certificate.generateCertificate;
+// PHASE 1B (local, non déployé) : socle d'évaluation sécurisée.
+// Le trigger historique generateCertificate (quizScores) reste INCHANGÉ
+// en production ; la bascule vers results fera l'objet d'un plan dédié.
+exports.startAssessmentAttempt = assessment.startAssessmentAttempt;
+exports.submitAssessmentAttempt = assessment.submitAssessmentAttempt;
+exports.checkAssessmentEligibility = eligibility.checkAssessmentEligibility;
+exports.issueCertificateFromResult = eligibility.issueCertificateFromResult; // PHASE 2C local : émission transactionnelle (admin) depuis un result
+exports.publishQuizBank = quizbank.publishQuizBank; // PHASE 1B local : staff-only, non déployé
+/* PHASE 2A/2C — fichiers moteur restaurés (ela-certificate-core.js, ela-pdf.js) :
+   on recâble les fonctions certificat ELA (additif — aucune suppression). */
+const elaCert = require('./ela-certificates');
+exports.issueELACertificate = elaCert.issueELACertificate;
+exports.verifyELACertificate = elaCert.verifyELACertificate;
+exports.listELACertificates = elaCert.listELACertificates;
+exports.revokeELACertificate = elaCert.revokeELACertificate;
+exports.reissueELACertificate = elaCert.reissueELACertificate; // PHASE 2C local
+exports.migrateLegacyCertificates = elaCert.migrateLegacyCertificates;
+exports.generateELACertificatePdf = elaCert.generateELACertificatePdf;
+exports.getELACertificatePdfUrl = elaCert.getELACertificatePdfUrl;
+exports.runCertificateAuditReconciliation = elaCert.runCertificateAuditReconciliation; // PHASE 2C local
+
+/* ============================================================
+   PROGRAMME INSTITUTIONNEL — Phases 3 à 7 (local, non déployé)
+   Moteur académique, personnel, présence, examens, certification.
+   Additif : n'altère aucun flux existant.
+   ============================================================ */
+const academic = require('./academic');
+exports.createProgramme = academic.createProgramme;
+exports.publishProgrammeVersion = academic.publishProgrammeVersion;
+exports.getProgrammeCatalog = academic.getProgrammeCatalog;
+exports.getProgramme = academic.getProgramme;
+exports.enrollStudent = academic.enrollStudent;
+exports.updateEnrollmentStatus = academic.updateEnrollmentStatus;
+exports.reEnrollStudent = academic.reEnrollStudent;
+exports.recordLessonCompletion = academic.recordLessonCompletion;
+exports.getAcademicRecord = academic.getAcademicRecord;
+exports.generateTranscript = academic.generateTranscript;
+exports.seedProgrammeCatalog = academic.seedProgrammeCatalog;
+
+const staff = require('./staff');
+exports.submitTeacherApplication = staff.submitTeacherApplication;
+exports.reviewTeacherApplication = staff.reviewTeacherApplication;
+exports.getTeacherProfile = staff.getTeacherProfile;
+exports.updateTeacherProfile = staff.updateTeacherProfile;
+exports.authorizeExaminer = staff.authorizeExaminer;
+exports.revokeExaminer = staff.revokeExaminer;
+exports.getExaminerAuthorization = staff.getExaminerAuthorization;
+exports.setUserRoleAudited = staff.setUserRoleAudited;
+exports.listStaff = staff.listStaff;
+
+const attendance = require('./attendance');
+exports.scheduleClassSession = attendance.scheduleClassSession;
+exports.startClassSession = attendance.startClassSession;
+exports.joinClassSession = attendance.joinClassSession;
+exports.leaveClassSession = attendance.leaveClassSession;
+exports.endClassSession = attendance.endClassSession;
+exports.validateAttendance = attendance.validateAttendance;
+exports.correctAttendance = attendance.correctAttendance;
+exports.getAttendanceReport = attendance.getAttendanceReport;
+
+const examination = require('./examination');
+exports.createExamination = examination.createExamination;
+exports.publishExaminationVersion = examination.publishExaminationVersion;
+exports.getExamination = examination.getExamination;
+exports.registerExaminationCandidate = examination.registerExaminationCandidate;
+exports.startExaminationAttempt = examination.startExaminationAttempt;
+exports.submitExaminationSection = examination.submitExaminationSection;
+exports.assignExaminer = examination.assignExaminer;
+exports.getExaminationQueue = examination.getExaminationQueue;
+exports.gradeExaminationSection = examination.gradeExaminationSection;
+exports.moderateExaminationResult = examination.moderateExaminationResult;
+exports.finalizeExaminationResult = examination.finalizeExaminationResult;
+exports.getExaminationResult = examination.getExaminationResult;
+exports.correctExaminationResult = examination.correctExaminationResult;
+
+const certification = require('./certification');
+exports.evaluateCertificationEligibility = certification.evaluateCertificationEligibility;
+exports.issueCertificateFromAcademicRecord = certification.issueCertificateFromAcademicRecord;
+
+const curriculum = require('./curriculum');
+exports.seedAcademicFramework = curriculum.seedAcademicFramework;
+exports.getProgrammeDefinition = curriculum.getProgrammeDefinition;
+exports.getCurriculum = curriculum.getCurriculum;
+exports.validateCurriculumCallable = curriculum.validateCurriculumCallable;
+exports.getContentStatusReport = curriculum.getContentStatusReport;
+exports.auditLessonContentQuality = curriculum.auditLessonContentQuality;
+
+/* ============================================================
+   GOUVERNANCE ACADÉMIQUE INTERNE (serveur uniquement)
+   ============================================================ */
+const governance = require('./governance');
+exports.setGovernanceRole = governance.setGovernanceRole;
+exports.getGovernanceProfile = governance.getGovernanceProfile;
+exports.registerReviewerProfile = governance.registerReviewerProfile;
+exports.verifyReviewerProfile = governance.verifyReviewerProfile;
+exports.appointBoardMember = governance.appointBoardMember;
+exports.submitForReview = governance.submitForReview;
+exports.assignReviewer = governance.assignReviewer;
+exports.declareConflict = governance.declareConflict;
+exports.addReviewIssue = governance.addReviewIssue;
+exports.resolveIssue = governance.resolveIssue;
+exports.submitReviewDecision = governance.submitReviewDecision;
+exports.resubmitForReview = governance.resubmitForReview;
+exports.approveContent = governance.approveContent;
+exports.publishContent = governance.publishContent;
+exports.archiveContent = governance.archiveContent;
+exports.createNewVersion = governance.createNewVersion;
+exports.emergencyCorrection = governance.emergencyCorrection;
+exports.createAppeal = governance.createAppeal;
+exports.decideAppeal = governance.decideAppeal;
+exports.getReviewDashboard = governance.getReviewDashboard;
+exports.getGovernanceMetrics = governance.getGovernanceMetrics;
+exports.getTraceabilityMatrix = curriculum.getTraceabilityMatrix;
+exports.publishProgrammeContent = curriculum.publishProgrammeContent;
 /* Mission 7 — Nurturing email des leads (envoi désactivé par défaut :
    NURTURE_SEND_ENABLED doit valoir "true"). */
 exports.nurtureOnLeadCreated = nurture.nurtureOnLeadCreated;

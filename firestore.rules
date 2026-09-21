@@ -132,8 +132,12 @@ service cloud.firestore {
       allow read: if isAdmin();
       allow read: if isTeacher() && resource.data.teacherUid == request.auth.uid;
       allow read: if isTeacher() && resource.data.academy == currentUserAcademy();
-      allow read: if resource.data.isTrial == true;
-      allow read: if canStudentReadContent();
+      // SÉCURITÉ (mission quiz) : plus aucune lecture étudiante directe.
+      // La représentation élève passe par le callable getPublicQuiz
+      // (questions SANS correctIndex) ; la correction serveur passe par
+      // startAssessmentAttempt/submitAssessmentAttempt (quizzes_bank).
+      // allow read: if resource.data.isTrial == true;  // ← supprimé (exposition du corrigé)
+      // allow read: if canStudentReadContent();       // ← supprimé (exposition du corrigé)
       allow update: if isTeacher() && resource.data.teacherUid == request.auth.uid
                     && request.resource.data.status == resource.data.status;
       allow delete: if isTeacher() && resource.data.teacherUid == request.auth.uid;
@@ -161,15 +165,74 @@ service cloud.firestore {
     }
 
     // Progression de l'élève : un document par élève.
+    // SÉCURITÉ (mission XP/progression) : écriture restreinte à un
+    // append-only validé. Le client ne peut AJOUTER qu'un ID de leçon
+    // à completedLessons (max 500) et dater la complétion — il ne peut
+    // supprimer l'historique, réinitialiser sa progression, ni écrire
+    // un quelconque champ de score/XP (aucun XP côté client de toute
+    // façon : aucun XP autoritatif n'existe dans ce schéma).
     match /progress/{uid} {
-      allow read, write: if isSignedIn() && request.auth.uid == uid;
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow update: if isSignedIn() && request.auth.uid == uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['completedLessons', 'updatedAt'])
+                    && request.resource.data.completedLessons is list
+                    && request.resource.data.completedLessons.size() <= 500
+                    && resource.data.completedLessons.hasOnly(request.resource.data.completedLessons)
+                    && request.resource.data.completedLessons.size() > resource.data.completedLessons.size();
+      allow create: if isSignedIn() && request.auth.uid == uid
+                    && request.resource.data.keys().hasOnly(['completedLessons', 'updatedAt'])
+                    && request.resource.data.completedLessons is list
+                    && request.resource.data.completedLessons.size() <= 500
+                    && request.resource.data.updatedAt is timestamp;
+      allow delete: if false;
     }
 
-    // Scores de quizz : l'élève n'écrit que ses propres scores.
+    // Scores de quizz — PHASE 1B (local, non déployé) :
+    // lecture seule côté client. Toute écriture passe par les Cloud
+    // Functions (submitAssessmentAttempt, source 'authoritative').
+    // Les documents historiques restent lisibles ; les règles
+    // production actuelles (auto-écriture) sont conservées en prod
+    // jusqu'au plan de migration approuvé.
     match /quizScores/{docId} {
       allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
-      allow create, update: if isSignedIn() && request.resource.data.uid == request.auth.uid;
-      allow delete: if false;
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    /* ============================================================
+       PHASE 1B — SOCLE D'ÉVALUATION SÉCURISÉE (local, non déployé)
+       attempts  : lecture par le titulaire, écriture serveur seule.
+       results   : lecture par le titulaire, écriture serveur seule.
+       assessment_events : écriture serveur seule, lecture admin/staff.
+       quizzes_bank : banque serveur (corrigés), jamais lisible client.
+       quizPublic   : représentation publique SANS correctIndex.
+       ============================================================ */
+    match /attempts/{attemptId} {
+      // PHASE 1C : lecture documentaire du titulaire uniquement.
+      // Pas de list (requêtes larges interdites) : lecture ciblée
+      // par ID (connu via startAssessmentAttempt) ou callable serveur.
+      allow get: if isSignedIn() && resource.data.studentId == request.auth.uid;
+      allow list: if false;
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    match /results/{resultId} {
+      allow get: if isSignedIn() && resource.data.studentId == request.auth.uid;
+      allow list: if false;
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    match /assessment_events/{eventId} {
+      allow read: if isAdmin() || isTeacher();
+      allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    match /quizzes_bank/{quizId} {
+      allow read, write: if false; // Cloud Functions uniquement
+    }
+
+    match /quizPublic/{quizId} {
+      allow read: if isSignedIn() && hasActiveSubscription();
+      allow create, update, delete: if false;
     }
 
     // Certificats : générés côté serveur ; lecture par le titulaire uniquement.
@@ -215,6 +278,216 @@ service cloud.firestore {
     match /ela_certificate_events/{id} {
       allow read: if isAdmin();
       allow create, update, delete: if false; // Cloud Functions uniquement
+    }
+
+    /* ============================================================
+       PROGRAMME INSTITUTIONNEL — Phases 3 à 7
+       Principe : toute écriture autoritative est serveur (Cloud
+       Functions). Le client ne lit que ce qui le concerne. Les
+       corrigés d'examen ne sont JAMAIS lisibles côté client.
+       ============================================================ */
+    function isExaminer() {
+      return isSignedIn()
+        && (currentUserRole() == 'examiner'
+            || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.examiner == true);
+    }
+
+    function isInstitutionalStaff() {
+      return isAdmin() || isTeacher() || isExaminer();
+    }
+
+    // Programmes / versions / curriculum : lecture abonnés, écriture serveur.
+    match /programmes/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /programme_versions/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /curriculum_nodes/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Référentiel académique (compétences, outcomes, blueprints, rubriques).
+    match /competencies/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /learning_outcomes/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /assessment_blueprints/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /examination_blueprints/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /rubrics/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    match /enrollments/{id} {
+      allow get: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+
+    match /academic_events/{id} {
+      allow get: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+
+    match /academic_records/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+
+    // Personnel : profils et candidatures. Écriture serveur uniquement.
+    match /teacher_profiles/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+    match /staff_applications/{id} {
+      allow read: if isSignedIn() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow write: if false;
+    }
+    match /examiner_authorizations/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if false;
+    }
+    match /role_audit_events/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // Présence : lecture titulaire ou staff, écriture serveur.
+    match /class_sessions/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /attendance_records/{id} {
+      allow get: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow list: if isSignedIn() && (resource.data.studentId == request.auth.uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+    match /attendance_corrections/{id} {
+      allow read: if isInstitutionalStaff();
+      allow write: if false;
+    }
+
+    // Examens : les versions (corrigés) sont strictement serveur.
+    match /examinations/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /examination_versions/{id} {
+      allow read, write: if false; // Cloud Functions uniquement (contient les corrigés)
+    }
+    match /exam_registrations/{id} {
+      allow get: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow list: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+    match /exam_attempts/{id} {
+      allow get: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow list: if false;
+      allow write: if false;
+    }
+    match /exam_submissions/{id} {
+      allow get: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow list: if false;
+      allow write: if false;
+    }
+    match /exam_results/{id} {
+      allow get: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow list: if isSignedIn() && (resource.data.candidateUid == request.auth.uid || isInstitutionalStaff());
+      allow write: if false;
+    }
+    match /examiner_assignments/{id} {
+      allow read: if isInstitutionalStaff();
+      allow write: if false;
+    }
+    match /moderation_events/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+    match /result_corrections/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+    match /rate_limits/{id} {
+      allow read, write: if false; // Cloud Functions uniquement
+    }
+
+    /* ============================================================
+       GOUVERNANCE ACADÉMIQUE INTERNE — serveur uniquement.
+       Les décisions, revues et audits ne sont jamais modifiables
+       par le client. Les rôles de gouvernance sont accordés par le
+       serveur (governance_roles).
+       ============================================================ */
+    function isGovernanceUser() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/governance_roles/$(request.auth.uid));
+    }
+
+    match /governance_roles/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow write: if false;
+    }
+    match /reviewer_profiles/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin() || isGovernanceUser());
+      allow write: if false;
+    }
+    match /academic_board_members/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin() || isGovernanceUser());
+      allow write: if false;
+    }
+    match /academic_reviews/{id} {
+      allow read: if isAdmin() || isGovernanceUser() || (isSignedIn() && resource.data.submittedBy == request.auth.uid);
+      allow write: if false;
+    }
+    match /review_assignments/{id} {
+      allow read: if isAdmin() || isGovernanceUser() || (isSignedIn() && resource.data.reviewerUid == request.auth.uid);
+      allow write: if false;
+    }
+    match /review_issues/{id} {
+      allow read: if isAdmin() || isGovernanceUser();
+      allow write: if false;
+    }
+    match /academic_decisions/{id} {
+      allow read: if isAdmin() || isGovernanceUser();
+      allow write: if false;
+    }
+    match /academic_publications/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /academic_versions/{id} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+    match /conflict_declarations/{id} {
+      allow read: if isAdmin() || isGovernanceUser();
+      allow write: if false;
+    }
+    match /academic_appeals/{id} {
+      allow read: if isAdmin() || isGovernanceUser() || (isSignedIn() && resource.data.appellantUid == request.auth.uid);
+      allow write: if false;
+    }
+    match /emergency_corrections/{id} {
+      allow read: if isAdmin() || isGovernanceUser();
+      allow write: if false;
+    }
+    match /governance_audit_events/{id} {
+      allow read: if isAdmin() || isGovernanceUser();
+      allow write: if false;
     }
 
         /* ============================================================\

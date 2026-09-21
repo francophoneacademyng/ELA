@@ -38,6 +38,16 @@ const db = new Proxy({}, {
 });
 
 const REGION = 'africa-south1';
+
+/* Garde admin (correction : helper précédemment référencé mais non défini). */
+async function requireAdmin(uid) {
+  const snap = await db.collection('users').doc(String(uid)).get();
+  const role = snap.exists ? (snap.data().role || '') : '';
+  if (role !== 'admin' && role !== 'system') {
+    throw new HttpsError('permission-denied', 'Admin/system only.');
+  }
+  return role;
+}
 const PAYSTACK_BASE = 'https://api.paystack.co';
 const DEFAULT_CALLBACK_URL = 'https://elaacademy.ng/#/payment/result';
 
@@ -985,6 +995,66 @@ exports.getQuizCatalog = onCall({ region: REGION }, async () => {
   const quizzes = snap.docs.map((d) => ({ id: d.id, title: d.data().title, level: d.data().level, academy: d.data().academy }))
     .sort((a, b) => String(a.academy).localeCompare(String(b.academy)) || String(a.level).localeCompare(String(b.level)));
   return { quizzes };
+});
+
+/* ============================================================
+   SÉCURITÉ ÉLÈVE (mission quiz) — getPublicQuiz : représentation
+   publique d'un quiz SANS correctIndex. Le corrigé reste côté
+   serveur (quizzes_bank / submitAssessmentAttempt). Entitlement
+   décidé côté serveur (miroir de canStudentReadContent) :
+   trial → public ; sinon abonné actif (ou admin/teacher).
+   ============================================================ */
+exports.getPublicQuiz = onCall({ region: REGION }, async (request) => {
+  const quizId = String((request.data && request.data.quizId) || '').slice(0, 160);
+  if (!quizId) throw new HttpsError('invalid-argument', 'missing-quiz-id');
+  const snap = await db.collection('quizzes').doc(quizId).get();
+  if (!snap.exists) throw new HttpsError('not-found', 'quiz-not-found');
+  const q = snap.data() || {};
+  if (q.status !== 'approved') throw new HttpsError('permission-denied', 'quiz-not-available');
+  const isTrial = q.isTrial === true;
+  const uid = request.auth && request.auth.uid;
+  if (!uid) {
+    if (!isTrial) throw new HttpsError('unauthenticated', 'Sign-in required.');
+  } else {
+    const uSnap = await db.collection('users').doc(uid).get();
+    const role = uSnap.exists ? (uSnap.data().role || 'student') : 'student';
+    if (role !== 'admin' && role !== 'teacher' && !isTrial) {
+      const subSnap = await db.collection('subscriptions').doc(uid).get();
+      const s = subSnap.exists ? subSnap.data() : null;
+      const end = s && s.endDate && s.endDate.toDate ? s.endDate.toDate() : null;
+      if (!(s && s.status === 'active' && end && end > new Date())) {
+        throw new HttpsError('permission-denied', 'Active subscription required.');
+      }
+      // PHASE 1C (miroir de assessment.js) : plan premium/business → toutes
+      // académies ; plan general → académie unique de l'élève.
+      const plan = s.plan || 'general';
+      if (plan !== 'premium' && plan !== 'business') {
+        const u = uSnap.data() || {};
+        const key = u.academy || (Array.isArray(u.academies) && u.academies[0]) || 'german';
+        const codeMap = { french: 'FR', francophone: 'FR', fr: 'FR', german: 'DE', de: 'DE', mandarin: 'ZH', chinese: 'ZH', zh: 'ZH', english: 'EN', en: 'EN', arabic: 'AR', ar: 'AR', russian: 'RU', ru: 'RU' };
+        const myCode = codeMap[String(key).toLowerCase()] || 'DE';
+        const qa = String(q.academy || q.academyCode || '').toUpperCase();
+        if (qa && qa !== myCode) {
+          throw new HttpsError('permission-denied', 'Not authorized for this academy.');
+        }
+      }
+    }
+  }
+  // Questions publiques : texte + options UNIQUEMENT. Aucun corrigé,
+  // aucun poids de notation, ordre original du document.
+  const questions = (Array.isArray(q.questions) ? q.questions : []).map(function (x) {
+    const qq = x || {};
+    return {
+      text: String(qq.text || '').slice(0, 2000),
+      options: (Array.isArray(qq.options) ? qq.options : []).map(function (o) { return String(o || '').slice(0, 2000); })
+    };
+  });
+  return {
+    quiz: {
+      id: quizId, title: q.title || '', level: q.level || '',
+      academy: q.academy || '', isTrial: isTrial, questions: questions
+    }
+  };
 });
 
 /** Liste publique des cours live à venir (sans le lien de réunion). */
