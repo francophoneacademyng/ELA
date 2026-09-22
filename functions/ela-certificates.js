@@ -97,7 +97,18 @@ exports.verifyELACertificate = onRequest({ region: REGION }, async (req, res) =>
     if (!snap.exists) { res.status(200).json({ found: false, valid: false }); return; }
     // publicView : certificateId, studentName, institution, academyLabel,
     // cecrLevel, issueDate, expiryDate, status, valid — RIEN d'autre.
-    res.status(200).json(core.publicView(snap.data()));
+    const cert = snap.data();
+    const integrity = core.verifyCertificateIntegrity(cert);
+    const view = core.publicView(cert);
+    const verificationState = core.classifyVerification(cert, integrity);
+    // Statut d'intégrité/authenticité (aucune donnée privée exposée).
+    res.status(200).json(Object.assign({}, view, {
+      found: true,
+      verificationState: verificationState,
+      integrity: integrity.integrity,
+      authenticity: integrity.authenticity,
+      integrityValid: integrity.valid
+    }));
   } catch (err) {
     console.error('[ELA-Cert] verify failed:', err.message);
     res.status(500).json({ found: false, valid: false, error: 'internal' });
@@ -273,4 +284,41 @@ exports.migrateLegacyCertificates = onCall({ region: REGION, enforceAppCheck: fa
     if (r) migrated++; else skipped++;
   }
   return { ok: true, scanned: snap.size, migrated: migrated, skipped: skipped };
+});
+
+/* ============================================================
+   h) reissueELACertificate — callable : réémission liée (admin/system).
+      Exige motif. Préserve l'original + lien reissueOf + REISSUED.
+   ============================================================ */
+exports.reissueELACertificate = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const role = await userRole(uid);
+  ensure(role === 'admin' || role === 'system', 'permission-denied', 'Super admin ELA only.');
+
+  const data = request.data || {};
+  const reason = String(data.reason || '').trim();
+  ensure(reason.length >= 3, 'invalid-argument', 'A reissue reason (>= 3 chars) is required.');
+
+  try {
+    const cert = await core.reissueCertificate(String(data.id || '').trim().toUpperCase(), reason, uid);
+    return { ok: true, certificate: core.ownerView(cert), reissueOf: data.id };
+  } catch (err) {
+    throw new HttpsError('invalid-argument', err.message || 'reissue-failed');
+  }
+});
+
+/* ============================================================
+   i) runCertificateAuditReconciliation — callable : réconciliation
+      server-only du quorum d'audit (ISSUED / RECONCILED_ISSUED).
+   ============================================================ */
+exports.runCertificateAuditReconciliation = onCall({ region: REGION, enforceAppCheck: false }, async (request) => {
+  const uid = request.auth && request.auth.uid;
+  ensure(uid, 'unauthenticated', 'Sign-in required.');
+  const role = await userRole(uid);
+  ensure(role === 'admin' || role === 'system', 'permission-denied', 'Super admin ELA only.');
+
+  const cap = Math.min(Number((request.data && request.data.limit) || 500), 2000);
+  const result = await core.reconcileCertificateAudit(cap);
+  return { ok: true, result: result };
 });
