@@ -53,14 +53,14 @@
       "*deploy*",
       "deploy-log.txt"
     ],
-    "rewrites": [
+    "redirects": [
       {
         "source": "/verifyELACertificate",
-        "function": {
-          "functionId": "verifyELACertificate",
-          "region": "africa-south1"
-        }
-      },
+        "destination": "https://africa-south1-ela-academy-7f868.cloudfunctions.net/verifyELACertificate",
+        "type": 302
+      }
+    ],
+    "rewrites": [
       {
         "source": "/unsubscribe",
         "function": "nurtureUnsubscribe"
