@@ -2514,7 +2514,12 @@
 
     if (window.ELA_FIREBASE_READY && window.firebase) {
       firebase.initializeApp(window.ELA_FIREBASE_CONFIG);
-      firebase.auth().onAuthStateChanged(function () { updateTeacherNav(); });
+      /* Re-render la route courante au changement d'état d'auth : sur un
+         rechargement direct d'une route protégée (#/dashboard, #/profile…),
+         Firebase restaure la session de façon asynchrone, donc le premier
+         rendu peut précéder currentUser. Sans ce re-rendu, un utilisateur
+         connecté voyait « connexion requise ». */
+      firebase.auth().onAuthStateChanged(function () { updateTeacherNav(); route(); });
     }
 
     /* Mission ELA — PWA : enregistrement du Service Worker au demarrage. */
