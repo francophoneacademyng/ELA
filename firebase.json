@@ -9,42 +9,57 @@
       "**/.*/**",
       "**/node_modules/**",
       "functions/**",
-      "*.md",
+      "**/*.md",
       "firestore.rules",
       "firestore.indexes.json",
-      "*.zip",
+      "**/*.zip",
       "package.json",
       "package-lock.json",
-      "*-debug.log",
-      "*.log",
+      "**/*-debug.log",
+      "**/*.log",
       "service-account*.json",
-      "*.bak",
+      "**/*.bak",
       "_*",
-      "*.ps1",
-      "*.exe",
-      "*.err",
-      "*.bat",
+      "**/*.ps1",
+      "**/*.exe",
+      "**/*.err",
+      "**/*.bat",
+      "**/*.cmd",
+      "**/*.py",
+      "**/*.rules",
+      "**/*.rar",
+      "**/*.yml",
+      "**/*.yaml",
+      "ffmpeg/**",
+      "video_pipeline/**",
+      "docs/**",
+      "scripts/**",
+      "__pycache__/**",
+      "**/__pycache__/**",
+      "data/**",
+      "firebase-test.json",
+      "storage.rules",
       "find-error.js",
       "fix-syntax.js",
-      "scripts/**",
+      "emu-*.js",
+      "run-*.js",
+      "emu*.txt",
+      "pdfdiag*.txt",
+      "RAPPORT-*.txt",
+      "deploy-*.txt",
+      "*-out*.txt",
+      "*diag*.txt",
+      "hs_err_pid*",
+      "*deploy*",
       "deploy-log.txt"
-    ],
-    "redirects": [
-      {
-        "source": "/**",
-        "destination": "https://elaacademy.ng/:0",
-        "type": 301,
-        "condition": {
-          "host": [
-            "www.elaacademy.ng"
-          ]
-        }
-      }
     ],
     "rewrites": [
       {
         "source": "/verifyELACertificate",
-        "destination": "https://africa-south1-ela-academy-7f868.cloudfunctions.net/verifyELACertificate"
+        "function": {
+          "functionId": "verifyELACertificate",
+          "region": "africa-south1"
+        }
       },
       {
         "source": "/unsubscribe",
