@@ -105,7 +105,8 @@ exports.seedAcademicFramework = callable({ region: REGION, timeoutSeconds: 300 }
 exports.getProgrammeDefinition = callable({ region: REGION }, async (request) => {
   uidOf(request);
   const d = request.data || {};
-  const programmeId = String(d.programmeId || '');
+  const programmeId = String(d.programmeId || '').trim();
+  if (!programmeId) fail('invalid-argument', 'programmeId required.');
   const db = admin.firestore();
   const pSnap = await db.collection(PROGRAMMES).doc(programmeId).get();
   if (!pSnap.exists) fail('not-found', 'Programme not found.');
