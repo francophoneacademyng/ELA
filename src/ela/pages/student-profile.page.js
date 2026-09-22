@@ -27,6 +27,12 @@ var ICONS = {
 
 var XP_PER_LESSON = 10; /* même convention que le hub étudiant */
 
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function shell(inner) {
   return '<div class="dashboard-layout">' +
     '<main class="main-content" style="margin-left:0;max-width:100%">' + inner + '</main>' +
