@@ -37,6 +37,16 @@ const db = new Proxy({}, {
 });
 
 const REGION = 'africa-south1';
+
+/* Garde admin (correction : helper précédemment référencé mais non défini). */
+async function requireAdmin(uid) {
+  const snap = await db.collection('users').doc(String(uid)).get();
+  const role = snap.exists ? (snap.data().role || '') : '';
+  if (role !== 'admin' && role !== 'system') {
+    throw new HttpsError('permission-denied', 'Admin/system only.');
+  }
+  return role;
+}
 const PAYSTACK_BASE = 'https://api.paystack.co';
 const DEFAULT_CALLBACK_URL = 'https://elaacademy.ng/#/payment/result';
 
