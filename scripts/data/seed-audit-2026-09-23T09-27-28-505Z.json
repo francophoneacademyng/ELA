@@ -1,0 +1,935 @@
+{
+  "timestamp": "2026-09-23T09:27:28.505Z",
+  "project": "ela-academy-7f868",
+  "actor": "seed-apply",
+  "collections": {
+    "courses": {
+      "desired": 11,
+      "created": 6,
+      "updated": 5
+    },
+    "lessons": {
+      "desired": 73,
+      "created": 41,
+      "updated": 32
+    },
+    "quizzes": {
+      "desired": 31,
+      "created": 31,
+      "updated": 0
+    },
+    "programmes": {
+      "desired": 36,
+      "created": 36,
+      "updated": 0
+    }
+  },
+  "items": [
+    {
+      "collection": "courses",
+      "id": "french-foundations-a1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "everyday-conversations-a2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "intermediate-grammar-b1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "business-communication-b1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "advanced-writing-b2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "french-culture-history-b2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "german-german-a1-foundations",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "mandarin-mandarin-hsk-1-foundations",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "english-english-essential-foundations",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "arabic-arabic-a1-foundations",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "courses",
+      "id": "russian-russian-a1-foundations",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-foundations-a1-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-foundations-a1-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-foundations-a1-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "everyday-conversations-a2-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "everyday-conversations-a2-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "everyday-conversations-a2-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "intermediate-grammar-b1-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "intermediate-grammar-b1-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "business-communication-b1-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "business-communication-b1-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "business-communication-b1-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "advanced-writing-b2-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "advanced-writing-b2-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-culture-history-b2-l1",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-culture-history-b2-l2",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-foundations-a1-l4",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-foundations-a1-l5",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "everyday-conversations-a2-l4",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "intermediate-grammar-b1-l4",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "business-communication-b1-l4",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "advanced-writing-b2-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "french-culture-history-b2-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "intermediate-grammar-b1-l3",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l1",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l2",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l3",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l4",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l5",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l6",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l7",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l8",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l9",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "german-german-a1-foundations-l10",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l1",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l2",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l3",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l4",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l5",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l6",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l7",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l8",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l9",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "mandarin-mandarin-hsk-1-foundations-l10",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l1",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l2",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l3",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l4",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l5",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l6",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l7",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l8",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l9",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "english-english-essential-foundations-l10",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l1",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l2",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l3",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l4",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l5",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l6",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l7",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l8",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l9",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "arabic-arabic-a1-foundations-l10",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l1",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l2",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l3",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l4",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l5",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l6",
+      "action": "update",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l7",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l8",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l9",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "lessons",
+      "id": "russian-russian-a1-foundations-l10",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-a1-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-a2-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-b1-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-b2-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-c1-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "french-level-c2-quiz",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "DE-A1-Q01",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "DE-A1-Q02",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "DE-A1-Q03",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "DE-A1-Q04",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "DE-A1-Q05",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "ZH-A1-Q01",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "ZH-A1-Q02",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "ZH-A1-Q03",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "ZH-A1-Q04",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "ZH-A1-Q05",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "EN-A1-Q01",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "EN-A1-Q02",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "EN-A1-Q03",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "EN-A1-Q04",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "EN-A1-Q05",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "AR-A1-Q01",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "AR-A1-Q02",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "AR-A1-Q03",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "AR-A1-Q04",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "AR-A1-Q05",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "RU-A1-Q01",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "RU-A1-Q02",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "RU-A1-Q03",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "RU-A1-Q04",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "quizzes",
+      "id": "RU-A1-Q05",
+      "action": "create",
+      "sourceType": "SOURCE_DERIVED"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_A1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_A2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_B1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_B2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_C1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_FR_C2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_A1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_A2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_B1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_B2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_C1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_DE_C2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK3",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK4",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK5",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_ZH_HSK6",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_A1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_A2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_B1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_B2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_C1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_EN_C2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_A1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_A2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_B1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_B2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_C1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_AR_C2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_A1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_A2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_B1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_B2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_C1",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    },
+    {
+      "collection": "programmes",
+      "id": "prog_RU_C2",
+      "action": "create",
+      "sourceType": "GENERATED_DRAFT"
+    }
+  ]
+}
