@@ -1,50 +1,56 @@
 {
-  "note": "Source de vérité académies = src/shared/config/academies.config.js. Ce fichier ajoute la provenance de contenu pour la migration.",
+  "note": "Source de vérité académies = src/shared/config/academies.config.js. Ce fichier ajoute la provenance de contenu + la réconciliation d'IDs pour la migration.",
   "academies": [
     {
       "code": "FR", "key": "french", "label": "Francophone Academy", "native": "Français",
       "language": "French", "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
       "certificationTarget": "CECRL (CEFR-aligned)",
       "contentSource": { "sourceAcademy": "Francophone Academy", "sourceVersion": "V7", "sourceType": "SOURCE_DERIVED" },
-      "dataset": "v7-french.json",
-      "status": "reference-model"
+      "dataset": "v7-french.json", "status": "reference-model"
     },
     {
       "code": "DE", "key": "german", "label": "Germanophone Academy", "native": "Deutsch",
       "language": "German", "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
       "certificationTarget": "Goethe-Zertifikat (preparation)",
       "contentSource": { "sourceAcademy": "ELA", "sourceVersion": "ELA-seed", "sourceType": "SOURCE_DERIVED" },
-      "seedFile": "germanophone-a1.json", "status": "seed-a1-only"
+      "seedFile": "germanophone-a1.json", "canonicalCourseId": "german-german-a1-foundations", "status": "seed-a1-only"
     },
     {
       "code": "ZH", "key": "mandarin", "label": "Sinophone Academy", "native": "中文",
       "language": "Mandarin Chinese", "levels": ["HSK1", "HSK2", "HSK3", "HSK4", "HSK5", "HSK6"],
       "certificationTarget": "HSK (preparation)",
       "contentSource": { "sourceAcademy": "ELA", "sourceVersion": "ELA-seed", "sourceType": "SOURCE_DERIVED" },
-      "seedFile": "sinophone-a1.json", "status": "seed-a1-only"
+      "seedFile": "sinophone-a1.json", "canonicalCourseId": "mandarin-mandarin-hsk-1-foundations",
+      "levelMap": { "A1": "HSK1", "A2": "HSK2", "B1": "HSK3", "B2": "HSK4", "C1": "HSK5", "C2": "HSK6" },
+      "status": "seed-a1-only"
     },
     {
       "code": "EN", "key": "english", "label": "Anglophone Pro Academy", "native": "English",
       "language": "English", "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
       "certificationTarget": "IELTS (preparation)",
       "contentSource": { "sourceAcademy": "ELA", "sourceVersion": "ELA-seed", "sourceType": "SOURCE_DERIVED" },
-      "seedFile": "anglophone-a1.json", "status": "seed-a1-only"
+      "seedFile": "anglophone-a1.json", "canonicalCourseId": "english-english-essential-foundations", "status": "seed-a1-only"
     },
     {
       "code": "AR", "key": "arabic", "label": "Arabophone Academy", "native": "العربية",
       "language": "Arabic", "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
       "certificationTarget": "ALPT (preparation)",
       "contentSource": { "sourceAcademy": "ELA", "sourceVersion": "ELA-seed", "sourceType": "SOURCE_DERIVED" },
-      "seedFile": "arabophone-a1.json", "status": "seed-a1-only"
+      "seedFile": "arabophone-a1.json", "canonicalCourseId": "arabic-arabic-a1-foundations", "status": "seed-a1-only"
     },
     {
       "code": "RU", "key": "russian", "label": "Russophone Academy", "native": "Русский",
       "language": "Russian", "levels": ["A1", "A2", "B1", "B2", "C1", "C2"],
       "certificationTarget": "TORFL (preparation)",
       "contentSource": { "sourceAcademy": "ELA", "sourceVersion": "ELA-seed", "sourceType": "SOURCE_DERIVED" },
-      "seedFile": "russophone-a1.json", "status": "seed-a1-only"
+      "seedFile": "russophone-a1.json", "canonicalCourseId": "russian-russian-a1-foundations", "status": "seed-a1-only"
     }
   ],
+  "lessonSchema": {
+    "canonical": "{courseId}-l{order}",
+    "requiredFields": ["courseId", "academyCode", "level", "order", "title", "isTrial", "status"],
+    "note": "Scheme B ({courseId}-lN) is canonical: referenced by progress.completedLessons and quizzes.lessonId. academyCode/isTrial/order are also required for getTrialLessons."
+  },
   "institutionalFrameworkSource": {
     "source": "functions/curriculum-content.js + functions/academic-framework.js",
     "sourceType": "GENERATED_DRAFT",

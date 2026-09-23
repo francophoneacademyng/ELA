@@ -60,7 +60,7 @@ async function main() {
   console.log('\n=== PLAN (dry-run) ===');
   for (const k of ['courses', 'lessons', 'quizzes']) {
     const p = plan[k];
-    console.log(`  ${k}: create=${p.counts.create} update=${p.counts.update} skip=${p.counts.skip} conflict=${p.counts.conflict} (existing-not-in-dataset=${p.orphanExisting.length})`);
+    console.log(`  ${k}: create=${p.counts.create} update=${p.counts.update} skip=${p.counts.skip} conflict=${p.counts.conflict} alias=${p.counts.alias} (existing-not-in-dataset=${p.orphanExisting.length})`);
   }
   console.log('\nMANUAL REVIEW (' + review.length + '):');
   review.forEach((r) => console.log('  - ' + r.id + ' :: ' + r.reason));

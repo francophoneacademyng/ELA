@@ -16,7 +16,14 @@ function validateDataset(dataset, academies) {
 
   const byCode = {};
   const levelSet = {};
-  academies.forEach((a) => { byCode[a.code] = a; levelSet[a.code] = new Set(a.levels); });
+  const bandSet = {};
+  const { band } = require('./plan.js');
+  academies.forEach((a) => {
+    byCode[a.code] = a;
+    levelSet[a.code] = new Set(a.levels);
+    bandSet[a.code] = new Set(a.levels.map(band));
+  });
+  const levelOk = (code, level) => !code || !bandSet[code] || !level || bandSet[code].has(band(level));
 
   const ids = { course: new Set(), lesson: new Set(), quiz: new Set() };
   const courseIds = new Set(dataset.courses.map((c) => c.id));
@@ -27,7 +34,7 @@ function validateDataset(dataset, academies) {
     if (ids.course.has(c.id)) add('FAIL', 'course.dup', 'duplicate course id ' + c.id);
     ids.course.add(c.id);
     if (!c.academyCode || !byCode[c.academyCode]) add('FAIL', 'course.academy', `course ${c.id} invalid academy ${c.academyCode}`);
-    if (c.academyCode && levelSet[c.academyCode] && c.level && !levelSet[c.academyCode].has(c.level)) add('WARN', 'course.level', `course ${c.id} level ${c.level} not in ${c.academyCode} levels`);
+    if (!levelOk(c.academyCode, c.level)) add('WARN', 'course.level', `course ${c.id} level ${c.level} not in ${c.academyCode} levels`);
     if (!STATUS_OK.includes(c.status)) add('FAIL', 'course.status', `course ${c.id} invalid status ${c.status}`);
     if (!CONTENT_STATE_OK.includes(c.contentState)) add('FAIL', 'course.contentState', `course ${c.id} invalid contentState ${c.contentState}`);
     if (!SOURCE_TYPE_OK.includes(c.sourceType)) add('FAIL', 'course.sourceType', `course ${c.id} invalid sourceType ${c.sourceType}`);
@@ -43,6 +50,7 @@ function validateDataset(dataset, academies) {
     if (!STATUS_OK.includes(l.status)) add('FAIL', 'lesson.status', `lesson ${l.id} invalid status ${l.status}`);
     if (!SOURCE_TYPE_OK.includes(l.sourceType)) add('FAIL', 'lesson.sourceType', `lesson ${l.id} invalid sourceType ${l.sourceType}`);
     if (!l.content) add('WARN', 'lesson.content', `lesson ${l.id} has empty content`);
+    if (!levelOk(l.academyCode, l.level)) add('WARN', 'lesson.level', `lesson ${l.id} level ${l.level} not in ${l.academyCode}`);
   });
 
   // quizzes
@@ -63,6 +71,14 @@ function validateDataset(dataset, academies) {
       if (!x.text) add('WARN', 'quiz.question.text', `quiz ${q.id} q${i} empty text`);
     });
   });
+
+  // relations croisées : quiz -> course / lesson / level ; academy/language
+  dataset.quizzes.forEach((q) => {
+    if (q.lessonId && !ids.lesson.has(q.lessonId)) add('WARN', 'quiz.lessonId', `quiz ${q.id} lessonId ${q.lessonId} not in dataset`);
+    if (q.courseId && !courseIds.has(q.courseId)) add('FAIL', 'quiz.courseId', `quiz ${q.id} courseId ${q.courseId} not in dataset`);
+    if (!levelOk(q.academyCode, q.level)) add('WARN', 'quiz.level', `quiz ${q.id} level ${q.level} not in ${q.academyCode}`);
+  });
+  academies.forEach((a) => { if (!a.key || !a.code || !a.language) add('FAIL', 'academy.meta', `academy ${a.code} missing key/language`); });
 
   const fails = issues.filter((i) => i.level === 'FAIL');
   const warns = issues.filter((i) => i.level === 'WARN');

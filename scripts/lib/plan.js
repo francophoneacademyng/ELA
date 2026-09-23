@@ -28,6 +28,13 @@ function band(level) {
   return m ? m[1] : s;
 }
 
+/* schéma d'ID de leçon : A = {ac}_a1_lesson_N (legacy), B = {courseId}-lN (canonique) */
+function scheme(id) {
+  if (/^[a-z]{2}_[a-z0-9]+_lesson_\d+$/i.test(id)) return 'A';
+  if (/-l\d+$/.test(id)) return 'B';
+  return 'other';
+}
+
 function naturalKey(name, d) {
   if (name === 'courses') return `${d.academyCode}|${band(d.level)}`;
   if (name === 'lessons') return `${d.academyCode}|${band(d.level)}|${d.order || d.lessonNumber || ''}`;
@@ -41,7 +48,7 @@ function planCollection(name, desired, current) {
   const curByNat = {};
   current.forEach((d) => { const k = naturalKey(name, d); (curByNat[k] = curByNat[k] || []).push(d.id); });
 
-  const create = [], update = [], skip = [], conflict = [];
+  const create = [], update = [], skip = [], conflict = [], alias = [];
   desired.forEach((d) => {
     const c = cur[d.id];
     if (c) {
@@ -49,10 +56,21 @@ function planCollection(name, desired, current) {
       if (c.hash && c.hash === stableHash(d)) { skip.push(d.id); return; }
       update.push(d.id); return;
     }
-    // id absent : collision par clé naturelle avec un doc existant (id différent) => doublon potentiel
+    // id absent : collision par clé naturelle avec un doc existant (id différent)
     const nat = naturalKey(name, d);
     const clash = curByNat[nat];
-    if (clash && clash.length) { conflict.push({ id: d.id, reason: `natural-key duplicate of existing ${clash.join(',')} (${nat})` }); return; }
+    if (clash && clash.length) {
+      const ds = scheme(d.id);
+      const allLegacy = clash.every((id) => scheme(id) === 'A');
+      if (ds === 'B' && allLegacy) {
+        // le doc existant est un ancien schéma A : alias legacy (le doc canonique est créé)
+        alias.push({ id: d.id, legacyId: clash[0], reason: `legacy scheme-A alias (${nat})` });
+        create.push(d.id);
+      } else {
+        conflict.push({ id: d.id, reason: `natural-key duplicate of existing ${clash.join(',')} (${nat})` });
+      }
+      return;
+    }
     create.push(d.id);
   });
 
@@ -67,10 +85,10 @@ function planCollection(name, desired, current) {
   return {
     collection: name,
     create, update, skip,
-    conflict,
+    conflict, alias,
     duplicateNaturalKeys: dupNat,
     orphanExisting,
-    counts: { desired: desired.length, create: create.length, update: update.length, skip: skip.length, conflict: conflict.length, orphanExisting: orphanExisting.length },
+    counts: { desired: desired.length, create: create.length, update: update.length, skip: skip.length, conflict: conflict.length, alias: alias.length, orphanExisting: orphanExisting.length },
   };
 }
 

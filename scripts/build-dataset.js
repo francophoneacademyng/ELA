@@ -29,7 +29,7 @@ function main() {
       dataset.meta.academies.push({ code: a.code, key: a.key, courses: v7.courses.length, lessons: v7.lessons.length, quizzes: v7.quizzes.length, source: 'V7 SOURCE_DERIVED' });
     } else {
       const seed = readJson(path.join(SEED, a.seedFile));
-      const norm = N.normalizeElaSeed(seed, a.key, a.code);
+      const norm = N.normalizeElaSeed(seed, a);
       dataset.courses.push(...norm.courses);
       dataset.lessons.push(...norm.lessons);
       dataset.quizzes.push(...norm.quizzes);

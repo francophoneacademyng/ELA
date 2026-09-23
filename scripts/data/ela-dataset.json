@@ -1,6 +1,6 @@
 {
   "meta": {
-    "builtAt": "2026-09-23T08:02:45.094Z",
+    "builtAt": "2026-09-23T08:40:29.567Z",
     "academies": [
       {
         "code": "FR",
@@ -237,14 +237,14 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations",
+      "id": "mandarin-mandarin-hsk-1-foundations",
       "academy": "mandarin",
       "academyCode": "ZH",
       "language": "Sinophone Academy",
-      "title": "Sinophone Academy A1 — Foundations",
-      "slug": "mandarin-mandarin-a1-foundations",
-      "description": "ELA Sinophone Academy A1 foundations course.",
-      "level": "A1",
+      "title": "Sinophone Academy HSK1 — Foundations",
+      "slug": "mandarin-mandarin-hsk-1-foundations",
+      "description": "ELA Sinophone Academy HSK1 foundations course.",
+      "level": "HSK1",
       "category": "general",
       "planRequired": "general",
       "order": 1,
@@ -257,12 +257,12 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations",
+      "id": "english-english-essential-foundations",
       "academy": "english",
       "academyCode": "EN",
       "language": "Anglophone Pro Academy",
       "title": "Anglophone Pro Academy A1 — Foundations",
-      "slug": "english-english-a1-foundations",
+      "slug": "english-english-essential-foundations",
       "description": "ELA Anglophone Pro Academy A1 foundations course.",
       "level": "A1",
       "category": "general",
@@ -1851,11 +1851,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l1",
+      "id": "mandarin-mandarin-hsk-1-foundations-l1",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 1,
       "lessonNumber": 1,
@@ -1949,11 +1949,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l2",
+      "id": "mandarin-mandarin-hsk-1-foundations-l2",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 2,
       "lessonNumber": 2,
@@ -2047,11 +2047,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l3",
+      "id": "mandarin-mandarin-hsk-1-foundations-l3",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 3,
       "lessonNumber": 3,
@@ -2145,11 +2145,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l4",
+      "id": "mandarin-mandarin-hsk-1-foundations-l4",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 4,
       "lessonNumber": 4,
@@ -2243,11 +2243,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l5",
+      "id": "mandarin-mandarin-hsk-1-foundations-l5",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 5,
       "lessonNumber": 5,
@@ -2341,11 +2341,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l6",
+      "id": "mandarin-mandarin-hsk-1-foundations-l6",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 6,
       "lessonNumber": 6,
@@ -2439,11 +2439,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l7",
+      "id": "mandarin-mandarin-hsk-1-foundations-l7",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 7,
       "lessonNumber": 7,
@@ -2537,11 +2537,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l8",
+      "id": "mandarin-mandarin-hsk-1-foundations-l8",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 8,
       "lessonNumber": 8,
@@ -2635,11 +2635,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l9",
+      "id": "mandarin-mandarin-hsk-1-foundations-l9",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 9,
       "lessonNumber": 9,
@@ -2733,11 +2733,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "mandarin-mandarin-a1-foundations-l10",
+      "id": "mandarin-mandarin-hsk-1-foundations-l10",
       "academy": "mandarin",
       "academyCode": "ZH",
       "academyName": "Sinophone Academy",
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "level": "A1",
       "order": 10,
       "lessonNumber": 10,
@@ -2831,11 +2831,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l1",
+      "id": "english-english-essential-foundations-l1",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 1,
       "lessonNumber": 1,
@@ -2929,11 +2929,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l2",
+      "id": "english-english-essential-foundations-l2",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 2,
       "lessonNumber": 2,
@@ -3027,11 +3027,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l3",
+      "id": "english-english-essential-foundations-l3",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 3,
       "lessonNumber": 3,
@@ -3125,11 +3125,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l4",
+      "id": "english-english-essential-foundations-l4",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 4,
       "lessonNumber": 4,
@@ -3223,11 +3223,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l5",
+      "id": "english-english-essential-foundations-l5",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 5,
       "lessonNumber": 5,
@@ -3321,11 +3321,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l6",
+      "id": "english-english-essential-foundations-l6",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 6,
       "lessonNumber": 6,
@@ -3419,11 +3419,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l7",
+      "id": "english-english-essential-foundations-l7",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 7,
       "lessonNumber": 7,
@@ -3517,11 +3517,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l8",
+      "id": "english-english-essential-foundations-l8",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 8,
       "lessonNumber": 8,
@@ -3615,11 +3615,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l9",
+      "id": "english-english-essential-foundations-l9",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 9,
       "lessonNumber": 9,
@@ -3713,11 +3713,11 @@
       "sourceType": "SOURCE_DERIVED"
     },
     {
-      "id": "english-english-a1-foundations-l10",
+      "id": "english-english-essential-foundations-l10",
       "academy": "english",
       "academyCode": "EN",
       "academyName": "Anglophone Pro Academy",
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "level": "A1",
       "order": 10,
       "lessonNumber": 10,
@@ -7742,7 +7742,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -7822,7 +7822,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -7902,7 +7902,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -7982,7 +7982,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8062,7 +8062,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "mandarin-mandarin-a1-foundations",
+      "courseId": "mandarin-mandarin-hsk-1-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8142,7 +8142,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8222,7 +8222,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8302,7 +8302,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8382,7 +8382,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -8462,7 +8462,7 @@
       "timeLimit": 15,
       "passingScore": 80,
       "isTrial": false,
-      "courseId": "english-english-a1-foundations",
+      "courseId": "english-english-essential-foundations",
       "lessonId": null,
       "questions": [
         {
@@ -9378,6 +9378,7 @@
         "sourceType": "SOURCE_DERIVED"
       },
       "seedFile": "germanophone-a1.json",
+      "canonicalCourseId": "german-german-a1-foundations",
       "status": "seed-a1-only"
     },
     {
@@ -9401,6 +9402,15 @@
         "sourceType": "SOURCE_DERIVED"
       },
       "seedFile": "sinophone-a1.json",
+      "canonicalCourseId": "mandarin-mandarin-hsk-1-foundations",
+      "levelMap": {
+        "A1": "HSK1",
+        "A2": "HSK2",
+        "B1": "HSK3",
+        "B2": "HSK4",
+        "C1": "HSK5",
+        "C2": "HSK6"
+      },
       "status": "seed-a1-only"
     },
     {
@@ -9424,6 +9434,7 @@
         "sourceType": "SOURCE_DERIVED"
       },
       "seedFile": "anglophone-a1.json",
+      "canonicalCourseId": "english-english-essential-foundations",
       "status": "seed-a1-only"
     },
     {
@@ -9447,6 +9458,7 @@
         "sourceType": "SOURCE_DERIVED"
       },
       "seedFile": "arabophone-a1.json",
+      "canonicalCourseId": "arabic-arabic-a1-foundations",
       "status": "seed-a1-only"
     },
     {
@@ -9470,6 +9482,7 @@
         "sourceType": "SOURCE_DERIVED"
       },
       "seedFile": "russophone-a1.json",
+      "canonicalCourseId": "russian-russian-a1-foundations",
       "status": "seed-a1-only"
     }
   ]

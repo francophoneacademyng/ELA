@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T08:07:36.347Z",
+  "generatedAt": "2026-09-23T08:45:56.280Z",
   "mode": "dry-run",
   "datasetCounts": {
     "courses": 11,
@@ -10,7 +10,7 @@
   "validation": {
     "pass": true,
     "fail": 0,
-    "warnings": 3
+    "warnings": 2
   },
   "firestoreReadable": true,
   "plan": {
@@ -22,17 +22,18 @@
         "intermediate-grammar-b1",
         "business-communication-b1",
         "advanced-writing-b2",
-        "french-culture-history-b2",
-        "mandarin-mandarin-a1-foundations",
-        "english-english-a1-foundations"
+        "french-culture-history-b2"
       ],
       "update": [
         "german-german-a1-foundations",
+        "mandarin-mandarin-hsk-1-foundations",
+        "english-english-essential-foundations",
         "arabic-arabic-a1-foundations",
         "russian-russian-a1-foundations"
       ],
       "skip": [],
       "conflict": [],
+      "alias": [],
       "duplicateNaturalKeys": [
         {
           "key": "FR|B1",
@@ -49,22 +50,23 @@
           ]
         }
       ],
-      "orphanExisting": [
-        "english-english-essential-foundations",
-        "mandarin-mandarin-hsk-1-foundations"
-      ],
+      "orphanExisting": [],
       "counts": {
         "desired": 11,
-        "create": 8,
-        "update": 3,
+        "create": 6,
+        "update": 5,
         "skip": 0,
         "conflict": 0,
-        "orphanExisting": 2
+        "alias": 0,
+        "orphanExisting": 0
       }
     },
     "lessons": {
       "collection": "lessons",
       "create": [
+        "french-foundations-a1-l1",
+        "french-foundations-a1-l2",
+        "french-foundations-a1-l3",
         "everyday-conversations-a2-l1",
         "everyday-conversations-a2-l2",
         "everyday-conversations-a2-l3",
@@ -77,12 +79,32 @@
         "advanced-writing-b2-l2",
         "french-culture-history-b2-l1",
         "french-culture-history-b2-l2",
+        "french-foundations-a1-l4",
+        "french-foundations-a1-l5",
         "everyday-conversations-a2-l4",
         "intermediate-grammar-b1-l4",
         "business-communication-b1-l4",
         "advanced-writing-b2-l3",
         "french-culture-history-b2-l3",
-        "intermediate-grammar-b1-l3"
+        "intermediate-grammar-b1-l3",
+        "german-german-a1-foundations-l9",
+        "german-german-a1-foundations-l10",
+        "mandarin-mandarin-hsk-1-foundations-l7",
+        "mandarin-mandarin-hsk-1-foundations-l8",
+        "mandarin-mandarin-hsk-1-foundations-l9",
+        "mandarin-mandarin-hsk-1-foundations-l10",
+        "english-english-essential-foundations-l7",
+        "english-english-essential-foundations-l8",
+        "english-english-essential-foundations-l9",
+        "english-english-essential-foundations-l10",
+        "arabic-arabic-a1-foundations-l7",
+        "arabic-arabic-a1-foundations-l8",
+        "arabic-arabic-a1-foundations-l9",
+        "arabic-arabic-a1-foundations-l10",
+        "russian-russian-a1-foundations-l7",
+        "russian-russian-a1-foundations-l8",
+        "russian-russian-a1-foundations-l9",
+        "russian-russian-a1-foundations-l10"
       ],
       "update": [
         "german-german-a1-foundations-l1",
@@ -93,6 +115,18 @@
         "german-german-a1-foundations-l6",
         "german-german-a1-foundations-l7",
         "german-german-a1-foundations-l8",
+        "mandarin-mandarin-hsk-1-foundations-l1",
+        "mandarin-mandarin-hsk-1-foundations-l2",
+        "mandarin-mandarin-hsk-1-foundations-l3",
+        "mandarin-mandarin-hsk-1-foundations-l4",
+        "mandarin-mandarin-hsk-1-foundations-l5",
+        "mandarin-mandarin-hsk-1-foundations-l6",
+        "english-english-essential-foundations-l1",
+        "english-english-essential-foundations-l2",
+        "english-english-essential-foundations-l3",
+        "english-english-essential-foundations-l4",
+        "english-english-essential-foundations-l5",
+        "english-english-essential-foundations-l6",
         "arabic-arabic-a1-foundations-l1",
         "arabic-arabic-a1-foundations-l2",
         "arabic-arabic-a1-foundations-l3",
@@ -107,146 +141,122 @@
         "russian-russian-a1-foundations-l6"
       ],
       "skip": [],
-      "conflict": [
+      "conflict": [],
+      "alias": [
         {
           "id": "french-foundations-a1-l1",
-          "reason": "natural-key duplicate of existing fr_a1_lesson_1 (FR|A1|1)"
+          "legacyId": "fr_a1_lesson_1",
+          "reason": "legacy scheme-A alias (FR|A1|1)"
         },
         {
           "id": "french-foundations-a1-l2",
-          "reason": "natural-key duplicate of existing fr_a1_lesson_2 (FR|A1|2)"
+          "legacyId": "fr_a1_lesson_2",
+          "reason": "legacy scheme-A alias (FR|A1|2)"
         },
         {
           "id": "french-foundations-a1-l3",
-          "reason": "natural-key duplicate of existing fr_a1_lesson_3 (FR|A1|3)"
+          "legacyId": "fr_a1_lesson_3",
+          "reason": "legacy scheme-A alias (FR|A1|3)"
         },
         {
           "id": "french-foundations-a1-l4",
-          "reason": "natural-key duplicate of existing fr_a1_lesson_4 (FR|A1|4)"
+          "legacyId": "fr_a1_lesson_4",
+          "reason": "legacy scheme-A alias (FR|A1|4)"
         },
         {
           "id": "french-foundations-a1-l5",
-          "reason": "natural-key duplicate of existing fr_a1_lesson_5 (FR|A1|5)"
+          "legacyId": "fr_a1_lesson_5",
+          "reason": "legacy scheme-A alias (FR|A1|5)"
         },
         {
           "id": "german-german-a1-foundations-l9",
-          "reason": "natural-key duplicate of existing de_a1_lesson_9 (DE|A1|9)"
+          "legacyId": "de_a1_lesson_9",
+          "reason": "legacy scheme-A alias (DE|A1|9)"
         },
         {
           "id": "german-german-a1-foundations-l10",
-          "reason": "natural-key duplicate of existing de_a1_lesson_10 (DE|A1|10)"
+          "legacyId": "de_a1_lesson_10",
+          "reason": "legacy scheme-A alias (DE|A1|10)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l1",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_1 (ZH|A1|1)"
+          "id": "mandarin-mandarin-hsk-1-foundations-l7",
+          "legacyId": "zh_a1_lesson_7",
+          "reason": "legacy scheme-A alias (ZH|A1|7)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l2",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_2 (ZH|A1|2)"
+          "id": "mandarin-mandarin-hsk-1-foundations-l8",
+          "legacyId": "zh_a1_lesson_8",
+          "reason": "legacy scheme-A alias (ZH|A1|8)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l3",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_3 (ZH|A1|3)"
+          "id": "mandarin-mandarin-hsk-1-foundations-l9",
+          "legacyId": "zh_a1_lesson_9",
+          "reason": "legacy scheme-A alias (ZH|A1|9)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l4",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_4 (ZH|A1|4)"
+          "id": "mandarin-mandarin-hsk-1-foundations-l10",
+          "legacyId": "zh_a1_lesson_10",
+          "reason": "legacy scheme-A alias (ZH|A1|10)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l5",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_5 (ZH|A1|5)"
+          "id": "english-english-essential-foundations-l7",
+          "legacyId": "en_a1_lesson_7",
+          "reason": "legacy scheme-A alias (EN|A1|7)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l6",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_6 (ZH|A1|6)"
+          "id": "english-english-essential-foundations-l8",
+          "legacyId": "en_a1_lesson_8",
+          "reason": "legacy scheme-A alias (EN|A1|8)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l7",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_7 (ZH|A1|7)"
+          "id": "english-english-essential-foundations-l9",
+          "legacyId": "en_a1_lesson_9",
+          "reason": "legacy scheme-A alias (EN|A1|9)"
         },
         {
-          "id": "mandarin-mandarin-a1-foundations-l8",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_8 (ZH|A1|8)"
-        },
-        {
-          "id": "mandarin-mandarin-a1-foundations-l9",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_9 (ZH|A1|9)"
-        },
-        {
-          "id": "mandarin-mandarin-a1-foundations-l10",
-          "reason": "natural-key duplicate of existing zh_a1_lesson_10 (ZH|A1|10)"
-        },
-        {
-          "id": "english-english-a1-foundations-l1",
-          "reason": "natural-key duplicate of existing en_a1_lesson_1 (EN|A1|1)"
-        },
-        {
-          "id": "english-english-a1-foundations-l2",
-          "reason": "natural-key duplicate of existing en_a1_lesson_2 (EN|A1|2)"
-        },
-        {
-          "id": "english-english-a1-foundations-l3",
-          "reason": "natural-key duplicate of existing en_a1_lesson_3 (EN|A1|3)"
-        },
-        {
-          "id": "english-english-a1-foundations-l4",
-          "reason": "natural-key duplicate of existing en_a1_lesson_4 (EN|A1|4)"
-        },
-        {
-          "id": "english-english-a1-foundations-l5",
-          "reason": "natural-key duplicate of existing en_a1_lesson_5 (EN|A1|5)"
-        },
-        {
-          "id": "english-english-a1-foundations-l6",
-          "reason": "natural-key duplicate of existing en_a1_lesson_6 (EN|A1|6)"
-        },
-        {
-          "id": "english-english-a1-foundations-l7",
-          "reason": "natural-key duplicate of existing en_a1_lesson_7 (EN|A1|7)"
-        },
-        {
-          "id": "english-english-a1-foundations-l8",
-          "reason": "natural-key duplicate of existing en_a1_lesson_8 (EN|A1|8)"
-        },
-        {
-          "id": "english-english-a1-foundations-l9",
-          "reason": "natural-key duplicate of existing en_a1_lesson_9 (EN|A1|9)"
-        },
-        {
-          "id": "english-english-a1-foundations-l10",
-          "reason": "natural-key duplicate of existing en_a1_lesson_10 (EN|A1|10)"
+          "id": "english-english-essential-foundations-l10",
+          "legacyId": "en_a1_lesson_10",
+          "reason": "legacy scheme-A alias (EN|A1|10)"
         },
         {
           "id": "arabic-arabic-a1-foundations-l7",
-          "reason": "natural-key duplicate of existing ar_a1_lesson_7 (AR|A1|7)"
+          "legacyId": "ar_a1_lesson_7",
+          "reason": "legacy scheme-A alias (AR|A1|7)"
         },
         {
           "id": "arabic-arabic-a1-foundations-l8",
-          "reason": "natural-key duplicate of existing ar_a1_lesson_8 (AR|A1|8)"
+          "legacyId": "ar_a1_lesson_8",
+          "reason": "legacy scheme-A alias (AR|A1|8)"
         },
         {
           "id": "arabic-arabic-a1-foundations-l9",
-          "reason": "natural-key duplicate of existing ar_a1_lesson_9 (AR|A1|9)"
+          "legacyId": "ar_a1_lesson_9",
+          "reason": "legacy scheme-A alias (AR|A1|9)"
         },
         {
           "id": "arabic-arabic-a1-foundations-l10",
-          "reason": "natural-key duplicate of existing ar_a1_lesson_10 (AR|A1|10)"
+          "legacyId": "ar_a1_lesson_10",
+          "reason": "legacy scheme-A alias (AR|A1|10)"
         },
         {
           "id": "russian-russian-a1-foundations-l7",
-          "reason": "natural-key duplicate of existing ru_a1_lesson_7 (RU|A1|7)"
+          "legacyId": "ru_a1_lesson_7",
+          "reason": "legacy scheme-A alias (RU|A1|7)"
         },
         {
           "id": "russian-russian-a1-foundations-l8",
-          "reason": "natural-key duplicate of existing ru_a1_lesson_8 (RU|A1|8)"
+          "legacyId": "ru_a1_lesson_8",
+          "reason": "legacy scheme-A alias (RU|A1|8)"
         },
         {
           "id": "russian-russian-a1-foundations-l9",
-          "reason": "natural-key duplicate of existing ru_a1_lesson_9 (RU|A1|9)"
+          "legacyId": "ru_a1_lesson_9",
+          "reason": "legacy scheme-A alias (RU|A1|9)"
         },
         {
           "id": "russian-russian-a1-foundations-l10",
-          "reason": "natural-key duplicate of existing ru_a1_lesson_10 (RU|A1|10)"
+          "legacyId": "ru_a1_lesson_10",
+          "reason": "legacy scheme-A alias (RU|A1|10)"
         }
       ],
       "duplicateNaturalKeys": [
@@ -337,12 +347,6 @@
         "en_a1_lesson_7",
         "en_a1_lesson_8",
         "en_a1_lesson_9",
-        "english-english-essential-foundations-l1",
-        "english-english-essential-foundations-l2",
-        "english-english-essential-foundations-l3",
-        "english-english-essential-foundations-l4",
-        "english-english-essential-foundations-l5",
-        "english-english-essential-foundations-l6",
         "fr_a1_lesson_1",
         "fr_a1_lesson_10",
         "fr_a1_lesson_11",
@@ -355,12 +359,6 @@
         "fr_a1_lesson_7",
         "fr_a1_lesson_8",
         "fr_a1_lesson_9",
-        "mandarin-mandarin-hsk-1-foundations-l1",
-        "mandarin-mandarin-hsk-1-foundations-l2",
-        "mandarin-mandarin-hsk-1-foundations-l3",
-        "mandarin-mandarin-hsk-1-foundations-l4",
-        "mandarin-mandarin-hsk-1-foundations-l5",
-        "mandarin-mandarin-hsk-1-foundations-l6",
         "ru_a1_lesson_1",
         "ru_a1_lesson_10",
         "ru_a1_lesson_11",
@@ -388,11 +386,12 @@
       ],
       "counts": {
         "desired": 73,
-        "create": 18,
-        "update": 20,
+        "create": 41,
+        "update": 32,
         "skip": 0,
-        "conflict": 35,
-        "orphanExisting": 84
+        "conflict": 0,
+        "alias": 23,
+        "orphanExisting": 72
       }
     },
     "quizzes": {
@@ -433,6 +432,7 @@
       "update": [],
       "skip": [],
       "conflict": [],
+      "alias": [],
       "duplicateNaturalKeys": [
         {
           "key": "DE|A1",
@@ -525,6 +525,7 @@
         "update": 0,
         "skip": 0,
         "conflict": 0,
+        "alias": 0,
         "orphanExisting": 32
       }
     }

@@ -107,25 +107,30 @@ function quizFromV7(q, academyKey, academyCode, courseIdForLevel) {
   };
 }
 
-/* ELA A1 seed ({academyCode, academyName, cecrLevel, lessons[], quizzes[]}) -> ELA */
-function normalizeElaSeed(seed, academyKey, academyCode) {
+/* ELA A1 seed ({academyCode, academyName, cecrLevel, lessons[], quizzes[]}) -> ELA
+   `academy` = { key, code, canonicalCourseId?, levelMap? } (réconciliation d'ID) */
+function normalizeElaSeed(seed, academy) {
+  const academyKey = academy.key;
+  const academyCode = academy.code;
   const courses = [];
   const lessons = [];
   const quizzes = [];
-  const level = seed.cecrLevel || 'A1';
-  const courseId = `${academyKey}-${academyKey}-${String(level).toLowerCase()}-foundations`;
+  const rawLevel = seed.cecrLevel || 'A1';
+  const levelMap = academy.levelMap || {};
+  const courseLevel = levelMap[rawLevel] || rawLevel;
+  const courseId = academy.canonicalCourseId || `${academyKey}-${academyKey}-${String(rawLevel).toLowerCase()}-foundations`;
   courses.push({
     id: courseId, academy: academyKey, academyCode, language: seed.academyName || academyKey,
-    title: `${seed.academyName || academyKey} ${level} — Foundations`, slug: courseId,
-    description: `ELA ${seed.academyName || academyKey} ${level} foundations course.`,
-    level, category: 'general', planRequired: 'general', order: 1,
+    title: `${seed.academyName || academyKey} ${courseLevel} — Foundations`, slug: courseId,
+    description: `ELA ${seed.academyName || academyKey} ${courseLevel} foundations course.`,
+    level: courseLevel, category: 'general', planRequired: 'general', order: 1,
     lessonCount: (seed.lessons || []).length, learningOutcomes: [],
     status: 'approved', contentState: 'SOURCE_DERIVED', ...PROVENANCE.ela,
   });
   (seed.lessons || []).forEach(function (l, i) {
     lessons.push({
       id: lessonIdFor(courseId, l.order || i + 1), academy: academyKey, academyCode,
-      academyName: seed.academyName || '', courseId, level,
+      academyName: seed.academyName || '', courseId, level: rawLevel,
       order: l.order || i + 1, lessonNumber: l.lessonNumber || i + 1,
       title: l.title || '', description: l.description || '',
       content: l.content || '', vocabulary: l.vocabulary || [],
@@ -144,8 +149,8 @@ function normalizeElaSeed(seed, academyKey, academyCode) {
       };
     });
     quizzes.push({
-      id: q.id || `${academyKey}-${String(level).toLowerCase()}-quiz-${i + 1}`,
-      academy: academyKey, academyCode, level: q.level || level,
+      id: q.id || `${academyKey}-${String(rawLevel).toLowerCase()}-quiz-${i + 1}`,
+      academy: academyKey, academyCode, level: q.level || rawLevel,
       title: q.title || '', category: q.category || 'mixed',
       timeLimit: q.timeLimit || 15, passingScore: q.passingScore || 80,
       isTrial: q.isTrial === true, courseId, lessonId: q.lessonId || null,
