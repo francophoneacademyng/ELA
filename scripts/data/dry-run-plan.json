@@ -1,0 +1,592 @@
+{
+  "generatedAt": "2026-09-23T08:07:36.347Z",
+  "mode": "dry-run",
+  "datasetCounts": {
+    "courses": 11,
+    "lessons": 73,
+    "quizzes": 31,
+    "questions": 245
+  },
+  "validation": {
+    "pass": true,
+    "fail": 0,
+    "warnings": 3
+  },
+  "firestoreReadable": true,
+  "plan": {
+    "courses": {
+      "collection": "courses",
+      "create": [
+        "french-foundations-a1",
+        "everyday-conversations-a2",
+        "intermediate-grammar-b1",
+        "business-communication-b1",
+        "advanced-writing-b2",
+        "french-culture-history-b2",
+        "mandarin-mandarin-a1-foundations",
+        "english-english-a1-foundations"
+      ],
+      "update": [
+        "german-german-a1-foundations",
+        "arabic-arabic-a1-foundations",
+        "russian-russian-a1-foundations"
+      ],
+      "skip": [],
+      "conflict": [],
+      "duplicateNaturalKeys": [
+        {
+          "key": "FR|B1",
+          "ids": [
+            "intermediate-grammar-b1",
+            "business-communication-b1"
+          ]
+        },
+        {
+          "key": "FR|B2",
+          "ids": [
+            "advanced-writing-b2",
+            "french-culture-history-b2"
+          ]
+        }
+      ],
+      "orphanExisting": [
+        "english-english-essential-foundations",
+        "mandarin-mandarin-hsk-1-foundations"
+      ],
+      "counts": {
+        "desired": 11,
+        "create": 8,
+        "update": 3,
+        "skip": 0,
+        "conflict": 0,
+        "orphanExisting": 2
+      }
+    },
+    "lessons": {
+      "collection": "lessons",
+      "create": [
+        "everyday-conversations-a2-l1",
+        "everyday-conversations-a2-l2",
+        "everyday-conversations-a2-l3",
+        "intermediate-grammar-b1-l1",
+        "intermediate-grammar-b1-l2",
+        "business-communication-b1-l1",
+        "business-communication-b1-l2",
+        "business-communication-b1-l3",
+        "advanced-writing-b2-l1",
+        "advanced-writing-b2-l2",
+        "french-culture-history-b2-l1",
+        "french-culture-history-b2-l2",
+        "everyday-conversations-a2-l4",
+        "intermediate-grammar-b1-l4",
+        "business-communication-b1-l4",
+        "advanced-writing-b2-l3",
+        "french-culture-history-b2-l3",
+        "intermediate-grammar-b1-l3"
+      ],
+      "update": [
+        "german-german-a1-foundations-l1",
+        "german-german-a1-foundations-l2",
+        "german-german-a1-foundations-l3",
+        "german-german-a1-foundations-l4",
+        "german-german-a1-foundations-l5",
+        "german-german-a1-foundations-l6",
+        "german-german-a1-foundations-l7",
+        "german-german-a1-foundations-l8",
+        "arabic-arabic-a1-foundations-l1",
+        "arabic-arabic-a1-foundations-l2",
+        "arabic-arabic-a1-foundations-l3",
+        "arabic-arabic-a1-foundations-l4",
+        "arabic-arabic-a1-foundations-l5",
+        "arabic-arabic-a1-foundations-l6",
+        "russian-russian-a1-foundations-l1",
+        "russian-russian-a1-foundations-l2",
+        "russian-russian-a1-foundations-l3",
+        "russian-russian-a1-foundations-l4",
+        "russian-russian-a1-foundations-l5",
+        "russian-russian-a1-foundations-l6"
+      ],
+      "skip": [],
+      "conflict": [
+        {
+          "id": "french-foundations-a1-l1",
+          "reason": "natural-key duplicate of existing fr_a1_lesson_1 (FR|A1|1)"
+        },
+        {
+          "id": "french-foundations-a1-l2",
+          "reason": "natural-key duplicate of existing fr_a1_lesson_2 (FR|A1|2)"
+        },
+        {
+          "id": "french-foundations-a1-l3",
+          "reason": "natural-key duplicate of existing fr_a1_lesson_3 (FR|A1|3)"
+        },
+        {
+          "id": "french-foundations-a1-l4",
+          "reason": "natural-key duplicate of existing fr_a1_lesson_4 (FR|A1|4)"
+        },
+        {
+          "id": "french-foundations-a1-l5",
+          "reason": "natural-key duplicate of existing fr_a1_lesson_5 (FR|A1|5)"
+        },
+        {
+          "id": "german-german-a1-foundations-l9",
+          "reason": "natural-key duplicate of existing de_a1_lesson_9 (DE|A1|9)"
+        },
+        {
+          "id": "german-german-a1-foundations-l10",
+          "reason": "natural-key duplicate of existing de_a1_lesson_10 (DE|A1|10)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l1",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_1 (ZH|A1|1)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l2",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_2 (ZH|A1|2)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l3",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_3 (ZH|A1|3)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l4",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_4 (ZH|A1|4)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l5",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_5 (ZH|A1|5)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l6",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_6 (ZH|A1|6)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l7",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_7 (ZH|A1|7)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l8",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_8 (ZH|A1|8)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l9",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_9 (ZH|A1|9)"
+        },
+        {
+          "id": "mandarin-mandarin-a1-foundations-l10",
+          "reason": "natural-key duplicate of existing zh_a1_lesson_10 (ZH|A1|10)"
+        },
+        {
+          "id": "english-english-a1-foundations-l1",
+          "reason": "natural-key duplicate of existing en_a1_lesson_1 (EN|A1|1)"
+        },
+        {
+          "id": "english-english-a1-foundations-l2",
+          "reason": "natural-key duplicate of existing en_a1_lesson_2 (EN|A1|2)"
+        },
+        {
+          "id": "english-english-a1-foundations-l3",
+          "reason": "natural-key duplicate of existing en_a1_lesson_3 (EN|A1|3)"
+        },
+        {
+          "id": "english-english-a1-foundations-l4",
+          "reason": "natural-key duplicate of existing en_a1_lesson_4 (EN|A1|4)"
+        },
+        {
+          "id": "english-english-a1-foundations-l5",
+          "reason": "natural-key duplicate of existing en_a1_lesson_5 (EN|A1|5)"
+        },
+        {
+          "id": "english-english-a1-foundations-l6",
+          "reason": "natural-key duplicate of existing en_a1_lesson_6 (EN|A1|6)"
+        },
+        {
+          "id": "english-english-a1-foundations-l7",
+          "reason": "natural-key duplicate of existing en_a1_lesson_7 (EN|A1|7)"
+        },
+        {
+          "id": "english-english-a1-foundations-l8",
+          "reason": "natural-key duplicate of existing en_a1_lesson_8 (EN|A1|8)"
+        },
+        {
+          "id": "english-english-a1-foundations-l9",
+          "reason": "natural-key duplicate of existing en_a1_lesson_9 (EN|A1|9)"
+        },
+        {
+          "id": "english-english-a1-foundations-l10",
+          "reason": "natural-key duplicate of existing en_a1_lesson_10 (EN|A1|10)"
+        },
+        {
+          "id": "arabic-arabic-a1-foundations-l7",
+          "reason": "natural-key duplicate of existing ar_a1_lesson_7 (AR|A1|7)"
+        },
+        {
+          "id": "arabic-arabic-a1-foundations-l8",
+          "reason": "natural-key duplicate of existing ar_a1_lesson_8 (AR|A1|8)"
+        },
+        {
+          "id": "arabic-arabic-a1-foundations-l9",
+          "reason": "natural-key duplicate of existing ar_a1_lesson_9 (AR|A1|9)"
+        },
+        {
+          "id": "arabic-arabic-a1-foundations-l10",
+          "reason": "natural-key duplicate of existing ar_a1_lesson_10 (AR|A1|10)"
+        },
+        {
+          "id": "russian-russian-a1-foundations-l7",
+          "reason": "natural-key duplicate of existing ru_a1_lesson_7 (RU|A1|7)"
+        },
+        {
+          "id": "russian-russian-a1-foundations-l8",
+          "reason": "natural-key duplicate of existing ru_a1_lesson_8 (RU|A1|8)"
+        },
+        {
+          "id": "russian-russian-a1-foundations-l9",
+          "reason": "natural-key duplicate of existing ru_a1_lesson_9 (RU|A1|9)"
+        },
+        {
+          "id": "russian-russian-a1-foundations-l10",
+          "reason": "natural-key duplicate of existing ru_a1_lesson_10 (RU|A1|10)"
+        }
+      ],
+      "duplicateNaturalKeys": [
+        {
+          "key": "FR|B1|1",
+          "ids": [
+            "intermediate-grammar-b1-l1",
+            "business-communication-b1-l1"
+          ]
+        },
+        {
+          "key": "FR|B1|2",
+          "ids": [
+            "intermediate-grammar-b1-l2",
+            "business-communication-b1-l2"
+          ]
+        },
+        {
+          "key": "FR|B1|3",
+          "ids": [
+            "business-communication-b1-l3",
+            "intermediate-grammar-b1-l3"
+          ]
+        },
+        {
+          "key": "FR|B2|1",
+          "ids": [
+            "advanced-writing-b2-l1",
+            "french-culture-history-b2-l1"
+          ]
+        },
+        {
+          "key": "FR|B2|2",
+          "ids": [
+            "advanced-writing-b2-l2",
+            "french-culture-history-b2-l2"
+          ]
+        },
+        {
+          "key": "FR|B1|4",
+          "ids": [
+            "intermediate-grammar-b1-l4",
+            "business-communication-b1-l4"
+          ]
+        },
+        {
+          "key": "FR|B2|3",
+          "ids": [
+            "advanced-writing-b2-l3",
+            "french-culture-history-b2-l3"
+          ]
+        }
+      ],
+      "orphanExisting": [
+        "ar_a1_lesson_1",
+        "ar_a1_lesson_10",
+        "ar_a1_lesson_11",
+        "ar_a1_lesson_12",
+        "ar_a1_lesson_2",
+        "ar_a1_lesson_3",
+        "ar_a1_lesson_4",
+        "ar_a1_lesson_5",
+        "ar_a1_lesson_6",
+        "ar_a1_lesson_7",
+        "ar_a1_lesson_8",
+        "ar_a1_lesson_9",
+        "de_a1_lesson_1",
+        "de_a1_lesson_10",
+        "de_a1_lesson_11",
+        "de_a1_lesson_12",
+        "de_a1_lesson_2",
+        "de_a1_lesson_3",
+        "de_a1_lesson_4",
+        "de_a1_lesson_5",
+        "de_a1_lesson_6",
+        "de_a1_lesson_7",
+        "de_a1_lesson_8",
+        "de_a1_lesson_9",
+        "en_a1_lesson_1",
+        "en_a1_lesson_10",
+        "en_a1_lesson_11",
+        "en_a1_lesson_12",
+        "en_a1_lesson_2",
+        "en_a1_lesson_3",
+        "en_a1_lesson_4",
+        "en_a1_lesson_5",
+        "en_a1_lesson_6",
+        "en_a1_lesson_7",
+        "en_a1_lesson_8",
+        "en_a1_lesson_9",
+        "english-english-essential-foundations-l1",
+        "english-english-essential-foundations-l2",
+        "english-english-essential-foundations-l3",
+        "english-english-essential-foundations-l4",
+        "english-english-essential-foundations-l5",
+        "english-english-essential-foundations-l6",
+        "fr_a1_lesson_1",
+        "fr_a1_lesson_10",
+        "fr_a1_lesson_11",
+        "fr_a1_lesson_12",
+        "fr_a1_lesson_2",
+        "fr_a1_lesson_3",
+        "fr_a1_lesson_4",
+        "fr_a1_lesson_5",
+        "fr_a1_lesson_6",
+        "fr_a1_lesson_7",
+        "fr_a1_lesson_8",
+        "fr_a1_lesson_9",
+        "mandarin-mandarin-hsk-1-foundations-l1",
+        "mandarin-mandarin-hsk-1-foundations-l2",
+        "mandarin-mandarin-hsk-1-foundations-l3",
+        "mandarin-mandarin-hsk-1-foundations-l4",
+        "mandarin-mandarin-hsk-1-foundations-l5",
+        "mandarin-mandarin-hsk-1-foundations-l6",
+        "ru_a1_lesson_1",
+        "ru_a1_lesson_10",
+        "ru_a1_lesson_11",
+        "ru_a1_lesson_12",
+        "ru_a1_lesson_2",
+        "ru_a1_lesson_3",
+        "ru_a1_lesson_4",
+        "ru_a1_lesson_5",
+        "ru_a1_lesson_6",
+        "ru_a1_lesson_7",
+        "ru_a1_lesson_8",
+        "ru_a1_lesson_9",
+        "zh_a1_lesson_1",
+        "zh_a1_lesson_10",
+        "zh_a1_lesson_11",
+        "zh_a1_lesson_12",
+        "zh_a1_lesson_2",
+        "zh_a1_lesson_3",
+        "zh_a1_lesson_4",
+        "zh_a1_lesson_5",
+        "zh_a1_lesson_6",
+        "zh_a1_lesson_7",
+        "zh_a1_lesson_8",
+        "zh_a1_lesson_9"
+      ],
+      "counts": {
+        "desired": 73,
+        "create": 18,
+        "update": 20,
+        "skip": 0,
+        "conflict": 35,
+        "orphanExisting": 84
+      }
+    },
+    "quizzes": {
+      "collection": "quizzes",
+      "create": [
+        "french-level-a1-quiz",
+        "french-level-a2-quiz",
+        "french-level-b1-quiz",
+        "french-level-b2-quiz",
+        "french-level-c1-quiz",
+        "french-level-c2-quiz",
+        "DE-A1-Q01",
+        "DE-A1-Q02",
+        "DE-A1-Q03",
+        "DE-A1-Q04",
+        "DE-A1-Q05",
+        "ZH-A1-Q01",
+        "ZH-A1-Q02",
+        "ZH-A1-Q03",
+        "ZH-A1-Q04",
+        "ZH-A1-Q05",
+        "EN-A1-Q01",
+        "EN-A1-Q02",
+        "EN-A1-Q03",
+        "EN-A1-Q04",
+        "EN-A1-Q05",
+        "AR-A1-Q01",
+        "AR-A1-Q02",
+        "AR-A1-Q03",
+        "AR-A1-Q04",
+        "AR-A1-Q05",
+        "RU-A1-Q01",
+        "RU-A1-Q02",
+        "RU-A1-Q03",
+        "RU-A1-Q04",
+        "RU-A1-Q05"
+      ],
+      "update": [],
+      "skip": [],
+      "conflict": [],
+      "duplicateNaturalKeys": [
+        {
+          "key": "DE|A1",
+          "ids": [
+            "DE-A1-Q01",
+            "DE-A1-Q02",
+            "DE-A1-Q03",
+            "DE-A1-Q04",
+            "DE-A1-Q05"
+          ]
+        },
+        {
+          "key": "ZH|A1",
+          "ids": [
+            "ZH-A1-Q01",
+            "ZH-A1-Q02",
+            "ZH-A1-Q03",
+            "ZH-A1-Q04",
+            "ZH-A1-Q05"
+          ]
+        },
+        {
+          "key": "EN|A1",
+          "ids": [
+            "EN-A1-Q01",
+            "EN-A1-Q02",
+            "EN-A1-Q03",
+            "EN-A1-Q04",
+            "EN-A1-Q05"
+          ]
+        },
+        {
+          "key": "AR|A1",
+          "ids": [
+            "AR-A1-Q01",
+            "AR-A1-Q02",
+            "AR-A1-Q03",
+            "AR-A1-Q04",
+            "AR-A1-Q05"
+          ]
+        },
+        {
+          "key": "RU|A1",
+          "ids": [
+            "RU-A1-Q01",
+            "RU-A1-Q02",
+            "RU-A1-Q03",
+            "RU-A1-Q04",
+            "RU-A1-Q05"
+          ]
+        }
+      ],
+      "orphanExisting": [
+        "arabic-arabic-a1-foundations-l1-quiz",
+        "arabic-arabic-a1-foundations-l2-quiz",
+        "arabic-arabic-a1-foundations-l3-quiz",
+        "arabic-arabic-a1-foundations-l4-quiz",
+        "arabic-arabic-a1-foundations-l5-quiz",
+        "arabic-arabic-a1-foundations-l6-quiz",
+        "english-english-essential-foundations-l1-quiz",
+        "english-english-essential-foundations-l2-quiz",
+        "english-english-essential-foundations-l3-quiz",
+        "english-english-essential-foundations-l4-quiz",
+        "english-english-essential-foundations-l5-quiz",
+        "english-english-essential-foundations-l6-quiz",
+        "german-german-a1-foundations-l1-quiz",
+        "german-german-a1-foundations-l2-quiz",
+        "german-german-a1-foundations-l3-quiz",
+        "german-german-a1-foundations-l4-quiz",
+        "german-german-a1-foundations-l5-quiz",
+        "german-german-a1-foundations-l6-quiz",
+        "german-german-a1-foundations-l7-quiz",
+        "german-german-a1-foundations-l8-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l1-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l2-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l3-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l4-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l5-quiz",
+        "mandarin-mandarin-hsk-1-foundations-l6-quiz",
+        "russian-russian-a1-foundations-l1-quiz",
+        "russian-russian-a1-foundations-l2-quiz",
+        "russian-russian-a1-foundations-l3-quiz",
+        "russian-russian-a1-foundations-l4-quiz",
+        "russian-russian-a1-foundations-l5-quiz",
+        "russian-russian-a1-foundations-l6-quiz"
+      ],
+      "counts": {
+        "desired": 31,
+        "create": 31,
+        "update": 0,
+        "skip": 0,
+        "conflict": 0,
+        "orphanExisting": 32
+      }
+    }
+  },
+  "manualReview": [
+    {
+      "id": "french-level-c1-quiz",
+      "reason": "quiz without courseId (level assessment C1/C2) — map to a course or keep level-only"
+    },
+    {
+      "id": "french-level-c2-quiz",
+      "reason": "quiz without courseId (level assessment C1/C2) — map to a course or keep level-only"
+    }
+  ],
+  "academies": [
+    {
+      "code": "FR",
+      "key": "french",
+      "courses": 6,
+      "lessons": 23,
+      "quizzes": 6,
+      "source": "V7 SOURCE_DERIVED"
+    },
+    {
+      "code": "DE",
+      "key": "german",
+      "courses": 1,
+      "lessons": 10,
+      "quizzes": 5,
+      "source": "ELA seed SOURCE_DERIVED"
+    },
+    {
+      "code": "ZH",
+      "key": "mandarin",
+      "courses": 1,
+      "lessons": 10,
+      "quizzes": 5,
+      "source": "ELA seed SOURCE_DERIVED"
+    },
+    {
+      "code": "EN",
+      "key": "english",
+      "courses": 1,
+      "lessons": 10,
+      "quizzes": 5,
+      "source": "ELA seed SOURCE_DERIVED"
+    },
+    {
+      "code": "AR",
+      "key": "arabic",
+      "courses": 1,
+      "lessons": 10,
+      "quizzes": 5,
+      "source": "ELA seed SOURCE_DERIVED"
+    },
+    {
+      "code": "RU",
+      "key": "russian",
+      "courses": 1,
+      "lessons": 10,
+      "quizzes": 5,
+      "source": "ELA seed SOURCE_DERIVED"
+    }
+  ]
+}
