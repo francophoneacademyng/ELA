@@ -1,6 +1,6 @@
 {
   "meta": {
-    "builtAt": "2026-09-23T09:51:23.255Z",
+    "builtAt": "2026-09-23T10:33:01.401Z",
     "programmeCount": 36,
     "nodeCount": 1715,
     "sourceNodes": 95,
@@ -18,7 +18,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 1,
       "title": "Bonjour ! Premiers contacts",
       "description": "Se présenter et saluer",
@@ -86,7 +86,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 2,
       "title": "Nombres, alphabet et nationalités",
       "description": "Compter et se situer",
@@ -154,7 +154,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 3,
       "title": "Ma famille et mes descriptions",
       "description": "Parler de son entourage",
@@ -222,7 +222,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 4,
       "title": "Ma maison et mes couleurs",
       "description": "Décrire son environnement",
@@ -290,7 +290,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 5,
       "title": "Le temps et les jours",
       "description": "Organiser sa semaine",
@@ -358,7 +358,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 6,
       "title": "Au restaurant",
       "description": "Commander et payer",
@@ -392,7 +392,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 7,
       "title": "Dans la ville",
       "description": "Se repérer",
@@ -426,7 +426,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 8,
       "title": "Faire les courses",
       "description": "Acheter et négocier",
@@ -460,7 +460,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 9,
       "title": "Le passé composé",
       "description": "Raconter ses souvenirs",
@@ -494,7 +494,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 10,
       "title": "Le futur et la météo",
       "description": "Parler de demain",
@@ -528,7 +528,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 11,
       "title": "Révision complète",
       "description": "Consolider les acquis",
@@ -562,7 +562,7 @@
       "academyCode": "FR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_FR_A1",
+      "parentId": null,
       "order": 12,
       "title": "Évaluation finale",
       "description": "Valider le niveau A1",
@@ -596,7 +596,7 @@
       "academyCode": "FR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_FR_A2",
+      "parentId": null,
       "order": 1,
       "title": "Everyday Conversations A2",
       "description": "Move beyond basics: talk about your routine, past events and future plans. Practical dialogues for daily life, travel and work.",
@@ -766,7 +766,7 @@
       "academyCode": "FR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_FR_B1",
+      "parentId": null,
       "order": 1,
       "title": "Intermediate Grammar B1",
       "description": "Master the grammar that unlocks fluent speech: subjunctive basics, complex sentences, pronouns and connectors.",
@@ -936,7 +936,7 @@
       "academyCode": "FR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_FR_B1",
+      "parentId": null,
       "order": 2,
       "title": "Business Communication",
       "description": "Professional French for the workplace: emails, meetings, phone calls and presentations. The course for career-driven learners.",
@@ -1106,7 +1106,7 @@
       "academyCode": "FR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_FR_B2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced Writing B2",
       "description": "Write with precision and style: essays, reports and formal correspondence at the level expected by DELF B2 examiners.",
@@ -1242,7 +1242,7 @@
       "academyCode": "FR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_FR_B2",
+      "parentId": null,
       "order": 2,
       "title": "French Culture & History",
       "description": "Understand the Francophone world: history, traditions, etiquette and the cultural codes behind the language.",
@@ -1378,7 +1378,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — French",
       "description": "Academic discourse — French — French",
@@ -1753,7 +1753,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — French",
       "description": "Professional communication — French — French",
@@ -2127,7 +2127,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — French",
       "description": "Argumentation and debate — French — French",
@@ -2502,7 +2502,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — French",
       "description": "Research and referencing — French — French",
@@ -2877,7 +2877,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — French",
       "description": "Intercultural negotiation — French — French",
@@ -3252,7 +3252,7 @@
       "academyCode": "FR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_FR_C1",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — French",
       "description": "Specialised registers — French — French",
@@ -3627,7 +3627,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — French",
       "description": "Advanced rhetoric — French — French",
@@ -4002,7 +4002,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — French",
       "description": "Literary and stylistic analysis — French — French",
@@ -4376,7 +4376,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — French",
       "description": "Domain expertise — French — French",
@@ -4751,7 +4751,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — French",
       "description": "Nuanced argumentation — French — French",
@@ -5126,7 +5126,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — French",
       "description": "Language policy and variation — French — French",
@@ -5501,7 +5501,7 @@
       "academyCode": "FR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_FR_C2",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — French",
       "description": "Mastery project — French — French",
@@ -5876,7 +5876,7 @@
       "academyCode": "DE",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_DE_A1",
+      "parentId": null,
       "order": 1,
       "title": "Germanophone Academy A1 — Foundations",
       "description": "ELA Germanophone Academy A1 foundations course.",
@@ -6856,7 +6856,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 1,
       "title": "Begrüßungen und Vorstellung",
       "description": "Begrüßungen und Vorstellung — German",
@@ -7231,7 +7231,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 2,
       "title": "Persönliche Identität",
       "description": "Persönliche Identität — German",
@@ -7605,7 +7605,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 3,
       "title": "Alltag",
       "description": "Alltag — German",
@@ -7980,7 +7980,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 4,
       "title": "Nähere Umgebung",
       "description": "Nähere Umgebung — German",
@@ -8355,7 +8355,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 5,
       "title": "Arbeit und Freizeit",
       "description": "Arbeit und Freizeit — German",
@@ -8730,7 +8730,7 @@
       "academyCode": "DE",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_DE_A2",
+      "parentId": null,
       "order": 6,
       "title": "Kultur und Integration",
       "description": "Kultur und Integration — German",
@@ -9105,7 +9105,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 1,
       "title": "Travel and transport — German",
       "description": "Travel and transport — German — German",
@@ -9480,7 +9480,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 2,
       "title": "Health and well-being — German",
       "description": "Health and well-being — German — German",
@@ -9854,7 +9854,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 3,
       "title": "Work and study — German",
       "description": "Work and study — German — German",
@@ -10229,7 +10229,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 4,
       "title": "Media and technology — German",
       "description": "Media and technology — German — German",
@@ -10604,7 +10604,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 5,
       "title": "Community and society — German",
       "description": "Community and society — German — German",
@@ -10979,7 +10979,7 @@
       "academyCode": "DE",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_DE_B1",
+      "parentId": null,
       "order": 6,
       "title": "Environment and sustainability — German",
       "description": "Environment and sustainability — German — German",
@@ -11354,7 +11354,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 1,
       "title": "Culture and identity — German",
       "description": "Culture and identity — German — German",
@@ -11729,7 +11729,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 2,
       "title": "Science and innovation — German",
       "description": "Science and innovation — German — German",
@@ -12103,7 +12103,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 3,
       "title": "Economy and work — German",
       "description": "Economy and work — German — German",
@@ -12478,7 +12478,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 4,
       "title": "Global issues — German",
       "description": "Global issues — German — German",
@@ -12853,7 +12853,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 5,
       "title": "Education and careers — German",
       "description": "Education and careers — German — German",
@@ -13228,7 +13228,7 @@
       "academyCode": "DE",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_DE_B2",
+      "parentId": null,
       "order": 6,
       "title": "Arts and literature — German",
       "description": "Arts and literature — German — German",
@@ -13603,7 +13603,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — German",
       "description": "Academic discourse — German — German",
@@ -13978,7 +13978,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — German",
       "description": "Professional communication — German — German",
@@ -14352,7 +14352,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — German",
       "description": "Argumentation and debate — German — German",
@@ -14727,7 +14727,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — German",
       "description": "Research and referencing — German — German",
@@ -15102,7 +15102,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — German",
       "description": "Intercultural negotiation — German — German",
@@ -15477,7 +15477,7 @@
       "academyCode": "DE",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_DE_C1",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — German",
       "description": "Specialised registers — German — German",
@@ -15852,7 +15852,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — German",
       "description": "Advanced rhetoric — German — German",
@@ -16227,7 +16227,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — German",
       "description": "Literary and stylistic analysis — German — German",
@@ -16601,7 +16601,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — German",
       "description": "Domain expertise — German — German",
@@ -16976,7 +16976,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — German",
       "description": "Nuanced argumentation — German — German",
@@ -17351,7 +17351,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — German",
       "description": "Language policy and variation — German — German",
@@ -17726,7 +17726,7 @@
       "academyCode": "DE",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_DE_C2",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — German",
       "description": "Mastery project — German — German",
@@ -18101,7 +18101,7 @@
       "academyCode": "ZH",
       "level": "HSK1",
       "type": "module",
-      "parentId": "prog_ZH_HSK1",
+      "parentId": null,
       "order": 1,
       "title": "Sinophone Academy HSK1 — Foundations",
       "description": "ELA Sinophone Academy HSK1 foundations course.",
@@ -19081,7 +19081,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 1,
       "title": "问候 Greetings",
       "description": "问候 Greetings — Mandarin Chinese",
@@ -19456,7 +19456,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 2,
       "title": "身份 Identity",
       "description": "身份 Identity — Mandarin Chinese",
@@ -19831,7 +19831,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 3,
       "title": "日常生活 Daily life",
       "description": "日常生活 Daily life — Mandarin Chinese",
@@ -20206,7 +20206,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 4,
       "title": "周围环境 Environment",
       "description": "周围环境 Environment — Mandarin Chinese",
@@ -20581,7 +20581,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 5,
       "title": "工作娱乐 Work & leisure",
       "description": "工作娱乐 Work & leisure — Mandarin Chinese",
@@ -20956,7 +20956,7 @@
       "academyCode": "ZH",
       "level": "HSK2",
       "type": "module",
-      "parentId": "prog_ZH_HSK2",
+      "parentId": null,
       "order": 6,
       "title": "文化 Culture",
       "description": "文化 Culture — Mandarin Chinese",
@@ -21331,7 +21331,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 1,
       "title": "Travel and transport — Mandarin Chinese",
       "description": "Travel and transport — Mandarin Chinese — Mandarin Chinese",
@@ -21706,7 +21706,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 2,
       "title": "Health and well-being — Mandarin Chinese",
       "description": "Health and well-being — Mandarin Chinese — Mandarin Chinese",
@@ -22081,7 +22081,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 3,
       "title": "Work and study — Mandarin Chinese",
       "description": "Work and study — Mandarin Chinese — Mandarin Chinese",
@@ -22456,7 +22456,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 4,
       "title": "Media and technology — Mandarin Chinese",
       "description": "Media and technology — Mandarin Chinese — Mandarin Chinese",
@@ -22831,7 +22831,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 5,
       "title": "Community and society — Mandarin Chinese",
       "description": "Community and society — Mandarin Chinese — Mandarin Chinese",
@@ -23206,7 +23206,7 @@
       "academyCode": "ZH",
       "level": "HSK3",
       "type": "module",
-      "parentId": "prog_ZH_HSK3",
+      "parentId": null,
       "order": 6,
       "title": "Environment and sustainability — Mandarin Chinese",
       "description": "Environment and sustainability — Mandarin Chinese — Mandarin Chinese",
@@ -23581,7 +23581,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 1,
       "title": "Culture and identity — Mandarin Chinese",
       "description": "Culture and identity — Mandarin Chinese — Mandarin Chinese",
@@ -23956,7 +23956,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 2,
       "title": "Science and innovation — Mandarin Chinese",
       "description": "Science and innovation — Mandarin Chinese — Mandarin Chinese",
@@ -24331,7 +24331,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 3,
       "title": "Economy and work — Mandarin Chinese",
       "description": "Economy and work — Mandarin Chinese — Mandarin Chinese",
@@ -24706,7 +24706,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 4,
       "title": "Global issues — Mandarin Chinese",
       "description": "Global issues — Mandarin Chinese — Mandarin Chinese",
@@ -25081,7 +25081,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 5,
       "title": "Education and careers — Mandarin Chinese",
       "description": "Education and careers — Mandarin Chinese — Mandarin Chinese",
@@ -25456,7 +25456,7 @@
       "academyCode": "ZH",
       "level": "HSK4",
       "type": "module",
-      "parentId": "prog_ZH_HSK4",
+      "parentId": null,
       "order": 6,
       "title": "Arts and literature — Mandarin Chinese",
       "description": "Arts and literature — Mandarin Chinese — Mandarin Chinese",
@@ -25831,7 +25831,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — Mandarin Chinese",
       "description": "Academic discourse — Mandarin Chinese — Mandarin Chinese",
@@ -26206,7 +26206,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — Mandarin Chinese",
       "description": "Professional communication — Mandarin Chinese — Mandarin Chinese",
@@ -26581,7 +26581,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — Mandarin Chinese",
       "description": "Argumentation and debate — Mandarin Chinese — Mandarin Chinese",
@@ -26956,7 +26956,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — Mandarin Chinese",
       "description": "Research and referencing — Mandarin Chinese — Mandarin Chinese",
@@ -27331,7 +27331,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — Mandarin Chinese",
       "description": "Intercultural negotiation — Mandarin Chinese — Mandarin Chinese",
@@ -27706,7 +27706,7 @@
       "academyCode": "ZH",
       "level": "HSK5",
       "type": "module",
-      "parentId": "prog_ZH_HSK5",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — Mandarin Chinese",
       "description": "Specialised registers — Mandarin Chinese — Mandarin Chinese",
@@ -28081,7 +28081,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — Mandarin Chinese",
       "description": "Advanced rhetoric — Mandarin Chinese — Mandarin Chinese",
@@ -28456,7 +28456,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — Mandarin Chinese",
       "description": "Literary and stylistic analysis — Mandarin Chinese — Mandarin Chinese",
@@ -28831,7 +28831,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — Mandarin Chinese",
       "description": "Domain expertise — Mandarin Chinese — Mandarin Chinese",
@@ -29206,7 +29206,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — Mandarin Chinese",
       "description": "Nuanced argumentation — Mandarin Chinese — Mandarin Chinese",
@@ -29581,7 +29581,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — Mandarin Chinese",
       "description": "Language policy and variation — Mandarin Chinese — Mandarin Chinese",
@@ -29956,7 +29956,7 @@
       "academyCode": "ZH",
       "level": "HSK6",
       "type": "module",
-      "parentId": "prog_ZH_HSK6",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — Mandarin Chinese",
       "description": "Mastery project — Mandarin Chinese — Mandarin Chinese",
@@ -30331,7 +30331,7 @@
       "academyCode": "EN",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_EN_A1",
+      "parentId": null,
       "order": 1,
       "title": "Anglophone Pro Academy A1 — Foundations",
       "description": "ELA Anglophone Pro Academy A1 foundations course.",
@@ -31311,7 +31311,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 1,
       "title": "Greetings and introductions",
       "description": "Greetings and introductions — English",
@@ -31686,7 +31686,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 2,
       "title": "Personal identity",
       "description": "Personal identity — English",
@@ -32060,7 +32060,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 3,
       "title": "Daily life",
       "description": "Daily life — English",
@@ -32435,7 +32435,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 4,
       "title": "Immediate environment",
       "description": "Immediate environment — English",
@@ -32810,7 +32810,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 5,
       "title": "Work and leisure",
       "description": "Work and leisure — English",
@@ -33185,7 +33185,7 @@
       "academyCode": "EN",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_EN_A2",
+      "parentId": null,
       "order": 6,
       "title": "Culture and integration",
       "description": "Culture and integration — English",
@@ -33560,7 +33560,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 1,
       "title": "Travel and transport — English",
       "description": "Travel and transport — English — English",
@@ -33935,7 +33935,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 2,
       "title": "Health and well-being — English",
       "description": "Health and well-being — English — English",
@@ -34309,7 +34309,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 3,
       "title": "Work and study — English",
       "description": "Work and study — English — English",
@@ -34684,7 +34684,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 4,
       "title": "Media and technology — English",
       "description": "Media and technology — English — English",
@@ -35059,7 +35059,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 5,
       "title": "Community and society — English",
       "description": "Community and society — English — English",
@@ -35434,7 +35434,7 @@
       "academyCode": "EN",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_EN_B1",
+      "parentId": null,
       "order": 6,
       "title": "Environment and sustainability — English",
       "description": "Environment and sustainability — English — English",
@@ -35809,7 +35809,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 1,
       "title": "Culture and identity — English",
       "description": "Culture and identity — English — English",
@@ -36184,7 +36184,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 2,
       "title": "Science and innovation — English",
       "description": "Science and innovation — English — English",
@@ -36558,7 +36558,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 3,
       "title": "Economy and work — English",
       "description": "Economy and work — English — English",
@@ -36933,7 +36933,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 4,
       "title": "Global issues — English",
       "description": "Global issues — English — English",
@@ -37308,7 +37308,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 5,
       "title": "Education and careers — English",
       "description": "Education and careers — English — English",
@@ -37683,7 +37683,7 @@
       "academyCode": "EN",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_EN_B2",
+      "parentId": null,
       "order": 6,
       "title": "Arts and literature — English",
       "description": "Arts and literature — English — English",
@@ -38058,7 +38058,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — English",
       "description": "Academic discourse — English — English",
@@ -38433,7 +38433,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — English",
       "description": "Professional communication — English — English",
@@ -38807,7 +38807,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — English",
       "description": "Argumentation and debate — English — English",
@@ -39182,7 +39182,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — English",
       "description": "Research and referencing — English — English",
@@ -39557,7 +39557,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — English",
       "description": "Intercultural negotiation — English — English",
@@ -39932,7 +39932,7 @@
       "academyCode": "EN",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_EN_C1",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — English",
       "description": "Specialised registers — English — English",
@@ -40307,7 +40307,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — English",
       "description": "Advanced rhetoric — English — English",
@@ -40682,7 +40682,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — English",
       "description": "Literary and stylistic analysis — English — English",
@@ -41056,7 +41056,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — English",
       "description": "Domain expertise — English — English",
@@ -41431,7 +41431,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — English",
       "description": "Nuanced argumentation — English — English",
@@ -41806,7 +41806,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — English",
       "description": "Language policy and variation — English — English",
@@ -42181,7 +42181,7 @@
       "academyCode": "EN",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_EN_C2",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — English",
       "description": "Mastery project — English — English",
@@ -42556,7 +42556,7 @@
       "academyCode": "AR",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_AR_A1",
+      "parentId": null,
       "order": 1,
       "title": "Arabophone Academy A1 — Foundations",
       "description": "ELA Arabophone Academy A1 foundations course.",
@@ -43536,7 +43536,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 1,
       "title": "التحيات Greetings",
       "description": "التحيات Greetings — Arabic",
@@ -43911,7 +43911,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 2,
       "title": "الهوية Identity",
       "description": "الهوية Identity — Arabic",
@@ -44286,7 +44286,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 3,
       "title": "الحياة اليومية Daily life",
       "description": "الحياة اليومية Daily life — Arabic",
@@ -44661,7 +44661,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 4,
       "title": "المحيط Environment",
       "description": "المحيط Environment — Arabic",
@@ -45036,7 +45036,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 5,
       "title": "العمل والترفيه Work & leisure",
       "description": "العمل والترفيه Work & leisure — Arabic",
@@ -45411,7 +45411,7 @@
       "academyCode": "AR",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_AR_A2",
+      "parentId": null,
       "order": 6,
       "title": "الثقافة Culture",
       "description": "الثقافة Culture — Arabic",
@@ -45786,7 +45786,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 1,
       "title": "Travel and transport — Arabic",
       "description": "Travel and transport — Arabic — Arabic",
@@ -46161,7 +46161,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 2,
       "title": "Health and well-being — Arabic",
       "description": "Health and well-being — Arabic — Arabic",
@@ -46536,7 +46536,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 3,
       "title": "Work and study — Arabic",
       "description": "Work and study — Arabic — Arabic",
@@ -46911,7 +46911,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 4,
       "title": "Media and technology — Arabic",
       "description": "Media and technology — Arabic — Arabic",
@@ -47286,7 +47286,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 5,
       "title": "Community and society — Arabic",
       "description": "Community and society — Arabic — Arabic",
@@ -47661,7 +47661,7 @@
       "academyCode": "AR",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_AR_B1",
+      "parentId": null,
       "order": 6,
       "title": "Environment and sustainability — Arabic",
       "description": "Environment and sustainability — Arabic — Arabic",
@@ -48036,7 +48036,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 1,
       "title": "Culture and identity — Arabic",
       "description": "Culture and identity — Arabic — Arabic",
@@ -48411,7 +48411,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 2,
       "title": "Science and innovation — Arabic",
       "description": "Science and innovation — Arabic — Arabic",
@@ -48786,7 +48786,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 3,
       "title": "Economy and work — Arabic",
       "description": "Economy and work — Arabic — Arabic",
@@ -49161,7 +49161,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 4,
       "title": "Global issues — Arabic",
       "description": "Global issues — Arabic — Arabic",
@@ -49536,7 +49536,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 5,
       "title": "Education and careers — Arabic",
       "description": "Education and careers — Arabic — Arabic",
@@ -49911,7 +49911,7 @@
       "academyCode": "AR",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_AR_B2",
+      "parentId": null,
       "order": 6,
       "title": "Arts and literature — Arabic",
       "description": "Arts and literature — Arabic — Arabic",
@@ -50286,7 +50286,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — Arabic",
       "description": "Academic discourse — Arabic — Arabic",
@@ -50661,7 +50661,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — Arabic",
       "description": "Professional communication — Arabic — Arabic",
@@ -51036,7 +51036,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — Arabic",
       "description": "Argumentation and debate — Arabic — Arabic",
@@ -51411,7 +51411,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — Arabic",
       "description": "Research and referencing — Arabic — Arabic",
@@ -51786,7 +51786,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — Arabic",
       "description": "Intercultural negotiation — Arabic — Arabic",
@@ -52161,7 +52161,7 @@
       "academyCode": "AR",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_AR_C1",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — Arabic",
       "description": "Specialised registers — Arabic — Arabic",
@@ -52536,7 +52536,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — Arabic",
       "description": "Advanced rhetoric — Arabic — Arabic",
@@ -52911,7 +52911,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — Arabic",
       "description": "Literary and stylistic analysis — Arabic — Arabic",
@@ -53286,7 +53286,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — Arabic",
       "description": "Domain expertise — Arabic — Arabic",
@@ -53661,7 +53661,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — Arabic",
       "description": "Nuanced argumentation — Arabic — Arabic",
@@ -54036,7 +54036,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — Arabic",
       "description": "Language policy and variation — Arabic — Arabic",
@@ -54411,7 +54411,7 @@
       "academyCode": "AR",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_AR_C2",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — Arabic",
       "description": "Mastery project — Arabic — Arabic",
@@ -54786,7 +54786,7 @@
       "academyCode": "RU",
       "level": "A1",
       "type": "module",
-      "parentId": "prog_RU_A1",
+      "parentId": null,
       "order": 1,
       "title": "Russophone Academy A1 — Foundations",
       "description": "ELA Russophone Academy A1 foundations course.",
@@ -55766,7 +55766,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 1,
       "title": "Приветствия Greetings",
       "description": "Приветствия Greetings — Russian",
@@ -56141,7 +56141,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 2,
       "title": "Личность Identity",
       "description": "Личность Identity — Russian",
@@ -56516,7 +56516,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 3,
       "title": "Быт Daily life",
       "description": "Быт Daily life — Russian",
@@ -56891,7 +56891,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 4,
       "title": "Окружение Environment",
       "description": "Окружение Environment — Russian",
@@ -57266,7 +57266,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 5,
       "title": "Работа и досуг Work & leisure",
       "description": "Работа и досуг Work & leisure — Russian",
@@ -57641,7 +57641,7 @@
       "academyCode": "RU",
       "level": "A2",
       "type": "module",
-      "parentId": "prog_RU_A2",
+      "parentId": null,
       "order": 6,
       "title": "Культура Culture",
       "description": "Культура Culture — Russian",
@@ -58016,7 +58016,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 1,
       "title": "Travel and transport — Russian",
       "description": "Travel and transport — Russian — Russian",
@@ -58391,7 +58391,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 2,
       "title": "Health and well-being — Russian",
       "description": "Health and well-being — Russian — Russian",
@@ -58766,7 +58766,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 3,
       "title": "Work and study — Russian",
       "description": "Work and study — Russian — Russian",
@@ -59141,7 +59141,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 4,
       "title": "Media and technology — Russian",
       "description": "Media and technology — Russian — Russian",
@@ -59516,7 +59516,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 5,
       "title": "Community and society — Russian",
       "description": "Community and society — Russian — Russian",
@@ -59891,7 +59891,7 @@
       "academyCode": "RU",
       "level": "B1",
       "type": "module",
-      "parentId": "prog_RU_B1",
+      "parentId": null,
       "order": 6,
       "title": "Environment and sustainability — Russian",
       "description": "Environment and sustainability — Russian — Russian",
@@ -60266,7 +60266,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 1,
       "title": "Culture and identity — Russian",
       "description": "Culture and identity — Russian — Russian",
@@ -60641,7 +60641,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 2,
       "title": "Science and innovation — Russian",
       "description": "Science and innovation — Russian — Russian",
@@ -61016,7 +61016,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 3,
       "title": "Economy and work — Russian",
       "description": "Economy and work — Russian — Russian",
@@ -61391,7 +61391,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 4,
       "title": "Global issues — Russian",
       "description": "Global issues — Russian — Russian",
@@ -61766,7 +61766,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 5,
       "title": "Education and careers — Russian",
       "description": "Education and careers — Russian — Russian",
@@ -62141,7 +62141,7 @@
       "academyCode": "RU",
       "level": "B2",
       "type": "module",
-      "parentId": "prog_RU_B2",
+      "parentId": null,
       "order": 6,
       "title": "Arts and literature — Russian",
       "description": "Arts and literature — Russian — Russian",
@@ -62516,7 +62516,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 1,
       "title": "Academic discourse — Russian",
       "description": "Academic discourse — Russian — Russian",
@@ -62891,7 +62891,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 2,
       "title": "Professional communication — Russian",
       "description": "Professional communication — Russian — Russian",
@@ -63266,7 +63266,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 3,
       "title": "Argumentation and debate — Russian",
       "description": "Argumentation and debate — Russian — Russian",
@@ -63641,7 +63641,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 4,
       "title": "Research and referencing — Russian",
       "description": "Research and referencing — Russian — Russian",
@@ -64016,7 +64016,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 5,
       "title": "Intercultural negotiation — Russian",
       "description": "Intercultural negotiation — Russian — Russian",
@@ -64391,7 +64391,7 @@
       "academyCode": "RU",
       "level": "C1",
       "type": "module",
-      "parentId": "prog_RU_C1",
+      "parentId": null,
       "order": 6,
       "title": "Specialised registers — Russian",
       "description": "Specialised registers — Russian — Russian",
@@ -64766,7 +64766,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 1,
       "title": "Advanced rhetoric — Russian",
       "description": "Advanced rhetoric — Russian — Russian",
@@ -65141,7 +65141,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 2,
       "title": "Literary and stylistic analysis — Russian",
       "description": "Literary and stylistic analysis — Russian — Russian",
@@ -65516,7 +65516,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 3,
       "title": "Domain expertise — Russian",
       "description": "Domain expertise — Russian — Russian",
@@ -65891,7 +65891,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 4,
       "title": "Nuanced argumentation — Russian",
       "description": "Nuanced argumentation — Russian — Russian",
@@ -66266,7 +66266,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 5,
       "title": "Language policy and variation — Russian",
       "description": "Language policy and variation — Russian — Russian",
@@ -66641,7 +66641,7 @@
       "academyCode": "RU",
       "level": "C2",
       "type": "module",
-      "parentId": "prog_RU_C2",
+      "parentId": null,
       "order": 6,
       "title": "Mastery project — Russian",
       "description": "Mastery project — Russian — Russian",
@@ -71092,60 +71092,70 @@
   "competencies": [
     {
       "id": "C-LIS",
+      "domain": "listening",
       "label": "Listening comprehension",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-REA",
+      "domain": "reading",
       "label": "Reading comprehension",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-WRI",
+      "domain": "writing",
       "label": "Written production",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-SPE",
+      "domain": "speaking",
       "label": "Spoken production",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-GRA",
+      "domain": "grammar",
       "label": "Grammatical competence",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-VOC",
+      "domain": "vocabulary",
       "label": "Lexical competence",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-PRO",
+      "domain": "pronunciation",
       "label": "Phonological control",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-INT",
+      "domain": "interaction",
       "label": "Spoken interaction",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-MED",
+      "domain": "mediation",
       "label": "Mediation",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
     {
       "id": "C-ICU",
+      "domain": "intercultural",
       "label": "Intercultural competence",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
@@ -71156,6 +71166,42 @@
       "id": "AB-FR-A1",
       "academyCode": "FR",
       "level": "A1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71163,6 +71209,42 @@
       "id": "AB-FR-A2",
       "academyCode": "FR",
       "level": "A2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71170,6 +71252,42 @@
       "id": "AB-FR-B1",
       "academyCode": "FR",
       "level": "B1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71177,6 +71295,42 @@
       "id": "AB-FR-B2",
       "academyCode": "FR",
       "level": "B2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71184,6 +71338,42 @@
       "id": "AB-FR-C1",
       "academyCode": "FR",
       "level": "C1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71191,6 +71381,42 @@
       "id": "AB-FR-C2",
       "academyCode": "FR",
       "level": "C2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71198,6 +71424,42 @@
       "id": "AB-DE-A1",
       "academyCode": "DE",
       "level": "A1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71205,6 +71467,42 @@
       "id": "AB-DE-A2",
       "academyCode": "DE",
       "level": "A2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71212,6 +71510,42 @@
       "id": "AB-DE-B1",
       "academyCode": "DE",
       "level": "B1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71219,6 +71553,42 @@
       "id": "AB-DE-B2",
       "academyCode": "DE",
       "level": "B2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71226,6 +71596,42 @@
       "id": "AB-DE-C1",
       "academyCode": "DE",
       "level": "C1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71233,6 +71639,42 @@
       "id": "AB-DE-C2",
       "academyCode": "DE",
       "level": "C2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71240,6 +71682,42 @@
       "id": "AB-ZH-HSK1",
       "academyCode": "ZH",
       "level": "HSK1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71247,6 +71725,42 @@
       "id": "AB-ZH-HSK2",
       "academyCode": "ZH",
       "level": "HSK2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71254,6 +71768,42 @@
       "id": "AB-ZH-HSK3",
       "academyCode": "ZH",
       "level": "HSK3",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71261,6 +71811,42 @@
       "id": "AB-ZH-HSK4",
       "academyCode": "ZH",
       "level": "HSK4",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71268,6 +71854,42 @@
       "id": "AB-ZH-HSK5",
       "academyCode": "ZH",
       "level": "HSK5",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71275,6 +71897,42 @@
       "id": "AB-ZH-HSK6",
       "academyCode": "ZH",
       "level": "HSK6",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71282,6 +71940,42 @@
       "id": "AB-EN-A1",
       "academyCode": "EN",
       "level": "A1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71289,6 +71983,42 @@
       "id": "AB-EN-A2",
       "academyCode": "EN",
       "level": "A2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71296,6 +72026,42 @@
       "id": "AB-EN-B1",
       "academyCode": "EN",
       "level": "B1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71303,6 +72069,42 @@
       "id": "AB-EN-B2",
       "academyCode": "EN",
       "level": "B2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71310,6 +72112,42 @@
       "id": "AB-EN-C1",
       "academyCode": "EN",
       "level": "C1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71317,6 +72155,42 @@
       "id": "AB-EN-C2",
       "academyCode": "EN",
       "level": "C2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71324,6 +72198,42 @@
       "id": "AB-AR-A1",
       "academyCode": "AR",
       "level": "A1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71331,6 +72241,42 @@
       "id": "AB-AR-A2",
       "academyCode": "AR",
       "level": "A2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71338,6 +72284,42 @@
       "id": "AB-AR-B1",
       "academyCode": "AR",
       "level": "B1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71345,6 +72327,42 @@
       "id": "AB-AR-B2",
       "academyCode": "AR",
       "level": "B2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71352,6 +72370,42 @@
       "id": "AB-AR-C1",
       "academyCode": "AR",
       "level": "C1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71359,6 +72413,42 @@
       "id": "AB-AR-C2",
       "academyCode": "AR",
       "level": "C2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71366,6 +72456,42 @@
       "id": "AB-RU-A1",
       "academyCode": "RU",
       "level": "A1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71373,6 +72499,42 @@
       "id": "AB-RU-A2",
       "academyCode": "RU",
       "level": "A2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71380,6 +72542,42 @@
       "id": "AB-RU-B1",
       "academyCode": "RU",
       "level": "B1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71387,6 +72585,42 @@
       "id": "AB-RU-B2",
       "academyCode": "RU",
       "level": "B2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71394,6 +72628,42 @@
       "id": "AB-RU-C1",
       "academyCode": "RU",
       "level": "C1",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     },
@@ -71401,6 +72671,42 @@
       "id": "AB-RU-C2",
       "academyCode": "RU",
       "level": "C2",
+      "purpose": "Define ELA assessment types, weights and progression implications.",
+      "types": [
+        {
+          "type": "PRACTICE_ACTIVITY",
+          "weight": 0,
+          "scored": false,
+          "purpose": "Formative practice; no progression impact."
+        },
+        {
+          "type": "FORMATIVE_QUIZ",
+          "weight": 0,
+          "scored": true,
+          "purpose": "Diagnostic; informs remediation; not certification."
+        },
+        {
+          "type": "UNIT_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Checks unit mastery; contributes to level assessment readiness."
+        },
+        {
+          "type": "LEVEL_ASSESSMENT",
+          "weight": 20,
+          "scored": true,
+          "purpose": "Confirms readiness for the certification examination."
+        },
+        {
+          "type": "FINAL_CERTIFICATION_EXAMINATION",
+          "weight": 60,
+          "scored": true,
+          "purpose": "Authoritative four-skill certification examination."
+        }
+      ],
+      "passMark": 60,
+      "rationale": "ELA design decision: the certification examination carries the majority weight (60%) because it is the authoritative, examiner-moderated measure. Continuous assessment totals 40% to reward consistent engagement.",
+      "status": "APPROVED",
       "sourceType": "SOURCE_DERIVED",
       "sourceAcademy": "ELA"
     }

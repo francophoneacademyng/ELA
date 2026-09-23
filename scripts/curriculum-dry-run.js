@@ -51,7 +51,7 @@ async function main() {
   let lessonNodes = 0, moduleNodes = 0, unitNodes = 0;
   cur.nodes.forEach((n) => {
     if (!progIds.has(n.programmeId)) issues.push({ level: 'FAIL', code: 'node.programme', detail: `${n.id} programmeId ${n.programmeId} missing` });
-    if (n.type === 'module' && n.parentId !== n.programmeId) issues.push({ level: 'WARN', code: 'node.parent', detail: `${n.id} module parent != programme` });
+    if (n.type === 'module' && n.parentId !== null && n.parentId !== n.programmeId) issues.push({ level: 'WARN', code: 'node.parent', detail: `${n.id} module parent invalid` });
     if (n.type === 'lesson') { lessonNodes++; if (n.parentId && !nodeIds.has(n.parentId)) issues.push({ level: 'FAIL', code: 'node.orphan', detail: `${n.id} parent ${n.parentId} missing` }); }
     if (n.type === 'module') moduleNodes++;
     if (n.type === 'unit') unitNodes++;

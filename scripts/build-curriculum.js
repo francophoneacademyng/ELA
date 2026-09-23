@@ -51,7 +51,7 @@ function main() {
           outcomes.push({ id: oid, academyCode: ac, level, statement: o, skill: 'C-SPE', sourceType: 'SOURCE_DERIVED', sourceAcademy: 'Francophone Academy', sourceVersion: 'V7' });
           return oid;
         });
-        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: p.id, order: mi + 1, title: w.title, description: w.subtitle || '', duration: w.duration || '', vocabularyCount: w.vocabCount || 0, competencyIds: COMP, outcomeIds: outs, state: 'DRAFT', sourceType: 'SOURCE_DERIVED', sourceAcademy: 'Francophone Academy', sourceVersion: 'V7' });
+        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: null, order: mi + 1, title: w.title, description: w.subtitle || '', duration: w.duration || '', vocabularyCount: w.vocabCount || 0, competencyIds: COMP, outcomeIds: outs, state: 'DRAFT', sourceType: 'SOURCE_DERIVED', sourceAcademy: 'Francophone Academy', sourceVersion: 'V7' });
         modCount++;
         // 5 leçons V7 A1 rattachées aux modules 1..5
         if (mi < 5) {
@@ -72,7 +72,7 @@ function main() {
           outcomes.push({ id: oid, academyCode: ac, level, statement: o, skill: 'C-SPE', sourceType: c.sourceType, sourceAcademy: c.sourceAcademy, sourceVersion: c.sourceVersion });
           return oid;
         });
-        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: p.id, order: mi + 1, title: c.title, description: c.description || '', durationMinutes: c.durationMinutes || 0, competencyIds: COMP, outcomeIds: outs, state: 'DRAFT', sourceType: c.sourceType, sourceAcademy: c.sourceAcademy, sourceVersion: c.sourceVersion, courseRef: c.id });
+        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: null, order: mi + 1, title: c.title, description: c.description || '', durationMinutes: c.durationMinutes || 0, competencyIds: COMP, outcomeIds: outs, state: 'DRAFT', sourceType: c.sourceType, sourceAcademy: c.sourceAcademy, sourceVersion: c.sourceVersion, courseRef: c.id });
         modCount++;
         lessons.filter((l) => l.courseId === c.id).sort((a, b) => a.order - b.order).forEach((l, li) => {
           nodes.push({ id: `${mId}-L${pad(li + 1)}`, programmeId: p.id, academyCode: ac, level, type: 'lesson', parentId: mId, order: li + 1, title: l.title, objective: l.description || '', vocabularyFocus: l.vocabulary || [], grammarFocus: [], pronunciationFocus: [], culturalContext: '', activities: [], competencyIds: COMP, outcomeIds: [], state: 'DRAFT', sourceType: l.sourceType, sourceAcademy: l.sourceAcademy, sourceVersion: l.sourceVersion, lessonRef: l.id });
@@ -85,7 +85,7 @@ function main() {
       const cur = content.buildLevelContent(ac, level);
       (cur.modules || []).forEach((m, mi) => {
         const mId = `${p.id}-M${pad(mi + 1)}`;
-        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: p.id, order: mi + 1, title: m.title, description: m.description || '', competencyIds: m.competencyIds || COMP, outcomeIds: m.outcomes || [], state: 'DRAFT', sourceType: 'GENERATED_DRAFT', sourceAcademy: 'ELA', sourceVersion: 'ELA-generated' });
+        nodes.push({ id: mId, programmeId: p.id, academyCode: ac, level, type: 'module', parentId: null, order: mi + 1, title: m.title, description: m.description || '', competencyIds: m.competencyIds || COMP, outcomeIds: m.outcomes || [], state: 'DRAFT', sourceType: 'GENERATED_DRAFT', sourceAcademy: 'ELA', sourceVersion: 'ELA-generated' });
         modCount++;
         (m.units || []).forEach((u, ui) => {
           const uId = `${mId}-U${pad(ui + 1)}`;
@@ -108,8 +108,8 @@ function main() {
     meta: { builtAt: new Date().toISOString(), programmeCount: programmes.length, nodeCount, sourceNodes: stats.sourceNodes, generatedNodes: stats.generatedNodes, outcomeCount: outcomes.length + framework.outcomes.length, sourceOutcomeCount: outcomes.length, frameworkOutcomeCount: framework.outcomes.length, competencyCount: COMP.length, assessmentBlueprintCount: framework.assessmentBlueprints.length },
     nodes, outcomes,
     frameworkOutcomes: framework.outcomes.map((o) => ({ id: o.id, academyCode: o.academyCode, level: o.level, skill: o.skill, statement: o.statement, measurable: o.measurable === true, status: 'APPROVED', sourceType: 'SOURCE_DERIVED', sourceAcademy: 'ELA' })),
-    competencies: framework.competencies.map((c) => ({ id: c.id, label: c.label, sourceType: 'SOURCE_DERIVED', sourceAcademy: 'ELA' })),
-    assessmentBlueprints: framework.assessmentBlueprints.map((b) => ({ id: b.id, academyCode: b.academyCode, level: b.level, sourceType: 'SOURCE_DERIVED', sourceAcademy: 'ELA' })),
+    competencies: framework.competencies.map((c) => Object.assign({}, c, { sourceType: 'SOURCE_DERIVED', sourceAcademy: 'ELA' })),
+    assessmentBlueprints: framework.assessmentBlueprints.map((b) => Object.assign({}, b, { sourceType: 'SOURCE_DERIVED', sourceAcademy: 'ELA' })),
     perProgramme: stats.perProgramme,
   };
   fs.writeFileSync(path.join(DATA, 'ela-curriculum.json'), JSON.stringify(out, null, 2));
