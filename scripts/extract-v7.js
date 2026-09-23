@@ -43,6 +43,28 @@ function extractArray(src, decl) {
   return null;
 }
 
+/* extrait un objet { ... } équilibré à partir d'un marqueur */
+function extractObjectAfter(src, marker) {
+  const i0 = src.indexOf(marker);
+  if (i0 < 0) return null;
+  let i = i0 + marker.length;
+  while (i < src.length && src[i] !== '{') i++;
+  const start = i;
+  let depth = 0, inStr = null, esc = false, inLine = false, inBlock = false;
+  for (; i < src.length; i++) {
+    const ch = src[i], nx = src[i + 1];
+    if (inLine) { if (ch === '\n') inLine = false; continue; }
+    if (inBlock) { if (ch === '*' && nx === '/') { inBlock = false; i++; } continue; }
+    if (inStr) { if (esc) { esc = false; continue; } if (ch === '\\') { esc = true; continue; } if (ch === inStr) inStr = null; continue; }
+    if (ch === '/' && nx === '/') { inLine = true; i++; continue; }
+    if (ch === '/' && nx === '*') { inBlock = true; i++; continue; }
+    if (ch === '"' || ch === "'" || ch === '`') { inStr = ch; continue; }
+    if (ch === '{') depth++;
+    else if (ch === '}') { depth--; if (depth === 0) return src.slice(start, i + 1); }
+  }
+  return null;
+}
+
 function evalArray(literal, bindings) {
   if (!literal) return [];
   const keys = Object.keys(bindings || {});
@@ -67,6 +89,11 @@ function main() {
     return { id: 'q' + n, type: 'multiple_choice', question, options, correctAnswer, explanation, points: 5 };
   };
   const quizzes = evalArray(extractArray(quizzesSrc, 'QUIZZES'), { q: qFn });
+
+  // Plan hebdomadaire A1 (12 semaines) — structure réelle V7 (codée en dur)
+  const teacherSrc = fs.readFileSync(path.join(V7, 'public', 'js', 'teacher', 'pages', 'teacher-programs.page.js'), 'utf8');
+  const weeklyObj = evalArray(extractObjectAfter(teacherSrc, 'const data ='), {});
+  const weeklyPlan = Object.keys(weeklyObj).map((k) => Object.assign({ week: Number(k) }, weeklyObj[k])).sort((a, b) => a.week - b.week);
 
   const academyKey = 'french', academyCode = 'FR';
   const normCourses = courses.map((c) => N.courseFromV7(c, academyKey, academyCode));
@@ -102,6 +129,7 @@ function main() {
     courses: normCourses,
     lessons: normLessons,
     quizzes: normQuizzes,
+    weeklyPlan: weeklyPlan,
     liveClasses: liveClasses.map((l) => Object.assign({}, l, { sourceType: 'TEST_DATA', requiresReview: true, note: 'placeholder instructors from V7 seed — DATA_REQUIRED' })),
     pricing: pricingDocs[0] || null,
   };

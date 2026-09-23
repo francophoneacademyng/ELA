@@ -2,7 +2,7 @@
   "meta": {
     "sourceProject": "francophone-academy-v7",
     "sourcePath": "C:\\Users\\11e\\Desktop\\VERSION 8\\Kimi_Agent_Discussions avec pièces jointes\\francophone-academy-v7",
-    "extractedAt": "2026-09-23T08:01:05.456Z",
+    "extractedAt": "2026-09-23T09:46:07.053Z",
     "academy": {
       "key": "french",
       "code": "FR",
@@ -2293,6 +2293,152 @@
       "sourceAcademy": "Francophone Academy",
       "sourceVersion": "V7",
       "sourceType": "SOURCE_DERIVED"
+    }
+  ],
+  "weeklyPlan": [
+    {
+      "week": 1,
+      "title": "Bonjour ! Premiers contacts",
+      "subtitle": "Se présenter et saluer",
+      "duration": "45min",
+      "objectives": [
+        "Saluer",
+        "Se présenter",
+        "Utiliser être"
+      ],
+      "vocabCount": 18
+    },
+    {
+      "week": 2,
+      "title": "Nombres, alphabet et nationalités",
+      "subtitle": "Compter et se situer",
+      "duration": "45min",
+      "objectives": [
+        "Compter 0-20",
+        "L'alphabet",
+        "Articles"
+      ],
+      "vocabCount": 22
+    },
+    {
+      "week": 3,
+      "title": "Ma famille et mes descriptions",
+      "subtitle": "Parler de son entourage",
+      "duration": "45min",
+      "objectives": [
+        "Famille",
+        "Descriptions",
+        "Possessifs"
+      ],
+      "vocabCount": 20
+    },
+    {
+      "week": 4,
+      "title": "Ma maison et mes couleurs",
+      "subtitle": "Décrire son environnement",
+      "duration": "45min",
+      "objectives": [
+        "Pièces",
+        "Couleurs",
+        "Prépositions"
+      ],
+      "vocabCount": 19
+    },
+    {
+      "week": 5,
+      "title": "Le temps et les jours",
+      "subtitle": "Organiser sa semaine",
+      "duration": "45min",
+      "objectives": [
+        "Jours",
+        "Heure",
+        "Verbes -ER"
+      ],
+      "vocabCount": 16
+    },
+    {
+      "week": 6,
+      "title": "Au restaurant",
+      "subtitle": "Commander et payer",
+      "duration": "45min",
+      "objectives": [
+        "Menu",
+        "Commander",
+        "Articles partitifs"
+      ],
+      "vocabCount": 15
+    },
+    {
+      "week": 7,
+      "title": "Dans la ville",
+      "subtitle": "Se repérer",
+      "duration": "45min",
+      "objectives": [
+        "Lieux",
+        "Directions",
+        "Aller"
+      ],
+      "vocabCount": 15
+    },
+    {
+      "week": 8,
+      "title": "Faire les courses",
+      "subtitle": "Acheter et négocier",
+      "duration": "45min",
+      "objectives": [
+        "Shopping",
+        "Prix",
+        "Acheter"
+      ],
+      "vocabCount": 15
+    },
+    {
+      "week": 9,
+      "title": "Le passé composé",
+      "subtitle": "Raconter ses souvenirs",
+      "duration": "45min",
+      "objectives": [
+        "Passé",
+        "Avoir",
+        "Participes"
+      ],
+      "vocabCount": 12
+    },
+    {
+      "week": 10,
+      "title": "Le futur et la météo",
+      "subtitle": "Parler de demain",
+      "duration": "45min",
+      "objectives": [
+        "Futur",
+        "Météo",
+        "Projets"
+      ],
+      "vocabCount": 15
+    },
+    {
+      "week": 11,
+      "title": "Révision complète",
+      "subtitle": "Consolider les acquis",
+      "duration": "60min",
+      "objectives": [
+        "Révision",
+        "Auto-éval",
+        "Préparation"
+      ],
+      "vocabCount": 9
+    },
+    {
+      "week": 12,
+      "title": "Évaluation finale",
+      "subtitle": "Valider le niveau A1",
+      "duration": "90min",
+      "objectives": [
+        "Examen",
+        "Certificat",
+        "A2"
+      ],
+      "vocabCount": 8
     }
   ],
   "liveClasses": [
