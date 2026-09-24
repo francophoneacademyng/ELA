@@ -6,6 +6,7 @@
 
 import { escapeHtml } from '../../core/dom.js';
 import { t } from '../../core/i18n-helpers.js';
+import { TI } from './teacher-icons.js';
 
 /**
  * @param {object} q { text, options[4], correctIndex }
@@ -27,7 +28,7 @@ export function quizQuestionCardHtml(q, index, removable) {
 
   return '<div class="quiz-question-card" data-question-index="' + index + '">' +
     '<div class="quiz-question-head"><strong>' + t('teacher.question') + ' ' + (index + 1) + '</strong>' +
-      (removable ? '<button type="button" class="btn btn-ghost btn-sm" data-remove-question="' + index + '">✕</button>' : '') +
+      (removable ? '<button type="button" class="btn btn-ghost btn-sm" data-remove-question="' + index + '" aria-label="Remove">' + TI.remove + '</button>' : '') +
     '</div>' +
     '<input type="text" class="input" data-quiz-text="' + index + '" placeholder="' +
       t('teacher.questionText') + '" value="' + escapeHtml(q.text) + '">' +
