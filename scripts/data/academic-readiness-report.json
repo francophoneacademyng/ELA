@@ -1,0 +1,946 @@
+{
+  "timestamp": "2026-09-24T13:29:30.157Z",
+  "project": "ela-academy-7f868",
+  "academies": {
+    "FR": {
+      "courses": 8,
+      "reachableLessons": 95,
+      "lessonNodes": 95,
+      "script": {
+        "checked": 72,
+        "ok": 72,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "n": 0,
+        "checked": 0
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "B2": {
+          "lessons": 6,
+          "generated": 0,
+          "source": 6,
+          "quizCoverage": 1
+        },
+        "B1": {
+          "lessons": 8,
+          "generated": 0,
+          "source": 8,
+          "quizCoverage": 1
+        },
+        "A2": {
+          "lessons": 4,
+          "generated": 0,
+          "source": 4,
+          "quizCoverage": 1
+        },
+        "C1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "A1": {
+          "lessons": 5,
+          "generated": 0,
+          "source": 5,
+          "quizCoverage": 1
+        }
+      }
+    },
+    "DE": {
+      "courses": 6,
+      "reachableLessons": 190,
+      "lessonNodes": 190,
+      "script": {
+        "checked": 180,
+        "ok": 180,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "checked": 180,
+        "found": 0,
+        "samples": []
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "A2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "A1": {
+          "lessons": 10,
+          "generated": 0,
+          "source": 10,
+          "quizCoverage": 5
+        }
+      }
+    },
+    "ZH": {
+      "courses": 6,
+      "reachableLessons": 190,
+      "lessonNodes": 190,
+      "script": {
+        "checked": 180,
+        "ok": 180,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "checked": 180,
+        "found": 0,
+        "samples": []
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "HSK2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "HSK3": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "HSK4": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "HSK5": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "HSK6": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "HSK1": {
+          "lessons": 10,
+          "generated": 0,
+          "source": 10,
+          "quizCoverage": 5
+        }
+      }
+    },
+    "EN": {
+      "courses": 6,
+      "reachableLessons": 190,
+      "lessonNodes": 190,
+      "script": {
+        "checked": 180,
+        "ok": 180,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "checked": 180,
+        "found": 0,
+        "samples": []
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "A2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "A1": {
+          "lessons": 10,
+          "generated": 0,
+          "source": 10,
+          "quizCoverage": 5
+        }
+      }
+    },
+    "AR": {
+      "courses": 6,
+      "reachableLessons": 190,
+      "lessonNodes": 190,
+      "script": {
+        "checked": 180,
+        "ok": 180,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "checked": 180,
+        "found": 0,
+        "samples": []
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "A2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "A1": {
+          "lessons": 10,
+          "generated": 0,
+          "source": 10,
+          "quizCoverage": 5
+        },
+        "B1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        }
+      }
+    },
+    "RU": {
+      "courses": 6,
+      "reachableLessons": 190,
+      "lessonNodes": 190,
+      "script": {
+        "checked": 180,
+        "ok": 180,
+        "fail": 0,
+        "samples": []
+      },
+      "frenchLeak": {
+        "checked": 180,
+        "found": 0,
+        "samples": []
+      },
+      "duplicates": {
+        "exampleDups": 0,
+        "objectiveDups": 0,
+        "distinctExamples": 0
+      },
+      "bodyQuality": {
+        "emptyContent": 0,
+        "noVocab": 0,
+        "noExercises": 0
+      },
+      "levels": {
+        "A2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "B2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C1": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "C2": {
+          "lessons": 36,
+          "generated": 36,
+          "source": 0,
+          "quizCoverage": 1
+        },
+        "A1": {
+          "lessons": 10,
+          "generated": 0,
+          "source": 10,
+          "quizCoverage": 5
+        }
+      }
+    }
+  },
+  "summary": {
+    "academies": 6,
+    "reachableLessons": 1045,
+    "lessons": 1117,
+    "courses": 38,
+    "quizzes": 88,
+    "programmes": 36,
+    "nodes": 1715,
+    "outcomes": 375,
+    "competencies": 10,
+    "blueprints": 36,
+    "legacyLessons": 72,
+    "programmesTechReady": 36,
+    "programmesTotal": 36
+  },
+  "programmeReadiness": [
+    {
+      "programmeId": "prog_AR_A1",
+      "academyCode": "AR",
+      "level": "A1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 10,
+      "generated": 0,
+      "nodes": 11,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_AR_A2",
+      "academyCode": "AR",
+      "level": "A2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_AR_B1",
+      "academyCode": "AR",
+      "level": "B1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_AR_B2",
+      "academyCode": "AR",
+      "level": "B2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_AR_C1",
+      "academyCode": "AR",
+      "level": "C1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_AR_C2",
+      "academyCode": "AR",
+      "level": "C2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_A1",
+      "academyCode": "DE",
+      "level": "A1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 10,
+      "generated": 0,
+      "nodes": 11,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_A2",
+      "academyCode": "DE",
+      "level": "A2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_B1",
+      "academyCode": "DE",
+      "level": "B1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_B2",
+      "academyCode": "DE",
+      "level": "B2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_C1",
+      "academyCode": "DE",
+      "level": "C1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_DE_C2",
+      "academyCode": "DE",
+      "level": "C2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_A1",
+      "academyCode": "EN",
+      "level": "A1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 10,
+      "generated": 0,
+      "nodes": 11,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_A2",
+      "academyCode": "EN",
+      "level": "A2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_B1",
+      "academyCode": "EN",
+      "level": "B1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_B2",
+      "academyCode": "EN",
+      "level": "B2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_C1",
+      "academyCode": "EN",
+      "level": "C1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_EN_C2",
+      "academyCode": "EN",
+      "level": "C2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_A1",
+      "academyCode": "FR",
+      "level": "A1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 5,
+      "generated": 0,
+      "nodes": 17,
+      "outcomes": 45,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_A2",
+      "academyCode": "FR",
+      "level": "A2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 4,
+      "generated": 0,
+      "nodes": 5,
+      "outcomes": 12,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_B1",
+      "academyCode": "FR",
+      "level": "B1",
+      "status": "DRAFT",
+      "courses": 2,
+      "lessons": 8,
+      "generated": 0,
+      "nodes": 10,
+      "outcomes": 15,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_B2",
+      "academyCode": "FR",
+      "level": "B2",
+      "status": "DRAFT",
+      "courses": 2,
+      "lessons": 6,
+      "generated": 0,
+      "nodes": 8,
+      "outcomes": 15,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_C1",
+      "academyCode": "FR",
+      "level": "C1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_FR_C2",
+      "academyCode": "FR",
+      "level": "C2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_A1",
+      "academyCode": "RU",
+      "level": "A1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 10,
+      "generated": 0,
+      "nodes": 11,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_A2",
+      "academyCode": "RU",
+      "level": "A2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_B1",
+      "academyCode": "RU",
+      "level": "B1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_B2",
+      "academyCode": "RU",
+      "level": "B2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_C1",
+      "academyCode": "RU",
+      "level": "C1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_RU_C2",
+      "academyCode": "RU",
+      "level": "C2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK1",
+      "academyCode": "ZH",
+      "level": "HSK1",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 10,
+      "generated": 0,
+      "nodes": 11,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK2",
+      "academyCode": "ZH",
+      "level": "HSK2",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK3",
+      "academyCode": "ZH",
+      "level": "HSK3",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK4",
+      "academyCode": "ZH",
+      "level": "HSK4",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK5",
+      "academyCode": "ZH",
+      "level": "HSK5",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    },
+    {
+      "programmeId": "prog_ZH_HSK6",
+      "academyCode": "ZH",
+      "level": "HSK6",
+      "status": "DRAFT",
+      "courses": 1,
+      "lessons": 36,
+      "generated": 36,
+      "nodes": 60,
+      "outcomes": 9,
+      "hasQuiz": true,
+      "hasBlueprint": true,
+      "techPrerequisitesMet": true,
+      "issues": []
+    }
+  ]
+}

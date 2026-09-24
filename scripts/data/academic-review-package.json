@@ -1,0 +1,1677 @@
+{
+  "generatedAt": "2026-09-24T13:29:30.349Z",
+  "purpose": "Academic review package — enables a qualified human reviewer to assess content efficiently. Automated validation only; NO human approval claimed.",
+  "academies": {
+    "AR": {
+      "levels": [
+        {
+          "level": "A1",
+          "programmeId": "prog_AR_A1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 10,
+          "learningOutcomes": [
+            "AR-A1-LO-01",
+            "AR-A1-LO-02",
+            "AR-A1-LO-03",
+            "AR-A1-LO-04",
+            "AR-A1-LO-05",
+            "AR-A1-LO-06",
+            "AR-A1-LO-07",
+            "AR-A1-LO-08",
+            "AR-A1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-A1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at A1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "A2",
+          "programmeId": "prog_AR_A2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "AR-A2-LO-01",
+            "AR-A2-LO-02",
+            "AR-A2-LO-03",
+            "AR-A2-LO-04",
+            "AR-A2-LO-05",
+            "AR-A2-LO-06",
+            "AR-A2-LO-07",
+            "AR-A2-LO-08",
+            "AR-A2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-A2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at A2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B1",
+          "programmeId": "prog_AR_B1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "AR-B1-LO-01",
+            "AR-B1-LO-02",
+            "AR-B1-LO-03",
+            "AR-B1-LO-04",
+            "AR-B1-LO-05",
+            "AR-B1-LO-06",
+            "AR-B1-LO-07",
+            "AR-B1-LO-08",
+            "AR-B1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-B1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at B1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B2",
+          "programmeId": "prog_AR_B2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "AR-B2-LO-01",
+            "AR-B2-LO-02",
+            "AR-B2-LO-03",
+            "AR-B2-LO-04",
+            "AR-B2-LO-05",
+            "AR-B2-LO-06",
+            "AR-B2-LO-07",
+            "AR-B2-LO-08",
+            "AR-B2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-B2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at B2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "C1",
+          "programmeId": "prog_AR_C1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "AR-C1-LO-01",
+            "AR-C1-LO-02",
+            "AR-C1-LO-03",
+            "AR-C1-LO-04",
+            "AR-C1-LO-05",
+            "AR-C1-LO-06",
+            "AR-C1-LO-07",
+            "AR-C1-LO-08",
+            "AR-C1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-C1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at C1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "C2",
+          "programmeId": "prog_AR_C2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "AR-C2-LO-01",
+            "AR-C2-LO-02",
+            "AR-C2-LO-03",
+            "AR-C2-LO-04",
+            "AR-C2-LO-05",
+            "AR-C2-LO-06",
+            "AR-C2-LO-07",
+            "AR-C2-LO-08",
+            "AR-C2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-AR-C2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Arabic spelling, grammar and register at C2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    },
+    "DE": {
+      "levels": [
+        {
+          "level": "A1",
+          "programmeId": "prog_DE_A1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 10,
+          "learningOutcomes": [
+            "DE-A1-LO-01",
+            "DE-A1-LO-02",
+            "DE-A1-LO-03",
+            "DE-A1-LO-04",
+            "DE-A1-LO-05",
+            "DE-A1-LO-06",
+            "DE-A1-LO-07",
+            "DE-A1-LO-08",
+            "DE-A1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-A1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at A1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "A2",
+          "programmeId": "prog_DE_A2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "DE-A2-LO-01",
+            "DE-A2-LO-02",
+            "DE-A2-LO-03",
+            "DE-A2-LO-04",
+            "DE-A2-LO-05",
+            "DE-A2-LO-06",
+            "DE-A2-LO-07",
+            "DE-A2-LO-08",
+            "DE-A2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-A2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at A2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B1",
+          "programmeId": "prog_DE_B1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "DE-B1-LO-01",
+            "DE-B1-LO-02",
+            "DE-B1-LO-03",
+            "DE-B1-LO-04",
+            "DE-B1-LO-05",
+            "DE-B1-LO-06",
+            "DE-B1-LO-07",
+            "DE-B1-LO-08",
+            "DE-B1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-B1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at B1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B2",
+          "programmeId": "prog_DE_B2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "DE-B2-LO-01",
+            "DE-B2-LO-02",
+            "DE-B2-LO-03",
+            "DE-B2-LO-04",
+            "DE-B2-LO-05",
+            "DE-B2-LO-06",
+            "DE-B2-LO-07",
+            "DE-B2-LO-08",
+            "DE-B2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-B2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at B2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "C1",
+          "programmeId": "prog_DE_C1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "DE-C1-LO-01",
+            "DE-C1-LO-02",
+            "DE-C1-LO-03",
+            "DE-C1-LO-04",
+            "DE-C1-LO-05",
+            "DE-C1-LO-06",
+            "DE-C1-LO-07",
+            "DE-C1-LO-08",
+            "DE-C1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-C1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at C1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "C2",
+          "programmeId": "prog_DE_C2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "DE-C2-LO-01",
+            "DE-C2-LO-02",
+            "DE-C2-LO-03",
+            "DE-C2-LO-04",
+            "DE-C2-LO-05",
+            "DE-C2-LO-06",
+            "DE-C2-LO-07",
+            "DE-C2-LO-08",
+            "DE-C2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-DE-C2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify German spelling, grammar and register at C2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    },
+    "EN": {
+      "levels": [
+        {
+          "level": "A1",
+          "programmeId": "prog_EN_A1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 10,
+          "learningOutcomes": [
+            "EN-A1-LO-01",
+            "EN-A1-LO-02",
+            "EN-A1-LO-03",
+            "EN-A1-LO-04",
+            "EN-A1-LO-05",
+            "EN-A1-LO-06",
+            "EN-A1-LO-07",
+            "EN-A1-LO-08",
+            "EN-A1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-A1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at A1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "A2",
+          "programmeId": "prog_EN_A2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "EN-A2-LO-01",
+            "EN-A2-LO-02",
+            "EN-A2-LO-03",
+            "EN-A2-LO-04",
+            "EN-A2-LO-05",
+            "EN-A2-LO-06",
+            "EN-A2-LO-07",
+            "EN-A2-LO-08",
+            "EN-A2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-A2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at A2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B1",
+          "programmeId": "prog_EN_B1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "EN-B1-LO-01",
+            "EN-B1-LO-02",
+            "EN-B1-LO-03",
+            "EN-B1-LO-04",
+            "EN-B1-LO-05",
+            "EN-B1-LO-06",
+            "EN-B1-LO-07",
+            "EN-B1-LO-08",
+            "EN-B1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-B1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at B1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B2",
+          "programmeId": "prog_EN_B2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "EN-B2-LO-01",
+            "EN-B2-LO-02",
+            "EN-B2-LO-03",
+            "EN-B2-LO-04",
+            "EN-B2-LO-05",
+            "EN-B2-LO-06",
+            "EN-B2-LO-07",
+            "EN-B2-LO-08",
+            "EN-B2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-B2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at B2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "C1",
+          "programmeId": "prog_EN_C1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "EN-C1-LO-01",
+            "EN-C1-LO-02",
+            "EN-C1-LO-03",
+            "EN-C1-LO-04",
+            "EN-C1-LO-05",
+            "EN-C1-LO-06",
+            "EN-C1-LO-07",
+            "EN-C1-LO-08",
+            "EN-C1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-C1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at C1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "C2",
+          "programmeId": "prog_EN_C2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "EN-C2-LO-01",
+            "EN-C2-LO-02",
+            "EN-C2-LO-03",
+            "EN-C2-LO-04",
+            "EN-C2-LO-05",
+            "EN-C2-LO-06",
+            "EN-C2-LO-07",
+            "EN-C2-LO-08",
+            "EN-C2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-EN-C2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify English spelling, grammar and register at C2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    },
+    "FR": {
+      "levels": [
+        {
+          "level": "A1",
+          "programmeId": "prog_FR_A1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 5,
+          "learningOutcomes": [
+            "FR-A1-LO-01",
+            "FR-A1-LO-02",
+            "FR-A1-LO-03",
+            "FR-A1-LO-04",
+            "FR-A1-LO-05",
+            "FR-A1-LO-06",
+            "FR-A1-LO-07",
+            "FR-A1-LO-08",
+            "FR-A1-LO-09",
+            "prog_FR_A1-M01-LO-1",
+            "prog_FR_A1-M01-LO-2",
+            "prog_FR_A1-M01-LO-3",
+            "prog_FR_A1-M02-LO-1",
+            "prog_FR_A1-M02-LO-2",
+            "prog_FR_A1-M02-LO-3",
+            "prog_FR_A1-M03-LO-1",
+            "prog_FR_A1-M03-LO-2",
+            "prog_FR_A1-M03-LO-3",
+            "prog_FR_A1-M04-LO-1",
+            "prog_FR_A1-M04-LO-2",
+            "prog_FR_A1-M04-LO-3",
+            "prog_FR_A1-M05-LO-1",
+            "prog_FR_A1-M05-LO-2",
+            "prog_FR_A1-M05-LO-3",
+            "prog_FR_A1-M06-LO-1",
+            "prog_FR_A1-M06-LO-2",
+            "prog_FR_A1-M06-LO-3",
+            "prog_FR_A1-M07-LO-1",
+            "prog_FR_A1-M07-LO-2",
+            "prog_FR_A1-M07-LO-3",
+            "prog_FR_A1-M08-LO-1",
+            "prog_FR_A1-M08-LO-2",
+            "prog_FR_A1-M08-LO-3",
+            "prog_FR_A1-M09-LO-1",
+            "prog_FR_A1-M09-LO-2",
+            "prog_FR_A1-M09-LO-3",
+            "prog_FR_A1-M10-LO-1",
+            "prog_FR_A1-M10-LO-2",
+            "prog_FR_A1-M10-LO-3",
+            "prog_FR_A1-M11-LO-1",
+            "prog_FR_A1-M11-LO-2",
+            "prog_FR_A1-M11-LO-3",
+            "prog_FR_A1-M12-LO-1",
+            "prog_FR_A1-M12-LO-2",
+            "prog_FR_A1-M12-LO-3"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-A1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at A1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "A2",
+          "programmeId": "prog_FR_A2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 4,
+          "learningOutcomes": [
+            "FR-A2-LO-01",
+            "FR-A2-LO-02",
+            "FR-A2-LO-03",
+            "FR-A2-LO-04",
+            "FR-A2-LO-05",
+            "FR-A2-LO-06",
+            "FR-A2-LO-07",
+            "FR-A2-LO-08",
+            "FR-A2-LO-09",
+            "prog_FR_A2-M01-LO-1",
+            "prog_FR_A2-M01-LO-2",
+            "prog_FR_A2-M01-LO-3"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-A2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at A2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B1",
+          "programmeId": "prog_FR_B1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 8,
+          "learningOutcomes": [
+            "FR-B1-LO-01",
+            "FR-B1-LO-02",
+            "FR-B1-LO-03",
+            "FR-B1-LO-04",
+            "FR-B1-LO-05",
+            "FR-B1-LO-06",
+            "FR-B1-LO-07",
+            "FR-B1-LO-08",
+            "FR-B1-LO-09",
+            "prog_FR_B1-M01-LO-1",
+            "prog_FR_B1-M01-LO-2",
+            "prog_FR_B1-M01-LO-3",
+            "prog_FR_B1-M02-LO-1",
+            "prog_FR_B1-M02-LO-2",
+            "prog_FR_B1-M02-LO-3"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-B1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at B1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B2",
+          "programmeId": "prog_FR_B2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 6,
+          "learningOutcomes": [
+            "FR-B2-LO-01",
+            "FR-B2-LO-02",
+            "FR-B2-LO-03",
+            "FR-B2-LO-04",
+            "FR-B2-LO-05",
+            "FR-B2-LO-06",
+            "FR-B2-LO-07",
+            "FR-B2-LO-08",
+            "FR-B2-LO-09",
+            "prog_FR_B2-M01-LO-1",
+            "prog_FR_B2-M01-LO-2",
+            "prog_FR_B2-M01-LO-3",
+            "prog_FR_B2-M02-LO-1",
+            "prog_FR_B2-M02-LO-2",
+            "prog_FR_B2-M02-LO-3"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-B2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at B2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "C1",
+          "programmeId": "prog_FR_C1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "FR-C1-LO-01",
+            "FR-C1-LO-02",
+            "FR-C1-LO-03",
+            "FR-C1-LO-04",
+            "FR-C1-LO-05",
+            "FR-C1-LO-06",
+            "FR-C1-LO-07",
+            "FR-C1-LO-08",
+            "FR-C1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-C1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at C1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "C2",
+          "programmeId": "prog_FR_C2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "FR-C2-LO-01",
+            "FR-C2-LO-02",
+            "FR-C2-LO-03",
+            "FR-C2-LO-04",
+            "FR-C2-LO-05",
+            "FR-C2-LO-06",
+            "FR-C2-LO-07",
+            "FR-C2-LO-08",
+            "FR-C2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-FR-C2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify French spelling, grammar and register at C2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    },
+    "RU": {
+      "levels": [
+        {
+          "level": "A1",
+          "programmeId": "prog_RU_A1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 10,
+          "learningOutcomes": [
+            "RU-A1-LO-01",
+            "RU-A1-LO-02",
+            "RU-A1-LO-03",
+            "RU-A1-LO-04",
+            "RU-A1-LO-05",
+            "RU-A1-LO-06",
+            "RU-A1-LO-07",
+            "RU-A1-LO-08",
+            "RU-A1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-A1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at A1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "A2",
+          "programmeId": "prog_RU_A2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "RU-A2-LO-01",
+            "RU-A2-LO-02",
+            "RU-A2-LO-03",
+            "RU-A2-LO-04",
+            "RU-A2-LO-05",
+            "RU-A2-LO-06",
+            "RU-A2-LO-07",
+            "RU-A2-LO-08",
+            "RU-A2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-A2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at A2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B1",
+          "programmeId": "prog_RU_B1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "RU-B1-LO-01",
+            "RU-B1-LO-02",
+            "RU-B1-LO-03",
+            "RU-B1-LO-04",
+            "RU-B1-LO-05",
+            "RU-B1-LO-06",
+            "RU-B1-LO-07",
+            "RU-B1-LO-08",
+            "RU-B1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-B1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at B1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "B2",
+          "programmeId": "prog_RU_B2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "RU-B2-LO-01",
+            "RU-B2-LO-02",
+            "RU-B2-LO-03",
+            "RU-B2-LO-04",
+            "RU-B2-LO-05",
+            "RU-B2-LO-06",
+            "RU-B2-LO-07",
+            "RU-B2-LO-08",
+            "RU-B2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-B2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at B2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "C1",
+          "programmeId": "prog_RU_C1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "RU-C1-LO-01",
+            "RU-C1-LO-02",
+            "RU-C1-LO-03",
+            "RU-C1-LO-04",
+            "RU-C1-LO-05",
+            "RU-C1-LO-06",
+            "RU-C1-LO-07",
+            "RU-C1-LO-08",
+            "RU-C1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-C1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at C1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "C2",
+          "programmeId": "prog_RU_C2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "RU-C2-LO-01",
+            "RU-C2-LO-02",
+            "RU-C2-LO-03",
+            "RU-C2-LO-04",
+            "RU-C2-LO-05",
+            "RU-C2-LO-06",
+            "RU-C2-LO-07",
+            "RU-C2-LO-08",
+            "RU-C2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-RU-C2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Russian spelling, grammar and register at C2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    },
+    "ZH": {
+      "levels": [
+        {
+          "level": "HSK1",
+          "programmeId": "prog_ZH_HSK1",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 10,
+          "learningOutcomes": [
+            "ZH-HSK1-LO-01",
+            "ZH-HSK1-LO-02",
+            "ZH-HSK1-LO-03",
+            "ZH-HSK1-LO-04",
+            "ZH-HSK1-LO-05",
+            "ZH-HSK1-LO-06",
+            "ZH-HSK1-LO-07",
+            "ZH-HSK1-LO-08",
+            "ZH-HSK1-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK1"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK1.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "HSK2",
+          "programmeId": "prog_ZH_HSK2",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "ZH-HSK2-LO-01",
+            "ZH-HSK2-LO-02",
+            "ZH-HSK2-LO-03",
+            "ZH-HSK2-LO-04",
+            "ZH-HSK2-LO-05",
+            "ZH-HSK2-LO-06",
+            "ZH-HSK2-LO-07",
+            "ZH-HSK2-LO-08",
+            "ZH-HSK2-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK2"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK2.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "HSK3",
+          "programmeId": "prog_ZH_HSK3",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "ZH-HSK3-LO-01",
+            "ZH-HSK3-LO-02",
+            "ZH-HSK3-LO-03",
+            "ZH-HSK3-LO-04",
+            "ZH-HSK3-LO-05",
+            "ZH-HSK3-LO-06",
+            "ZH-HSK3-LO-07",
+            "ZH-HSK3-LO-08",
+            "ZH-HSK3-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK3"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK3.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "HSK4",
+          "programmeId": "prog_ZH_HSK4",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "READY_FOR_ACADEMIC_REVIEW",
+          "lessons": 36,
+          "learningOutcomes": [
+            "ZH-HSK4-LO-01",
+            "ZH-HSK4-LO-02",
+            "ZH-HSK4-LO-03",
+            "ZH-HSK4-LO-04",
+            "ZH-HSK4-LO-05",
+            "ZH-HSK4-LO-06",
+            "ZH-HSK4-LO-07",
+            "ZH-HSK4-LO-08",
+            "ZH-HSK4-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK4"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK4.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives."
+          ]
+        },
+        {
+          "level": "HSK5",
+          "programmeId": "prog_ZH_HSK5",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "ZH-HSK5-LO-01",
+            "ZH-HSK5-LO-02",
+            "ZH-HSK5-LO-03",
+            "ZH-HSK5-LO-04",
+            "ZH-HSK5-LO-05",
+            "ZH-HSK5-LO-06",
+            "ZH-HSK5-LO-07",
+            "ZH-HSK5-LO-08",
+            "ZH-HSK5-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK5"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK5.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        },
+        {
+          "level": "HSK6",
+          "programmeId": "prog_ZH_HSK6",
+          "status": "DRAFT",
+          "contentState": "DRAFT",
+          "reviewStatus": "REVIEW_REQUIRED",
+          "lessons": 36,
+          "learningOutcomes": [
+            "ZH-HSK6-LO-01",
+            "ZH-HSK6-LO-02",
+            "ZH-HSK6-LO-03",
+            "ZH-HSK6-LO-04",
+            "ZH-HSK6-LO-05",
+            "ZH-HSK6-LO-06",
+            "ZH-HSK6-LO-07",
+            "ZH-HSK6-LO-08",
+            "ZH-HSK6-LO-09"
+          ],
+          "competencies": [
+            "C-GRA",
+            "C-ICU",
+            "C-INT",
+            "C-LIS",
+            "C-MED",
+            "C-PRO",
+            "C-REA",
+            "C-SPE",
+            "C-VOC",
+            "C-WRI"
+          ],
+          "assessmentBlueprint": [
+            "AB-ZH-HSK6"
+          ],
+          "hasLevelQuiz": true,
+          "techPrerequisitesMet": true,
+          "issues": [],
+          "humanReviewChecklist": [
+            "Verify Mandarin spelling, grammar and register at HSK6.",
+            "Confirm vocabulary is level-appropriate (no A1 recycling).",
+            "Check example sentences for naturalness and correctness.",
+            "Validate dialogue authenticity and cultural context.",
+            "Confirm exercises align with the stated learning objectives.",
+            "Specialist review of advanced/idiomatic content (C1/C2 or HSK5/6)."
+          ]
+        }
+      ]
+    }
+  }
+}
