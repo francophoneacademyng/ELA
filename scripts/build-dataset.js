@@ -24,7 +24,7 @@ function main() {
     if (a.code === 'FR') {
       const v7 = readJson(path.join(DATA, 'v7-french.json'));
       dataset.courses.push(...v7.courses);
-      dataset.lessons.push(...v7.lessons);
+      dataset.lessons.push(...v7.lessons.map((l) => Object.assign({}, l, { status: l.status === 'published' ? 'approved' : l.status })));
       dataset.quizzes.push(...v7.quizzes);
       dataset.meta.academies.push({ code: a.code, key: a.key, courses: v7.courses.length, lessons: v7.lessons.length, quizzes: v7.quizzes.length, source: 'V7 SOURCE_DERIVED' });
     } else {

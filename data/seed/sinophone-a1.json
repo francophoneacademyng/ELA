@@ -6,35 +6,35 @@
     {
       "id": "ZH-A1-L01",
       "order": 1,
-      "title": "Le pinyin et les tons",
+      "title": "Pinyin and tones",
       "titleTargetLang": "拼音和声调 (Pīnyīn hé shēngdiào)",
-      "objective": "Lire le pinyin, identifier les quatre tons et prononcer les syllabes de base.",
+      "objective": "Read pinyin, identify the four tones and pronounce basic syllables.",
       "content": [
-        { "heading": "Qu'est-ce que le pinyin ?", "text": "Le pinyin est la transcription en alphabet latin de la prononciation du chinois. Chaque syllabe associe une consonne initiale et une voyelle finale, par exemple « ma », « ni », « hao ». C'est l'outil indispensable pour débuter." },
-        { "heading": "Les quatre tons", "text": "Le chinois est une langue tonale : le sens change selon le ton. Le premier ton est haut et plat (mā), le deuxième monte (má), le troisième descend puis monte (mǎ), le quatrième descend brusquement (mà). Exemple : « mā » (maman), « mà » (gronder)." },
-        { "heading": "Pratiquer les tons", "text": "Pour mémoriser, on répète chaque syllabe avec son ton en écoutant des modèles audio. La combinaison « nǐ hǎo » (bonjour) illustre deux troisièmes tons : le premier se prononce alors au deuxième ton (ní hǎo)." }
+        { "heading": "What is pinyin?", "text": "Pinyin is the Latin-alphabet transcription of Chinese pronunciation. Each syllable combines an initial consonant and a final vowel, for example « ma », « ni », « hao ». It is the essential tool for beginners." },
+        { "heading": "The four tones", "text": "Chinese is a tonal language: the meaning changes with the tone. The first tone is high and flat (mā), the second rises (má), the third falls then rises (mǎ), the fourth falls sharply (mà). Example: « mā » (mother), « mà » (to scold)." },
+        { "heading": "Practising the tones", "text": "To memorise, repeat each syllable with its tone while listening to audio models. The combination « nǐ hǎo » (hello) shows two third tones: the first is then pronounced in the second tone (ní hǎo)." }
       ],
       "vocabulary": [
-        { "word": "nǐ hǎo", "translation": "bonjour" },
-        { "word": "wǒ", "translation": "je / moi" },
-        { "word": "mā", "translation": "maman" },
-        { "word": "bàba", "translation": "papa" },
-        { "word": "yī", "translation": "un" },
-        { "word": "èr", "translation": "deux" },
-        { "word": "sān", "translation": "trois" },
-        { "word": "dà", "translation": "grand" },
-        { "word": "xiǎo", "translation": "petit" },
-        { "word": "shì", "translation": "être (oui/être)" },
-        { "word": "bú shì", "translation": "ne pas être" },
-        { "word": "shēngdiào", "translation": "le ton" },
-        { "word": "pīnyīn", "translation": "le pinyin" },
-        { "word": "shuō", "translation": "parler / dire" },
-        { "word": "míngbái", "translation": "comprendre" }
+        { "word": "nǐ hǎo", "translation": "hello" },
+        { "word": "wǒ", "translation": "I / me" },
+        { "word": "mā", "translation": "mother" },
+        { "word": "bàba", "translation": "father" },
+        { "word": "yī", "translation": "one" },
+        { "word": "èr", "translation": "two" },
+        { "word": "sān", "translation": "three" },
+        { "word": "dà", "translation": "big" },
+        { "word": "xiǎo", "translation": "small" },
+        { "word": "shì", "translation": "to be (yes / be)" },
+        { "word": "bú shì", "translation": "not to be" },
+        { "word": "shēngdiào", "translation": "the tone" },
+        { "word": "pīnyīn", "translation": "pinyin" },
+        { "word": "shuō", "translation": "to speak / say" },
+        { "word": "míngbái", "translation": "to understand" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Combien de tons le mandarin compte-t-il ?", "options": ["2", "3", "4", "5"], "answer": "4" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « mā » (premier ton) ?", "options": ["gronder", "maman", "cheval", "chanvre"], "answer": "maman" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « bonjour » en chinois ?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "wǒ hěn hǎo"], "answer": "nǐ hǎo" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How many tones does Mandarin have?", "options": ["2", "3", "4", "5"], "answer": "4" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « mā » (first tone) mean?", "options": ["to scold", "mother", "horse", "hemp"], "answer": "mother" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"hello\" in Chinese?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "wǒ hěn hǎo"], "answer": "nǐ hǎo" }
       ],
       "audioScript": "A: Nǐ hǎo! Wǒ jiào Lǐ Míng. Nǐ jiào shénme?\nB: Wǒ jiào Wáng Lán. Nǐ hǎo!",
       "cecrLevel": "A1"
@@ -42,35 +42,35 @@
     {
       "id": "ZH-A1-L02",
       "order": 2,
-      "title": "Les salutations",
+      "title": "Greetings",
       "titleTargetLang": "问候 (Wènhòu)",
-      "objective": "Saluer, prendre congé et échanger les formules de politesse essentielles.",
+      "objective": "Greet, take leave and exchange essential polite formulas.",
       "content": [
-        { "heading": "Les salutations du jour", "text": "« Nǐ hǎo » (bonjour) est la salutation universelle. Le matin on dit « zǎo shang hǎo » (bonjour le matin), et le soir « wǎn shang hǎo » (bonsoir). On demande des nouvelles avec « Nǐ hǎo ma? » (comment vas-tu ?)." },
-        { "heading": "Prendre congé", "text": "Pour dire au revoir : « zài jiàn » (au revoir). Le soir on peut dire « wǎn ān » (bonne nuit). Pour remercier : « xiè xie » (merci) et répondre « bú kè qi » (de rien)." },
-        { "heading": "Le vouvoiement et les titres", "text": "Le chinois utilise des titres : « nín » (vous, forme respectueuse) et les titres de fonction comme « lǎoshī » (professeur) ou « xiānsheng » (monsieur). On ajoute souvent le titre après le nom : « Lǐ lǎoshī » (professeur Li)." }
+        { "heading": "Greetings through the day", "text": "« Nǐ hǎo » (hello) is the universal greeting. In the morning say « zǎo shang hǎo » (good morning), and in the evening « wǎn shang hǎo » (good evening). Ask how someone is with « Nǐ hǎo ma? » (how are you?)." },
+        { "heading": "Taking leave", "text": "To say goodbye: « zài jiàn » (goodbye). In the evening you can say « wǎn ān » (good night). To thank: « xiè xie » (thank you) and reply « bú kè qi » (you're welcome)." },
+        { "heading": "Respect and titles", "text": "Chinese uses titles: « nín » (you, respectful form) and function titles like « lǎoshī » (teacher) or « xiānsheng » (Mr). The title is often added after the name: « Lǐ lǎoshī » (Teacher Li)." }
       ],
       "vocabulary": [
-        { "word": "nǐ hǎo", "translation": "bonjour" },
-        { "word": "zǎo shang hǎo", "translation": "bonjour (le matin)" },
-        { "word": "wǎn shang hǎo", "translation": "bonsoir" },
-        { "word": "nǐ hǎo ma?", "translation": "comment vas-tu ?" },
-        { "word": "wǒ hěn hǎo", "translation": "je vais très bien" },
-        { "word": "zài jiàn", "translation": "au revoir" },
-        { "word": "wǎn ān", "translation": "bonne nuit" },
-        { "word": "xiè xie", "translation": "merci" },
-        { "word": "bú kè qi", "translation": "de rien" },
-        { "word": "duì bu qǐ", "translation": "pardon / excusez-moi" },
-        { "word": "méi guān xi", "translation": "ce n'est pas grave" },
-        { "word": "nín", "translation": "vous (respectueux)" },
-        { "word": "lǎoshī", "translation": "professeur" },
-        { "word": "xiānsheng", "translation": "monsieur" },
-        { "word": "nǚshì", "translation": "madame" }
+        { "word": "nǐ hǎo", "translation": "hello" },
+        { "word": "zǎo shang hǎo", "translation": "good morning" },
+        { "word": "wǎn shang hǎo", "translation": "good evening" },
+        { "word": "nǐ hǎo ma?", "translation": "how are you?" },
+        { "word": "wǒ hěn hǎo", "translation": "I am very well" },
+        { "word": "zài jiàn", "translation": "goodbye" },
+        { "word": "wǎn ān", "translation": "good night" },
+        { "word": "xiè xie", "translation": "thank you" },
+        { "word": "bú kè qi", "translation": "you're welcome" },
+        { "word": "duì bu qǐ", "translation": "sorry / excuse me" },
+        { "word": "méi guān xi", "translation": "it doesn't matter" },
+        { "word": "nín", "translation": "you (respectful)" },
+        { "word": "lǎoshī", "translation": "teacher" },
+        { "word": "xiānsheng", "translation": "Mr" },
+        { "word": "nǚshì", "translation": "Ms / Mrs" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « merci » en chinois ?", "options": ["zài jiàn", "xiè xie", "nǐ hǎo", "bú kè qi"], "answer": "xiè xie" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment répond-on « de rien » ?", "options": ["bú kè qi", "duì bu qǐ", "méi wèn tí", "nǐ hǎo ma"], "answer": "bú kè qi" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « au revoir » ?", "options": ["zǎo an", "zài jiàn", "wǎn ān", "nǐ hǎo"], "answer": "zài jiàn" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"thank you\" in Chinese?", "options": ["zài jiàn", "xiè xie", "nǐ hǎo", "bú kè qi"], "answer": "xiè xie" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you answer \"you're welcome\"?", "options": ["bú kè qi", "duì bu qǐ", "méi wèn tí", "nǐ hǎo ma"], "answer": "bú kè qi" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"goodbye\"?", "options": ["zǎo an", "zài jiàn", "wǎn ān", "nǐ hǎo"], "answer": "zài jiàn" }
       ],
       "audioScript": "A: Zǎo shang hǎo, Lǐ lǎoshī!\nB: Zǎo shang hǎo! Nǐ hǎo ma?\nA: Wǒ hěn hǎo, xiè xie. Nín ne?\nB: Wǒ yě hěn hǎo. Zài jiàn!",
       "cecrLevel": "A1"
@@ -78,35 +78,35 @@
     {
       "id": "ZH-A1-L03",
       "order": 3,
-      "title": "Les nombres",
+      "title": "Numbers",
       "titleTargetLang": "数字 (Shùzì)",
-      "objective": "Compter de 0 à 100 et donner son numéro de téléphone en chinois.",
+      "objective": "Count from 0 to 100 and give your phone number in Chinese.",
       "content": [
-        { "heading": "Les nombres de base", "text": "Les chiffres de base : líng (0), yī (1), èr (2), sān (3), sì (4), wǔ (5), liù (6), qī (7), bā (8), jiǔ (9), shí (10). La main chinoise se compte aussi d'une façon particulière avec une seule main." },
-        { "heading": "Les dizaines et nombres composés", "text": "Les dizaines se forment simplement : shí (10), èrshí (20), sānshí (30). Pour 11 à 19, on dit shí yī (11), shí èr (12), etc. Pour 21 : èrshí yī (21), c'est-à-dire deux-dix-un." },
-        { "heading": "Le téléphone", "text": "On lit un numéro de téléphone chiffre par chiffre, mais le « 1 » se dit souvent « yāo » pour éviter la confusion. Exemple : 138 s'énonce « yāo sān bā »." }
+        { "heading": "Basic numbers", "text": "The basic digits: líng (0), yī (1), èr (2), sān (3), sì (4), wǔ (5), liù (6), qī (7), bā (8), jiǔ (9), shí (10). Chinese counting can also be done in a particular way using one hand." },
+        { "heading": "Tens and compound numbers", "text": "The tens are formed simply: shí (10), èrshí (20), sānshí (30). For 11 to 19, say shí yī (11), shí èr (12), etc. For 21: èrshí yī (21), i.e. two-ten-one." },
+        { "heading": "The telephone", "text": "A phone number is read digit by digit, but « 1 » is often said « yāo » to avoid confusion. Example: 138 is said « yāo sān bā »." }
       ],
       "vocabulary": [
-        { "word": "líng", "translation": "zéro" },
-        { "word": "yī", "translation": "un" },
-        { "word": "èr", "translation": "deux" },
-        { "word": "sān", "translation": "trois" },
-        { "word": "sì", "translation": "quatre" },
-        { "word": "wǔ", "translation": "cinq" },
+        { "word": "líng", "translation": "zero" },
+        { "word": "yī", "translation": "one" },
+        { "word": "èr", "translation": "two" },
+        { "word": "sān", "translation": "three" },
+        { "word": "sì", "translation": "four" },
+        { "word": "wǔ", "translation": "five" },
         { "word": "liù", "translation": "six" },
-        { "word": "qī", "translation": "sept" },
-        { "word": "bā", "translation": "huit" },
-        { "word": "jiǔ", "translation": "neuf" },
-        { "word": "shí", "translation": "dix" },
-        { "word": "yāo", "translation": "un (au téléphone)" },
-        { "word": "diàn huà", "translation": "le téléphone" },
-        { "word": "hào mǎ", "translation": "le numéro" },
-        { "word": "duō shao", "translation": "combien" }
+        { "word": "qī", "translation": "seven" },
+        { "word": "bā", "translation": "eight" },
+        { "word": "jiǔ", "translation": "nine" },
+        { "word": "shí", "translation": "ten" },
+        { "word": "yāo", "translation": "one (on the phone)" },
+        { "word": "diàn huà", "translation": "the telephone" },
+        { "word": "hào mǎ", "translation": "the number" },
+        { "word": "duō shao", "translation": "how many / how much" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on 20 en chinois ?", "options": ["shí", "èrshí", "sānshí", "èr"], "answer": "èrshí" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on 13 ?", "options": ["shí sān", "sānshí", "yī sān", "shí èr"], "answer": "shí sān" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Quel chiffre se dit « bā » ?", "options": ["6", "7", "8", "9"], "answer": "8" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say 20 in Chinese?", "options": ["shí", "èrshí", "sānshí", "èr"], "answer": "èrshí" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say 13?", "options": ["shí sān", "sānshí", "yī sān", "shí èr"], "answer": "shí sān" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "Which digit is « bā »?", "options": ["6", "7", "8", "9"], "answer": "8" }
       ],
       "audioScript": "A: Nǐ de diàn huà hào mǎ shì duō shao?\nB: Shì yāo sān bā, sì wǔ liù, qī bā jiǔ. Nǐ de ne?\nA: Wǒ de shì shí èr sān sì wǔ liù.",
       "cecrLevel": "A1"
@@ -114,35 +114,35 @@
     {
       "id": "ZH-A1-L04",
       "order": 4,
-      "title": "La famille",
+      "title": "The family",
       "titleTargetLang": "家庭 (Jiātíng)",
-      "objective": "Présenter sa famille et exprimer la possession avec « de ».",
+      "objective": "Introduce your family and express possession with « de ».",
       "content": [
-        { "heading": "Les membres de la famille", "text": "Les termes de famille sont très précis : bàba (papa), māma (maman), gēge (grand frère), dìdi (petit frère), jiějie (grande sœur), mèimei (petite sœur). « Jiātíng » signifie la famille." },
-        { "heading": "La famille élargie", "text": "La famille élargie distingue les côtés : yéye (grand-père paternel), nǎi nai (grand-mère paternelle), wàigōng (grand-père maternel), wàipó (grand-mère maternelle). « Wǒ jiā yǒu … » signifie « dans ma famille il y a … »." },
-        { "heading": "Exprimer la possession", "text": "La particule « de » relie le possesseur et l'objet : wǒ de māma (ma maman), nǐ de gēge (ton grand frère). Pour demander « à qui ? » on dit « shéi de ? »." }
+        { "heading": "Family members", "text": "Family terms are very precise: bàba (father), māma (mother), gēge (older brother), dìdi (younger brother), jiějie (older sister), mèimei (younger sister). « Jiātíng » means the family." },
+        { "heading": "The extended family", "text": "The extended family distinguishes sides: yéye (paternal grandfather), nǎi nai (paternal grandmother), wàigōng (maternal grandfather), wàipó (maternal grandmother). « Wǒ jiā yǒu … » means \"in my family there is …\"." },
+        { "heading": "Expressing possession", "text": "The particle « de » links the possessor and the object: wǒ de māma (my mother), nǐ de gēge (your older brother). To ask \"whose?\" say « shéi de? »." }
       ],
       "vocabulary": [
-        { "word": "bàba", "translation": "papa" },
-        { "word": "māma", "translation": "maman" },
-        { "word": "gēge", "translation": "grand frère" },
-        { "word": "dìdi", "translation": "petit frère" },
-        { "word": "jiějie", "translation": "grande sœur" },
-        { "word": "mèimei", "translation": "petite sœur" },
-        { "word": "yéye", "translation": "grand-père paternel" },
-        { "word": "nǎi nai", "translation": "grand-mère paternelle" },
-        { "word": "jiā", "translation": "la maison / la famille" },
-        { "word": "jiātíng", "translation": "la famille" },
-        { "word": "wǒ de", "translation": "mon / ma" },
-        { "word": "nǐ de", "translation": "ton / ta" },
-        { "word": "yǒu", "translation": "avoir" },
-        { "word": "méi yǒu", "translation": "ne pas avoir" },
-        { "word": "shéi", "translation": "qui" }
+        { "word": "bàba", "translation": "father" },
+        { "word": "māma", "translation": "mother" },
+        { "word": "gēge", "translation": "older brother" },
+        { "word": "dìdi", "translation": "younger brother" },
+        { "word": "jiějie", "translation": "older sister" },
+        { "word": "mèimei", "translation": "younger sister" },
+        { "word": "yéye", "translation": "paternal grandfather" },
+        { "word": "nǎi nai", "translation": "paternal grandmother" },
+        { "word": "jiā", "translation": "the home / the family" },
+        { "word": "jiātíng", "translation": "the family" },
+        { "word": "wǒ de", "translation": "my" },
+        { "word": "nǐ de", "translation": "your" },
+        { "word": "yǒu", "translation": "to have" },
+        { "word": "méi yǒu", "translation": "not to have" },
+        { "word": "shéi", "translation": "who" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « maman » en chinois ?", "options": ["bàba", "māma", "jiějie", "gēge"], "answer": "māma" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « mon grand frère » ?", "options": ["wǒ de dìdi", "wǒ de mèimei", "wǒ de gēge", "nǐ de gēge"], "answer": "wǒ de gēge" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « yǒu » ?", "options": ["être", "avoir", "aimer", "voir"], "answer": "avoir" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"mother\" in Chinese?", "options": ["bàba", "māma", "jiějie", "gēge"], "answer": "māma" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"my older brother\"?", "options": ["wǒ de dìdi", "wǒ de mèimei", "wǒ de gēge", "nǐ de gēge"], "answer": "wǒ de gēge" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « yǒu » mean?", "options": ["to be", "to have", "to like", "to see"], "answer": "to have" }
       ],
       "audioScript": "A: Nǐ jiā yǒu jǐ kǒu rén?\nB: Wǒ jiā yǒu sì kǒu rén: bàba, māma, gēge hé wǒ. Nǐ ne?\nA: Wǒ jiā yǒu wǔ kǒu rén.",
       "cecrLevel": "A1"
@@ -150,35 +150,35 @@
     {
       "id": "ZH-A1-L05",
       "order": 5,
-      "title": "Les couleurs",
+      "title": "Colours",
       "titleTargetLang": "颜色 (Yánsè)",
-      "objective": "Nommer les couleurs et décrire des objets simples.",
+      "objective": "Name the colours and describe simple objects.",
       "content": [
-        { "heading": "Les couleurs de base", "text": "Les couleurs courantes : hóngsè (rouge), huángsè (jaune), lánsè (bleu), lǜsè (vert), báisè (blanc), hēisè (noir). On ajoute « sè » (couleur) à la fin du nom de base." },
-        { "heading": "Dire sa couleur préférée", "text": "Pour exprimer un goût : « wǒ xǐ huān hóngsè » (j'aime le rouge). La négation : « wǒ bù xǐ huān hēisè » (je n'aime pas le noir). « Nǐ xǐ huān shénme yánsè? » (quelle couleur aimes-tu ?)." },
-        { "heading": "Décrire un objet", "text": "L'adjectif de couleur suit le nom avec « de » : yī jiàn hóngsè de yīfu (un vêtement rouge). La structure simple est : objet + de + couleur." }
+        { "heading": "Basic colours", "text": "Common colours: hóngsè (red), huángsè (yellow), lánsè (blue), lǜsè (green), báisè (white), hēisè (black). Add « sè » (colour) to the end of the base name." },
+        { "heading": "Saying your favourite colour", "text": "To express a taste: « wǒ xǐ huān hóngsè » (I like red). The negative: « wǒ bù xǐ huān hēisè » (I don't like black). « Nǐ xǐ huān shénme yánsè? » (which colour do you like?)." },
+        { "heading": "Describing an object", "text": "The colour adjective follows the noun with « de »: yī jiàn hóngsè de yīfu (a red garment). The simple structure is: object + de + colour." }
       ],
       "vocabulary": [
-        { "word": "hóngsè", "translation": "rouge" },
-        { "word": "huángsè", "translation": "jaune" },
-        { "word": "lánsè", "translation": "bleu" },
-        { "word": "lǜsè", "translation": "vert" },
-        { "word": "báisè", "translation": "blanc" },
-        { "word": "hēisè", "translation": "noir" },
-        { "word": "zǐsè", "translation": "violet" },
-        { "word": "yánsè", "translation": "la couleur" },
-        { "word": "xǐ huān", "translation": "aimer" },
-        { "word": "shénme", "translation": "quoi / quel" },
-        { "word": "yī fu", "translation": "le vêtement" },
-        { "word": "chē", "translation": "la voiture" },
-        { "word": "shū", "translation": "le livre" },
-        { "word": "hǎo kàn", "translation": "joli" },
-        { "word": "piào liang", "translation": "beau / belle" }
+        { "word": "hóngsè", "translation": "red" },
+        { "word": "huángsè", "translation": "yellow" },
+        { "word": "lánsè", "translation": "blue" },
+        { "word": "lǜsè", "translation": "green" },
+        { "word": "báisè", "translation": "white" },
+        { "word": "hēisè", "translation": "black" },
+        { "word": "zǐsè", "translation": "purple" },
+        { "word": "yánsè", "translation": "the colour" },
+        { "word": "xǐ huān", "translation": "to like" },
+        { "word": "shénme", "translation": "what / which" },
+        { "word": "yī fu", "translation": "clothes" },
+        { "word": "chē", "translation": "the car" },
+        { "word": "shū", "translation": "the book" },
+        { "word": "hǎo kàn", "translation": "nice-looking" },
+        { "word": "piào liang", "translation": "beautiful" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « rouge » en chinois ?", "options": ["lánsè", "hóngsè", "lǜsè", "hēisè"], "answer": "hóngsè" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « j'aime le bleu » ?", "options": ["wǒ xǐ huān lánsè", "wǒ bù xǐ huān lánsè", "lánsè hǎo kàn", "wǒ xǐ huān hóngsè"], "answer": "wǒ xǐ huān lánsè" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « shénme » ?", "options": ["pourquoi", "comment", "quoi / quel", "combien"], "answer": "quoi / quel" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"red\" in Chinese?", "options": ["lánsè", "hóngsè", "lǜsè", "hēisè"], "answer": "hóngsè" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"I like blue\"?", "options": ["wǒ xǐ huān lánsè", "wǒ bù xǐ huān lánsè", "lánsè hǎo kàn", "wǒ xǐ huān hóngsè"], "answer": "wǒ xǐ huān lánsè" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « shénme » mean?", "options": ["why", "how", "what / which", "how much"], "answer": "what / which" }
       ],
       "audioScript": "A: Nǐ xǐ huān shénme yánsè?\nB: Wǒ xǐ huān lánsè hé báisè. Nǐ ne?\nA: Wǒ xǐ huān hóngsè. Hóngsè hěn hǎo kàn!",
       "cecrLevel": "A1"
@@ -186,35 +186,35 @@
     {
       "id": "ZH-A1-L06",
       "order": 6,
-      "title": "La nourriture",
+      "title": "Food",
       "titleTargetLang": "食物 (Shíwù)",
-      "objective": "Commander au restaurant, nommer des aliments et utiliser « qǐng » pour demander poliment.",
+      "objective": "Order in a restaurant, name foods and use « qǐng » to ask politely.",
       "content": [
-        { "heading": "Les aliments et boissons", "text": "Autour de la table : mǐfàn (riz), miàntiáo (nouilles), chá (thé), shuǐ (eau), kāfēi (café), niúròu (bœuf), jī (poulet), yú (poisson), cài (légumes/plat). « Chīfàn » signifie manger un repas." },
-        { "heading": "Au restaurant", "text": "Pour commander : « wǒ yào … » (je veux) ou « qǐng gěi wǒ … » (donnez-moi, s'il vous plaît). L'addition : « mǎi dān » (l'addition). Le serveur demande : « Nǐ xiǎng chī shénme? » (que voulez-vous manger ?)." },
-        { "heading": "Les baguettes et la politesse", "text": "« qǐng » est le mot de politesse : qǐng jìn (entrez, s'il vous plaît), qǐng zuò (asseyez-vous). Pour être poli, on ne plante jamais les baguettes dans le riz." }
+        { "heading": "Foods and drinks", "text": "Around the table: mǐfàn (rice), miàntiáo (noodles), chá (tea), shuǐ (water), kāfēi (coffee), niúròu (beef), jī (chicken), yú (fish), cài (vegetables/dish). « Chīfàn » means to eat a meal." },
+        { "heading": "At the restaurant", "text": "To order: « wǒ yào … » (I want) or « qǐng gěi wǒ … » (please give me …). The bill: « mǎi dān » (the bill). The waiter asks: « Nǐ xiǎng chī shénme? » (what would you like to eat?)." },
+        { "heading": "Chopsticks and politeness", "text": "« qǐng » is the polite word: qǐng jìn (please come in), qǐng zuò (please sit). To be polite, never stick chopsticks upright in the rice." }
       ],
       "vocabulary": [
-        { "word": "chīfàn", "translation": "manger (un repas)" },
-        { "word": "mǐfàn", "translation": "le riz" },
-        { "word": "miàntiáo", "translation": "les nouilles" },
-        { "word": "chá", "translation": "le thé" },
-        { "word": "shuǐ", "translation": "l'eau" },
-        { "word": "kāfēi", "translation": "le café" },
-        { "word": "niúròu", "translation": "le bœuf" },
-        { "word": "jī", "translation": "le poulet" },
-        { "word": "yú", "translation": "le poisson" },
-        { "word": "cài", "translation": "les légumes / le plat" },
-        { "word": "wǒ yào", "translation": "je veux" },
-        { "word": "qǐng gěi wǒ", "translation": "donnez-moi s'il vous plaît" },
-        { "word": "mǎi dān", "translation": "l'addition" },
-        { "word": "qǐng", "translation": "s'il vous plaît / prière de" },
-        { "word": "hǎo chī", "translation": "délicieux" }
+        { "word": "chīfàn", "translation": "to eat (a meal)" },
+        { "word": "mǐfàn", "translation": "rice" },
+        { "word": "miàntiáo", "translation": "noodles" },
+        { "word": "chá", "translation": "tea" },
+        { "word": "shuǐ", "translation": "water" },
+        { "word": "kāfēi", "translation": "coffee" },
+        { "word": "niúròu", "translation": "beef" },
+        { "word": "jī", "translation": "chicken" },
+        { "word": "yú", "translation": "fish" },
+        { "word": "cài", "translation": "vegetables / the dish" },
+        { "word": "wǒ yào", "translation": "I want" },
+        { "word": "qǐng gěi wǒ", "translation": "please give me" },
+        { "word": "mǎi dān", "translation": "the bill" },
+        { "word": "qǐng", "translation": "please / to invite" },
+        { "word": "hǎo chī", "translation": "delicious" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le riz » en chinois ?", "options": ["miàntiáo", "mǐfàn", "chá", "cài"], "answer": "mǐfàn" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on l'addition ?", "options": ["mǎi dān", "chīfàn", "qǐng zuò", "wǒ yào chá"], "answer": "mǎi dān" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je veux » ?", "options": ["wǒ ài", "wǒ yào", "wǒ yǒu", "wǒ shì"], "answer": "wǒ yào" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"rice\" in Chinese?", "options": ["miàntiáo", "mǐfàn", "chá", "cài"], "answer": "mǐfàn" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask for the bill?", "options": ["mǎi dān", "chīfàn", "qǐng zuò", "wǒ yào chá"], "answer": "mǎi dān" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"I want\"?", "options": ["wǒ ài", "wǒ yào", "wǒ yǒu", "wǒ shì"], "answer": "wǒ yào" }
       ],
       "audioScript": "A: Nǐ xiǎng chī shénme?\nB: Wǒ yào mǐfàn hé yú, qǐng.\nA: Hǎo de. Nǐ yào hē shénme?\nB: Yì bēi chá, qǐng.",
       "cecrLevel": "A1"
@@ -222,35 +222,35 @@
     {
       "id": "ZH-A1-L07",
       "order": 7,
-      "title": "Les lieux",
+      "title": "Places",
       "titleTargetLang": "地方 (Dìfāng)",
-      "objective": "Demander et indiquer où se trouvent des lieux dans la ville.",
+      "objective": "Ask and say where places are in the city.",
       "content": [
-        { "heading": "Les lieux en ville", "text": "Les lieux courants : xuéxiào (l'école), yīyuàn (l'hôpital), shāngdiàn (le magasin), yínháng (la banque), cāntīng (le restaurant), huǒchēzhàn (la gare). « Qù » signifie aller : wǒ qù xuéxiào (je vais à l'école)." },
-        { "heading": "Demander où", "text": "Pour demander où se trouve un lieu : « … zài nǎ li? » (où est … ?). Exemple : « Huǒchēzhàn zài nǎ li? » (où est la gare ?). On répond : « zài zhèli » (ici) ou « zài nàli » (là-bas)." },
-        { "heading": "S'orienter", "text": "Les directions utiles : zuǒ biān (à gauche), yòu biān (à droite), qiánmiàn (devant), hòumiàn (derrière), jìn (près de). Le chemin : « yì zhí zǒu » (allez tout droit)." }
+        { "heading": "Places in the city", "text": "Common places: xuéxiào (school), yīyuàn (hospital), shāngdiàn (shop), yínháng (bank), cāntīng (restaurant), huǒchēzhàn (station). « Qù » means to go: wǒ qù xuéxiào (I go to school)." },
+        { "heading": "Asking where", "text": "To ask where a place is: « … zài nǎ li? » (where is …?). Example: « Huǒchēzhàn zài nǎ li? » (where is the station?). Answer: « zài zhèli » (here) or « zài nàli » (over there)." },
+        { "heading": "Finding your way", "text": "Useful directions: zuǒ biān (left), yòu biān (right), qiánmiàn (in front), hòumiàn (behind), jìn (near). The way: « yì zhí zǒu » (go straight on)." }
       ],
       "vocabulary": [
-        { "word": "xuéxiào", "translation": "l'école" },
-        { "word": "yīyuàn", "translation": "l'hôpital" },
-        { "word": "shāngdiàn", "translation": "le magasin" },
-        { "word": "yínháng", "translation": "la banque" },
-        { "word": "cāntīng", "translation": "le restaurant" },
-        { "word": "huǒchēzhàn", "translation": "la gare" },
-        { "word": "zài nǎ li", "translation": "où se trouve" },
-        { "word": "zài zhèli", "translation": "ici" },
-        { "word": "zài nàli", "translation": "là-bas" },
-        { "word": "zuǒ biān", "translation": "à gauche" },
-        { "word": "yòu biān", "translation": "à droite" },
-        { "word": "qiánmiàn", "translation": "devant" },
-        { "word": "hòumiàn", "translation": "derrière" },
-        { "word": "qù", "translation": "aller" },
-        { "word": "zǒu", "translation": "marcher / aller" }
+        { "word": "xuéxiào", "translation": "school" },
+        { "word": "yīyuàn", "translation": "hospital" },
+        { "word": "shāngdiàn", "translation": "the shop" },
+        { "word": "yínháng", "translation": "the bank" },
+        { "word": "cāntīng", "translation": "the restaurant" },
+        { "word": "huǒchēzhàn", "translation": "the station" },
+        { "word": "zài nǎ li", "translation": "where is" },
+        { "word": "zài zhèli", "translation": "here" },
+        { "word": "zài nàli", "translation": "over there" },
+        { "word": "zuǒ biān", "translation": "left" },
+        { "word": "yòu biān", "translation": "right" },
+        { "word": "qiánmiàn", "translation": "in front" },
+        { "word": "hòumiàn", "translation": "behind" },
+        { "word": "qù", "translation": "to go" },
+        { "word": "zǒu", "translation": "to walk / to go" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « l'hôpital » ?", "options": ["xuéxiào", "yīyuàn", "shāngdiàn", "cāntīng"], "answer": "yīyuàn" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on « où est la gare ? »", "options": ["Huǒchēzhàn zài nǎ li?", "Huǒchēzhàn shì shéi?", "Wǒ qù huǒchēzhàn", "Huǒchēzhàn duō shao?"], "answer": "Huǒchēzhàn zài nǎ li?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « yòu biān » ?", "options": ["à gauche", "à droite", "devant", "tout droit"], "answer": "à droite" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"the hospital\"?", "options": ["xuéxiào", "yīyuàn", "shāngdiàn", "cāntīng"], "answer": "yīyuàn" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask \"where is the station?\"", "options": ["Huǒchēzhàn zài nǎ li?", "Huǒchēzhàn shì shéi?", "Wǒ qù huǒchēzhàn", "Huǒchēzhàn duō shao?"], "answer": "Huǒchēzhàn zài nǎ li?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « yòu biān » mean?", "options": ["left", "right", "in front", "straight on"], "answer": "right" }
       ],
       "audioScript": "A: Qǐng wèn, cāntīng zài nǎ li?\nB: Cāntīng zài yòu biān, qiánmiàn.\nA: Xiè xie! Zài yòu biān ma?\nB: Shì de, zài yòu biān.",
       "cecrLevel": "A1"
@@ -258,35 +258,35 @@
     {
       "id": "ZH-A1-L08",
       "order": 8,
-      "title": "L'heure et les dates",
+      "title": "Time and dates",
       "titleTargetLang": "时间和日期 (Shíjiān hé rìqī)",
-      "objective": "Donner l'heure, les jours de la semaine et fixer un rendez-vous.",
+      "objective": "Give the time, the days of the week and make an appointment.",
       "content": [
-        { "heading": "L'heure", "text": "On demande l'heure avec « xiàn zài jǐ diǎn? » (quelle heure est-il ?). La réponse : « xiàn zài sān diǎn » (il est trois heures). « Bàn » signifie la demie : sān diǎn bàn (trois heures et demie)." },
-        { "heading": "Les jours et le temps", "text": "Les jours : xīngqī yī (lundi), xīngqī èr (mardi), … xīngqī tiān (dimanche). Les mots de temps : jīntiān (aujourd'hui), míngtiān (demain), zuótiān (hier), xiàn zài (maintenant)." },
-        { "heading": "Fixer un rendez-vous", "text": "« Shénme shíhou » signifie « à quel moment ». Exemple : « Wǒmen jǐ diǎn jiànmiàn? » (à quelle heure nous voyons-nous ?). Réponse : « wǒmen sān diǎn jiàn » (on se voit à trois heures)." }
+        { "heading": "The time", "text": "Ask the time with « xiàn zài jǐ diǎn? » (what time is it?). The answer: « xiàn zài sān diǎn » (it is three o'clock). « Bàn » means half past: sān diǎn bàn (half past three)." },
+        { "heading": "Days and time words", "text": "The days: xīngqī yī (Monday), xīngqī èr (Tuesday), … xīngqī tiān (Sunday). Time words: jīntiān (today), míngtiān (tomorrow), zuótiān (yesterday), xiàn zài (now)." },
+        { "heading": "Making an appointment", "text": "« Shénme shíhou » means \"at what time\". Example: « Wǒmen jǐ diǎn jiànmiàn? » (what time shall we meet?). Answer: « wǒmen sān diǎn jiàn » (we meet at three)." }
       ],
       "vocabulary": [
-        { "word": "jǐ diǎn", "translation": "quelle heure" },
-        { "word": "sān diǎn", "translation": "trois heures" },
-        { "word": "bàn", "translation": "et demie" },
-        { "word": "jīntiān", "translation": "aujourd'hui" },
-        { "word": "míngtiān", "translation": "demain" },
-        { "word": "zuótiān", "translation": "hier" },
-        { "word": "xiàn zài", "translation": "maintenant" },
-        { "word": "xīngqī yī", "translation": "lundi" },
-        { "word": "xīngqī tiān", "translation": "dimanche" },
-        { "word": "shíjiān", "translation": "le temps / l'heure" },
-        { "word": "jiàn miàn", "translation": "se rencontrer" },
-        { "word": "shénme shíhou", "translation": "à quel moment" },
-        { "word": "zǎo", "translation": "tôt" },
-        { "word": "wǎn", "translation": "tard" },
-        { "word": "hǎo", "translation": "bien / d'accord" }
+        { "word": "jǐ diǎn", "translation": "what time" },
+        { "word": "sān diǎn", "translation": "three o'clock" },
+        { "word": "bàn", "translation": "half past" },
+        { "word": "jīntiān", "translation": "today" },
+        { "word": "míngtiān", "translation": "tomorrow" },
+        { "word": "zuótiān", "translation": "yesterday" },
+        { "word": "xiàn zài", "translation": "now" },
+        { "word": "xīngqī yī", "translation": "Monday" },
+        { "word": "xīngqī tiān", "translation": "Sunday" },
+        { "word": "shíjiān", "translation": "the time" },
+        { "word": "jiàn miàn", "translation": "to meet" },
+        { "word": "shénme shíhou", "translation": "at what time" },
+        { "word": "zǎo", "translation": "early" },
+        { "word": "wǎn", "translation": "late" },
+        { "word": "hǎo", "translation": "good / ok" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on l'heure ?", "options": ["Xiàn zài jǐ diǎn?", "Nǐ jǐ suì?", "Jīntiān jǐ hào?", "Nǐ qù nǎ li?"], "answer": "Xiàn zài jǐ diǎn?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « sān diǎn bàn » ?", "options": ["trois heures moins le quart", "trois heures et demie", "trois heures cinq", "quatre heures"], "answer": "trois heures et demie" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Quel jour est « xīngqī tiān » ?", "options": ["lundi", "samedi", "dimanche", "vendredi"], "answer": "dimanche" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask the time?", "options": ["Xiàn zài jǐ diǎn?", "Nǐ jǐ suì?", "Jīntiān jǐ hào?", "Nǐ qù nǎ li?"], "answer": "Xiàn zài jǐ diǎn?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « sān diǎn bàn » mean?", "options": ["quarter to three", "half past three", "five past three", "four o'clock"], "answer": "half past three" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "Which day is « xīngqī tiān »?", "options": ["Monday", "Saturday", "Sunday", "Friday"], "answer": "Sunday" }
       ],
       "audioScript": "A: Wǒmen jǐ diǎn jiàn miàn?\nB: Wǒmen sān diǎn bàn jiàn, hǎo ma?\nA: Sān diǎn bàn? Hǎo, míngtiān sān diǎn bàn jiàn!",
       "cecrLevel": "A1"
@@ -294,35 +294,35 @@
     {
       "id": "ZH-A1-L09",
       "order": 9,
-      "title": "Les achats",
+      "title": "Shopping",
       "titleTargetLang": "购物 (Gòuwù)",
-      "objective": "Demander un prix, négocier simplement et acheter des articles.",
+      "objective": "Ask a price, bargain simply and buy items.",
       "content": [
-        { "heading": "Demander un prix", "text": "Dans un magasin on demande : « Zhège duō shao qián? » (combien coûte ceci ?). « Zhège » signifie « ceci » et « duō shao qián » signifie « combien d'argent ». Le vendeur répond avec le montant et « kuài » (yuan)." },
-        { "heading": "Les classificateurs", "text": "Le chinois utilise des classificateurs selon l'objet : « yī gè » pour les objets généraux, « yī běn shū » (un livre), « yī jiàn yīfu » (un vêtement), « sān bēi chá » (trois tasses de thé)." },
-        { "heading": "Acheter et payer", "text": "Pour acheter : « wǒ mǎi zhège » (j'achète ceci). On peut demander « tài guì le » (trop cher) et « pián yi yī diǎn » (un peu moins cher). Le paiement : « xiànjīn » (espèces) ou « shuākǎ » (carte)." }
+        { "heading": "Asking a price", "text": "In a shop ask: « Zhège duō shao qián? » (how much is this?). « Zhège » means \"this\" and « duō shao qián » means \"how much money\". The seller answers with the amount and « kuài » (yuan)." },
+        { "heading": "Measure words", "text": "Chinese uses measure words depending on the object: « yī gè » for general objects, « yī běn shū » (a book), « yī jiàn yīfu » (a garment), « sān bēi chá » (three cups of tea)." },
+        { "heading": "Buying and paying", "text": "To buy: « wǒ mǎi zhège » (I buy this). You can say « tài guì le » (too expensive) and « pián yi yī diǎn » (a bit cheaper). Payment: « xiànjīn » (cash) or « shuākǎ » (card)." }
       ],
       "vocabulary": [
-        { "word": "zhège", "translation": "ceci" },
-        { "word": "duō shao qián", "translation": "combien coûte" },
-        { "word": "kuài", "translation": "le yuan" },
-        { "word": "mǎi", "translation": "acheter" },
-        { "word": "shāngdiàn", "translation": "le magasin" },
-        { "word": "gè", "translation": "classificateur général" },
-        { "word": "běn", "translation": "classificateur (livres)" },
-        { "word": "bēi", "translation": "la tasse / classificateur" },
-        { "word": "guì", "translation": "cher" },
-        { "word": "pián yi", "translation": "bon marché" },
-        { "word": "tài le", "translation": "trop" },
-        { "word": "xiànjīn", "translation": "en espèces" },
-        { "word": "shuākǎ", "translation": "payer par carte" },
-        { "word": "yī fu", "translation": "les vêtements" },
-        { "word": "xié", "translation": "les chaussures" }
+        { "word": "zhège", "translation": "this" },
+        { "word": "duō shao qián", "translation": "how much does it cost" },
+        { "word": "kuài", "translation": "the yuan" },
+        { "word": "mǎi", "translation": "to buy" },
+        { "word": "shāngdiàn", "translation": "the shop" },
+        { "word": "gè", "translation": "general measure word" },
+        { "word": "běn", "translation": "measure word (books)" },
+        { "word": "bēi", "translation": "the cup / measure word" },
+        { "word": "guì", "translation": "expensive" },
+        { "word": "pián yi", "translation": "cheap" },
+        { "word": "tài le", "translation": "too" },
+        { "word": "xiànjīn", "translation": "cash" },
+        { "word": "shuākǎ", "translation": "to pay by card" },
+        { "word": "yī fu", "translation": "clothes" },
+        { "word": "xié", "translation": "shoes" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on le prix ?", "options": ["Zhège duō shao qián?", "Zhège zài nǎ li?", "Zhège shì shénme?", "Nǐ qù nǎ li?"], "answer": "Zhège duō shao qián?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « tài guì le » ?", "options": ["très bon marché", "trop cher", "très joli", "pas grave"], "answer": "trop cher" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « j'achète ceci » ?", "options": ["wǒ mǎi zhège", "wǒ yào nàge", "zhège hǎo kàn", "wǒ qù shāngdiàn"], "answer": "wǒ mǎi zhège" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask the price?", "options": ["Zhège duō shao qián?", "Zhège zài nǎ li?", "Zhège shì shénme?", "Nǐ qù nǎ li?"], "answer": "Zhège duō shao qián?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « tài guì le » mean?", "options": ["very cheap", "too expensive", "very nice", "no problem"], "answer": "too expensive" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"I buy this\"?", "options": ["wǒ mǎi zhège", "wǒ yào nàge", "zhège hǎo kàn", "wǒ qù shāngdiàn"], "answer": "wǒ mǎi zhège" }
       ],
       "audioScript": "A: Qǐng wèn, zhège duō shao qián?\nB: Zhège shì wǔshí kuài.\nA: Tài guì le! Pián yi yī diǎn, kě yǐ ma?\nB: Hǎo, sìshí kuài.",
       "cecrLevel": "A1"
@@ -330,35 +330,35 @@
     {
       "id": "ZH-A1-L10",
       "order": 10,
-      "title": "Les voyages et les transports",
+      "title": "Travel and transport",
       "titleTargetLang": "旅行和交通 (Lǚxíng hé jiāotōng)",
-      "objective": "Acheter un billet, utiliser les transports et comprendre les indications de voyage.",
+      "objective": "Buy a ticket, use transport and understand travel information.",
       "content": [
-        { "heading": "Les moyens de transport", "text": "Les transports : chūzūchē (le taxi), gōnggòng qìchē (le bus), dìtiě (le métro), fēijī (l'avion), huǒchē (le train). « Zuò » signifie prendre un transport : wǒ zuò dìtiě qù gōngsī (je prends le métro pour aller au bureau)." },
-        { "heading": "Acheter un billet", "text": "Au guichet : « mǎi yī zhāng piào » (acheter un billet). On précise la destination : « wǒ yào qù Běijīng » (je veux aller à Pékin). « Liǎng zhāng piào » signifie deux billets." },
-        { "heading": "Le départ", "text": "« Shénme shíhou chūfā? » (quand part-on ?). Le quai se dit « zhàntái ». L'annonce : « huǒchē kuài yào kāi le » (le train va bientôt partir). « Wǎndiǎn » signifie le retard." }
+        { "heading": "Means of transport", "text": "Transport: chūzūchē (the taxi), gōnggòng qìchē (the bus), dìtiě (the metro), fēijī (the plane), huǒchē (the train). « Zuò » means to take transport: wǒ zuò dìtiě qù gōngsī (I take the metro to the office)." },
+        { "heading": "Buying a ticket", "text": "At the counter: « mǎi yī zhāng piào » (buy a ticket). Specify the destination: « wǒ yào qù Běijīng » (I want to go to Beijing). « Liǎng zhāng piào » means two tickets." },
+        { "heading": "Departure", "text": "« Shénme shíhou chūfā? » (when do we leave?). The platform is « zhàntái ». The announcement: « huǒchē kuài yào kāi le » (the train is about to leave). « Wǎndiǎn » means the delay." }
       ],
       "vocabulary": [
-        { "word": "chūzūchē", "translation": "le taxi" },
-        { "word": "dìtiě", "translation": "le métro" },
-        { "word": "huǒchē", "translation": "le train" },
-        { "word": "fēijī", "translation": "l'avion" },
-        { "word": "gōnggòng qìchē", "translation": "le bus" },
-        { "word": "piào", "translation": "le billet" },
-        { "word": "zhāng", "translation": "classificateur (billets)" },
-        { "word": "zuò", "translation": "prendre (un transport)" },
-        { "word": "qù", "translation": "aller" },
-        { "word": "zhàntái", "translation": "le quai" },
-        { "word": "chūfā", "translation": "partir" },
-        { "word": "dào dá", "translation": "arriver" },
-        { "word": "wǎndiǎn", "translation": "le retard" },
-        { "word": "lǚxíng", "translation": "le voyage" },
-        { "word": "jī chǎng", "translation": "l'aéroport" }
+        { "word": "chūzūchē", "translation": "the taxi" },
+        { "word": "dìtiě", "translation": "the metro" },
+        { "word": "huǒchē", "translation": "the train" },
+        { "word": "fēijī", "translation": "the plane" },
+        { "word": "gōnggòng qìchē", "translation": "the bus" },
+        { "word": "piào", "translation": "the ticket" },
+        { "word": "zhāng", "translation": "measure word (tickets)" },
+        { "word": "zuò", "translation": "to take (transport)" },
+        { "word": "qù", "translation": "to go" },
+        { "word": "zhàntái", "translation": "the platform" },
+        { "word": "chūfā", "translation": "to depart" },
+        { "word": "dào dá", "translation": "to arrive" },
+        { "word": "wǎndiǎn", "translation": "the delay" },
+        { "word": "lǚxíng", "translation": "the trip" },
+        { "word": "jī chǎng", "translation": "the airport" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le métro » en chinois ?", "options": ["chūzūchē", "dìtiě", "fēijī", "huǒchē"], "answer": "dìtiě" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « deux billets » ?", "options": ["liǎng zhāng piào", "yī zhāng piào", "sān gè piào", "liǎng bēi chá"], "answer": "liǎng zhāng piào" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « wǎndiǎn » ?", "options": ["le départ", "l'arrivée", "le retard", "le quai"], "answer": "le retard" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"the metro\" in Chinese?", "options": ["chūzūchē", "dìtiě", "fēijī", "huǒchē"], "answer": "dìtiě" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"two tickets\"?", "options": ["liǎng zhāng piào", "yī zhāng piào", "sān gè piào", "liǎng bēi chá"], "answer": "liǎng zhāng piào" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « wǎndiǎn » mean?", "options": ["the departure", "the arrival", "the delay", "the platform"], "answer": "the delay" }
       ],
       "audioScript": "A: Qǐng wèn, huǒchē shén me shí hou chūfā?\nB: Sān diǎn zhèng. Nǐ yào qù nǎ li?\nA: Wǒ yào qù Shànghǎi. Mǎi yī zhāng piào, qǐng.",
       "cecrLevel": "A1"
@@ -367,62 +367,62 @@
   "quizzes": [
     {
       "id": "ZH-A1-Q01",
-      "title": "Pinyin & Salutations",
+      "title": "Pinyin & Greetings",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Combien de tons le mandarin possède-t-il ?", "options": ["3", "4", "5", "2"], "answer": "4" },
-        { "type": "qcm", "question": "Comment dit-on « bonjour » en chinois ?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "wǎn ān"], "answer": "nǐ hǎo" },
-        { "type": "qcm", "question": "Comment dit-on « merci » ?", "options": ["bú kè qi", "duì bu qǐ", "xiè xie", "zài jiàn"], "answer": "xiè xie" },
-        { "type": "qcm", "question": "Comment dit-on « au revoir » ?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "hǎo ma"], "answer": "zài jiàn" },
-        { "type": "qcm", "question": "Comment répond-on « de rien » ?", "options": ["bú kè qi", "duì bu qǐ", "méi guān xi", "qǐng zuò"], "answer": "bú kè qi" }
+        { "type": "qcm", "question": "How many tones does Mandarin have?", "options": ["3", "4", "5", "2"], "answer": "4" },
+        { "type": "qcm", "question": "How do you say \"hello\" in Chinese?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "wǎn ān"], "answer": "nǐ hǎo" },
+        { "type": "qcm", "question": "How do you say \"thank you\"?", "options": ["bú kè qi", "duì bu qǐ", "xiè xie", "zài jiàn"], "answer": "xiè xie" },
+        { "type": "qcm", "question": "How do you say \"goodbye\"?", "options": ["zài jiàn", "nǐ hǎo", "xiè xie", "hǎo ma"], "answer": "zài jiàn" },
+        { "type": "qcm", "question": "How do you answer \"you're welcome\"?", "options": ["bú kè qi", "duì bu qǐ", "méi guān xi", "qǐng zuò"], "answer": "bú kè qi" }
       ]
     },
     {
       "id": "ZH-A1-Q02",
-      "title": "Nombres & Famille",
+      "title": "Numbers & Family",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on 10 en chinois ?", "options": ["shí", "èr", "líng", "yī"], "answer": "shí" },
-        { "type": "qcm", "question": "Comment dit-on 12 ?", "options": ["èrshí", "shí èr", "shí yī", "èr shí èr"], "answer": "shí èr" },
-        { "type": "qcm", "question": "Comment dit-on « maman » ?", "options": ["bàba", "māma", "jiějie", "nǎi nai"], "answer": "māma" },
-        { "type": "qcm", "question": "Comment dit-on « mon petit frère » ?", "options": ["wǒ de gēge", "wǒ de dìdi", "wǒ de mèimei", "nǐ de dìdi"], "answer": "wǒ de dìdi" },
-        { "type": "qcm", "question": "Que signifie « yǒu » ?", "options": ["être", "avoir", "aller", "aimer"], "answer": "avoir" }
+        { "type": "qcm", "question": "How do you say 10 in Chinese?", "options": ["shí", "èr", "líng", "yī"], "answer": "shí" },
+        { "type": "qcm", "question": "How do you say 12?", "options": ["èrshí", "shí èr", "shí yī", "èr shí èr"], "answer": "shí èr" },
+        { "type": "qcm", "question": "How do you say \"mother\"?", "options": ["bàba", "māma", "jiějie", "nǎi nai"], "answer": "māma" },
+        { "type": "qcm", "question": "How do you say \"my younger brother\"?", "options": ["wǒ de gēge", "wǒ de dìdi", "wǒ de mèimei", "nǐ de dìdi"], "answer": "wǒ de dìdi" },
+        { "type": "qcm", "question": "What does « yǒu » mean?", "options": ["to be", "to have", "to go", "to like"], "answer": "to have" }
       ]
     },
     {
       "id": "ZH-A1-Q03",
-      "title": "Couleurs & Nourriture",
+      "title": "Colours & Food",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on « rouge » ?", "options": ["lánsè", "lǜsè", "hóngsè", "hēisè"], "answer": "hóngsè" },
-        { "type": "qcm", "question": "Comment dit-on « j'aime le vert » ?", "options": ["wǒ bù xǐ huān lǜsè", "wǒ xǐ huān lǜsè", "wǒ xǐ huān lánsè", "lǜsè hǎo kàn"], "answer": "wǒ xǐ huān lǜsè" },
-        { "type": "qcm", "question": "Comment dit-on « le riz » ?", "options": ["miàntiáo", "mǐfàn", "chá", "shuǐ"], "answer": "mǐfàn" },
-        { "type": "qcm", "question": "Comment demande-t-on l'addition ?", "options": ["mǎi dān", "wǒ yào chá", "qǐng zuò", "xiè xie"], "answer": "mǎi dān" },
-        { "type": "qcm", "question": "Comment dit-on « je veux » ?", "options": ["wǒ ài", "wǒ yào", "wǒ yǒu", "wǒ shì"], "answer": "wǒ yào" }
+        { "type": "qcm", "question": "How do you say \"red\"?", "options": ["lánsè", "lǜsè", "hóngsè", "hēisè"], "answer": "hóngsè" },
+        { "type": "qcm", "question": "How do you say \"I like green\"?", "options": ["wǒ bù xǐ huān lǜsè", "wǒ xǐ huān lǜsè", "wǒ xǐ huān lánsè", "lǜsè hǎo kàn"], "answer": "wǒ xǐ huān lǜsè" },
+        { "type": "qcm", "question": "How do you say \"rice\"?", "options": ["miàntiáo", "mǐfàn", "chá", "shuǐ"], "answer": "mǐfàn" },
+        { "type": "qcm", "question": "How do you ask for the bill?", "options": ["mǎi dān", "wǒ yào chá", "qǐng zuò", "xiè xie"], "answer": "mǎi dān" },
+        { "type": "qcm", "question": "How do you say \"I want\"?", "options": ["wǒ ài", "wǒ yào", "wǒ yǒu", "wǒ shì"], "answer": "wǒ yào" }
       ]
     },
     {
       "id": "ZH-A1-Q04",
-      "title": "Lieux & Heure",
+      "title": "Places & Time",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on « l'hôpital » ?", "options": ["xuéxiào", "yīyuàn", "shāngdiàn", "yínháng"], "answer": "yīyuàn" },
-        { "type": "qcm", "question": "Comment dit-on « à gauche » ?", "options": ["yòu biān", "zuǒ biān", "qiánmiàn", "hòumiàn"], "answer": "zuǒ biān" },
-        { "type": "qcm", "question": "Comment demande-t-on l'heure ?", "options": ["Xiàn zài jǐ diǎn?", "Nǐ jǐ suì?", "Jīntiān jǐ hào?", "Duō shao qián?"], "answer": "Xiàn zài jǐ diǎn?" },
-        { "type": "qcm", "question": "Comment dit-on « et demie » ?", "options": ["bàn", "kè", "diǎn", "fēn"], "answer": "bàn" },
-        { "type": "qcm", "question": "Quel jour est « xīngqī yī » ?", "options": ["mardi", "lundi", "dimanche", "samedi"], "answer": "lundi" }
+        { "type": "qcm", "question": "How do you say \"the hospital\"?", "options": ["xuéxiào", "yīyuàn", "shāngdiàn", "yínháng"], "answer": "yīyuàn" },
+        { "type": "qcm", "question": "How do you say \"left\"?", "options": ["yòu biān", "zuǒ biān", "qiánmiàn", "hòumiàn"], "answer": "zuǒ biān" },
+        { "type": "qcm", "question": "How do you ask the time?", "options": ["Xiàn zài jǐ diǎn?", "Nǐ jǐ suì?", "Jīntiān jǐ hào?", "Duō shao qián?"], "answer": "Xiàn zài jǐ diǎn?" },
+        { "type": "qcm", "question": "How do you say \"half past\"?", "options": ["bàn", "kè", "diǎn", "fēn"], "answer": "bàn" },
+        { "type": "qcm", "question": "Which day is « xīngqī yī »?", "options": ["Tuesday", "Monday", "Sunday", "Saturday"], "answer": "Monday" }
       ]
     },
     {
       "id": "ZH-A1-Q05",
-      "title": "Achats & Voyages",
+      "title": "Shopping & Travel",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment demande-t-on le prix ?", "options": ["Zhège duō shao qián?", "Zhège zài nǎ li?", "Nǐ hǎo ma?", "Duō shao rén?"], "answer": "Zhège duō shao qián?" },
-        { "type": "qcm", "question": "Que signifie « tài guì le » ?", "options": ["bon marché", "trop cher", "trop loin", "pas grave"], "answer": "trop cher" },
-        { "type": "qcm", "question": "Comment dit-on « le métro » ?", "options": ["chūzūchē", "fēijī", "dìtiě", "huǒchē"], "answer": "dìtiě" },
-        { "type": "qcm", "question": "Comment dit-on « un billet » ?", "options": ["yī zhāng piào", "yī gè piào", "sān zhāng piào", "yī běn piào"], "answer": "yī zhāng piào" },
-        { "type": "qcm", "question": "Que signifie « wǎndiǎn » ?", "options": ["le départ", "l'arrivée", "le retard", "la gare"], "answer": "le retard" }
+        { "type": "qcm", "question": "How do you ask the price?", "options": ["Zhège duō shao qián?", "Zhège zài nǎ li?", "Nǐ hǎo ma?", "Duō shao rén?"], "answer": "Zhège duō shao qián?" },
+        { "type": "qcm", "question": "What does « tài guì le » mean?", "options": ["cheap", "too expensive", "too far", "no problem"], "answer": "too expensive" },
+        { "type": "qcm", "question": "How do you say \"the metro\"?", "options": ["chūzūchē", "fēijī", "dìtiě", "huǒchē"], "answer": "dìtiě" },
+        { "type": "qcm", "question": "How do you say \"a ticket\"?", "options": ["yī zhāng piào", "yī gè piào", "sān zhāng piào", "yī běn piào"], "answer": "yī zhāng piào" },
+        { "type": "qcm", "question": "What does « wǎndiǎn » mean?", "options": ["the departure", "the arrival", "the delay", "the station"], "answer": "the delay" }
       ]
     }
   ]

@@ -6,35 +6,35 @@
     {
       "id": "RU-A1-L01",
       "order": 1,
-      "title": "L'alphabet cyrillique",
+      "title": "The Cyrillic alphabet",
       "titleTargetLang": "Алфавит (Alfavit)",
-      "objective": "Lire l'alphabet cyrillique et prononcer les sons de base du russe.",
+      "objective": "Read the Cyrillic alphabet and pronounce the basic sounds of Russian.",
       "content": [
-        { "heading": "L'alphabet cyrillique", "text": "Le russe s'écrit avec l'alphabet cyrillique de 33 lettres. Certaines ressemblent au latin mais se prononcent autrement : « В » se lit v, « Н » se lit n, « Р » se lit r, « С » se lit s, « У » se lit ou." },
-        { "heading": "Les lettres familières", "text": "Certaines lettres se prononcent presque comme en français : а (a), е (ié), к (k), м (m), о (o), т (t). Le « ч » se lit tch, le « ш » se lit ch, le « ж » se lit j." },
-        { "heading": "La prononciation", "text": "L'accent tonique est essentiel en russe : le « o » non accentué se prononce « a ». Par exemple « молоко » (milk) se dit « malakó ». Il faut mémoriser la place de l'accent dans chaque mot." }
+        { "heading": "The Cyrillic alphabet", "text": "Russian is written with the Cyrillic alphabet of 33 letters. Some look like Latin but are pronounced differently: « В » is read v, « Н » n, « Р » r, « С » s, « У » u." },
+        { "heading": "Familiar letters", "text": "Some letters are pronounced almost like in English: а (a), е (ye), к (k), м (m), о (o), т (t). The « ч » is read ch, the « ш » sh, the « ж » zh." },
+        { "heading": "Pronunciation", "text": "Stress is essential in Russian: the unstressed « o » is pronounced « a ». For example « молоко » (milk) is said « malakó ». You must memorise the stress position in each word." }
       ],
       "vocabulary": [
-        { "word": "привет (privet)", "translation": "salut" },
-        { "word": "мама (mama)", "translation": "maman" },
-        { "word": "папа (papa)", "translation": "papa" },
-        { "word": "да (da)", "translation": "oui" },
-        { "word": "нет (net)", "translation": "non" },
-        { "word": "я (ya)", "translation": "je / moi" },
-        { "word": "ты (ty)", "translation": "tu / toi" },
-        { "word": "вода (voda)", "translation": "l'eau" },
-        { "word": "дом (dom)", "translation": "la maison" },
-        { "word": "читаю (chitayu)", "translation": "je lis" },
-        { "word": "пишу (pishu)", "translation": "j'écris" },
-        { "word": "хорошо (khorosho)", "translation": "bien" },
-        { "word": "плохо (plokho)", "translation": "mal" },
-        { "word": "буква (bukva)", "translation": "la lettre" },
-        { "word": "слово (slovo)", "translation": "le mot" }
+        { "word": "привет (privet)", "translation": "hi" },
+        { "word": "мама (mama)", "translation": "mother" },
+        { "word": "папа (papa)", "translation": "father" },
+        { "word": "да (da)", "translation": "yes" },
+        { "word": "нет (net)", "translation": "no" },
+        { "word": "я (ya)", "translation": "I / me" },
+        { "word": "ты (ty)", "translation": "you (informal)" },
+        { "word": "вода (voda)", "translation": "water" },
+        { "word": "дом (dom)", "translation": "the house" },
+        { "word": "читаю (chitayu)", "translation": "I read" },
+        { "word": "пишу (pishu)", "translation": "I write" },
+        { "word": "хорошо (khorosho)", "translation": "well / good" },
+        { "word": "плохо (plokho)", "translation": "badly" },
+        { "word": "буква (bukva)", "translation": "the letter" },
+        { "word": "слово (slovo)", "translation": "the word" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Combien de lettres compte l'alphabet russe ?", "options": ["26", "28", "33", "30"], "answer": "33" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment se lit la lettre « В » en russe ?", "options": ["b", "v", "w", "n"], "answer": "v" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « oui » en russe ?", "options": ["net", "da", "privet", "khorosho"], "answer": "da" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How many letters does the Russian alphabet have?", "options": ["26", "28", "33", "30"], "answer": "33" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How is the letter « В » read in Russian?", "options": ["b", "v", "w", "n"], "answer": "v" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"yes\" in Russian?", "options": ["net", "da", "privet", "khorosho"], "answer": "da" }
       ],
       "audioScript": "A: Как тебя зовут? (Kak tebya zovut?)\nB: Меня зовут Анна. (Menya zovut Anna.)\nA: Очень приятно! (Ochen priyatno!)",
       "cecrLevel": "A1"
@@ -42,35 +42,35 @@
     {
       "id": "RU-A1-L02",
       "order": 2,
-      "title": "Les salutations",
+      "title": "Greetings",
       "titleTargetLang": "Приветствия (Privetstviya)",
-      "objective": "Saluer, se présenter et remercier en russe.",
+      "objective": "Greet, introduce yourself and say thank you in Russian.",
       "content": [
-        { "heading": "Les salutations", "text": "« Здравствуйте » (zdravstvuyte) est le bonjour formel et « привет » (privet) le salut amical. « Доброе утро » signifie bonjour le matin, « добрый вечер » bonsoir." },
-        { "heading": "Demander des nouvelles", "text": "« Как дела? » (kak dela) signifie comment vont les affaires ? On répond « хорошо » (bien) ou « нормально » (ça va). « Спасибо » (spasibo) signifie merci." },
-        { "heading": "Se présenter", "text": "« Меня зовут … » (menya zovut) signifie je m'appelle. Pour demander : « Как тебя зовут? » (comment t'appelles-tu ?). « Очень приятно » signifie enchanté." }
+        { "heading": "Greetings", "text": "« Здравствуйте » (zdravstvuyte) is the formal hello and « привет » (privet) the friendly hi. « Доброе утро » means good morning, « добрый вечер » good evening." },
+        { "heading": "Asking how someone is", "text": "« Как дела? » (kak dela) means how are things? Reply « хорошо » (well) or « нормально » (fine). « Спасибо » (spasibo) means thank you." },
+        { "heading": "Introducing yourself", "text": "« Меня зовут … » (menya zovut) means my name is. To ask: « Как тебя зовут? » (what is your name?). « Очень приятно » means pleased to meet you." }
       ],
       "vocabulary": [
-        { "word": "здравствуйте (zdravstvuyte)", "translation": "bonjour (formel)" },
-        { "word": "привет (privet)", "translation": "salut" },
-        { "word": "доброе утро (dobroye utro)", "translation": "bonjour le matin" },
-        { "word": "добрый вечер (dobryy vecher)", "translation": "bonsoir" },
-        { "word": "как дела? (kak dela)", "translation": "comment ça va ?" },
-        { "word": "хорошо (khorosho)", "translation": "bien" },
-        { "word": "спасибо (spasibo)", "translation": "merci" },
-        { "word": "пожалуйста (pozhaluysta)", "translation": "s'il vous plaît / de rien" },
-        { "word": "до свидания (do svidaniya)", "translation": "au revoir" },
-        { "word": "пока (poka)", "translation": "salut / à plus tard" },
-        { "word": "меня зовут (menya zovut)", "translation": "je m'appelle" },
-        { "word": "очень приятно (ochen priyatno)", "translation": "enchanté" },
-        { "word": "извините (izvinite)", "translation": "excusez-moi" },
-        { "word": "да (da)", "translation": "oui" },
-        { "word": "нет (net)", "translation": "non" }
+        { "word": "здравствуйте (zdravstvuyte)", "translation": "hello (formal)" },
+        { "word": "привет (privet)", "translation": "hi" },
+        { "word": "доброе утро (dobroye utro)", "translation": "good morning" },
+        { "word": "добрый вечер (dobryy vecher)", "translation": "good evening" },
+        { "word": "как дела? (kak dela)", "translation": "how are you?" },
+        { "word": "хорошо (khorosho)", "translation": "well" },
+        { "word": "спасибо (spasibo)", "translation": "thank you" },
+        { "word": "пожалуйста (pozhaluysta)", "translation": "please / you're welcome" },
+        { "word": "до свидания (do svidaniya)", "translation": "goodbye" },
+        { "word": "пока (poka)", "translation": "bye / see you later" },
+        { "word": "меня зовут (menya zovut)", "translation": "my name is" },
+        { "word": "очень приятно (ochen priyatno)", "translation": "pleased to meet you" },
+        { "word": "извините (izvinite)", "translation": "excuse me" },
+        { "word": "да (da)", "translation": "yes" },
+        { "word": "нет (net)", "translation": "no" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « bonjour » de façon formelle ?", "options": ["привет", "здравствуйте", "пока", "спасибо"], "answer": "здравствуйте" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « спасибо » ?", "options": ["bonjour", "merci", "au revoir", "oui"], "answer": "merci" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je m'appelle Anna » ?", "options": ["меня зовут Анна", "я Анна зову", "моя имя Анна", "Анна меня"], "answer": "меня зовут Анна" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"hello\" formally?", "options": ["привет", "здравствуйте", "пока", "спасибо"], "answer": "здравствуйте" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « спасибо » mean?", "options": ["hello", "thank you", "goodbye", "yes"], "answer": "thank you" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"my name is Anna\"?", "options": ["меня зовут Анна", "я Анна зову", "моя имя Анна", "Анна меня"], "answer": "меня зовут Анна" }
       ],
       "audioScript": "A: Здравствуйте! Как дела?\nB: Здравствуйте! Хорошо, спасибо. А у вас?\nA: Тоже хорошо. Меня зовут Анна.\nB: Очень приятно!",
       "cecrLevel": "A1"
@@ -78,35 +78,35 @@
     {
       "id": "RU-A1-L03",
       "order": 3,
-      "title": "Les nombres",
+      "title": "Numbers",
       "titleTargetLang": "Числа (Chisla)",
-      "objective": "Compter et donner son numéro de téléphone en russe.",
+      "objective": "Count and give your phone number in Russian.",
       "content": [
-        { "heading": "Les nombres de 1 à 10", "text": "Les nombres de base : один (odin), два (dva), три (tri), четыре (chetyre), пять (pyat), шесть (shest), семь (sem), восемь (vosem), девять (devyat), десять (desyat)." },
-        { "heading": "Les dizaines", "text": "Les dizaines : двадцать (dvadtsat, 20), тридцать (tridtsat, 30), сорок (sorok, 40), пятьдесят (pyatdesyat, 50). Le nombre 40 est irrégulier : « сорок » et non « четыредцать »." },
-        { "heading": "Le téléphone et les prix", "text": "Le numéro de téléphone se lit chiffre par chiffre. « Два » (deux) et « двенадцать » (douze) se distinguent facilement. Pour un prix : « Это стоит … рублей » (cela coûte … roubles)." }
+        { "heading": "Numbers from 1 to 10", "text": "The basic numbers: один (odin), два (dva), три (tri), четыре (chetyre), пять (pyat), шесть (shest), семь (sem), восемь (vosem), девять (devyat), десять (desyat)." },
+        { "heading": "The tens", "text": "The tens: двадцать (dvadtsat, 20), тридцать (tridtsat, 30), сорок (sorok, 40), пятьдесят (pyatdesyat, 50). The number 40 is irregular: « сорок » and not « четыредцать »." },
+        { "heading": "The telephone and prices", "text": "A phone number is read digit by digit. « Два » (two) and « двенадцать » (twelve) are easily distinguished. For a price: « Это стоит … рублей » (this costs … roubles)." }
       ],
       "vocabulary": [
-        { "word": "один (odin)", "translation": "un" },
-        { "word": "два (dva)", "translation": "deux" },
-        { "word": "три (tri)", "translation": "trois" },
-        { "word": "четыре (chetyre)", "translation": "quatre" },
-        { "word": "пять (pyat)", "translation": "cinq" },
+        { "word": "один (odin)", "translation": "one" },
+        { "word": "два (dva)", "translation": "two" },
+        { "word": "три (tri)", "translation": "three" },
+        { "word": "четыре (chetyre)", "translation": "four" },
+        { "word": "пять (pyat)", "translation": "five" },
         { "word": "шесть (shest)", "translation": "six" },
-        { "word": "семь (sem)", "translation": "sept" },
-        { "word": "восемь (vosem)", "translation": "huit" },
-        { "word": "девять (devyat)", "translation": "neuf" },
-        { "word": "десять (desyat)", "translation": "dix" },
-        { "word": "двадцать (dvadtsat)", "translation": "vingt" },
-        { "word": "сорок (sorok)", "translation": "quarante" },
-        { "word": "номер (nomer)", "translation": "le numéro" },
-        { "word": "телефон (telefon)", "translation": "le téléphone" },
-        { "word": "рубль (rubl)", "translation": "le rouble" }
+        { "word": "семь (sem)", "translation": "seven" },
+        { "word": "восемь (vosem)", "translation": "eight" },
+        { "word": "девять (devyat)", "translation": "nine" },
+        { "word": "десять (desyat)", "translation": "ten" },
+        { "word": "двадцать (dvadtsat)", "translation": "twenty" },
+        { "word": "сорок (sorok)", "translation": "forty" },
+        { "word": "номер (nomer)", "translation": "the number" },
+        { "word": "телефон (telefon)", "translation": "the telephone" },
+        { "word": "рубль (rubl)", "translation": "the rouble" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « deux » en russe ?", "options": ["odin", "dva", "tri", "shest"], "answer": "dva" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « vingt » ?", "options": ["desyat", "dvadtsat", "sorok", "pyat"], "answer": "dvadtsat" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « quarante » ?", "options": ["sorok", "chetyre", "tridtsat", "pyatdesyat"], "answer": "sorok" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"two\" in Russian?", "options": ["odin", "dva", "tri", "shest"], "answer": "dva" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"twenty\"?", "options": ["desyat", "dvadtsat", "sorok", "pyat"], "answer": "dvadtsat" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"forty\"?", "options": ["sorok", "chetyre", "tridtsat", "pyatdesyat"], "answer": "sorok" }
       ],
       "audioScript": "A: Какой у тебя номер телефона?\nB: Мой номер: семь, шесть, ноль, один, два, три.\nA: Спасибо!",
       "cecrLevel": "A1"
@@ -114,35 +114,35 @@
     {
       "id": "RU-A1-L04",
       "order": 4,
-      "title": "La famille",
+      "title": "The family",
       "titleTargetLang": "Семья (Semya)",
-      "objective": "Présenter sa famille et utiliser les possessifs мой / моя.",
+      "objective": "Introduce your family and use the possessives мой / моя.",
       "content": [
-        { "heading": "La famille proche", "text": "Les proches : мама (mama, maman), папа (papa, papa), брат (brat, frère), сестра (sestra, sœur), сын (syn, fils), дочь (doch, fille). « Родители » (roditeli) désigne les parents." },
-        { "heading": "La famille élargie", "text": "Plus loin : дедушка (dedushka, grand-père), бабушка (babushka, grand-mère), дядя (dyadya, oncle), тётя (tyotya, tante). « Семья » signifie la famille." },
-        { "heading": "Les possessifs", "text": "En russe, « мой » (masculin), « моя » (féminin), « моё » (neutre) signifient mon/ma. Exemples : мой брат (mon frère), моя сестра (ma sœur). « Твой/твоя » expriment ton/ta." }
+        { "heading": "The close family", "text": "Close relatives: мама (mama, mother), папа (papa, father), брат (brat, brother), сестра (sestra, sister), сын (syn, son), дочь (doch, daughter). « Родители » (roditeli) means the parents." },
+        { "heading": "The extended family", "text": "Further: дедушка (dedushka, grandfather), бабушка (babushka, grandmother), дядя (dyadya, uncle), тётя (tyotya, aunt). « Семья » means the family." },
+        { "heading": "Possessives", "text": "In Russian, « мой » (masculine), « моя » (feminine), « моё » (neuter) mean my. Examples: мой брат (my brother), моя сестра (my sister). « Твой/твоя » express your." }
       ],
       "vocabulary": [
-        { "word": "мама (mama)", "translation": "maman" },
-        { "word": "папа (papa)", "translation": "papa" },
-        { "word": "родители (roditeli)", "translation": "les parents" },
-        { "word": "брат (brat)", "translation": "le frère" },
-        { "word": "сестра (sestra)", "translation": "la sœur" },
-        { "word": "дедушка (dedushka)", "translation": "le grand-père" },
-        { "word": "бабушка (babushka)", "translation": "la grand-mère" },
-        { "word": "дядя (dyadya)", "translation": "l'oncle" },
-        { "word": "тётя (tyotya)", "translation": "la tante" },
-        { "word": "сын (syn)", "translation": "le fils" },
-        { "word": "дочь (doch)", "translation": "la fille" },
-        { "word": "семья (semya)", "translation": "la famille" },
-        { "word": "мой (moy)", "translation": "mon (masculin)" },
-        { "word": "моя (moya)", "translation": "ma (féminin)" },
-        { "word": "ребёнок (rebyonok)", "translation": "l'enfant" }
+        { "word": "мама (mama)", "translation": "mother" },
+        { "word": "папа (papa)", "translation": "father" },
+        { "word": "родители (roditeli)", "translation": "the parents" },
+        { "word": "брат (brat)", "translation": "the brother" },
+        { "word": "сестра (sestra)", "translation": "the sister" },
+        { "word": "дедушка (dedushka)", "translation": "the grandfather" },
+        { "word": "бабушка (babushka)", "translation": "the grandmother" },
+        { "word": "дядя (dyadya)", "translation": "the uncle" },
+        { "word": "тётя (tyotya)", "translation": "the aunt" },
+        { "word": "сын (syn)", "translation": "the son" },
+        { "word": "дочь (doch)", "translation": "the daughter" },
+        { "word": "семья (semya)", "translation": "the family" },
+        { "word": "мой (moy)", "translation": "my (masculine)" },
+        { "word": "моя (moya)", "translation": "my (feminine)" },
+        { "word": "ребёнок (rebyonok)", "translation": "the child" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « la mère » en russe ?", "options": ["папа", "мама", "сестра", "тётя"], "answer": "мама" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « mon frère » ?", "options": ["моя брат", "мой брат", "твой брат", "мой сестра"], "answer": "мой брат" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « ma sœur » ?", "options": ["моя сестра", "мой сестра", "моя брат", "моё сестра"], "answer": "моя сестра" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"the mother\" in Russian?", "options": ["папа", "мама", "сестра", "тётя"], "answer": "мама" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"my brother\"?", "options": ["моя брат", "мой брат", "твой брат", "мой сестра"], "answer": "мой брат" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"my sister\"?", "options": ["моя сестра", "мой сестра", "моя брат", "моё сестра"], "answer": "моя сестра" }
       ],
       "audioScript": "A: У тебя большая семья?\nB: Да, у меня есть мама, папа, брат и сестра.\nA: Моя семья маленькая: мама и я.",
       "cecrLevel": "A1"
@@ -150,35 +150,35 @@
     {
       "id": "RU-A1-L05",
       "order": 5,
-      "title": "La routine quotidienne",
+      "title": "Daily routine",
       "titleTargetLang": "Распорядок дня (Rasporyadok dnya)",
-      "objective": "Décrire son quotidien et utiliser le présent des verbes russes.",
+      "objective": "Describe your daily routine and use the present tense of Russian verbs.",
       "content": [
-        { "heading": "Le matin", "text": "Le matin, on « просыпаюсь » (ya prosypayus, je me réveille) et « завтракаю » (ya zavtrakayu, je prends le petit-déjeuner). « Я иду на работу » signifie je vais au travail." },
-        { "heading": "Les verbes au présent", "text": "Le présent russe est simple : on ajoute des terminaisons à la base du verbe. Exemple : работать (travailler) → я работаю, ты работаешь, он работает. Il n'y a qu'un présent." },
-        { "heading": "Le soir", "text": "Le soir on « возвращаюсь домой » (je rentre à la maison), « ужинаю » (je dîne) et « сплю » (je dors). « Утром » signifie le matin, « вечером » le soir." }
+        { "heading": "The morning", "text": "In the morning, you « просыпаюсь » (prosypayus, I wake up) and « завтракаю » (zavtrakayu, I have breakfast). « Я иду на работу » means I go to work." },
+        { "heading": "Present-tense verbs", "text": "The Russian present tense is simple: endings are added to the verb stem. Example: работать (to work) → я работаю, ты работаешь, он работает. There is only one present." },
+        { "heading": "The evening", "text": "In the evening you « возвращаюсь домой » (I go home), « ужинаю » (I have dinner) and « сплю » (I sleep). « Утром » means in the morning, « вечером » in the evening." }
       ],
       "vocabulary": [
-        { "word": "просыпаюсь (prosypayus)", "translation": "je me réveille" },
-        { "word": "завтракаю (zavtrakayu)", "translation": "je prends le petit-déjeuner" },
-        { "word": "работаю (rabotayu)", "translation": "je travaille" },
-        { "word": "иду (idu)", "translation": "je vais" },
-        { "word": "работа (rabota)", "translation": "le travail" },
-        { "word": "возвращаюсь (vozvrashchayus)", "translation": "je rentre" },
-        { "word": "домой (domoy)", "translation": "à la maison" },
-        { "word": "ужинаю (uzhinayu)", "translation": "je dîne" },
-        { "word": "сплю (splyu)", "translation": "je dors" },
-        { "word": "утром (utrom)", "translation": "le matin" },
-        { "word": "вечером (vecherom)", "translation": "le soir" },
-        { "word": "сегодня (segodnya)", "translation": "aujourd'hui" },
-        { "word": "завтра (zavtra)", "translation": "demain" },
-        { "word": "вчера (vchera)", "translation": "hier" },
-        { "word": "час (chas)", "translation": "l'heure" }
+        { "word": "просыпаюсь (prosypayus)", "translation": "I wake up" },
+        { "word": "завтракаю (zavtrakayu)", "translation": "I have breakfast" },
+        { "word": "работаю (rabotayu)", "translation": "I work" },
+        { "word": "иду (idu)", "translation": "I go" },
+        { "word": "работа (rabota)", "translation": "work" },
+        { "word": "возвращаюсь (vozvrashchayus)", "translation": "I return" },
+        { "word": "домой (domoy)", "translation": "home" },
+        { "word": "ужинаю (uzhinayu)", "translation": "I have dinner" },
+        { "word": "сплю (splyu)", "translation": "I sleep" },
+        { "word": "утром (utrom)", "translation": "in the morning" },
+        { "word": "вечером (vecherom)", "translation": "in the evening" },
+        { "word": "сегодня (segodnya)", "translation": "today" },
+        { "word": "завтра (zavtra)", "translation": "tomorrow" },
+        { "word": "вчера (vchera)", "translation": "yesterday" },
+        { "word": "час (chas)", "translation": "the hour" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je travaille » en russe ?", "options": ["я сплю", "я работаю", "я иду", "я ужинаю"], "answer": "я работаю" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le matin » ?", "options": ["вечером", "утром", "сегодня", "завтра"], "answer": "утром" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « домой » ?", "options": ["la maison", "à la maison", "le travail", "l'école"], "answer": "à la maison" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"I work\" in Russian?", "options": ["я сплю", "я работаю", "я иду", "я ужинаю"], "answer": "я работаю" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"in the morning\"?", "options": ["вечером", "утром", "сегодня", "завтра"], "answer": "утром" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « домой » mean?", "options": ["the house", "home", "work", "school"], "answer": "home" }
       ],
       "audioScript": "A: Во сколько ты встаёшь? (Vo skolko ty vstayosh?)\nB: Я встаю в семь часов. (Ya vstayu v sem chasov.)\nA: А когда ты работаешь?\nB: Я работаю с девяти до шести.",
       "cecrLevel": "A1"
@@ -186,35 +186,35 @@
     {
       "id": "RU-A1-L06",
       "order": 6,
-      "title": "La nourriture et les boissons",
+      "title": "Food and drink",
       "titleTargetLang": "Еда и напитки (Yeda i napitki)",
-      "objective": "Commander à manger, exprimer ses goûts et utiliser « хотеть » (vouloir).",
+      "objective": "Order food, express your tastes and use « хотеть » (to want).",
       "content": [
-        { "heading": "Les aliments de base", "text": "Les aliments : хлеб (khleb, pain), рис (ris, riz), мясо (myaso, viande), курица (kuritsa, poulet), рыба (ryba, poisson), овощи (ovoshchi, légumes). Boissons : вода (voda, eau), чай (chay, thé), кофе (kofe, café), молоко (moloko, lait)." },
-        { "heading": "Au restaurant", "text": "Pour commander : « Я хочу … » (ya khochu, je veux). Exemple : « Я хочу чай, пожалуйста ». Pour demander : « Можно …? » (puis-je avoir ?). L'addition : « Счёт, пожалуйста »." },
-        { "heading": "Exprimer ses goûts", "text": "« Я люблю … » (ya lyublyu) signifie j'aime. Exemple : « Я люблю кофе » (j'aime le café). La négation : « Я не люблю чай » (je n'aime pas le thé). « Вкусно » signifie c'est bon." }
+        { "heading": "Basic foods", "text": "Foods: хлеб (khleb, bread), рис (ris, rice), мясо (myaso, meat), курица (kuritsa, chicken), рыба (ryba, fish), овощи (ovoshchi, vegetables). Drinks: вода (voda, water), чай (chay, tea), кофе (kofe, coffee), молоко (moloko, milk)." },
+        { "heading": "At the restaurant", "text": "To order: « Я хочу … » (ya khochu, I want). Example: « Я хочу чай, пожалуйста ». To ask: « Можно …? » (may I have …?). The bill: « Счёт, пожалуйста »." },
+        { "heading": "Expressing your tastes", "text": "« Я люблю … » (ya lyublyu) means I like. Example: « Я люблю кофе » (I like coffee). The negative: « Я не люблю чай » (I don't like tea). « Вкусно » means it's good." }
       ],
       "vocabulary": [
-        { "word": "хлеб (khleb)", "translation": "le pain" },
-        { "word": "рис (ris)", "translation": "le riz" },
-        { "word": "мясо (myaso)", "translation": "la viande" },
-        { "word": "курица (kuritsa)", "translation": "le poulet" },
-        { "word": "рыба (ryba)", "translation": "le poisson" },
-        { "word": "вода (voda)", "translation": "l'eau" },
-        { "word": "чай (chay)", "translation": "le thé" },
-        { "word": "кофе (kofe)", "translation": "le café" },
-        { "word": "молоко (moloko)", "translation": "le lait" },
-        { "word": "я хочу (ya khochu)", "translation": "je veux" },
-        { "word": "можно (mozhno)", "translation": "c'est possible / puis-je" },
-        { "word": "счёт (schyot)", "translation": "l'addition" },
-        { "word": "я люблю (ya lyublyu)", "translation": "j'aime" },
-        { "word": "вкусно (vkusno)", "translation": "c'est bon / délicieux" },
-        { "word": "горячий (goryachiy)", "translation": "chaud" }
+        { "word": "хлеб (khleb)", "translation": "bread" },
+        { "word": "рис (ris)", "translation": "rice" },
+        { "word": "мясо (myaso)", "translation": "meat" },
+        { "word": "курица (kuritsa)", "translation": "chicken" },
+        { "word": "рыба (ryba)", "translation": "fish" },
+        { "word": "вода (voda)", "translation": "water" },
+        { "word": "чай (chay)", "translation": "tea" },
+        { "word": "кофе (kofe)", "translation": "coffee" },
+        { "word": "молоко (moloko)", "translation": "milk" },
+        { "word": "я хочу (ya khochu)", "translation": "I want" },
+        { "word": "можно (mozhno)", "translation": "may I / it is possible" },
+        { "word": "счёт (schyot)", "translation": "the bill" },
+        { "word": "я люблю (ya lyublyu)", "translation": "I like" },
+        { "word": "вкусно (vkusno)", "translation": "it's good / delicious" },
+        { "word": "горячий (goryachiy)", "translation": "hot" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le pain » en russe ?", "options": ["рис", "хлеб", "мясо", "рыба"], "answer": "хлеб" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment commande-t-on poliment ?", "options": ["Я хочу чай, пожалуйста", "Чай вкусно", "Я люблю чай", "Можно чай и всё"], "answer": "Я хочу чай, пожалуйста" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « счёт, пожалуйста » ?", "options": ["la table, s'il vous plaît", "l'addition, s'il vous plaît", "le menu, s'il vous plaît", "le café, s'il vous plaît"], "answer": "l'addition, s'il vous plaît" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"bread\" in Russian?", "options": ["рис", "хлеб", "мясо", "рыба"], "answer": "хлеб" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you order politely?", "options": ["Я хочу чай, пожалуйста", "Чай вкусно", "Я люблю чай", "Можно чай и всё"], "answer": "Я хочу чай, пожалуйста" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « счёт, пожалуйста » mean?", "options": ["the table, please", "the bill, please", "the menu, please", "the coffee, please"], "answer": "the bill, please" }
       ],
       "audioScript": "A: Что вы хотите?\nB: Я хочу рис и курицу.\nA: А что пить?\nB: Стакан воды, пожалуйста.",
       "cecrLevel": "A1"
@@ -222,35 +222,35 @@
     {
       "id": "RU-A1-L07",
       "order": 7,
-      "title": "Le logement",
+      "title": "Housing",
       "titleTargetLang": "Жильё (Zhil'yo)",
-      "objective": "Décrire son logement et s'orienter dans la ville.",
+      "objective": "Describe your home and find your way around the city.",
       "content": [
-        { "heading": "Le logement", "text": "On vit dans « квартира » (kvartira, appartement) ou « дом » (dom, maison). Les pièces : кухня (kukhnya, cuisine), спальня (spalnya, chambre), ванная (vannaya, salle de bains), гостиная (gostinaya, salon)." },
-        { "heading": "Les meubles", "text": "Les meubles : стол (stol, table), стул (stul, chaise), кровать (krovat, lit), шкаф (shkaf, armoire). « В квартире есть … » signifie il y a dans l'appartement." },
-        { "heading": "S'orienter", "text": "Pour s'orienter : « Где …? » (où est ?), « налево » (nalyevo, à gauche), « направо » (napravo, à droite), « прямо » (pryamo, tout droit). « Где находится банк? » demande où est la banque." }
+        { "heading": "Housing", "text": "You live in « квартира » (kvartira, flat) or « дом » (dom, house). The rooms: кухня (kukhnya, kitchen), спальня (spalnya, bedroom), ванная (vannaya, bathroom), гостиная (gostinaya, living room)." },
+        { "heading": "Furniture", "text": "Furniture: стол (stol, table), стул (stul, chair), кровать (krovat, bed), шкаф (shkaf, cupboard). « В квартире есть … » means there is in the flat." },
+        { "heading": "Finding your way", "text": "To find your way: « Где …? » (where is …?), « налево » (nalyevo, left), « направо » (napravo, right), « прямо » (pryamo, straight on). « Где находится банк? » asks where the bank is." }
       ],
       "vocabulary": [
-        { "word": "квартира (kvartira)", "translation": "l'appartement" },
-        { "word": "дом (dom)", "translation": "la maison" },
-        { "word": "кухня (kukhnya)", "translation": "la cuisine" },
-        { "word": "спальня (spalnya)", "translation": "la chambre" },
-        { "word": "ванная (vannaya)", "translation": "la salle de bains" },
-        { "word": "стол (stol)", "translation": "la table" },
-        { "word": "стул (stul)", "translation": "la chaise" },
-        { "word": "кровать (krovat)", "translation": "le lit" },
-        { "word": "налево (nalyevo)", "translation": "à gauche" },
-        { "word": "направо (napravo)", "translation": "à droite" },
-        { "word": "прямо (pryamo)", "translation": "tout droit" },
-        { "word": "где (gde)", "translation": "où" },
-        { "word": "банк (bank)", "translation": "la banque" },
-        { "word": "магазин (magazin)", "translation": "le magasin" },
-        { "word": "больница (bolnitsa)", "translation": "l'hôpital" }
+        { "word": "квартира (kvartira)", "translation": "the flat" },
+        { "word": "дом (dom)", "translation": "the house" },
+        { "word": "кухня (kukhnya)", "translation": "the kitchen" },
+        { "word": "спальня (spalnya)", "translation": "the bedroom" },
+        { "word": "ванная (vannaya)", "translation": "the bathroom" },
+        { "word": "стол (stol)", "translation": "the table" },
+        { "word": "стул (stul)", "translation": "the chair" },
+        { "word": "кровать (krovat)", "translation": "the bed" },
+        { "word": "налево (nalyevo)", "translation": "left" },
+        { "word": "направо (napravo)", "translation": "right" },
+        { "word": "прямо (pryamo)", "translation": "straight on" },
+        { "word": "где (gde)", "translation": "where" },
+        { "word": "банк (bank)", "translation": "the bank" },
+        { "word": "магазин (magazin)", "translation": "the shop" },
+        { "word": "больница (bolnitsa)", "translation": "the hospital" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « l'appartement » en russe ?", "options": ["дом", "квартира", "комната", "кухня"], "answer": "квартира" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on « où est la banque ? »", "options": ["Где банк?", "Что банк?", "Как банк?", "Когда банк?"], "answer": "Где банк?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « направо » ?", "options": ["à gauche", "à droite", "tout droit", "derrière"], "answer": "à droite" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"the flat\" in Russian?", "options": ["дом", "квартира", "комната", "кухня"], "answer": "квартира" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask \"where is the bank?\"", "options": ["Где банк?", "Что банк?", "Как банк?", "Когда банк?"], "answer": "Где банк?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « направо » mean?", "options": ["left", "right", "straight on", "behind"], "answer": "right" }
       ],
       "audioScript": "A: Скажите, где банк?\nB: Идите прямо, потом налево.\nA: Прямо и налево. Спасибо!\nB: Пожалуйста!",
       "cecrLevel": "A1"
@@ -258,35 +258,35 @@
     {
       "id": "RU-A1-L08",
       "order": 8,
-      "title": "L'heure et le temps",
+      "title": "Time and the days",
       "titleTargetLang": "Время (Vremya)",
-      "objective": "Donner l'heure et les jours de la semaine, fixer un rendez-vous.",
+      "objective": "Give the time and the days of the week, and make an appointment.",
       "content": [
-        { "heading": "L'heure", "text": "On demande l'heure avec « Который час? » (kotorуй chas, quelle heure est-il ?). On répond « Сейчас три часа » (il est trois heures). « Половина » signifie la demie : половина четвёртого (trois heures et demie)." },
-        { "heading": "Les jours de la semaine", "text": "Les jours : понедельник (ponedelnik, lundi), вторник (vtornik, mardi), среда (sreda, mercredi), четверг (chetverg, jeudi), пятница (pyatnitsa, vendredi), суббота (subbota, samedi), воскресенье (voskresenye, dimanche)." },
-        { "heading": "Fixer un rendez-vous", "text": "« Встреча » signifie la rencontre. « Давай встретимся в три часа » signifie retrouvons-nous à trois heures. « В понедельник » précise lundi." }
+        { "heading": "The time", "text": "Ask the time with « Который час? » (kotoryy chas, what time is it?). Reply « Сейчас три часа » (it is three o'clock). « Половина » means half past: половина четвёртого (half past three)." },
+        { "heading": "The days of the week", "text": "The days: понедельник (ponedelnik, Monday), вторник (vtornik, Tuesday), среда (sreda, Wednesday), четверг (chetverg, Thursday), пятница (pyatnitsa, Friday), суббота (subbota, Saturday), воскресенье (voskresenye, Sunday)." },
+        { "heading": "Making an appointment", "text": "« Встреча » means the meeting. « Давай встретимся в три часа » means let's meet at three o'clock. « В понедельник » specifies Monday." }
       ],
       "vocabulary": [
-        { "word": "Который час?", "translation": "Quelle heure est-il ?" },
-        { "word": "час (chas)", "translation": "l'heure" },
-        { "word": "половина (polovina)", "translation": "la demie" },
-        { "word": "понедельник (ponedelnik)", "translation": "lundi" },
-        { "word": "вторник (vtornik)", "translation": "mardi" },
-        { "word": "среда (sreda)", "translation": "mercredi" },
-        { "word": "пятница (pyatnitsa)", "translation": "vendredi" },
-        { "word": "воскресенье (voskresenye)", "translation": "dimanche" },
-        { "word": "сегодня (segodnya)", "translation": "aujourd'hui" },
-        { "word": "завтра (zavtra)", "translation": "demain" },
-        { "word": "вчера (vchera)", "translation": "hier" },
-        { "word": "встреча (vstrecha)", "translation": "la rencontre" },
-        { "word": "давай встретимся", "translation": "retrouvons-nous" },
-        { "word": "рано (rano)", "translation": "tôt" },
-        { "word": "поздно (pozdno)", "translation": "tard" }
+        { "word": "Который час?", "translation": "What time is it?" },
+        { "word": "час (chas)", "translation": "the hour" },
+        { "word": "половина (polovina)", "translation": "half past" },
+        { "word": "понедельник (ponedelnik)", "translation": "Monday" },
+        { "word": "вторник (vtornik)", "translation": "Tuesday" },
+        { "word": "среда (sreda)", "translation": "Wednesday" },
+        { "word": "пятница (pyatnitsa)", "translation": "Friday" },
+        { "word": "воскресенье (voskresenye)", "translation": "Sunday" },
+        { "word": "сегодня (segodnya)", "translation": "today" },
+        { "word": "завтра (zavtra)", "translation": "tomorrow" },
+        { "word": "вчера (vchera)", "translation": "yesterday" },
+        { "word": "встреча (vstrecha)", "translation": "the meeting" },
+        { "word": "давай встретимся", "translation": "let's meet" },
+        { "word": "рано (rano)", "translation": "early" },
+        { "word": "поздно (pozdno)", "translation": "late" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on l'heure ?", "options": ["Который час?", "Где время?", "Что час?", "Сколько ты?"], "answer": "Который час?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « lundi » ?", "options": ["вторник", "понедельник", "среда", "пятница"], "answer": "понедельник" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « встреча » ?", "options": ["la gare", "la rencontre", "l'heure", "le retard"], "answer": "la rencontre" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask the time?", "options": ["Который час?", "Где время?", "Что час?", "Сколько ты?"], "answer": "Который час?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"Monday\"?", "options": ["вторник", "понедельник", "среда", "пятница"], "answer": "понедельник" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « встреча » mean?", "options": ["the station", "the meeting", "the hour", "the delay"], "answer": "the meeting" }
       ],
       "audioScript": "A: Который час?\nB: Сейчас половина пятого.\nA: Давай встретимся завтра в пять?\nB: Хорошо, завтра в пять часов.",
       "cecrLevel": "A1"
@@ -294,35 +294,35 @@
     {
       "id": "RU-A1-L09",
       "order": 9,
-      "title": "Les achats",
+      "title": "Shopping",
       "titleTargetLang": "Покупки (Pokupki)",
-      "objective": "Demander un prix, acheter et payer dans un magasin.",
+      "objective": "Ask a price, buy and pay in a shop.",
       "content": [
-        { "heading": "Au magasin", "text": "Le vendeur demande « Чем могу помочь? » (puis-je vous aider ?). On répond « Я просто смотрю » (je regarde simplement) ou « Сколько это стоит? » (combien coûte ceci ?)." },
-        { "heading": "Demander un prix", "text": "« Сколько стоит? » (skolko stoit) signifie combien coûte. La réponse : « Это стоит … рублей » (cela coûte … roubles). « Дорого » signifie cher, « дёшево » bon marché." },
-        { "heading": "Payer", "text": "Pour payer : « Можно заплатить картой? » (puis-je payer par carte ?). « Наличными » signifie en espèces. « Я возьму это » signifie je prends ceci." }
+        { "heading": "At the shop", "text": "The seller asks « Чем могу помочь? » (may I help you?). Reply « Я просто смотрю » (I am just looking) or « Сколько это стоит? » (how much is this?)." },
+        { "heading": "Asking a price", "text": "« Сколько стоит? » (skolko stoit) means how much does it cost. The answer: « Это стоит … рублей » (this costs … roubles). « Дорого » means expensive, « дёшево » cheap." },
+        { "heading": "Paying", "text": "To pay: « Можно заплатить картой? » (may I pay by card?). « Наличными » means in cash. « Я возьму это » means I will take this." }
       ],
       "vocabulary": [
-        { "word": "Сколько стоит?", "translation": "Combien ça coûte ?" },
-        { "word": "дорого (dorogo)", "translation": "cher" },
-        { "word": "дёшево (doshovo)", "translation": "bon marché" },
-        { "word": "рубль (rubl)", "translation": "le rouble" },
-        { "word": "картой (kartoy)", "translation": "par carte" },
-        { "word": "наличными (nalichnymi)", "translation": "en espèces" },
-        { "word": "я возьму (ya vozmu)", "translation": "je prends" },
-        { "word": "магазин (magazin)", "translation": "le magasin" },
-        { "word": "рынок (rynok)", "translation": "le marché" },
-        { "word": "одежда (odezhda)", "translation": "les vêtements" },
-        { "word": "обувь (obuv)", "translation": "les chaussures" },
-        { "word": "размер (razmer)", "translation": "la taille" },
-        { "word": "Чем могу помочь?", "translation": "Puis-je vous aider ?" },
-        { "word": "Я просто смотрю", "translation": "Je regarde simplement" },
-        { "word": "чек (chek)", "translation": "le ticket de caisse" }
+        { "word": "Сколько стоит?", "translation": "How much does it cost?" },
+        { "word": "дорого (dorogo)", "translation": "expensive" },
+        { "word": "дёшево (doshovo)", "translation": "cheap" },
+        { "word": "рубль (rubl)", "translation": "the rouble" },
+        { "word": "картой (kartoy)", "translation": "by card" },
+        { "word": "наличными (nalichnymi)", "translation": "in cash" },
+        { "word": "я возьму (ya vozmu)", "translation": "I will take" },
+        { "word": "магазин (magazin)", "translation": "the shop" },
+        { "word": "рынок (rynok)", "translation": "the market" },
+        { "word": "одежда (odezhda)", "translation": "clothes" },
+        { "word": "обувь (obuv)", "translation": "shoes" },
+        { "word": "размер (razmer)", "translation": "the size" },
+        { "word": "Чем могу помочь?", "translation": "May I help you?" },
+        { "word": "Я просто смотрю", "translation": "I am just looking" },
+        { "word": "чек (chek)", "translation": "the receipt" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment demande-t-on le prix ?", "options": ["Сколько стоит?", "Который час?", "Где магазин?", "Как дела?"], "answer": "Сколько стоит?" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « дёшево » ?", "options": ["cher", "bon marché", "joli", "nouveau"], "answer": "bon marché" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « je prends ceci » ?", "options": ["я возьму это", "я люблю это", "я хочу это", "я вижу это"], "answer": "я возьму это" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you ask the price?", "options": ["Сколько стоит?", "Который час?", "Где магазин?", "Как дела?"], "answer": "Сколько стоит?" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « дёшево » mean?", "options": ["expensive", "cheap", "nice", "new"], "answer": "cheap" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"I will take this\"?", "options": ["я возьму это", "я люблю это", "я хочу это", "я вижу это"], "answer": "я возьму это" }
       ],
       "audioScript": "A: Сколько стоит эта рубашка?\nB: Она стоит двадцать долларов.\nA: Хорошо, я возьму её. Можно заплатить картой?\nB: Да, конечно.",
       "cecrLevel": "A1"
@@ -330,35 +330,35 @@
     {
       "id": "RU-A1-L10",
       "order": 10,
-      "title": "Les voyages et les transports",
+      "title": "Travel and transport",
       "titleTargetLang": "Путешествия и транспорт (Puteshestviya i transport)",
-      "objective": "Prendre les transports, acheter un billet et se déplacer en voyage.",
+      "objective": "Take transport, buy a ticket and move around while travelling.",
       "content": [
-        { "heading": "Les transports", "text": "Les transports : машина (mashina, voiture), автобус (avtobus, bus), поезд (poyezd, train), самолёт (samolyot, avion), такси (taksi). « Ехать на автобусе » signifie aller en bus." },
-        { "heading": "Acheter un billet", "text": "Au guichet : « Мне нужен билет до … » (j'ai besoin d'un billet pour …). « В одну сторону » signifie aller simple, « туда и обратно » aller-retour. « Когда отправляется поезд? » (quand part le train ?)." },
-        { "heading": "À la gare", "text": "Le quai se dit « платформа », le départ « отправление » et l'arrivée « прибытие ». L'aéroport : аэропорт, la gare : вокзал. « Опоздание » signifie le retard." }
+        { "heading": "Transport", "text": "Transport: машина (mashina, car), автобус (avtobus, bus), поезд (poyezd, train), самолёт (samolyot, plane), такси (taksi). « Ехать на автобусе » means to go by bus." },
+        { "heading": "Buying a ticket", "text": "At the counter: « Мне нужен билет до … » (I need a ticket to …). « В одну сторону » means single, « туда и обратно » return. « Когда отправляется поезд? » (when does the train leave?)." },
+        { "heading": "At the station", "text": "The platform is « платформа », the departure « отправление » and the arrival « прибытие ». The airport: аэропорт, the station: вокзал. « Опоздание » means the delay." }
       ],
       "vocabulary": [
-        { "word": "поезд (poyezd)", "translation": "le train" },
-        { "word": "автобус (avtobus)", "translation": "le bus" },
-        { "word": "машина (mashina)", "translation": "la voiture" },
-        { "word": "самолёт (samolyot)", "translation": "l'avion" },
-        { "word": "такси (taksi)", "translation": "le taxi" },
-        { "word": "билет (bilet)", "translation": "le billet" },
-        { "word": "в одну сторону", "translation": "aller simple" },
-        { "word": "туда и обратно", "translation": "aller-retour" },
-        { "word": "вокзал (vokzal)", "translation": "la gare" },
-        { "word": "аэропорт (aeroport)", "translation": "l'aéroport" },
-        { "word": "платформа (platforma)", "translation": "le quai" },
-        { "word": "отправление (otpravleniye)", "translation": "le départ" },
-        { "word": "прибытие (pribytiye)", "translation": "l'arrivée" },
-        { "word": "опоздание (opozdaniye)", "translation": "le retard" },
-        { "word": "путешествие (puteshestviye)", "translation": "le voyage" }
+        { "word": "поезд (poyezd)", "translation": "the train" },
+        { "word": "автобус (avtobus)", "translation": "the bus" },
+        { "word": "машина (mashina)", "translation": "the car" },
+        { "word": "самолёт (samolyot)", "translation": "the plane" },
+        { "word": "такси (taksi)", "translation": "the taxi" },
+        { "word": "билет (bilet)", "translation": "the ticket" },
+        { "word": "в одну сторону", "translation": "single (one-way)" },
+        { "word": "туда и обратно", "translation": "return (round trip)" },
+        { "word": "вокзал (vokzal)", "translation": "the station" },
+        { "word": "аэропорт (aeroport)", "translation": "the airport" },
+        { "word": "платформа (platforma)", "translation": "the platform" },
+        { "word": "отправление (otpravleniye)", "translation": "the departure" },
+        { "word": "прибытие (pribytiye)", "translation": "the arrival" },
+        { "word": "опоздание (opozdaniye)", "translation": "the delay" },
+        { "word": "путешествие (puteshestviye)", "translation": "the trip" }
       ],
       "exercises": [
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « le train » en russe ?", "options": ["автобус", "поезд", "машина", "самолёт"], "answer": "поезд" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Comment dit-on « aller-retour » ?", "options": ["в одну сторону", "туда и обратно", "билет", "отправление"], "answer": "туда и обратно" },
-        { "type": "qcm", "instruction": "Choisissez la bonne réponse.", "question": "Que signifie « аэропорт » ?", "options": ["la gare", "l'aéroport", "le port", "le quai"], "answer": "l'aéroport" }
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"the train\" in Russian?", "options": ["автобус", "поезд", "машина", "самолёт"], "answer": "поезд" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "How do you say \"return trip\"?", "options": ["в одну сторону", "туда и обратно", "билет", "отправление"], "answer": "туда и обратно" },
+        { "type": "qcm", "instruction": "Choose the correct answer.", "question": "What does « аэропорт » mean?", "options": ["the station", "the airport", "the port", "the platform"], "answer": "the airport" }
       ],
       "audioScript": "A: Мне нужен билет до Москвы, пожалуйста.\nB: В одну сторону или туда и обратно?\nA: В одну сторону. Когда отправляется поезд?\nB: В десять часов с платформы три.",
       "cecrLevel": "A1"
@@ -367,62 +367,62 @@
   "quizzes": [
     {
       "id": "RU-A1-Q01",
-      "title": "Alphabet & Salutations",
+      "title": "Alphabet & Greetings",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Combien de lettres compte l'alphabet russe ?", "options": ["26", "28", "33", "30"], "answer": "33" },
-        { "type": "qcm", "question": "Comment dit-on « bonjour » de façon formelle ?", "options": ["привет", "здравствуйте", "пока", "да"], "answer": "здравствуйте" },
-        { "type": "qcm", "question": "Que signifie « спасибо » ?", "options": ["bonjour", "merci", "au revoir", "non"], "answer": "merci" },
-        { "type": "qcm", "question": "Comment dit-on « je m'appelle » ?", "options": ["меня зовут", "я имя", "моя зовут", "я есть"], "answer": "меня зовут" },
-        { "type": "qcm", "question": "Comment se lit la lettre « Р » ?", "options": ["p", "r", "n", "v"], "answer": "r" }
+        { "type": "qcm", "question": "How many letters does the Russian alphabet have?", "options": ["26", "28", "33", "30"], "answer": "33" },
+        { "type": "qcm", "question": "How do you say \"hello\" formally?", "options": ["привет", "здравствуйте", "пока", "да"], "answer": "здравствуйте" },
+        { "type": "qcm", "question": "What does « спасибо » mean?", "options": ["hello", "thank you", "goodbye", "no"], "answer": "thank you" },
+        { "type": "qcm", "question": "How do you say \"my name is\"?", "options": ["меня зовут", "я имя", "моя зовут", "я есть"], "answer": "меня зовут" },
+        { "type": "qcm", "question": "How is the letter « Р » read?", "options": ["p", "r", "n", "v"], "answer": "r" }
       ]
     },
     {
       "id": "RU-A1-Q02",
-      "title": "Nombres & Famille",
+      "title": "Numbers & Family",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on « deux » en russe ?", "options": ["один", "два", "три", "пять"], "answer": "два" },
-        { "type": "qcm", "question": "Comment dit-on « vingt » ?", "options": ["десять", "двадцать", "сорок", "три"], "answer": "двадцать" },
-        { "type": "qcm", "question": "Comment dit-on « la mère » ?", "options": ["папа", "мама", "сестра", "тётя"], "answer": "мама" },
-        { "type": "qcm", "question": "Comment dit-on « mon frère » ?", "options": ["моя брат", "мой брат", "твой брат", "мой сестра"], "answer": "мой брат" },
-        { "type": "qcm", "question": "Que signifie « семья » ?", "options": ["l'école", "la famille", "le travail", "la maison"], "answer": "la famille" }
+        { "type": "qcm", "question": "How do you say \"two\" in Russian?", "options": ["один", "два", "три", "пять"], "answer": "два" },
+        { "type": "qcm", "question": "How do you say \"twenty\"?", "options": ["десять", "двадцать", "сорок", "три"], "answer": "двадцать" },
+        { "type": "qcm", "question": "How do you say \"the mother\"?", "options": ["папа", "мама", "сестра", "тётя"], "answer": "мама" },
+        { "type": "qcm", "question": "How do you say \"my brother\"?", "options": ["моя брат", "мой брат", "твой брат", "мой сестра"], "answer": "мой брат" },
+        { "type": "qcm", "question": "What does « семья » mean?", "options": ["the school", "the family", "the work", "the house"], "answer": "the family" }
       ]
     },
     {
       "id": "RU-A1-Q03",
-      "title": "Routine & Nourriture",
+      "title": "Routine & Food",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on « je travaille » ?", "options": ["я сплю", "я работаю", "я иду", "я ем"], "answer": "я работаю" },
-        { "type": "qcm", "question": "Comment dit-on « le pain » ?", "options": ["рис", "хлеб", "мясо", "рыба"], "answer": "хлеб" },
-        { "type": "qcm", "question": "Comment dit-on « j'aime le café » ?", "options": ["я люблю кофе", "я не люблю кофе", "я хочу кофе", "я пью кофе"], "answer": "я люблю кофе" },
-        { "type": "qcm", "question": "Comment demande-t-on l'addition ?", "options": ["Счёт, пожалуйста", "Хлеб, пожалуйста", "Вода, пожалуйста", "Стол, пожалуйста"], "answer": "Счёт, пожалуйста" },
-        { "type": "qcm", "question": "Que signifie « вкусно » ?", "options": ["c'est cher", "c'est bon", "c'est chaud", "c'est froid"], "answer": "c'est bon" }
+        { "type": "qcm", "question": "How do you say \"I work\"?", "options": ["я сплю", "я работаю", "я иду", "я ем"], "answer": "я работаю" },
+        { "type": "qcm", "question": "How do you say \"bread\"?", "options": ["рис", "хлеб", "мясо", "рыба"], "answer": "хлеб" },
+        { "type": "qcm", "question": "How do you say \"I like coffee\"?", "options": ["я люблю кофе", "я не люблю кофе", "я хочу кофе", "я пью кофе"], "answer": "я люблю кофе" },
+        { "type": "qcm", "question": "How do you ask for the bill?", "options": ["Счёт, пожалуйста", "Хлеб, пожалуйста", "Вода, пожалуйста", "Стол, пожалуйста"], "answer": "Счёт, пожалуйста" },
+        { "type": "qcm", "question": "What does « вкусно » mean?", "options": ["it is expensive", "it is good", "it is hot", "it is cold"], "answer": "it is good" }
       ]
     },
     {
       "id": "RU-A1-Q04",
-      "title": "Logement & Heure",
+      "title": "Housing & Time",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment dit-on « l'appartement » ?", "options": ["дом", "квартира", "комната", "кухня"], "answer": "квартира" },
-        { "type": "qcm", "question": "Comment dit-on « à gauche » ?", "options": ["направо", "налево", "прямо", "дома"], "answer": "налево" },
-        { "type": "qcm", "question": "Comment demande-t-on l'heure ?", "options": ["Который час?", "Где час?", "Что время?", "Сколько ты?"], "answer": "Который час?" },
-        { "type": "qcm", "question": "Comment dit-on « lundi » ?", "options": ["вторник", "понедельник", "среда", "пятница"], "answer": "понедельник" },
-        { "type": "qcm", "question": "Que signifie « половина пятого » ?", "options": ["quatre heures et demie", "trois heures et demie", "cinq heures moins le quart", "cinq heures"], "answer": "quatre heures et demie" }
+        { "type": "qcm", "question": "How do you say \"the flat\"?", "options": ["дом", "квартира", "комната", "кухня"], "answer": "квартира" },
+        { "type": "qcm", "question": "How do you say \"left\"?", "options": ["направо", "налево", "прямо", "дома"], "answer": "налево" },
+        { "type": "qcm", "question": "How do you ask the time?", "options": ["Который час?", "Где час?", "Что время?", "Сколько ты?"], "answer": "Который час?" },
+        { "type": "qcm", "question": "How do you say \"Monday\"?", "options": ["вторник", "понедельник", "среда", "пятница"], "answer": "понедельник" },
+        { "type": "qcm", "question": "What does « половина пятого » mean?", "options": ["half past four", "half past three", "quarter to five", "five o'clock"], "answer": "half past four" }
       ]
     },
     {
       "id": "RU-A1-Q05",
-      "title": "Achats & Voyages",
+      "title": "Shopping & Travel",
       "level": "A1",
       "questions": [
-        { "type": "qcm", "question": "Comment demande-t-on le prix ?", "options": ["Сколько стоит?", "Который час?", "Где это?", "Как дела?"], "answer": "Сколько стоит?" },
-        { "type": "qcm", "question": "Que signifie « дёшево » ?", "options": ["cher", "bon marché", "gratuit", "cassé"], "answer": "bon marché" },
-        { "type": "qcm", "question": "Comment dit-on « le train » ?", "options": ["автобус", "поезд", "машина", "самолёт"], "answer": "поезд" },
-        { "type": "qcm", "question": "Comment dit-on « aller-retour » ?", "options": ["в одну сторону", "туда и обратно", "билет", "вокзал"], "answer": "туда и обратно" },
-        { "type": "qcm", "question": "Que signifie « вокзал » ?", "options": ["l'aéroport", "la gare", "le port", "le marché"], "answer": "la gare" }
+        { "type": "qcm", "question": "How do you ask the price?", "options": ["Сколько стоит?", "Который час?", "Где это?", "Как дела?"], "answer": "Сколько стоит?" },
+        { "type": "qcm", "question": "What does « дёшево » mean?", "options": ["expensive", "cheap", "free", "broken"], "answer": "cheap" },
+        { "type": "qcm", "question": "How do you say \"the train\"?", "options": ["автобус", "поезд", "машина", "самолёт"], "answer": "поезд" },
+        { "type": "qcm", "question": "How do you say \"return trip\"?", "options": ["в одну сторону", "туда и обратно", "билет", "вокзал"], "answer": "туда и обратно" },
+        { "type": "qcm", "question": "What does « вокзал » mean?", "options": ["the airport", "the station", "the port", "the market"], "answer": "the station" }
       ]
     }
   ]

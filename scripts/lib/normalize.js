@@ -70,7 +70,7 @@ function lessonFromV7(l, course, academyKey, academyCode) {
     videoDuration: l.videoDuration || 0,
     isTrial: l.isFree === true,
     trialAccess: l.isFree === true ? 'instant' : 'account',
-    status: 'published',
+    status: 'approved',
     contentState: 'SOURCE_DERIVED',
     ...PROVENANCE.v7,
   };
@@ -130,13 +130,13 @@ function normalizeElaSeed(seed, academy) {
   (seed.lessons || []).forEach(function (l, i) {
     lessons.push({
       id: lessonIdFor(courseId, l.order || i + 1), academy: academyKey, academyCode,
-      academyName: seed.academyName || '', courseId, level: rawLevel,
+      academyName: seed.academyName || '', courseId, level: courseLevel,
       order: l.order || i + 1, lessonNumber: l.lessonNumber || i + 1,
       title: l.title || '', description: l.description || '',
       content: l.content || '', vocabulary: l.vocabulary || [],
       duration: l.duration || '', videoUrl: l.videoUrl || '', videoDuration: 0,
       isTrial: l.isTrial === true, trialAccess: l.isTrial === true ? 'instant' : 'account',
-      status: 'published', contentState: 'SOURCE_DERIVED', ...PROVENANCE.ela,
+      status: 'approved', contentState: 'SOURCE_DERIVED', ...PROVENANCE.ela,
     });
   });
   (seed.quizzes || []).forEach(function (q, i) {
@@ -150,7 +150,7 @@ function normalizeElaSeed(seed, academy) {
     });
     quizzes.push({
       id: q.id || `${academyKey}-${String(rawLevel).toLowerCase()}-quiz-${i + 1}`,
-      academy: academyKey, academyCode, level: q.level || rawLevel,
+      academy: academyKey, academyCode, level: levelMap[q.level || rawLevel] || q.level || rawLevel,
       title: q.title || '', category: q.category || 'mixed',
       timeLimit: q.timeLimit || 15, passingScore: q.passingScore || 80,
       isTrial: q.isTrial === true, courseId, lessonId: q.lessonId || null,
