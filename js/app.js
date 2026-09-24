@@ -594,6 +594,55 @@
     });
   }
 
+  // Nettoie le HTML pédagogique (V7/ELA) avant rendu : whitelist de balises
+  // et d'attributs, suppression de tout script/style/gestionnaire d'événement.
+  function sanitizeRichHtml(html) {
+    if (!html || typeof html !== 'string') return '';
+    var doc;
+    try { doc = new DOMParser().parseFromString(html, 'text/html'); }
+    catch (e) { return escapeHtml(html); }
+    var ALLOWED_TAGS = { P: 1, H3: 1, H4: 1, TABLE: 1, THEAD: 1, TBODY: 1, TR: 1, TH: 1, TD: 1, STRONG: 1, EM: 1, B: 1, I: 1, BR: 1, DIV: 1, SPAN: 1, UL: 1, OL: 1, LI: 1, A: 1 };
+    function clean(node) {
+      var children = Array.prototype.slice.call(node.childNodes || []);
+      children.forEach(function (child) {
+        if (child.nodeType === 3) return;
+        if (child.nodeType !== 1) { node.removeChild(child); return; }
+        var tag = String(child.nodeName).toUpperCase();
+        if (!ALLOWED_TAGS[tag]) {
+          while (child.firstChild) node.insertBefore(child.firstChild, child);
+          node.removeChild(child);
+          return;
+        }
+        Array.prototype.slice.call(child.attributes || []).forEach(function (attr) {
+          if (attr.name !== 'class' && attr.name !== 'href' && attr.name !== 'target') child.removeAttribute(attr.name);
+        });
+        if (tag === 'A') {
+          var h = child.getAttribute('href') || '';
+          if (!/^https?:\/\//i.test(h)) child.removeAttribute('href');
+        }
+        clean(child);
+      });
+    }
+    clean(doc.body);
+    return doc.body.innerHTML;
+  }
+
+  // Rendu du corps de leçon : accepte un HTML pédagogique (V7) OU une liste
+  // structurée de blocs {heading, text} (académies A1).
+  function lessonContentHtml(lesson) {
+    var c = lesson.content;
+    if (Array.isArray(c)) {
+      return c.map(function (block) {
+        block = block || {};
+        var h = block.heading ? '<h3 class="lc-h3">' + escapeHtml(block.heading) + '</h3>' : '';
+        var t = block.text ? '<p>' + escapeHtml(block.text) + '</p>' : '';
+        return h + t;
+      }).join('');
+    }
+    if (typeof c === 'string' && c.length) return sanitizeRichHtml(c);
+    return '';
+  }
+
   function assistantChatHtml() {
     var html = assistantHistory.map(function (m) {
       var cls = m.role === 'user' ? 'user' : 'assistant';
@@ -1534,10 +1583,13 @@
     function build() {
       var objectives = (lesson.objectives || []).map(function (o) { return '<li>' + escapeHtml(o) + '</li>'; }).join('');
       var vocab = (lesson.vocabulary || []).map(function (v) {
-        return '<li><span><strong>' + escapeHtml(v.term) + '</strong> — ' + escapeHtml(v.meaning) + '</span></li>';
+        var term = (v && v.term != null) ? v.term : ((v && v.word != null) ? v.word : '');
+        var meaning = (v && v.meaning != null) ? v.meaning : ((v && v.translation != null) ? v.translation : '');
+        return '<li><span><strong>' + escapeHtml(term) + '</strong> — ' + escapeHtml(meaning) + '</span></li>';
       }).join('');
       var grammar = (lesson.grammar || []).map(function (g) { return '<li>' + escapeHtml(g) + '</li>'; }).join('');
       var exercises = (lesson.exercises || []).map(function (e) { return '<li>' + escapeHtml(e) + '</li>'; }).join('');
+      var contentHtml = lessonContentHtml(lesson);
 
       app.innerHTML = '' +
         '<section class="auth-wrap teacher-wrap">' +
@@ -1548,8 +1600,8 @@
           '</div>' +
           (lesson.videoUrl ? '<div class="lesson-video"><video src="' + escapeHtml(lesson.videoUrl) + '" controls playsinline></video></div>' : '') +
           (objectives ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.objectives') + '</h3><ul class="tx-list" style="margin:0">' + objectives + '</ul></div>' : '') +
-          '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.content') + '</h3>' +
-          '<div class="lesson-content" style="margin:0">' + escapeHtml(lesson.content || '') + '</div></div>' +
+          (contentHtml ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.content') + '</h3>' +
+          '<div class="lesson-content" style="margin:0">' + contentHtml + '</div></div>' : '') +
           (vocab ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.vocabulary') + '</h3><ul class="tx-list" style="margin:0">' + vocab + '</ul></div>' : '') +
           (grammar ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.grammar') + '</h3><ul class="tx-list" style="margin:0">' + grammar + '</ul></div>' : '') +
           (exercises ? '<div class="card" style="margin-bottom:1rem"><h3 class="teacher-card-title" style="margin-bottom:0.6rem">' + t('lesson.exercises') + '</h3><ul class="tx-list" style="margin:0">' + exercises + '</ul></div>' : '') +

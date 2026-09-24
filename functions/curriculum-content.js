@@ -15,6 +15,8 @@
    reste à effectuer.
    ============================================================ */
 
+const { LEVEL_VOCAB } = require('./curriculum-vocabulary.js');
+
 const LANGUAGES = {
   FR: {
     language: 'French', script: 'Latin',
@@ -282,12 +284,25 @@ function examplePool(L, band, mi) {
 }
 
 function pickExamples(L, band, mi, g) {
+  if (band !== 'A1' && band !== 'A2') {
+    const adv = L.advancedExamples || [];
+    return [adv[g % adv.length], adv[(g + 1) % adv.length]];
+  }
   const base = L.modules[mi];
   const e1 = base.examples[g % base.examples.length];
-  const e2 = (band === 'A1' || band === 'A2')
-    ? base.dialogue[g % base.dialogue.length]
-    : L.advancedExamples[g % L.advancedExamples.length];
+  const e2 = base.dialogue[g % base.dialogue.length];
   return [e1, e2];
+}
+
+/** Vocabulaire ciblé adapté au niveau : A1/A2 → banque de base,
+    B1–C2 → vocabulaire thématique spécifique (LEVEL_VOCAB). */
+function levelVocab(L, academy, band, moduleIndex, unitIndex) {
+  if (band === 'A1' || band === 'A2') {
+    return (L.modules[moduleIndex].vocab || []).slice(unitIndex * 2, unitIndex * 2 + 3).map((v) => v[0]);
+  }
+  const themeKey = (LEVEL_THEMES[band] && LEVEL_THEMES[band][moduleIndex]) || '';
+  const words = (LEVEL_VOCAB[band] && LEVEL_VOCAB[band][themeKey] && LEVEL_VOCAB[band][themeKey][academy]) || [];
+  return words.slice(unitIndex * 2, unitIndex * 2 + 3).map((w) => w[0]);
 }
 
 function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, globalIndex, L, grammarPoint, theme, state) {
@@ -295,8 +310,10 @@ function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, 
   const pair = pickExamples(L, band, moduleIndex, globalIndex);
   const e1 = pair[0];
   const e2 = pair[1];
-  const vocabSlice = L.modules[moduleIndex].vocab.slice(unitIndex * 2, unitIndex * 2 + 3).map((v) => v[0]);
-  const dialogue = L.modules[moduleIndex].dialogue;
+  const vocabSlice = levelVocab(L, academy, band, moduleIndex, unitIndex);
+  const dialogue = (band === 'A1' || band === 'A2')
+    ? L.modules[moduleIndex].dialogue
+    : (L.advancedExamples || []).slice(0, 4);
   const isInteraction = type.key === 'speaking' || type.key === 'listening';
 
   const explanation = '[' + type.name + '] ' + theme + '. Focus grammatical : ' + grammarPoint + '. ' +
@@ -391,7 +408,7 @@ function buildLevelContent(academy, level) {
 
     for (let ui = 0; ui < 3; ui++) {
       const unitId = moduleId + '-U' + String(ui + 1).padStart(2, '0');
-      const vocabSlice = base.vocab.slice(ui * 2, ui * 2 + 3).map((v) => v[0]);
+      const vocabSlice = levelVocab(L, academy, band, mi, ui);
       const lessons = [];
       for (let li = 0; li < 2; li++) {
         lessons.push(buildLesson(academy, level, band, mi, ui, li, programmeIndex, L, grammarPoint, theme, state));

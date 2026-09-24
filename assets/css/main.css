@@ -463,10 +463,27 @@ body {
 
 /* ---------- Student learning module ---------- */
 .lesson-content {
-  white-space: pre-wrap; line-height: 1.7; color: var(--ink);
+  line-height: 1.7; color: var(--ink);
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
   padding: 1.2rem 1.4rem; margin: 1rem 0 1.5rem;
+  font-size: 0.98rem;
 }
+.lesson-content p { margin: 0 0 0.8rem; }
+.lesson-content p:last-child { margin-bottom: 0; }
+.lesson-content .lc-intro { font-size: 1.02rem; color: var(--forest); font-weight: 600; margin-bottom: 1rem; }
+.lesson-content .lc-h3 { font-size: 1.05rem; color: var(--forest); margin: 1.3rem 0 0.55rem; font-weight: 700; }
+.lesson-content .lc-table { width: 100%; border-collapse: collapse; margin: 0.6rem 0 1rem; font-size: 0.92rem; }
+.lesson-content .lc-table th, .lesson-content .lc-table td { border: 1px solid var(--line); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; }
+.lesson-content .lc-table th { background: #f6f4ef; color: var(--forest); font-weight: 700; }
+.lesson-content .lc-tip { background: #fdf7ec; border-left: 3px solid var(--gold); padding: 0.7rem 0.9rem; border-radius: 0 var(--radius) var(--radius) 0; margin: 0.8rem 0; font-size: 0.92rem; }
+.lesson-content .lc-dialogue { background: #f4f7f4; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 0.9rem 1rem; margin: 0.8rem 0; }
+.lesson-content .lc-dialogue-title { font-weight: 700; color: var(--forest); margin-bottom: 0.45rem; font-size: 0.9rem; }
+.lesson-content .lc-dialogue p { margin: 0; }
+.lesson-content .lc-practice { background: #eef4ee; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 0.8rem 1rem; margin: 0.8rem 0; font-size: 0.92rem; }
+.lesson-content .lc-recap { background: #f3f0fb; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 0.8rem 1rem; margin: 0.8rem 0; font-size: 0.92rem; }
+.lesson-content .lc-trans { color: var(--muted); font-style: italic; }
+.lesson-content strong { color: var(--ink); }
+.lesson-content em { color: var(--forest); }
 .quiz-q .q-label { text-transform: none; letter-spacing: 0; font-size: 1.05rem; color: var(--ink); }
 
 /* ---------- Course / lesson (réplique FA) ---------- */

@@ -91,7 +91,29 @@ function main() {
           const uId = `${mId}-U${pad(ui + 1)}`;
           nodes.push({ id: uId, programmeId: p.id, academyCode: ac, level, type: 'unit', parentId: mId, order: ui + 1, title: u.title, theme: u.theme || '', vocabularyFocus: u.vocabularyFocus || [], grammarFocus: u.grammarFocus || [], pronunciationFocus: u.pronunciationFocus || [], culturalContext: u.culturalContext || '', competencyIds: u.competencyIds || COMP, outcomeIds: u.outcomeIds || [], state: 'DRAFT', sourceType: 'GENERATED_DRAFT', sourceAcademy: 'ELA', sourceVersion: 'ELA-generated' });
           (u.lessons || []).forEach((l, li) => {
-            nodes.push({ id: `${uId}-L${pad(li + 1)}`, programmeId: p.id, academyCode: ac, level, type: 'lesson', parentId: uId, order: li + 1, title: l.title, objective: l.objective || '', vocabularyFocus: l.vocabulary || [], grammarFocus: l.grammar || [], pronunciationFocus: l.pronunciation || [], culturalContext: '', activities: l.activities || [], competencyIds: COMP, outcomeIds: [], state: 'DRAFT', sourceType: 'GENERATED_DRAFT', sourceAcademy: 'ELA', sourceVersion: 'ELA-generated' });
+            nodes.push({
+              id: `${uId}-L${pad(li + 1)}`, programmeId: p.id, academyCode: ac, level, type: 'lesson', parentId: uId, order: li + 1,
+              lessonType: l.lessonType || '', lessonTypeName: l.lessonTypeName || '',
+              title: l.title, objective: l.objective || '',
+              prerequisites: l.prerequisites || [], estimatedDuration: l.estimatedDuration || 45,
+              explanation: l.explanation || '',
+              languageContent: l.languageContent || [],
+              examples: l.examples || [],
+              dialogue: l.dialogue || [],
+              guidedPractice: l.guidedPractice || '',
+              independentPractice: l.independentPractice || '',
+              interaction: l.interaction || '',
+              assessment: l.assessment || '',
+              masteryCriteria: l.masteryCriteria || '',
+              vocabularyFocus: l.vocabularyFocus || l.vocabulary || [],
+              grammarFocus: l.grammarFocus || l.grammar || [],
+              pronunciationFocus: l.pronunciationFocus || l.pronunciation || [],
+              culturalContext: l.culturalContext || '',
+              activities: l.activities || [],
+              exercises: l.activities || [],
+              competencyIds: l.competencyIds || COMP, outcomeIds: l.outcomeIds || [],
+              state: 'DRAFT', sourceType: 'GENERATED_DRAFT', sourceAcademy: 'ELA', sourceVersion: 'ELA-generated',
+            });
             lesCount++;
           });
         });
