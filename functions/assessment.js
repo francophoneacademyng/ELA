@@ -10,6 +10,7 @@
 const { onCall, HttpsError } = require('firebase-functions/v2/https');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
+const ratelimit = require('./ratelimit.js');
 const db = new Proxy({}, { get: function (_t, prop) { return admin.firestore()[prop]; } });
 const REGION = 'africa-south1';
 const ATTEMPT_TTL_MS = 45 * 60 * 1000;
@@ -80,6 +81,8 @@ function publicQuestion(q) {
 
 exports.startAssessmentAttempt = onCall({ region: REGION }, async (request) => {
   const uid = ensureAuth(request);
+  try { await ratelimit.requireWithinRateLimit('quiz-start:' + uid, 60, 60000); }
+  catch (e) { if (e && e.message === 'rate-limit-exceeded') throw new HttpsError('resource-exhausted', 'Too many quiz starts. Retry later.'); throw e; }
   const authz = await requireActiveSubscription(uid);
   const quizId = cleanStr(request.data && request.data.quizId, 160);
   if (!quizId) throw new HttpsError('invalid-argument', 'quizId required.');
@@ -118,6 +121,8 @@ exports.startAssessmentAttempt = onCall({ region: REGION }, async (request) => {
 });
 exports.submitAssessmentAttempt = onCall({ region: REGION }, async (request) => {
   const uid = ensureAuth(request);
+  try { await ratelimit.requireWithinRateLimit('quiz-submit:' + uid, 120, 60000); }
+  catch (e) { if (e && e.message === 'rate-limit-exceeded') throw new HttpsError('resource-exhausted', 'Too many submissions. Retry later.'); throw e; }
   const attemptId = cleanStr(request.data && request.data.attemptId, 160);
   const answers = request.data ? request.data.answers : null;
   if (!attemptId || !Array.isArray(answers)) throw new HttpsError('invalid-argument', 'attemptId and answers required.');

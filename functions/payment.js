@@ -27,6 +27,7 @@ const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https')
 // Imports scheduler/firestore retirés : non utilisés (fix timeout déploiement).
 const crypto = require('crypto');
 const admin = require('firebase-admin');
+const ratelimit = require('./ratelimit.js');
 
 // admin.initializeApp() removed - initialized in index.js
 // Firestore paresseux (fix timeout déploiement — voir index.js).
@@ -124,6 +125,8 @@ exports.initializePayment = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
   }
   const uid = request.auth.uid;
+  try { await ratelimit.requireWithinRateLimit('pay-init:' + uid, 10, 60000); }
+  catch (e) { if (e && e.message === 'rate-limit-exceeded') throw new HttpsError('resource-exhausted', 'Too many payment attempts. Retry later.'); throw e; }
   const data = request.data || {};
   const plan = data.plan;
   const duration = Number(data.duration);
@@ -203,6 +206,8 @@ exports.previewPayment = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
   }
   const uid = request.auth.uid;
+  try { await ratelimit.requireWithinRateLimit('pay-preview:' + uid, 60, 60000); }
+  catch (e) { if (e && e.message === 'rate-limit-exceeded') throw new HttpsError('resource-exhausted', 'Too many requests. Retry later.'); throw e; }
   const data = request.data || {};
   const pricing = await computePricing(uid, data.plan, Number(data.duration), data.referralCode);
   if (!pricing) {
@@ -229,6 +234,8 @@ exports.verifyPaystackPayment = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('unauthenticated', 'You must be signed in.');
   }
   const uid = request.auth.uid;
+  try { await ratelimit.requireWithinRateLimit('pay-verify:' + uid, 30, 60000); }
+  catch (e) { if (e && e.message === 'rate-limit-exceeded') throw new HttpsError('resource-exhausted', 'Too many verification requests. Retry later.'); throw e; }
   const reference = request.data && request.data.reference;
   if (!reference) {
     throw new HttpsError('invalid-argument', 'Missing payment reference.');
