@@ -1,0 +1,1071 @@
+{
+  "timestamp": "2026-09-24T10:00:08.006Z",
+  "project": "ela-academy-7f868",
+  "total": 72,
+  "summary": {
+    "obsolete": 36,
+    "archive-candidate": 72,
+    "duplicate": 36,
+    "compatibility-only": 36
+  },
+  "byAcademy": {
+    "AR empty": 6,
+    "AR content": 6,
+    "DE empty": 6,
+    "DE content": 6,
+    "EN empty": 6,
+    "EN content": 6,
+    "FR empty": 6,
+    "FR content": 6,
+    "RU empty": 6,
+    "RU content": 6,
+    "ZH empty": 6,
+    "ZH content": 6
+  },
+  "lessons": [
+    {
+      "id": "ar_a1_lesson_1",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_10",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "الأرقام والتاريخ",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_11",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "في المطعم",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_12",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "التعريف بالنفس (مراجعة A1)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_2",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_3",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_4",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_5",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_6",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "Arabic A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_7",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "الحروف والأصوات",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_8",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "الأدوات",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ar_a1_lesson_9",
+      "academyCode": "AR",
+      "level": "A1",
+      "title": "العائلة",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_1",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_10",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Zahlen und Datum",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_11",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Im Restaurant",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_12",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Sich vorstellen (A1 Wiederholung)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_2",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_3",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_4",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_5",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_6",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "German A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_7",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Regelmäßige Verben",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_8",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Bestimmte und unbestimmte Artikel",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "de_a1_lesson_9",
+      "academyCode": "DE",
+      "level": "A1",
+      "title": "Die Familie",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_1",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_10",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "Numbers and Dates",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_11",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "At the Restaurant",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_12",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "Self-Introduction (A1 Review)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_2",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_3",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_4",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_5",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_6",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "English A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_7",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "Present Simple",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_8",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "Articles: A, An, The",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "en_a1_lesson_9",
+      "academyCode": "EN",
+      "level": "A1",
+      "title": "Family Members",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_1",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_10",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "Les nombres et la date",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_11",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "Au restaurant",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_12",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "Se présenter (Révision A1)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_2",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_3",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_4",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_5",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_6",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "French A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_7",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "Les verbes du premier groupe (-er)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_8",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "Les articles définis et indéfinis",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "fr_a1_lesson_9",
+      "academyCode": "FR",
+      "level": "A1",
+      "title": "La famille",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_1",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_10",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Числа и дата",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_11",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "В ресторане",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_12",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Представление (Повторение A1)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_2",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_3",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_4",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_5",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_6",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Russian A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_7",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Алфавит и звуки",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_8",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Глаголы первого спряжения",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "ru_a1_lesson_9",
+      "academyCode": "RU",
+      "level": "A1",
+      "title": "Семья",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_1",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 1",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_10",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "数字和日期",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_11",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "在餐厅",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_12",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "自我介绍 (A1复习)",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_2",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 2",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_3",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 3",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_4",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 4",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_5",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 5",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_6",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "Chinese A1 — Lesson 6",
+      "hasContent": false,
+      "hasVocab": false,
+      "isTrial": false,
+      "classification": [
+        "obsolete",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_7",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "中文声调",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_8",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "人称代词",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    },
+    {
+      "id": "zh_a1_lesson_9",
+      "academyCode": "ZH",
+      "level": "A1",
+      "title": "家庭",
+      "hasContent": true,
+      "hasVocab": true,
+      "isTrial": false,
+      "classification": [
+        "duplicate",
+        "compatibility-only",
+        "archive-candidate"
+      ],
+      "recommendedAction": "preserve (never delete); archive candidate"
+    }
+  ]
+}

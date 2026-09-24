@@ -1,0 +1,155 @@
+{
+  "quizzes": [
+    {
+      "id": "german-level-a2-quiz",
+      "academyCode": "DE",
+      "level": "A2",
+      "questions": 10
+    },
+    {
+      "id": "german-level-b1-quiz",
+      "academyCode": "DE",
+      "level": "B1",
+      "questions": 10
+    },
+    {
+      "id": "german-level-b2-quiz",
+      "academyCode": "DE",
+      "level": "B2",
+      "questions": 10
+    },
+    {
+      "id": "german-level-c1-quiz",
+      "academyCode": "DE",
+      "level": "C1",
+      "questions": 10
+    },
+    {
+      "id": "german-level-c2-quiz",
+      "academyCode": "DE",
+      "level": "C2",
+      "questions": 10
+    },
+    {
+      "id": "mandarin-level-hsk2-quiz",
+      "academyCode": "ZH",
+      "level": "HSK2",
+      "questions": 10
+    },
+    {
+      "id": "mandarin-level-hsk3-quiz",
+      "academyCode": "ZH",
+      "level": "HSK3",
+      "questions": 10
+    },
+    {
+      "id": "mandarin-level-hsk4-quiz",
+      "academyCode": "ZH",
+      "level": "HSK4",
+      "questions": 10
+    },
+    {
+      "id": "mandarin-level-hsk5-quiz",
+      "academyCode": "ZH",
+      "level": "HSK5",
+      "questions": 10
+    },
+    {
+      "id": "mandarin-level-hsk6-quiz",
+      "academyCode": "ZH",
+      "level": "HSK6",
+      "questions": 10
+    },
+    {
+      "id": "english-level-a2-quiz",
+      "academyCode": "EN",
+      "level": "A2",
+      "questions": 10
+    },
+    {
+      "id": "english-level-b1-quiz",
+      "academyCode": "EN",
+      "level": "B1",
+      "questions": 10
+    },
+    {
+      "id": "english-level-b2-quiz",
+      "academyCode": "EN",
+      "level": "B2",
+      "questions": 10
+    },
+    {
+      "id": "english-level-c1-quiz",
+      "academyCode": "EN",
+      "level": "C1",
+      "questions": 10
+    },
+    {
+      "id": "english-level-c2-quiz",
+      "academyCode": "EN",
+      "level": "C2",
+      "questions": 10
+    },
+    {
+      "id": "arabic-level-a2-quiz",
+      "academyCode": "AR",
+      "level": "A2",
+      "questions": 10
+    },
+    {
+      "id": "arabic-level-b1-quiz",
+      "academyCode": "AR",
+      "level": "B1",
+      "questions": 10
+    },
+    {
+      "id": "arabic-level-b2-quiz",
+      "academyCode": "AR",
+      "level": "B2",
+      "questions": 10
+    },
+    {
+      "id": "arabic-level-c1-quiz",
+      "academyCode": "AR",
+      "level": "C1",
+      "questions": 10
+    },
+    {
+      "id": "arabic-level-c2-quiz",
+      "academyCode": "AR",
+      "level": "C2",
+      "questions": 10
+    },
+    {
+      "id": "russian-level-a2-quiz",
+      "academyCode": "RU",
+      "level": "A2",
+      "questions": 10
+    },
+    {
+      "id": "russian-level-b1-quiz",
+      "academyCode": "RU",
+      "level": "B1",
+      "questions": 10
+    },
+    {
+      "id": "russian-level-b2-quiz",
+      "academyCode": "RU",
+      "level": "B2",
+      "questions": 10
+    },
+    {
+      "id": "russian-level-c1-quiz",
+      "academyCode": "RU",
+      "level": "C1",
+      "questions": 10
+    },
+    {
+      "id": "russian-level-c2-quiz",
+      "academyCode": "RU",
+      "level": "C2",
+      "questions": 10
+    }
+  ],
+  "lessonsLinked": 900
+}
