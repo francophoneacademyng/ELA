@@ -62,7 +62,9 @@ No academy is a translation of French: Mandarin retains characters + pinyin + to
 
 ### 2.3 Assessment question banks (verification)
 
-The grammar/vocabulary question banks for the non-source levels were authored (`functions/quiz-bank-grammar.js`) and seeded (`scripts/seed-question-banks.js`): 25 level quizzes (10 questions each) for DE/ZH/EN/AR/RU A2–C2 and HSK2–HSK6, linked to 900 generated lessons. `correctIndex` is server-only; `getPublicQuiz` never exposes answers. Total quizzes in production: **88** (verified via `getQuizCatalog`).
+The grammar/vocabulary question banks for the non-source levels were authored (`functions/quiz-bank-grammar.js`) and seeded (`scripts/seed-question-banks.js`): 25 level quizzes (10 questions each) for DE/ZH/EN/AR/RU A2–C2 and HSK2–HSK6, linked to 900 generated lessons. `correctIndex` is server-only; `getPublicQuiz` never exposes answers.
+
+**Quiz-count reconciliation (63 → 88):** the earlier `docs/ELA_FINAL_PRODUCTION_COMPLETION_REPORT.md` (commit `8ec2da0`, pre-assessment-banks) reported **63** quizzes. Seeding the 25 authored level-assessment quizzes brings the verified production total to **88** (63 pre-existing + 25 new = 88). Both `getQuizCatalog` and a direct Firestore read (`scripts/lib/firestore-rest.js`) return **88** today; 25 of the 88 have `category: 'level'` (the authored banks), 655 total questions.
 
 ### 2.4 Legacy lesson classification (non-destructive)
 
@@ -133,6 +135,7 @@ No global `firebase deploy`; no `firestore:rules`/`storage:rules`/indexes deploy
 | `8a2d216` | feat(curriculum): localize lesson scaffolds per academy + per-band advanced examples |
 | `06b9336` | feat(assessment): grammar question banks (DE/ZH/EN/AR/RU A2-C2) + full audit + legacy classification |
 | `0127356` | chore(frontend): i18n emoji cleanup + teacher quiz card icon + storage rules config |
+| `16082a1` | docs: ELA final completion report (this file) |
 
 ---
 
