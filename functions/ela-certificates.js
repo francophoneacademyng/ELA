@@ -18,6 +18,7 @@ const { onCall, onRequest, HttpsError } = require('firebase-functions/v2/https')
 const admin = require('firebase-admin');
 const crypto = require('crypto');
 const core = require('./ela-certificate-core.js');
+const ratelimit = require('./ratelimit.js');
 
 const REGION = 'africa-south1';
 // Firestore paresseux (fix timeout déploiement — voir index.js).
@@ -38,6 +39,16 @@ async function userRole(uid) {
 
 function ensure(condition, code, message) {
   if (!condition) throw new HttpsError(code, message || code);
+}
+
+/** Adresse IP cliente la plus fiable (x-forwarded-for puis req.ip). */
+function clientIp(req) {
+  const fwd = req.headers && req.headers['x-forwarded-for'];
+  if (fwd) {
+    const first = String(fwd).split(',')[0].trim();
+    if (first) return first;
+  }
+  return String(req.ip || 'unknown');
 }
 
 /** Réponse callable publique-safe (jamais de hash / id interne élève). */
@@ -86,6 +97,18 @@ exports.verifyELACertificate = onRequest({ region: REGION }, async (req, res) =>
   res.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
   if (req.method === 'OPTIONS') { res.status(204).send(''); return; }
   if (req.method !== 'GET') { res.status(405).json({ error: 'method-not-allowed' }); return; }
+
+  // Limiteur de débit par IP (endpoint public, sans auth).
+  try {
+    await ratelimit.requireWithinRateLimit('cert-verify-ip:' + clientIp(req), 60, 60000);
+  } catch (e) {
+    if (e && e.message === 'rate-limit-exceeded') {
+      res.set('Retry-After', String(Math.ceil((e.retryAfterMs || 60000) / 1000)));
+      res.status(429).json({ found: false, valid: false, error: 'rate-limit-exceeded' });
+      return;
+    }
+    console.error('[ELA-Cert] rate-limit error:', e.message);
+  }
 
   const id = String(req.query.id || '').trim().toUpperCase();
   if (!/^ELA-[A-Z]{2}-[A-C][1-2]-[A-Z0-9]{4,8}$/.test(id)) {
