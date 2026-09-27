@@ -3,85 +3,78 @@
 **Institution:** E-Learn Language Academy (ELA)
 **Project:** `ela-academy-7f868`
 **Production:** https://elaacademy.ng/ (hosting `ela-academy-7f868.web.app`)
-**Date:** 2026-09-24
-**Session scope:** autonomous continuation (master execution) — meta-language localisation, advanced-example authoring, re-seed, legacy classification, deployment, verification.
+**Date:** 2026-09-27
+**Session scope:** autonomous continuation (master execution) — state recovery, final commercial + academic + security hardening, free-trial repair, rate limiting, targeted deployment, production verification.
 
 > **Honesty statement.** All numbers below come from real, executed verifications (read-only Firestore audit + production callables + local test harnesses). No figure is inflated and no problem is hidden. Programmes remain `DRAFT`; generated content remains `GENERATED_DRAFT`; nothing is represented as officially accredited or approved.
 
 ---
 
-## 1. Starting state (re-validated at resume)
+## 0. Recovery from prior stop
 
-On resume, production was inspected with `scripts/audit-full.js` (read-only) before any change:
+The prior session stopped during a functions deploy (`_deploy_fn2.log`, "Failed to update function … in region africa-south1" on many functions). On resume, production was re-inspected **before** any change and confirmed healthy — the failed deploy left the previously-deployed functions serving (the only un-deployed delta was the committed rate-limiting code in `b7474bb`).
+
+Current `HEAD`: `8c2ba23` (audit: academic readiness + review package generator). No Git reset, no production data deleted, no content recreated.
+
+---
+
+## 1. Verified production state (re-validated at resume, read-only)
 
 | Collection | Count |
 |---|---|
-| courses | 38 |
-| lessons | 1117 |
-| quizzes | 88 |
-| programmes | 36 (`DRAFT`) |
-| curriculum_nodes | 1715 (184 modules · 486 units · 1045 lessons) |
-| learning_outcomes | 375 |
-| competencies | 10 |
-| assessment_blueprints | 36 |
-| legacy lessons (no courseId) | 72 |
+| courses | **38** |
+| lessons | **1117** (1045 course-reachable with bodies · 72 legacy preserved) |
+| quizzes | **88** (655 questions · 25 authored level-assessment banks) |
+| programmes | **36** (all `DRAFT`) |
+| curriculum_nodes | **1715** (184 modules · 486 units · 1045 lessons) |
+| learning_outcomes | **375** |
+| competencies | **10** |
+| assessment_blueprints | **36** |
+| legacy lessons (no courseId) | **72** (preserved, never deleted) |
 
-Integrity checks (re-run, all zero): duplicates 0, orphan lessons 0, broken quiz refs 0, broken parentId 0, broken programmeId 0, broken outcomeId 0, empty generated lesson bodies 0.
-
-**Known gaps identified at resume:**
-1. The B1–C2 instructional scaffold (explanation / guided practice meta-text) was authored in **French across all six academies** — including DE/ZH/EN/AR/RU — violating the meta-language requirement.
-2. Advanced-level examples were recycled: a single 10-sentence `advancedExamples` pool per language was shared across B1/B2/C1/C2, so a learner saw the same sentences at every advanced level (`distinctExampleSets` = 276, below the 400 quality gate; the `curriculum.test.js` audit was failing).
-3. 72 legacy scheme-A lessons (no `courseId`) were unclassified.
+Integrity checks (re-run, all zero): duplicates 0, orphan lessons 0, broken quiz refs 0, broken `parentId` 0, broken `programmeId` 0, broken `outcomeId` 0, empty generated lesson bodies 0.
 
 ---
 
 ## 2. Work completed this session
 
-### 2.1 Meta-language localisation (`functions/curriculum-content.js`)
+### 2.1 Security hardening — rate limiting (completed + deployed)
 
-Lesson scaffolds are now localised **per academy**:
-- **FR (Francophone)** → French scaffolds (consistent with the V7 reference and the source-derived French content).
-- **DE / ZH / EN / AR / RU** → English scaffolds (neutral instructional meta-language; the target-language vocabulary, examples, dialogue and grammar remain in the target language).
+The committed-but-undeployed rate limiting from `b7474bb` was deployed together with one new gap closure:
 
-Applied and verified in production (curriculum_nodes re-seeded, lessons re-seeded):
+- `startAssessmentAttempt` (60/min), `submitAssessmentAttempt` (120/min)
+- `initializePayment` (10/min), `previewPayment` (60/min), `verifyPaystackPayment` (30/min)
+- **NEW:** `verifyELACertificate` — public, unauthenticated, CORS-open HTTPS endpoint now IP rate-limited (60/min, `429` + `Retry-After` on exceed). This closes the previously-open "public verification endpoint not rate-limited" gap.
 
-| Academy/level | Verified scaffold (first exercise prompt) |
+Already deployed in earlier sessions and unchanged: `submitExaminationSection`, `finalizeExaminationResult`, `recordLessonCompletion`, `issueCertificateFromAcademicRecord` (all via `functions/ratelimit.js`, server-only `rate_limits` collection).
+
+`paystackWebhook` remains HMAC-SHA-512 signature-verified (server-to-server) and `nurtureUnsubscribe` remains token-signed; neither needs IP rate limiting.
+
+### 2.2 Free-trial repair (regression found and fixed)
+
+`getTrialLessons` returned a broken trial set on resume: **16 FR lessons only** (mixed B2/B1/A2/A1, all `instant`), and **0** trial lessons for DE/ZH/EN/AR/RU. Root cause: the A1 meta-language re-seed (`4d8b63c`) cleared trial flags for the 5 non-FR academies while FR retained stale per-course flags.
+
+Fix: re-ran the idempotent, non-destructive `scripts/normalize-trial-flags.js --confirm` (full `lessons` backup taken first; no deletes). 71 lessons updated. Result verified:
+
+| Academy | Trial lessons |
 |---|---|
-| FR C1 | `Écoute/lis les exemples et identifie les éléments cibles : l'hypothèse…` |
-| DE B1 | `Listen to / read the examples and identify the target items: der Bahnhof…` |
-| ZH HSK3 | `Listen to / read the examples and identify the target items: 车站…` |
-| AR B2 | `Listen to / read the examples and identify the target items: التراث…` |
-| RU C2 | `Listen to / read the examples and identify the target items: риторика…` |
-| EN C2 | `Listen to / read the examples and identify the target items: rhetoric…` |
+| FR | 5 |
+| DE | 6 |
+| ZH | 6 |
+| EN | 6 |
+| AR | 6 |
+| RU | 6 |
+| **Total** | **35** (12 `instant` + 23 `signup`, all A1/HSK1 entry lessons with real bodies) |
 
-No academy is a translation of French: Mandarin retains characters + pinyin + tones, Arabic retains script/RTL/transliteration, Russian retains Cyrillic/cases/aspect, German retains gender/cases/word order.
+`getTrialLessons` now returns exactly these 35 lessons.
 
-### 2.2 Per-band advanced examples (fix recycling)
+### 2.3 Business-flow validation (read-only, no changes)
 
-`advancedExamples` was restructured from one flat 10-sentence pool into four per-band pools (`B1`, `B2`, `C1`, `C2`), each with 10 language-specific sentences × 6 languages (240 sentences total). `pickExamples` and the B1+ dialogue selection now draw from the correct band. Result: `distinctExampleSets` rose above the 400 quality gate and the `curriculum.test.js` audit passes (276 → pass).
-
-### 2.3 Assessment question banks (verification)
-
-The grammar/vocabulary question banks for the non-source levels were authored (`functions/quiz-bank-grammar.js`) and seeded (`scripts/seed-question-banks.js`): 25 level quizzes (10 questions each) for DE/ZH/EN/AR/RU A2–C2 and HSK2–HSK6, linked to 900 generated lessons. `correctIndex` is server-only; `getPublicQuiz` never exposes answers.
-
-**Quiz-count reconciliation (63 → 88):** the earlier `docs/ELA_FINAL_PRODUCTION_COMPLETION_REPORT.md` (commit `8ec2da0`, pre-assessment-banks) reported **63** quizzes. Seeding the 25 authored level-assessment quizzes brings the verified production total to **88** (63 pre-existing + 25 new = 88). Both `getQuizCatalog` and a direct Firestore read (`scripts/lib/firestore-rest.js`) return **88** today; 25 of the 88 have `category: 'level'` (the authored banks), 655 total questions.
-
-### 2.4 Legacy lesson classification (non-destructive)
-
-`scripts/classify-legacy-lessons.js` classified all 72 legacy lessons (`{ac}_a1_lesson_1..12`, 12 per academy) **without deleting anything**:
-
-| Classification | Count |
-|---|---|
-| obsolete (empty placeholder) | 36 |
-| duplicate + compatibility-only (superseded by current A1 content) | 36 |
-| archive-candidate | 72 (all) |
-
-Recommended action recorded: **preserve, never delete**; archive later under a controlled, separately-authorised step.
-
-### 2.5 Re-seed (idempotent, backed up, no deletes)
-
-- `scripts/seed-curriculum.js --confirm` → `curriculum_nodes` 0 created / 1715 updated; `learning_outcomes` 375; `competencies` 10; `assessment_blueprints` 36.
-- `scripts/seed-generated-lessons.js --confirm` → 27 courses + 972 lessons written (merge/upsert, stable IDs, backup taken, 0 deletes, 0 status fixes needed).
+- **Paystack:** server-only canonical `PRICE_TABLE`; `PAYSTACK_SECRET` from `functions/.env`; amount re-validated on verify; `grantSubscription` is transactional + idempotent. ✓
+- **Entitlement:** `firestore.rules` requires `approved` + active subscription (or trial/admin); student-security suite 18/18 confirms `getPublicQuiz` never exposes `correctIndex`. ✓
+- **Referral:** −15,000 NGN first-payment discount / +10,000 NGN referrer credit; self-referral and invalid codes blocked; credit consumed in the same transaction. ✓
+- **Certificate:** HMAC-SHA256 integrity + graceful `integrity-only` fallback; `publicView`/`ownerView` never expose `signatureHash`/`studentId`/`email`; verification endpoint now rate-limited. ✓
+- **Free trial:** repaired (§2.2). ✓
 
 ---
 
@@ -93,85 +86,82 @@ Recommended action recorded: **preserve, never delete**; archive later under a c
 | student-security | **18/18** |
 | assessment (phase1 invariants) | **30/30** |
 | p1c | **14/14** |
-| academic (pure) | 21/21 |
-| governance (pure) | 15/15 |
-| p2c | 20/20 |
-| ela-certificate-hist | 10/10 |
+| academic (pure) | **21/21** |
+| governance (pure) | **15/15** |
+| p2c | **20/20** |
+| ela-certificate-hist | **10/10** |
 
-The three mandated security suites (`student-security`, `assessment`, `p1c`) remain green. `functions/index.js` loads with 126 exports; `firestore.rules` and the secure-assessment implementation are unchanged (no client-side scoring reintroduced; `correctIndex` never exposed).
-
----
-
-## 4. Production state after this session (verified)
-
-| Metric | Count | Source of truth |
-|---|---|---|
-| courses | **38** | `getCatalog` (french 8, german 6, mandarin 6, english 6, arabic 6, russian 6) |
-| lessons | **1117** | read-only audit (1045 course-reachable with bodies; 72 legacy preserved) |
-| quizzes | **88** | `getQuizCatalog` (french 6, german 18, mandarin 16, english 16, arabic 16, russian 16) |
-| programmes | **36** (all `DRAFT`) | read-only audit |
-| curriculum_nodes | **1715** | read-only audit |
-| learning_outcomes | **375** | read-only audit |
-| competencies | **10** | read-only audit |
-| assessment_blueprints | **36** | read-only audit |
-
-Production verification this session: `https://elaacademy.ng/` → 200; `i18n/en.json` served (emoji-free `Hello, {name}`); `js/teacher/components/quiz-question-card.js` uses `TI.remove`; `healthCheck` → `{status:"ok", project:"E-Learn Language Academy"}`; `getCatalog` → 38 courses; `getQuizCatalog` → 88 quizzes.
+The three mandated security suites (`student-security`, `assessment`, `p1c`) remain green. `functions/index.js` loads with **126 exports**; `firestore.rules` unchanged (no client-side scoring, no entitlement/security weakening).
 
 ---
 
-## 5. Deployment history (this session)
+## 4. Deployment (this session — targeted only)
 
 | Target | Command | Result |
 |---|---|---|
-| Hosting | `firebase deploy --only hosting --project ela-academy-7f868` | ✅ 158 files released |
-| Functions | `firebase deploy --only functions` (FUNCTIONS_DISCOVERY_TIMEOUT=120, orphan `getTeacherStats` preserved with "n") | ✅ `Deploy complete!` — the first attempt reported update failures on several functions; an immediate retry exited 0 with `Deploy complete!` and all 126 functions reporting "No changes detected" (deployed source == local source) |
+| Functions (6 changed) | `firebase deploy --only functions:startAssessmentAttempt,submitAssessmentAttempt,initializePayment,previewPayment,verifyPaystackPayment,verifyELACertificate` (`FUNCTIONS_DISCOVERY_TIMEOUT=120`) | ✅ `Deploy complete!` — all 6 "Successful update operation" |
 
-No global `firebase deploy`; no `firestore:rules`/`storage:rules`/indexes deploy (unchanged). No secret was printed or committed.
+No global `firebase deploy`; no `hosting`/`firestore:rules`/`storage:rules`/`indexes` deploy (unchanged). No secret printed or committed (`functions/.env` is gitignored; diff secret-scan clean).
 
-### Commits (this session)
+---
 
-| Hash | Subject |
+## 5. Post-deploy production QA (verified)
+
+| Check | Result |
 |---|---|
-| `8a2d216` | feat(curriculum): localize lesson scaffolds per academy + per-band advanced examples |
-| `06b9336` | feat(assessment): grammar question banks (DE/ZH/EN/AR/RU A2-C2) + full audit + legacy classification |
-| `0127356` | chore(frontend): i18n emoji cleanup + teacher quiz card icon + storage rules config |
-| `16082a1` | docs: ELA final completion report (this file) |
+| `https://elaacademy.ng/` | HTTP **200** |
+| `healthCheck` | `{"status":"ok","project":"E-Learn Language Academy"}` |
+| `getCatalog` | **38** courses |
+| `getQuizCatalog` | **88** quizzes |
+| `getTrialLessons` | **35** trial lessons (FR 5, DE 6, ZH 6, EN 6, AR 6, RU 6) |
+| `verifyELACertificate` (valid-format, absent id) | HTTP 200 `{"found":false,"valid":false}` |
+| `verifyELACertificate` (invalid-format) | HTTP 200 `{"found":false,"valid":false,"error":"invalid-format"}` |
 
 ---
 
-## 6. Provenance
+## 6. Status categories
 
-| Tag | Meaning | Applied to |
-|---|---|---|
-| SOURCE_DERIVED | from Francophone V7 (FR A1–B2) and ELA seed (A1 of other 5) | 11 courses + 73 lessons + 95 nodes |
-| GENERATED_DRAFT | ELA-authored structure + bodies | 27 courses + 972 lessons + 1620 nodes |
-| DATA_REQUIRED | teachers, official prices, accreditation, real schedules/statistics | not invented |
+### COMPLETED
 
-No `GENERATED_EXTENSION` required. Nothing is represented as official/certified/accredited.
+- Production re-validated (38/1117/88/36/1715/375/10/36/72; 1045 reachable lessons; all integrity checks zero).
+- All 8 local test suites pass (153 assertions total).
+- Rate limiting applied to assessment, payment, examination, academic-progression, certification callables, and now the public certificate-verification endpoint; deployed to production.
+- Free-trial repaired to 35 correct A1/HSK1 entry lessons across all 6 academies.
+- Business flows (Paystack, entitlement, referral, certificate, free trial) validated read-only.
+- Academic review package generated (`scripts/data/academic-review-package.json`): all 36 programmes `techPrerequisitesMet: true`, `READY_FOR_ACADEMIC_REVIEW`, with per-level human-review checklists.
+
+### REVIEW_REQUIRED (automated validation passed; specialist review pending)
+
+- Generated B1–C2 content (DE/ZH/EN/AR/RU A2–C2 and FR C1/C2) remains `GENERATED_DRAFT` / `REVIEW_REQUIRED` pending specialist academic review (C1/C2, HSK5/6).
+
+### HUMAN_REVIEW_REQUIRED (no human academic has approved anything)
+
+- Programmes remain `DRAFT`. `publishProgrammeContent` enforces READY-only, and no human academic review/approval has been performed. No claim of approval is made.
+
+### DATA_REQUIRED (external, non-inventable — not fabricated)
+
+- Teacher/instructor identities; live-class schedules; official prices beyond the internal `PRICE_TABLE`; accreditation; partners; real statistics.
+- **App Check enforcement** — requires a reCAPTCHA v3/Enterprise site key (external config) + client-side `initializeAppCheck`. Not enforced (all callables default/`enforceAppCheck:false`) to avoid breaking legitimate users; rollout plan documented in `docs/fme/`.
+- **MFA enforcement** — requires a Firebase Auth second-factor provider (external config) + a client enrollment flow. Not enforced; documented.
+
+### SECRET_CONFIGURATION_REQUIRED (server-only secret to be provisioned by an authorised operator)
+
+- **`ELA_CERT_SIGNING_KEY`** — HMAC-SHA256 certificate signing key. **Not provisioned in any environment. No value is printed, hardcoded, or committed anywhere in this repository.**
+
+  - **What it is used for:** computing a server-side HMAC-SHA256 `signature` over the certificate integrity hash for *new* certificates (schemaVersion 3). The signature proves authenticity (that ELA's server issued the record), complementing the SHA-256 `signatureHash` which proves integrity (that the record has not been tampered with).
+  - **Where it must be configured:** server-only. `functions/.env` (`ELA_CERT_SIGNING_KEY=…`) for local/emulator, and Firebase Secret Manager (or the Cloud Functions secret `ELA_CERT_SIGNING_KEY`) for production. It must **never** be written into a Firestore document, the frontend, or any tracked file.
+  - **What works without it:** certificate issuance still succeeds; integrity (SHA-256 `signatureHash`) is still computed and verified; all historical certificates remain verifiable; public/owner views remain privacy-safe. Without the key, new certificates are marked `authenticity: 'integrity-only'` (no HMAC signature), and verification of a HMAC-signed certificate that has no key returns `hmac-unverifiable`.
+  - **What requires it:** HMAC authenticity for newly issued certificates — i.e. cryptographically proving a certificate was issued by ELA's server rather than merely that it is unmodified. Historical `integrity-only` verification is unaffected.
+  - **Non-negotiable:** this is a real requirement for full certificate authenticity and must **not** be weakened away (e.g. by shipping a hardcoded key or skipping the signature). Provisioning is a human/operator action; until then the system correctly and safely degrades to integrity-only.
+
+### TECHNICAL_BLOCKERS
+
+- None blocking a real student's path. (The prior "Failed to update function" deploy errors were transient; the targeted retry completed cleanly.)
 
 ---
 
-## 7. Validation summary
-
-- **Student:** `getCatalog` (38 courses) → `getCourse` → lesson body → vocabulary/grammar/exercises → quiz. All course-reachable lessons carry real bodies; FR scaffolds in French, others in English; per-band examples. Trial lessons point to real content only.
-- **Teacher:** unchanged; role guards intact (`getTeacherStats` 403 for non-staff); teacher quiz editor uses the icon (not raw ✕) and emoji-free i18n strings.
-- **Admin:** unchanged; programmes remain `DRAFT`; admin callables role-guarded.
-- **Business:** catalogue/pricing/referral/certificates/live classes unchanged; `DATA_REQUIRED` for teachers, official prices, accreditation, real schedules/statistics.
-
----
-
-## 8. Remaining gaps / exact blockers
-
-1. **Programmes remain `DRAFT`** (governance by design — `publishProgrammeContent` enforces READY-only; no academic review performed).
-2. **`DATA_REQUIRED`** (external, non-inventable): teacher/instructor identities, live-class schedules, official prices beyond the internal `PRICE_TABLE`, accreditation/partners, real statistics.
-3. **72 legacy lessons** are archive-candidates (preserved, never deleted); archival is a separate, controlled step.
-4. **Generated B1–C2 content** remains `GENERATED_DRAFT`/`REVIEW_REQUIRED` pending specialist academic review (C1/C2, HSK5/6).
-5. App Check/MFA not enforced; rate limiting partial (documented in prior readiness report).
-
----
-
-## 9. Final production verdict
+## 7. Final production verdict
 
 **PRODUCTION READY WITH WARNINGS.**
 
-A real student can now traverse, for all six academies and all levels, a populated, language-specific curriculum — French A1–B2 from the V7 source, and generated (draft) content elsewhere — with correct per-academy meta-language, level-appropriate examples, secure server-scored assessments (88 quizzes), and no destructive operations. Programmes are intentionally unpublished pending academic review; external business facts remain `DATA_REQUIRED`. Security suites (18/18, 30/30, 14/14) and all local tests pass; hosting and functions are deployed and verified.
+A real student can traverse, for all six academies and all levels, a populated, language-specific curriculum (French A1–B2 source-derived; generated draft elsewhere) with correct per-academy meta-language, level-appropriate examples, secure server-scored assessments (88 quizzes), a working free trial (35 lessons), and rate-limited sensitive endpoints. Business flows (Paystack/referral/entitlement/certificate) are correctly guarded. Programmes remain intentionally unpublished pending human academic review; App Check, MFA, external business facts remain `DATA_REQUIRED`/`HUMAN_REVIEW_REQUIRED`; the certificate signing key is `SECRET_CONFIGURATION_REQUIRED` (system degrades safely to integrity-only until provisioned).
