@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1448" height="1024" viewBox="0 0 1448 1024">
+  <title>ELA Certificate Master — clean static artwork handoff</title>
+  <desc>
+    Placeholder master shell. The reference PNG is intentionally not embedded as production artwork.
+    Cline must reconstruct the clean static artwork from ELA_CERTIFICATE_REFERENCE.png.
+  </desc>
+  <!-- Static artwork must be reconstructed here.
+       DO NOT add student name, academy, programme, level, dates, certificate ID,
+       result, signatures, QR, verification URL, or hash. -->
+</svg>

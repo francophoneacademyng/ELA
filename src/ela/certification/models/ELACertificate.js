@@ -14,11 +14,13 @@ export const SIGNED_BY = 'ELA Certification Authority';
 export const SIGNATURE_ALGORITHM = 'SHA-256';
 export const VERIFY_BASE_URL = 'https://elaacademy.ng/verify.html';
 
-/** Types de certificats (label affichable). */
+/** Types de certificats (label affichable).
+ *  Terminologie institutionnelle correcte : aucun « officiel » CECRL,
+ *  aucune « participation » pour le certificat de programme principal. */
 export const CERTIFICATE_TYPES = {
-  completion:    { label: 'Attestation de participation ELA' },
-  achievement:   { label: 'Certificat de réussite ELA' },
-  certification: { label: 'Certificat ELA — Niveau CECRL (officiel)' }
+  completion:    { label: 'Certificate of Completion' },
+  achievement:   { label: 'Certificate of Achievement' },
+  certification: { label: 'Certificate of Proficiency' }
 };
 
 /** Codes académie autorisés (whitelist extensible). */
