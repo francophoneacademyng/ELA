@@ -62,8 +62,7 @@ function kpisHtml() {
       '<div class="kpi-value" id="content-drafts">…</div></div>' +
   '</div>' +
   '<div style="display:flex;gap:12px;margin-bottom:24px;">' +
-    '<a class="btn btn-outline btn-sm" href="#/teacher/lesson/new">' + t('admin.content.openStudio') + '</a>' +
-    '<a class="btn btn-outline btn-sm" href="#/teacher/courses">' + t('admin.content.videoLibrary') + '</a>' +
+    '<a class="btn btn-outline btn-sm" href="#/teacher/lesson/new">' + t('teacher.dashboard.newLesson') + '</a>' +
   '</div>' + rejectModalHtml();
 }
 

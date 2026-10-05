@@ -64,6 +64,7 @@ function paint() {
   var kpiCourses = stats ? (stats.approved || 0) : '—';
   var kpiPending = stats ? (stats.pending || 0) : '—';
   var kpiLive = stats ? (stats.byType && stats.byType.live || 0) : '—';
+  var kpiStudents = stats && (typeof stats.students === 'number') ? stats.students : '—';
 
   /* --- Progression réelle de l'enseignant (getTeacherStats) --- */
   var kpiTotal = stats ? (stats.total || 0) : 0;
@@ -119,7 +120,7 @@ function paint() {
         '<section class="kpi-grid">' +
           kpiCard(t('teacher.dashboard.kpi.published'), kpiCourses) +
           kpiCard(t('teacher.dashboard.kpi.pending'), kpiPending) +
-          kpiCard(t('teacher.dashboard.kpi.students'), '—') +
+          kpiCard(t('teacher.dashboard.kpi.students'), kpiStudents) +
           kpiCard(t('teacher.dashboard.kpi.live'), kpiLive) +
         '</section>' +
         '<section class="dashboard-section-title">' + t('teacher.dashboard.section.stats') + '</section>' +

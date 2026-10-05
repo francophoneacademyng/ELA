@@ -15,6 +15,8 @@ const core = require('./academic-core.js');
 const inst = require('./institution.js');
 const authz = require('./authz.js');
 const ratelimit = require('./ratelimit.js');
+const framework = require('./academic-framework.js');
+const publicationPolicy = require('./publication-policy.js');
 
 const REGION = 'africa-south1';
 const PROGRAMMES = 'programmes';
@@ -74,6 +76,18 @@ exports.publishProgrammeVersion = callable({ region: REGION }, async (request) =
   const progRef = admin.firestore().collection(PROGRAMMES).doc(String(d.programmeId || ''));
   const progSnap = await progRef.get();
   if (!progSnap.exists) fail('not-found', 'Programme not found.');
+
+  // GARDE-FOU D'HONNÊTETÉ (identique à curriculum.js publishProgrammeContent) :
+  // le serveur refuse toute publication d'un contenu non READY. Un client ne
+  // peut pas forcer la publication d'un contenu DRAFT / REVIEW_REQUIRED / MISSING.
+  const programmeId = String(d.programmeId);
+  const fw = framework.buildFullFramework();
+  const cur = fw.curricula.find((x) => x.programmeId === programmeId);
+  const decision = publicationPolicy.canPublishContent(cur ? cur.contentState : 'MISSING');
+  if (!decision.ok) {
+    fail('failed-precondition', 'Curriculum content is ' + decision.state + '; only READY content may be published.');
+  }
+
   const nextVersion = (Number(progSnap.data().currentVersion) || 0) + 1;
   const version = core.buildProgrammeVersion({
     programmeId: d.programmeId, version: nextVersion, status: 'published',

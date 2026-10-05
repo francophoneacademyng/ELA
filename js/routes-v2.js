@@ -22,6 +22,7 @@ import { renderAdminRevenue } from './admin/pages/admin-revenue.page.js';
 import { renderAdminPayments } from './admin/pages/admin-payments.page.js';
 import { renderAdminCertificates } from './admin/pages/admin-certificates.page.js';
 import { renderAdminTools } from './admin/pages/admin-tools.page.js';
+import { renderAdminExaminations } from './admin/pages/admin-examinations.page.js';
 import { renderTeacherPage } from './teacher/pages/teacher.page.js';
 import { renderTeacherCourses } from './teacher/pages/teacher-courses.page.js';
 import { renderTeacherQuizzes } from './teacher/pages/teacher-quizzes.page.js';
@@ -32,9 +33,15 @@ import { renderTeacherProfile } from './teacher/pages/teacher-profile.page.js';
 import { renderTeacherLessonNew } from './teacher/pages/teacher-lesson.page.js';
 import { renderTeacherQuizNew } from './teacher/pages/teacher-quiz.page.js';
 import { renderTeacherLiveNew } from './teacher/pages/teacher-live.page.js';
+import { renderTeacherLiveAssign } from './teacher/pages/teacher-live-assign.page.js';
+import { renderTeacherExaminations } from './teacher/pages/teacher-examinations.page.js';
+import { renderTeacherAttendance } from './teacher/pages/teacher-attendance.page.js';
+import { renderTeacherProgress } from './teacher/pages/teacher-progress.page.js';
+import { renderTeacherCertificates } from './teacher/pages/teacher-certificates.page.js';
 import { registerAcademyRoutes } from '../src/academies/registry.js';
 import { renderStudentHub } from '../src/ela/pages/student-hub.page.js';
 import { renderStudentProfile } from '../src/ela/pages/student-profile.page.js';
+import { render as renderClassroom } from '../src/ela/pages/classroom.page.js';
 import { renderAcademiesPublic } from '../src/ela/pages/academies-public.page.js';
 import { renderFreeTrial } from '../src/ela/pages/free-trial.page.js';
 import { renderLeadMagnetsIndex, renderLeadMagnetPage } from '../src/ela/pages/lead-magnets.page.js';
@@ -60,6 +67,7 @@ if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS['/admin/payments'] = renderAdminPayments;
   window.ELA_ROUTE_HANDLERS['/admin/certificates'] = renderAdminCertificates;
   window.ELA_ROUTE_HANDLERS['/admin/tools'] = renderAdminTools;
+  window.ELA_ROUTE_HANDLERS['/admin/examinations'] = renderAdminExaminations;
   window.ELA_ROUTE_HANDLERS['/teacher'] = renderTeacherPage;
   /* Sous-pages enseignant (sidebar complète) */
   window.ELA_ROUTE_HANDLERS['/teacher/courses'] = renderTeacherCourses;
@@ -72,9 +80,15 @@ if (typeof window !== 'undefined') {
   window.ELA_ROUTE_HANDLERS['/teacher/lesson/new'] = renderTeacherLessonNew;
   window.ELA_ROUTE_HANDLERS['/teacher/quiz/new'] = renderTeacherQuizNew;
   window.ELA_ROUTE_HANDLERS['/teacher/live/new'] = renderTeacherLiveNew;
+  window.ELA_ROUTE_HANDLERS['/teacher/live/assign'] = renderTeacherLiveAssign;
+  window.ELA_ROUTE_HANDLERS['/teacher/examinations'] = renderTeacherExaminations;
+  window.ELA_ROUTE_HANDLERS['/teacher/attendance'] = renderTeacherAttendance;
+  window.ELA_ROUTE_HANDLERS['/teacher/progress'] = renderTeacherProgress;
+  window.ELA_ROUTE_HANDLERS['/teacher/certificates'] = renderTeacherCertificates;
   /* Hub étudiant + page publique académies */
   window.ELA_ROUTE_HANDLERS['/dashboard'] = renderStudentHub;
   window.ELA_ROUTE_HANDLERS['/profile'] = renderStudentProfile;
+  window.ELA_ROUTE_HANDLERS['/classroom'] = renderClassroom;
   window.ELA_ROUTE_HANDLERS['/academies'] = renderAcademiesPublic;
   window.ELA_ROUTE_HANDLERS['/free-trial'] = renderFreeTrial;
   /* Lead magnets (hub + une landing par académie). ES reste masqué. */

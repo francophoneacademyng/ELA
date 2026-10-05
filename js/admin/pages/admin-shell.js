@@ -28,6 +28,7 @@ export function adminSidebarHtml(active) {
       a('#/admin/academies', '🎓 ' + t('admin.academies')) +
       '<div class="nav-section">' + t('admin.navGroup.content') + '</div>' +
       a('#/admin/content', '📚 ' + t('admin.content')) +
+      a('#/admin/examinations', '📝 ' + t('admin.exam.title', 'Examinations')) +
       a('#/admin/whatsapp', '💬 ' + t('admin.whatsapp')) +
       '<div class="nav-section">' + t('admin.navGroup.finance') + '</div>' +
       a('#/admin/payments', '💳 ' + t('admin.payments')) +

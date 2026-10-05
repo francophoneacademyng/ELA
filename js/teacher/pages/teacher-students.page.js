@@ -26,10 +26,17 @@ export function renderTeacherStudents() {
       callFunction('getTeacherStats').then(function (r) {
         paint(r || {});
       }).catch(function () {
-        paint({});
+        paintError();
       });
     }
   });
+}
+
+function paintError() {
+  var box = document.querySelector('[data-students-list]');
+  if (!box) return;
+  box.innerHTML = '<div class="empty-state"><div class="empty-icon">' + TI.empty + '</div>' +
+    '<p>' + t('teacher.students.error') + '</p></div>';
 }
 
 function paint(r) {
@@ -43,9 +50,10 @@ function paint(r) {
     return;
   }
   var rows = students.map(function (st) {
+    var progress = (typeof st.progress === 'number') ? (st.progress + ' ' + t('teacher.students.col.lessonsShort')) : '—';
     return '<tr><td><span class="user-name">' + esc(st.displayName || st.name || '—') + '</span></td>' +
       '<td><span class="user-email">' + esc(st.email || '—') + '</span></td>' +
-      '<td>' + (typeof st.progress === 'number' ? st.progress + ' %' : '—') + '</td>' +
+      '<td>' + progress + '</td>' +
       '<td>' + (st.lastActive ? formatDate(st.lastActive) : '—') + '</td></tr>';
   }).join('');
   box.innerHTML = '<div class="table-responsive"><table class="data-table">' +

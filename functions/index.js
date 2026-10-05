@@ -135,7 +135,7 @@ const nurture = require('./nurture');
 // TODO: Restaurer quand le refactor certificats/curriculum sera terminé.
 // (fichiers supprimés encore référencés : ela-certificate-core.js, ela-pdf.js,
 // curriculum.js, curriculum-quizzes.js, seed-a1/* — via teacher/ela-certificates)
-// const teacher = require('./teacher');
+const teacher = require('./teacher');
 // const elaCert = require('./ela-certificates');
 
 exports.healthCheck = core.healthCheck;
@@ -166,6 +166,13 @@ exports.ensureProfile = auth.ensureProfile;
 exports.getLiveMeetingLink = live.getLiveMeetingLink;
 exports.getLiveCatalog = live.getLiveCatalog;
 exports.seedLiveClasses = live.seedLiveClasses;
+
+const jaas = require('./jaas');
+exports.getJaasToken = jaas.getJaasToken;
+
+const liveClasses = require('./liveClasses');
+exports.setAssignedStudents = liveClasses.setAssignedStudents;
+exports.listEligibleStudents = liveClasses.listEligibleStudents;
 
 exports.getAdminQueue = adm.getAdminQueue;
 exports.reviewContent = adm.reviewContent;
@@ -240,11 +247,13 @@ exports.endClassSession = attendance.endClassSession;
 exports.validateAttendance = attendance.validateAttendance;
 exports.correctAttendance = attendance.correctAttendance;
 exports.getAttendanceReport = attendance.getAttendanceReport;
+exports.listClassSessions = attendance.listClassSessions;
 
 const examination = require('./examination');
 exports.createExamination = examination.createExamination;
 exports.publishExaminationVersion = examination.publishExaminationVersion;
 exports.getExamination = examination.getExamination;
+exports.listExaminations = examination.listExaminations;
 exports.registerExaminationCandidate = examination.registerExaminationCandidate;
 exports.startExaminationAttempt = examination.startExaminationAttempt;
 exports.submitExaminationSection = examination.submitExaminationSection;
@@ -308,4 +317,5 @@ exports.nurtureUnsubscribe = nurture.nurtureUnsubscribe;
 // exports.revokeELACertificate = elaCert.revokeELACertificate;
 
 // exports.getTeacherStats = teacher.getTeacherStats;
+exports.getTeacherStats = teacher.getTeacherStats;
 

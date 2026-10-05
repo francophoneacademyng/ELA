@@ -27,6 +27,7 @@ const { onRequest, onCall, HttpsError } = require('firebase-functions/v2/https')
 // Imports scheduler/firestore retirés : non utilisés (fix timeout déploiement).
 const crypto = require('crypto');
 const admin = require('firebase-admin');
+const academyScope = require('./academy-scope.js');
 
 // admin.initializeApp() removed - initialized in index.js
 // Firestore paresseux (fix timeout déploiement — voir index.js).
@@ -39,6 +40,16 @@ const db = new Proxy({}, {
 const REGION = 'africa-south1';
 const PAYSTACK_BASE = 'https://api.paystack.co';
 const DEFAULT_CALLBACK_URL = 'https://elaacademy.ng/#/payment/result';
+
+/** Timestamp Firestore / Date / ISO / ms → millisecondes (null si absent). */
+function ts(v) {
+  if (!v) return null;
+  if (typeof v.toMillis === 'function') return v.toMillis();
+  if (v instanceof Date) return v.getTime();
+  if (typeof v.seconds === 'number') return v.seconds * 1000;
+  const n = Number(v);
+  return isNaN(n) ? null : n;
+}
 
 /**
  * Grille tarifaire canonique (NGN) — source de vérité côté serveur.
@@ -132,6 +143,8 @@ exports.getTeacherStats = onCall({ region: REGION }, async (request) => {
     throw new HttpsError('permission-denied', 'teacher-or-admin-only');
   }
 
+  const isAdmin = role === 'admin';
+
   // Récupérer les soumissions de l'enseignant
   const collections = ['lessons', 'quizzes', 'liveClasses'];
   const stats = { total: 0, pending: 0, approved: 0, rejected: 0, byType: { lesson: 0, quiz: 0, live: 0 } };
@@ -159,11 +172,73 @@ exports.getTeacherStats = onCall({ region: REGION }, async (request) => {
   // Trier par date (plus récent d'abord)
   recent.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
+  /* ------------------------------------------------------------
+     Roster des élèves (isolation par académie + rôle).
+     - admin   : tous les élèves (rôle student)
+     - teacher : élèves de SA SEULE académie (jamais d'autres académies)
+     La logique de filtrage est PURE et testée (academy-scope.js).
+     ------------------------------------------------------------ */
+  const students = await loadTeacherStudents(uid, role);
+
   return {
-    stats,
-    recent: recent.slice(0, 10)
+    stats: Object.assign({}, stats, { students: students.length }),
+    recent: recent.slice(0, 10),
+    students: students
   };
 });
+
+/* Charge les élèves visibles par l'appelant (roster), borné et enrichi.
+   Le filtrage (rôle + académie) est délégué à academy-scope.js (PUR). */
+async function loadTeacherStudents(uid, role) {
+  const isAdmin = role === 'admin';
+  const callerSnap = await db.collection('users').doc(uid).get();
+  const callerAcademy = callerSnap.exists ? callerSnap.data().academy : null;
+
+  // Élèves = role 'student' (canonique ; createAccount/ensureProfile le fixent).
+  const snap = await db.collection('users').where('role', '==', 'student').limit(500).get();
+  const records = snap.docs.map((d) => ({
+    uid: d.id,
+    role: d.data().role || 'student',
+    academy: d.data().academy || null,
+    academies: d.data().academies || null,
+    displayName: d.data().displayName || '',
+    email: d.data().email || ''
+  }));
+
+  const allowedUids = academyScope.filterTeacherStudents(records, callerAcademy, isAdmin);
+  const allowedSet = {};
+  allowedUids.forEach((x) => { allowedSet[x] = true; });
+
+  const students = records
+    .filter((r) => allowedSet[r.uid])
+    .map((r) => ({
+      uid: r.uid,
+      displayName: r.displayName,
+      email: r.email,
+      academy: academyScope.normalizeAcademyKey(r.academy || (Array.isArray(r.academies) && r.academies[0])) || null
+    }));
+
+  // Enrichissement borné : progression (leçons complétées) + dernière activité.
+  const MAX_ENRICH = 100;
+  const toEnrich = students.slice(0, MAX_ENRICH);
+  for (const s of toEnrich) {
+    try {
+      const progSnap = await db.collection('progress').doc(s.uid).get();
+      if (progSnap.exists) {
+        const p = progSnap.data();
+        const completed = Array.isArray(p.completedLessons) ? p.completedLessons.length : 0;
+        s.progress = completed;
+        s.lastActive = ts(p.updatedAt) || null;
+      }
+    } catch (e) {
+      s.progress = null;
+      s.lastActive = null;
+    }
+    if (s.progress == null) s.progress = null;
+  }
+
+  return students;
+}
 
 /* ============================================================
    CERTIFICATS ELA � centralisation (cf. ela-certificates.js)

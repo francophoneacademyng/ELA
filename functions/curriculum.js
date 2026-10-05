@@ -16,6 +16,7 @@ const admin = require('firebase-admin');
 const fw = require('./academic-framework.js');
 const qa = require('./curriculum-core.js');
 const authz = require('./authz.js');
+const publicationPolicy = require('./publication-policy.js');
 
 const REGION = 'africa-south1';
 const COMPETENCIES = 'competencies';
@@ -84,19 +85,22 @@ exports.seedAcademicFramework = callable({ region: REGION, timeoutSeconds: 300 }
     await db.collection(PROGRAMMES).doc(p.id).set(Object.assign({}, p, { currentVersion: 1 }), { merge: true });
     written.programmes++;
     const cur = framework.curricula.find((x) => x.programmeId === p.id);
+    const nodes = flattenCurriculum(cur || { programmeId: p.id, academyCode: p.academyCode, level: p.level, modules: [] });
     const version = {
       programmeId: p.id, version: 1, status: 'draft',
       title: p.title, outcomes: p.learningOutcomes, requirements: {
         requiredLessonPercent: 100, requiredAssessmentIds: [], attendanceRequired: false,
         requiresFinalExamination: true, requiredSkills: ['listening', 'reading', 'writing', 'speaking'], passMark: 60
       },
+      // Snapshot de structure : permet à computeProgression de lire les nœuds de la version
+      // sans dépendre de la collection curriculum_nodes (traçabilité du parcours étudiant).
+      nodes: nodes.map((n) => ({ id: n.id, programmeId: n.programmeId, version: 1, type: n.type, parentId: n.parentId, title: n.title, order: n.order, state: n.state, outcomeIds: n.outcomeIds || [], competencyIds: n.competencyIds || [] })),
       contentState: cur ? cur.contentState : 'MISSING',
       structure: cur ? cur.structure : '',
       createdBy: uid, createdAt: new Date().toISOString(), publishedAt: null
     };
     await db.collection(VERSIONS).doc(p.id + '_v1').set(version, { merge: true });
     written.versions++;
-    const nodes = flattenCurriculum(cur || { programmeId: p.id, academyCode: p.academyCode, level: p.level, modules: [] });
     for (const n of nodes) { await db.collection(NODES).doc(n.id).set(n, { merge: true }); written.nodes++; }
   }
   return { ok: true, written: written, checksum: framework.checksum };
@@ -181,8 +185,8 @@ exports.publishProgrammeContent = callable({ region: REGION }, async (request) =
   const p = pSnap.data();
   const framework = fw.buildFullFramework();
   const cur = framework.curricula.find((x) => x.programmeId === programmeId);
-  const state = cur ? cur.contentState : 'MISSING';
-  if (state !== 'READY') fail('failed-precondition', 'Curriculum content is ' + state + '; only READY content may be published.');
+  const decision = publicationPolicy.canPublishContent(cur ? cur.contentState : 'MISSING');
+  if (!decision.ok) fail('failed-precondition', 'Curriculum content is ' + decision.state + '; only READY content may be published.');
   await pRef.update({ status: 'published', qualityReviewStatus: 'APPROVED', updatedAt: new Date().toISOString() });
   await db.collection(VERSIONS).doc(programmeId + '_v' + p.currentVersion).update({ status: 'published', publishedAt: new Date().toISOString() });
   return { ok: true, programmeId: programmeId, status: 'published' };

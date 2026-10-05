@@ -23,8 +23,12 @@ export function teacherSidebarHtml(active) {
       a('#/teacher/courses', '<span class="nav-icon">' + TI.book + '</span> ' + t('teacher.sidebar.courses')) +
       a('#/teacher/quizzes', '<span class="nav-icon">' + TI.quiz + '</span> ' + t('teacher.sidebar.quizzes')) +
       a('#/teacher/live', '<span class="nav-icon">' + TI.live + '</span> ' + t('teacher.sidebar.live')) +
+      a('#/teacher/examinations', '<span class="nav-icon">' + TI.quiz + '</span> ' + t('teacher.sidebar.examinations', 'Examinations')) +
       '<div class="nav-section">' + t('teacher.navGroup.management') + '</div>' +
       a('#/teacher/students', '<span class="nav-icon">' + TI.users + '</span> ' + t('teacher.sidebar.students')) +
+      a('#/teacher/progress', '<span class="nav-icon">' + TI.chart + '</span> ' + t('teacher.sidebar.progress', 'Progress')) +
+      a('#/teacher/attendance', '<span class="nav-icon">' + TI.clock + '</span> ' + t('teacher.sidebar.attendance', 'Attendance')) +
+      a('#/teacher/certificates', '<span class="nav-icon">' + TI.award + '</span> ' + t('teacher.sidebar.certificates', 'Certificates')) +
       a('#/teacher/stats', '<span class="nav-icon">' + TI.chart + '</span> ' + t('teacher.sidebar.stats')) +
       '<div class="nav-section">' + t('teacher.navGroup.account') + '</div>' +
       a('#/teacher/profile', '<span class="nav-icon">' + TI.settings + '</span> ' + t('teacher.sidebar.profile')) +

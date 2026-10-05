@@ -471,6 +471,202 @@ const LANGUAGES = {
   }
 };
 
+/* ---------- Contenu A2 spécifique (défini au niveau A2, distinct du noyau A1) ----------
+   Corrige H-001 : les programmes A2 ne réutilisent plus le contenu A1. */
+const A2_MODULES = {
+  FR: [
+    { theme: 'La routine quotidienne', vocab: [['se réveiller', 'to wake up'], ['s\u2019habiller', 'to get dressed'], ['le petit-déjeuner', 'breakfast'], ['partir', 'to leave'], ['rentrer', 'to come home'], ['se coucher', 'to go to bed'], ['faire la cuisine', 'to cook']],
+      examples: ["Je me réveille à sept heures.", "Je prends mon petit-déjeuner à sept heures et demie.", "Je pars au travail à huit heures.", "Je rentre à la maison à six heures.", "Le soir, je fais la cuisine.", "Je me couche à dix heures."],
+      dialogue: ['À quelle heure tu te réveilles ?', 'À sept heures, puis je prends mon petit-déjeuner.', 'Tu te couches tôt le soir ?', 'Oui, vers dix heures.'] },
+    { theme: 'Nourriture et achats', vocab: [['le marché', 'market'], ['le prix', 'price'], ['acheter', 'to buy'], ['le kilo', 'kilo'], ['coûter', 'to cost'], ['bon marché', 'cheap'], ['cher', 'expensive']],
+      examples: ["Je vais au marché le samedi.", "Combien coûte un kilo de tomates ?", "Ce fromage est bon marché.", "Ce restaurant est trop cher pour moi.", "J'achète du pain et des légumes.", "Les prix ont augmenté cette année."],
+      dialogue: ['Tu vas où pour faire les courses ?', 'Je vais au marché le samedi matin.', "C'est cher au marché ?", "Non, c'est souvent bon marché."] },
+    { theme: 'Voyages et transports', vocab: [['le train', 'train'], ['la gare', 'station'], ['le billet', 'ticket'], ['le passeport', 'passport'], ["l'arrêt", 'stop'], ['réserver', 'to book'], ['en retard', 'late']],
+      examples: ["Je prends le train pour Paris.", "Le train part de la gare à neuf heures.", "J'ai réservé un billet en ligne.", "Mon train est en retard de dix minutes.", "N'oublie pas ton passeport.", "Le bus s'arrête à cet arrêt."],
+      dialogue: ['Tu pars en voyage ce week-end ?', 'Oui, je prends le train samedi.', 'Tu as réservé ton billet ?', 'Oui, et mon passeport est prêt.'] },
+    { theme: 'Santé et corps', vocab: [['le médecin', 'doctor'], ['le médicament', 'medicine'], ['la douleur', 'pain'], ['malade', 'ill'], ['la pharmacie', 'pharmacy'], ['avoir mal', 'to hurt'], ['se reposer', 'to rest']],
+      examples: ["J'ai mal à la tête.", "Je vais chez le médecin demain.", "La pharmacie est ouverte le soir.", "Il est malade et il se repose.", "Prends ce médicament après le repas.", "La douleur a disparu."],
+      dialogue: ["Tu n'as pas l'air bien. Qu'est-ce que tu as ?", "J'ai mal au ventre depuis ce matin.", 'Tu es allé chez le médecin ?', "Oui, il m'a donné un médicament."] },
+    { theme: 'Souvenirs et passé', vocab: [['hier', 'yesterday'], ['la semaine dernière', 'last week'], ['avant', 'before'], ['visiter', 'to visit'], ['rencontrer', 'to meet'], ['il y a', 'ago'], ["l'enfance", 'childhood']],
+      examples: ["Hier, j'ai visité un musée.", "La semaine dernière, nous avons voyagé.", "Avant, j'habitais dans un petit village.", "J'ai rencontré un vieil ami.", "Il y a deux ans, je suis allé au Maroc.", "Mon enfance était heureuse."],
+      dialogue: ["Qu'est-ce que tu as fait hier ?", "J'ai visité un musée avec des amis.", "C'était intéressant ?", 'Oui, surtout les tableaux anciens.'] },
+    { theme: 'Projets et avenir', vocab: [['demain', 'tomorrow'], ['la semaine prochaine', 'next week'], ['bientôt', 'soon'], ['projeter', 'to plan'], ['espérer', 'to hope'], ["avoir l'intention", 'to intend'], ['prévoir', 'to foresee']],
+      examples: ["Demain, je vais commencer un cours.", "La semaine prochaine, nous allons déménager.", "Bientôt, je vais voyager en France.", "Je projette d'apprendre l'allemand.", "J'espère trouver un bon travail.", "Nous prévoyons de visiter Dakar."],
+      dialogue: ["Quels sont tes projets pour l'année prochaine ?", 'Je vais voyager et chercher un travail.', 'Tu espères trouver quoi ?', 'Un poste dans une entreprise française.'] }
+  ],
+  DE: [
+    { theme: 'Tagesablauf', vocab: [['aufstehen', 'to get up'], ['sich anziehen', 'to get dressed'], ['das Frühstück', 'breakfast'], ['losgehen', 'to leave'], ['nach Hause kommen', 'to come home'], ['ins Bett gehen', 'to go to bed'], ['kochen', 'to cook']],
+      examples: ['Ich stehe um sieben Uhr auf.', 'Ich frühstücke um halb acht.', 'Ich gehe um acht Uhr los.', 'Ich komme um sechs Uhr nach Hause.', 'Abends koche ich.', 'Ich gehe um zehn Uhr ins Bett.'],
+      dialogue: ['Wann stehst du auf?', 'Um sieben Uhr, dann frühstücke ich.', 'Gehst du früh ins Bett?', 'Ja, gegen zehn Uhr.'] },
+    { theme: 'Essen und Einkaufen', vocab: [['der Markt', 'market'], ['der Preis', 'price'], ['kaufen', 'to buy'], ['das Kilo', 'kilo'], ['kosten', 'to cost'], ['billig', 'cheap'], ['teuer', 'expensive']],
+      examples: ['Ich gehe am Samstag auf den Markt.', 'Was kostet ein Kilo Tomaten?', 'Dieser Käse ist billig.', 'Dieses Restaurant ist zu teuer.', 'Ich kaufe Brot und Gemüse.', 'Die Preise sind dieses Jahr gestiegen.'],
+      dialogue: ['Wo kaufst du ein?', 'Am Samstag gehe ich auf den Markt.', 'Ist es auf dem Markt teuer?', 'Nein, es ist oft billig.'] },
+    { theme: 'Reisen und Verkehr', vocab: [['der Zug', 'train'], ['der Bahnhof', 'station'], ['die Fahrkarte', 'ticket'], ['der Reisepass', 'passport'], ['die Haltestelle', 'stop'], ['buchen', 'to book'], ['die Verspätung', 'delay']],
+      examples: ['Ich nehme den Zug nach Berlin.', 'Der Zug fährt um neun Uhr ab.', 'Ich habe eine Fahrkarte online gebucht.', 'Mein Zug hat zehn Minuten Verspätung.', 'Vergiss deinen Reisepass nicht.', 'Der Bus hält an dieser Haltestelle.'],
+      dialogue: ['Verreist du dieses Wochenende?', 'Ja, ich nehme am Samstag den Zug.', 'Hast du deine Fahrkarte gebucht?', 'Ja, und mein Reisepass ist fertig.'] },
+    { theme: 'Gesundheit und Körper', vocab: [['der Arzt', 'doctor'], ['das Medikament', 'medicine'], ['der Schmerz', 'pain'], ['krank', 'ill'], ['die Apotheke', 'pharmacy'], ['wehtun', 'to hurt'], ['sich ausruhen', 'to rest']],
+      examples: ['Ich habe Kopfschmerzen.', 'Ich gehe morgen zum Arzt.', 'Die Apotheke ist abends geöffnet.', 'Er ist krank und ruht sich aus.', 'Nimm dieses Medikament nach dem Essen.', 'Der Schmerz ist weg.'],
+      dialogue: ['Du siehst nicht gut aus. Was hast du?', 'Ich habe seit heute Morgen Bauchschmerzen.', 'Warst du beim Arzt?', 'Ja, er hat mir ein Medikament gegeben.'] },
+    { theme: 'Erinnerungen und Vergangenheit', vocab: [['gestern', 'yesterday'], ['letzte Woche', 'last week'], ['früher', 'before'], ['besuchen', 'to visit'], ['treffen', 'to meet'], ['vor', 'ago'], ['die Kindheit', 'childhood']],
+      examples: ['Gestern habe ich ein Museum besucht.', 'Letzte Woche sind wir verreist.', 'Früher wohnte ich in einem kleinen Dorf.', 'Ich habe einen alten Freund getroffen.', 'Vor zwei Jahren war ich in Österreich.', 'Meine Kindheit war glücklich.'],
+      dialogue: ['Was hast du gestern gemacht?', 'Ich habe mit Freunden ein Museum besucht.', 'War es interessant?', 'Ja, besonders die alten Bilder.'] },
+    { theme: 'Pläne und Zukunft', vocab: [['morgen', 'tomorrow'], ['nächste Woche', 'next week'], ['bald', 'soon'], ['planen', 'to plan'], ['hoffen', 'to hope'], ['vorhaben', 'to intend'], ['erwarten', 'to expect']],
+      examples: ['Morgen beginne ich einen Kurs.', 'Nächste Woche ziehen wir um.', 'Bald reise ich nach Deutschland.', 'Ich plane, Deutsch zu lernen.', 'Ich hoffe, eine gute Arbeit zu finden.', 'Wir erwarten, Berlin zu besuchen.'],
+      dialogue: ['Was sind deine Pläne für nächstes Jahr?', 'Ich will reisen und Arbeit suchen.', 'Was hoffst du zu finden?', 'Eine Stelle in einer deutschen Firma.'] }
+  ],
+  ZH: [
+    { theme: '日常生活 Daily routine', vocab: [['起床 (qǐchuáng)', 'to get up'], ['穿衣 (chuānyī)', 'to get dressed'], ['早餐 (zǎocān)', 'breakfast'], ['出门 (chūmén)', 'to leave'], ['回家 (huíjiā)', 'to come home'], ['睡觉 (shuìjiào)', 'to go to bed'], ['做饭 (zuòfàn)', 'to cook']],
+      examples: ['我七点起床。 (Wǒ qī diǎn qǐchuáng.)', '我七点半吃早餐。 (Wǒ qī diǎn bàn chī zǎocān.)', '我八点出门。 (Wǒ bā diǎn chūmén.)', '我六点回家。 (Wǒ liù diǎn huíjiā.)', '晚上我做饭。 (Wǎnshang wǒ zuòfàn.)', '我十点睡觉。 (Wǒ shí diǎn shuìjiào.)'],
+      dialogue: ['你几点起床？ (Nǐ jǐ diǎn qǐchuáng?)', '七点，然后吃早餐。 (Qī diǎn, ránhòu chī zǎocān.)', '你晚上睡得早吗？ (Nǐ wǎnshang shuì de zǎo ma?)', '对，十点左右。 (Duì, shí diǎn zuǒyòu.)'] },
+    { theme: '食物和购物 Food & shopping', vocab: [['市场 (shìchǎng)', 'market'], ['价格 (jiàgé)', 'price'], ['买 (mǎi)', 'to buy'], ['公斤 (gōngjīn)', 'kilo'], ['花费 (huāfèi)', 'to cost'], ['便宜 (piányi)', 'cheap'], ['贵 (guì)', 'expensive']],
+      examples: ['我星期六去市场。 (Wǒ xīngqīliù qù shìchǎng.)', '一公斤西红柿多少钱？ (Yì gōngjīn xīhóngshì duōshao qián?)', '这个奶酪很便宜。 (Zhège nǎilào hěn piányi.)', '这家饭馆太贵了。 (Zhè jiā fànguǎn tài guì le.)', '我买面包和蔬菜。 (Wǒ mǎi miànbāo hé shūcài.)', '今年价格上涨了。 (Jīnnián jiàgé shàngzhǎng le.)'],
+      dialogue: ['你去哪里买菜？ (Nǐ qù nǎlǐ mǎi cài?)', '我星期六早上在市场买。 (Wǒ xīngqīliù zǎoshang zài shìchǎng mǎi.)', '市场贵吗？ (Shìchǎng guì ma?)', '不贵，常常很便宜。 (Bú guì, chángcháng hěn piányi.)'] },
+    { theme: '旅行和交通 Travel & transport', vocab: [['火车 (huǒchē)', 'train'], ['车站 (chēzhàn)', 'station'], ['票 (piào)', 'ticket'], ['护照 (hùzhào)', 'passport'], ['站 (zhàn)', 'stop'], ['预订 (yùdìng)', 'to book'], ['迟到 (chídào)', 'late']],
+      examples: ['我坐火车去北京。 (Wǒ zuò huǒchē qù Běijīng.)', '火车九点从车站出发。 (Huǒchē jiǔ diǎn cóng chēzhàn chūfā.)', '我在网上订了票。 (Wǒ zài wǎngshang dìng le piào.)', '我的火车晚点十分钟。 (Wǒ de huǒchē wǎndiǎn shí fēnzhōng.)', '别忘了你的护照。 (Bié wàng le nǐ de hùzhào.)', '公共汽车在这一站停。 (Gōnggòng qìchē zài zhè yí zhàn tíng.)'],
+      dialogue: ['你这个周末去旅行吗？ (Nǐ zhège zhōumò qù lǚxíng ma?)', '去，我星期六坐火车。 (Qù, wǒ xīngqīliù zuò huǒchē.)', '你订票了吗？ (Nǐ dìng piào le ma?)', '订了，护照也准备好了。 (Dìng le, hùzhào yě zhǔnbèi hǎo le.)'] },
+    { theme: '健康 Health', vocab: [['医生 (yīshēng)', 'doctor'], ['药 (yào)', 'medicine'], ['疼痛 (téngtòng)', 'pain'], ['生病 (shēngbìng)', 'ill'], ['药店 (yàodiàn)', 'pharmacy'], ['疼 (téng)', 'to hurt'], ['休息 (xiūxi)', 'to rest']],
+      examples: ['我头疼。 (Wǒ tóuténg.)', '我明天去看医生。 (Wǒ míngtiān qù kàn yīshēng.)', '药店晚上开门。 (Yàodiàn wǎnshang kāimén.)', '他生病了，在休息。 (Tā shēngbìng le, zài xiūxi.)', '饭后吃这个药。 (Fàn hòu chī zhège yào.)', '疼痛消失了。 (Téngtòng xiāoshī le.)'],
+      dialogue: ['你看起来不舒服，怎么了？ (Nǐ kàn qǐlái bù shūfu, zěnme le?)', '我从早上开始肚子疼。 (Wǒ cóng zǎoshang kāishǐ dùzi téng.)', '你去看医生了吗？ (Nǐ qù kàn yīshēng le ma?)', '去了，他给了我药。 (Qù le, tā gěi le wǒ yào.)'] },
+    { theme: '回忆 Past & memories', vocab: [['昨天 (zuótiān)', 'yesterday'], ['上周 (shàngzhōu)', 'last week'], ['以前 (yǐqián)', 'before'], ['参观 (cānguān)', 'to visit'], ['见面 (jiànmiàn)', 'to meet'], ['前 (qián)', 'ago'], ['童年 (tóngnián)', 'childhood']],
+      examples: ['昨天我参观了一个博物馆。 (Zuótiān wǒ cānguān le yí ge bówùguǎn.)', '上周我们去旅行了。 (Shàngzhōu wǒmen qù lǚxíng le.)', '以前我住在一个小村子。 (Yǐqián wǒ zhù zài yí ge xiǎo cūnzi.)', '我遇见了一位老朋友。 (Wǒ yùjiàn le yí wèi lǎo péngyou.)', '两年前我去了中国。 (Liǎng nián qián wǒ qù le Zhōngguó.)', '我的童年很快乐。 (Wǒ de tóngnián hěn kuàilè.)'],
+      dialogue: ['你昨天做了什么？ (Nǐ zuótiān zuò le shénme?)', '我和朋友参观了一个博物馆。 (Wǒ hé péngyou cānguān le yí ge bówùguǎn.)', '有意思吗？ (Yǒu yìsi ma?)', '有，特别是那些古画。 (Yǒu, tèbié shì nàxiē gǔhuà.)'] },
+    { theme: '计划 Plans & future', vocab: [['明天 (míngtiān)', 'tomorrow'], ['下周 (xiàzhōu)', 'next week'], ['很快 (hěnkuài)', 'soon'], ['计划 (jìhuà)', 'to plan'], ['希望 (xīwàng)', 'to hope'], ['打算 (dǎsuàn)', 'to intend'], ['预计 (yùjì)', 'to expect']],
+      examples: ['明天我开始上课。 (Míngtiān wǒ kāishǐ shàngkè.)', '下周我们要搬家。 (Xiàzhōu wǒmen yào bānjiā.)', '很快我要去中国旅行。 (Hěnkuài wǒ yào qù Zhōngguó lǚxíng.)', '我计划学汉语。 (Wǒ jìhuà xué Hànyǔ.)', '我希望找到好工作。 (Wǒ xīwàng zhǎodào hǎo gōngzuò.)', '我们预计参观上海。 (Wǒmen yùjì cānguān Shànghǎi.)'],
+      dialogue: ['你明年有什么计划？ (Nǐ míngnián yǒu shénme jìhuà?)', '我要旅行和找工作。 (Wǒ yào lǚxíng hé zhǎo gōngzuò.)', '你希望找到什么？ (Nǐ xīwàng zhǎodào shénme?)', '一家中国公司的职位。 (Yì jiā Zhōngguó gōngsī de zhíwèi.)'] }
+  ],
+  EN: [
+    { theme: 'Daily routine', vocab: [['wake up', 'to wake up'], ['get dressed', 'to get dressed'], ['breakfast', 'breakfast'], ['leave', 'to leave'], ['come home', 'to come home'], ['go to bed', 'to go to bed'], ['cook', 'to cook']],
+      examples: ['I wake up at seven o\u2019clock.', 'I have breakfast at half past seven.', 'I leave for work at eight.', 'I come home at six.', 'In the evening, I cook.', 'I go to bed at ten.'],
+      dialogue: ['What time do you wake up?', 'At seven, then I have breakfast.', 'Do you go to bed early?', 'Yes, around ten o\u2019clock.'] },
+    { theme: 'Food and shopping', vocab: [['market', 'market'], ['price', 'price'], ['buy', 'to buy'], ['kilo', 'kilo'], ['cost', 'to cost'], ['cheap', 'cheap'], ['expensive', 'expensive']],
+      examples: ['I go to the market on Saturday.', 'How much does a kilo of tomatoes cost?', 'This cheese is cheap.', 'That restaurant is too expensive for me.', 'I buy bread and vegetables.', 'Prices went up this year.'],
+      dialogue: ['Where do you shop?', 'I go to the market on Saturday morning.', 'Is it expensive at the market?', 'No, it is often cheap.'] },
+    { theme: 'Travel and transport', vocab: [['train', 'train'], ['station', 'station'], ['ticket', 'ticket'], ['passport', 'passport'], ['stop', 'stop'], ['book', 'to book'], ['late', 'late']],
+      examples: ['I take the train to London.', 'The train leaves the station at nine.', 'I booked a ticket online.', 'My train is ten minutes late.', 'Do not forget your passport.', 'The bus stops at this stop.'],
+      dialogue: ['Are you travelling this weekend?', 'Yes, I am taking the train on Saturday.', 'Did you book your ticket?', 'Yes, and my passport is ready.'] },
+    { theme: 'Health and the body', vocab: [['doctor', 'doctor'], ['medicine', 'medicine'], ['pain', 'pain'], ['ill', 'ill'], ['pharmacy', 'pharmacy'], ['hurt', 'to hurt'], ['rest', 'to rest']],
+      examples: ['I have a headache.', 'I am going to the doctor tomorrow.', 'The pharmacy is open in the evening.', 'He is ill and is resting.', 'Take this medicine after the meal.', 'The pain is gone.'],
+      dialogue: ['You do not look well. What is wrong?', 'My stomach has hurt since this morning.', 'Did you see a doctor?', 'Yes, he gave me some medicine.'] },
+    { theme: 'Past and memories', vocab: [['yesterday', 'yesterday'], ['last week', 'last week'], ['before', 'before'], ['visit', 'to visit'], ['meet', 'to meet'], ['ago', 'ago'], ['childhood', 'childhood']],
+      examples: ['Yesterday I visited a museum.', 'Last week we travelled.', 'Before, I lived in a small village.', 'I met an old friend.', 'Two years ago I went to Spain.', 'My childhood was happy.'],
+      dialogue: ['What did you do yesterday?', 'I visited a museum with friends.', 'Was it interesting?', 'Yes, especially the old paintings.'] },
+    { theme: 'Plans and future', vocab: [['tomorrow', 'tomorrow'], ['next week', 'next week'], ['soon', 'soon'], ['plan', 'to plan'], ['hope', 'to hope'], ['intend', 'to intend'], ['expect', 'to expect']],
+      examples: ['Tomorrow I am starting a course.', 'Next week we are moving.', 'Soon I am going to travel abroad.', 'I plan to learn Spanish.', 'I hope to find a good job.', 'We expect to visit a new city.'],
+      dialogue: ['What are your plans for next year?', 'I am going to travel and look for work.', 'What do you hope to find?', 'A job at an international company.'] }
+  ],
+  AR: [
+    { theme: 'الروتين اليومي Daily routine', vocab: [['يستيقظ (yastayqiẓ)', 'to wake up'], ['يرتدي (yartadī)', 'to get dressed'], ['الفطور (al-fuṭūr)', 'breakfast'], ['يغادر (yughādir)', 'to leave'], ['يعود (yaʿūd)', 'to come home'], ['ينام (yanām)', 'to go to bed'], ['يطبخ (yaṭbukh)', 'to cook']],
+      examples: ['أستيقظ في السابعة. (Astayqiẓ fī s-sābiʿa.)', 'أتناول الفطور في السابعة والنصف. (Atanāwalu l-fuṭūr fī s-sābiʿa wa-n-niṣf.)', 'أغادر للعمل في الثامنة. (Ughādiru lil-ʿamal fī th-thāmina.)', 'أعود إلى البيت في السادسة. (Aʿūdu ilā l-bayt fī s-sādisa.)', 'في المساء أطبخ. (Fī l-masāʾ aṭbukh.)', 'أنام في العاشرة. (Anāmu fī l-ʿāshira.)'],
+      dialogue: ['متى تستيقظ؟ (Matā tastayqiẓ?)', 'في السابعة، ثم أتناول الفطور. (Fī s-sābiʿa, thumma atanāwalu l-fuṭūr.)', 'هل تنام مبكرا؟ (Hal tanāmu mubakkiran?)', 'نعم، حوالي العاشرة. (Naʿam, ḥawālay al-ʿāshira.)'] },
+    { theme: 'الطعام والتسوق Food & shopping', vocab: [['السوق (as-sūq)', 'market'], ['السعر (as-siʿr)', 'price'], ['يشتري (yashtarī)', 'to buy'], ['الكيلو (al-kīlū)', 'kilo'], ['يكلّف (yukallif)', 'to cost'], ['رخيص (rakhīṣ)', 'cheap'], ['غالٍ (ghālin)', 'expensive']],
+      examples: ['أذهب إلى السوق يوم السبت. (Adhhabu ilā s-sūq yawma s-sabt.)', 'كم يكلّف كيلو الطماطم؟ (Kam yukallifu kīlū aṭ-ṭamāṭim?)', 'هذا الجبن رخيص. (Hādhā l-jubn rakhīṣ.)', 'هذا المطعم غالٍ جدا. (Hādhā l-maṭʿam ghālin jiddan.)', 'أشتري الخبز والخضار. (Ashtarī l-khubz wa-l-khuḍār.)', 'ارتفعت الأسعار هذه السنة. (Irtafaʿat al-asʿār hādhihi s-sana.)'],
+      dialogue: ['أين تتسوق؟ (Ayna tatasawwaq?)', 'أذهب إلى السوق صباح السبت. (Adhhabu ilā s-sūq ṣabāḥa s-sabt.)', 'هل السوق غالٍ؟ (Hal as-sūq ghālin?)', 'لا، غالبا ما يكون رخيصا. (Lā, ghāliban mā yakūnu rakhīṣan.)'] },
+    { theme: 'السفر والنقل Travel & transport', vocab: [['القطار (al-qiṭār)', 'train'], ['المحطة (al-maḥaṭṭa)', 'station'], ['التذكرة (at-tadhkira)', 'ticket'], ['جواز السفر (jawāz as-safar)', 'passport'], ['الموقف (al-mawqif)', 'stop'], ['يحجز (yaḥjiz)', 'to book'], ['متأخر (mutaʾakhkhir)', 'late']],
+      examples: ['آخذ القطار إلى المدينة. (Ākhudhu l-qiṭār ilā l-madīna.)', 'يغادر القطار المحطة في التاسعة. (Yughādiru l-qiṭār al-maḥaṭṭa fī t-tāsiʿa.)', 'حجزت تذكرة عبر الإنترنت. (Ḥajaztu tadhkiratan ʿabra l-intarnit.)', 'قطاري متأخر عشر دقائق. (Qiṭārī mutaʾakhkhir ʿashr daqāʾiq.)', 'لا تنسَ جواز سفرك. (Lā tansa jawāza safarik.)', 'تقف الحافلة في هذا الموقف. (Taqifu l-ḥāfila fī hādhā l-mawqif.)'],
+      dialogue: ['هل تسافر في نهاية الأسبوع؟ (Hal tusāfiru fī nihāyati l-usbūʿ?)', 'نعم، آخذ القطار يوم السبت. (Naʿam, ākhudhu l-qiṭār yawma s-sabt.)', 'هل حجزت تذكرتك؟ (Hal ḥajazta tadhkiratak?)', 'نعم، وجواز السفر جاهز. (Naʿam, wa-jawāzu s-safar jāhiz.)'] },
+    { theme: 'الصحة Health', vocab: [['الطبيب (aṭ-ṭabīb)', 'doctor'], ['الدواء (ad-dawāʾ)', 'medicine'], ['الألم (al-alam)', 'pain'], ['مريض (marīḍ)', 'ill'], ['الصيدلية (aṣ-ṣaydaliyya)', 'pharmacy'], ['يؤلم (yuʾlim)', 'to hurt'], ['يستريح (yastarīḥ)', 'to rest']],
+      examples: ['عندي صداع. (ʿIndī ṣudāʿ.)', 'سأذهب إلى الطبيب غدا. (Sa-adhhabu ilā ṭ-ṭabīb ghadan.)', 'الصيدلية مفتوحة في المساء. (Aṣ-ṣaydaliyya maftūḥa fī l-masāʾ.)', 'هو مريض ويستريح. (Huwa marīḍ wa-yastarīḥ.)', 'خذ هذا الدواء بعد الطعام. (Khudh hādhā d-dawāʾ baʿda ṭ-ṭaʿām.)', 'اختفى الألم. (Ikhtafā l-alam.)'],
+      dialogue: ['لا تبدو بخير. ما بك؟ (Lā tabdū bikhayr. Mā bik?)', 'أشعر بألم في البطن منذ الصباح. (Ashʿuru bi-alam fī l-baṭn mundhu ṣ-ṣabāḥ.)', 'هل ذهبت إلى الطبيب؟ (Hal dhahabta ilā ṭ-ṭabīb?)', 'نعم، أعطاني دواء. (Naʿam, aʿṭānī dawāʾan.)'] },
+    { theme: 'الماضي والذكريات Past & memories', vocab: [['أمس (ams)', 'yesterday'], ['الأسبوع الماضي (al-usbūʿ al-māḍī)', 'last week'], ['قبل (qabl)', 'before'], ['يزور (yazūr)', 'to visit'], ['يلتقي (yaltaqī)', 'to meet'], ['منذ (mundhu)', 'ago'], ['الطفولة (aṭ-ṭufūla)', 'childhood']],
+      examples: ['زرت متحفا أمس. (Zurtu matḥafan ams.)', 'سافرنا الأسبوع الماضي. (Sāfarnā al-usbūʿa l-māḍī.)', 'قبل، كنت أعيش في قرية صغيرة. (Qabl, kuntu aʿīshu fī qarya ṣaghīra.)', 'التقيت بصديق قديم. (Ilaqaytu bi-ṣadīq qadīm.)', 'منذ سنتين ذهبت إلى المغرب. (Mundhu sanatayni dhahabtu ilā l-Maghrib.)', 'كانت طفولتي سعيدة. (Kānat ṭufūlatī saʿīda.)'],
+      dialogue: ['ماذا فعلت أمس؟ (Mādhā faʿalta ams?)', 'زرت متحفا مع الأصدقاء. (Zurtu matḥafan maʿa l-aṣdiqāʾ.)', 'هل كان ممتعا؟ (Hal kāna mumtiʿan?)', 'نعم، خاصة اللوحات القديمة. (Naʿam, khāṣṣatan al-lawḥāt al-qadīma.)'] },
+    { theme: 'الخطط والمستقبل Plans & future', vocab: [['غدا (ghadan)', 'tomorrow'], ['الأسبوع القادم (al-usbūʿ al-qādim)', 'next week'], ['قريبا (qarīban)', 'soon'], ['يخطط (yukhaṭṭiṭ)', 'to plan'], ['يأمل (yaʾmul)', 'to hope'], ['ينوي (yanwī)', 'to intend'], ['يتوقع (yatawaqqaʿ)', 'to expect']],
+      examples: ['غدا سأبدأ دورة. (Ghadan sa-abdaʾu dawra.)', 'سننتقل الأسبوع القادم. (Sanantaqilu al-usbūʿa l-qādim.)', 'قريبا سأسافر. (Qarīban sa-usāfiru.)', 'أخطط لتعلم العربية. (Ukhaṭṭiṭu litaʿallumi l-ʿarabiyya.)', 'آمل أن أجد عملا جيدا. (Āmulu an ajida ʿamalan jayyidan.)', 'نتوقع زيارة مدينة جديدة. (Natawaqqaʿu ziyārata madīna jadīda.)'],
+      dialogue: ['ما خططك للسنة القادمة؟ (Mā khiṭaṭuka lis-sanati l-qādima?)', 'سأسافر وأبحث عن عمل. (Sa-usāfiru wa-abḥathu ʿan ʿamal.)', 'ماذا تأمل أن تجد؟ (Mādhā taʾmulu an tajid?)', 'وظيفة في شركة عربية. (Waẓīfa fī sharika ʿarabiyya.)'] }
+  ],
+  RU: [
+    { theme: 'Распорядок дня Daily routine', vocab: [['вставать (vstavat\u2019)', 'to wake up'], ['одеваться (odevat\u2019sya)', 'to get dressed'], ['завтрак (zavtrak)', 'breakfast'], ['уходить (ukhodit\u2019)', 'to leave'], ['возвращаться (vozvrashchat\u2019sya)', 'to come home'], ['ложиться спать (lozhit\u2019sya spat\u2019)', 'to go to bed'], ['готовить (gotovit\u2019)', 'to cook']],
+      examples: ['Я встаю в семь часов. (Ya vstayu v sem\u2019 chasov.)', 'Я завтракаю в половине восьмого. (Ya zavtrakayu v polovine vos\u2019mogo.)', 'Я ухожу на работу в восемь. (Ya ukhozhu na rabotu v vosem\u2019.)', 'Я возвращаюсь домой в шесть. (Ya vozvrashchayus\u2019 domoy v shest\u2019.)', 'Вечером я готовлю. (Vecherom ya gotovlyu.)', 'Я ложусь спать в десять. (Ya lozhus\u2019 spat\u2019 v desyat\u2019.)'],
+      dialogue: ['Когда ты встаёшь? (Kogda ty vstayosh\u2019?)', 'В семь, потом завтракаю. (V sem\u2019, potom zavtrakayu.)', 'Ты рано ложишься спать? (Ty rano lozhish\u2019sya spat\u2019?)', 'Да, около десяти. (Da, okolo desyati.)'] },
+    { theme: 'Еда и покупки Food & shopping', vocab: [['рынок (rynok)', 'market'], ['цена (tsena)', 'price'], ['покупать (pokupat\u2019)', 'to buy'], ['килограмм (kilogramm)', 'kilo'], ['стоить (stoit\u2019)', 'to cost'], ['дешёвый (deshyovyy)', 'cheap'], ['дорогой (dorogoy)', 'expensive']],
+      examples: ['Я хожу на рынок в субботу. (Ya khozhu na rynok v subbotu.)', 'Сколько стоит килограмм помидоров? (Skol\u2019ko stoit kilogramm pomidorov?)', 'Этот сыр дешёвый. (Etot syr deshyovyy.)', 'Этот ресторан слишком дорогой. (Etot restoran slishkom dorogoy.)', 'Я покупаю хлеб и овощи. (Ya pokupayu khleb i ovoshchi.)', 'Цены выросли в этом году. (Tseny vyrosli v etom godu.)'],
+      dialogue: ['Где ты покупаешь продукты? (Gde ty pokupayesh\u2019 produkty?)', 'Я хожу на рынок в субботу утром. (Ya khozhu na rynok v subbotu utrom.)', 'На рынке дорого? (Na rynke dorogo?)', 'Нет, часто дешёво. (Net, chasto deshyovo.)'] },
+    { theme: 'Путешествия и транспорт Travel & transport', vocab: [['поезд (poyezd)', 'train'], ['вокзал (vokzal)', 'station'], ['билет (bilet)', 'ticket'], ['паспорт (pasport)', 'passport'], ['остановка (ostanovka)', 'stop'], ['бронировать (bronirovat\u2019)', 'to book'], ['опоздать (opozdat\u2019)', 'late']],
+      examples: ['Я еду на поезде в Москву. (Ya yedu na poyezde v Moskvu.)', 'Поезд отправляется с вокзала в девять. (Poyezd otpravlyayetsya s vokzala v devyat\u2019.)', 'Я забронировал билет онлайн. (Ya zabroniroval bilet onlayn.)', 'Мой поезд опоздал на десять минут. (Moy poyezd opozdal na desyat\u2019 minut.)', 'Не забудь паспорт. (Ne zabud\u2019 pasport.)', 'Автобус останавливается на этой остановке. (Avtobus ostanavlivayetsya na etoy ostanovke.)'],
+      dialogue: ['Ты едешь куда-нибудь в выходные? (Ty yedesh\u2019 kuda-nibud\u2019 v vykhodnyye?)', 'Да, я еду на поезде в субботу. (Da, ya yedu na poyezde v subbotu.)', 'Ты забронировал билет? (Ty zabroniroval bilet?)', 'Да, и паспорт готов. (Da, i pasport gotov.)'] },
+    { theme: 'Здоровье Health', vocab: [['врач (vrach)', 'doctor'], ['лекарство (lekarstvo)', 'medicine'], ['боль (bol\u2019)', 'pain'], ['больной (bol\u2019noy)', 'ill'], ['аптека (apteka)', 'pharmacy'], ['болеть (bolet\u2019)', 'to hurt'], ['отдыхать (otdykhat\u2019)', 'to rest']],
+      examples: ['У меня болит голова. (U menya bolit golova.)', 'Я иду к врачу завтра. (Ya idu k vrachu zavtra.)', 'Аптека открыта вечером. (Apteka otkryta vecherom.)', 'Он болен и отдыхает. (On bolen i otdykhayet.)', 'Прими это лекарство после еды. (Primi eto lekarstvo posle yedy.)', 'Боль прошла. (Bol\u2019 proshla.)'],
+      dialogue: ['Ты плохо выглядишь. Что случилось? (Ty plokho vyglyadish\u2019. Chto sluchilos\u2019?)', 'У меня болит живот с утра. (U menya bolit zhivot s utra.)', 'Ты ходил к врачу? (Ty khodil k vrachu?)', 'Да, он дал мне лекарство. (Da, on dal mne lekarstvo.)'] },
+    { theme: 'Прошлое и воспоминания Past & memories', vocab: [['вчера (vchera)', 'yesterday'], ['на прошлой неделе (na proshloy nedele)', 'last week'], ['раньше (ran\u2019she)', 'before'], ['посещать (poseshchat\u2019)', 'to visit'], ['встречать (vstrechat\u2019)', 'to meet'], ['назад (nazad)', 'ago'], ['детство (detstvo)', 'childhood']],
+      examples: ['Вчера я посетил музей. (Vchera ya posetil muzey.)', 'На прошлой неделе мы путешествовали. (Na proshloy nedele my puteshestvovali.)', 'Раньше я жил в маленькой деревне. (Ran\u2019she ya zhil v malen\u2019koy derevne.)', 'Я встретил старого друга. (Ya vstretil starogo druga.)', 'Два года назад я ездил в Испанию. (Dva goda nazad ya yezdil v Ispaniyu.)', 'Моё детство было счастливым. (Moyo detstvo bylo schastlivym.)'],
+      dialogue: ['Что ты делал вчера? (Chto ty delal vchera?)', 'Я посетил музей с друзьями. (Ya posetil muzey s druz\u2019yami.)', 'Было интересно? (Bylo interesno?)', 'Да, особенно старые картины. (Da, osobenno staryye kartiny.)'] },
+    { theme: 'Планы и будущее Plans & future', vocab: [['завтра (zavtra)', 'tomorrow'], ['на следующей неделе (na sleduyushchey nedele)', 'next week'], ['скоро (skoro)', 'soon'], ['планировать (planirovat\u2019)', 'to plan'], ['надеяться (nadeyat\u2019sya)', 'to hope'], ['намереваться (namerevat\u2019sya)', 'to intend'], ['ожидать (ozhidat\u2019)', 'to expect']],
+      examples: ['Завтра я начинаю курс. (Zavtra ya nachinayu kurs.)', 'На следующей неделе мы переезжаем. (Na sleduyushchey nedele my pereyezzhayem.)', 'Скоро я поеду за границу. (Skoro ya poyedu za granitsu.)', 'Я планирую учить испанский. (Ya planiruyu uchit\u2019 ispanskiy.)', 'Я надеюсь найти хорошую работу. (Ya nadeyus\u2019 nayti khoroshuyu rabotu.)', 'Мы ожидаем посетить новый город. (My ozhidayem posetit\u2019 novyy gorod.)'],
+      dialogue: ['Какие у тебя планы на следующий год? (Kakiye u tebya plany na sleduyushchiy god?)', 'Я поеду путешествовать и искать работу. (Ya poyedu puteshestvovat\u2019 i iskat\u2019 rabotu.)', 'Что ты надеешься найти? (Chto ty nadeyesh\u2019sya nayti?)', 'Работу в международной компании. (Rabotu v mezhdunarodnoy kompanii.)'] }
+  ]
+};
+
+/* Prononciation et culture nivelées pour les niveaux avancés (corrige C-006 :
+   les leçons B1–C2 ne réutilisent plus la prononciation/culture A1). */
+const LEVEL_PRONUNCIATION = {
+  FR: { B1: ['intonation expressive', 'groupes rythmiques'], B2: ['accentuation de phrase', 'liaisons facultatives'], C1: ['registres prosodiques', 'prosodie argumentative'], C2: ['style oral soutenu', 'rythme stylistique'] },
+  DE: { B1: ['Satzintonation', 'Wortgruppenbetonung'], B2: ['Sprechmelodie', 'emphatische Betonung'], C1: ['Registerprosodie', 'Argumentationsintonation'], C2: ['stilistischer Vortrag', 'rhetorische Pausen'] },
+  ZH: { B1: ['sentence intonation', 'tone in connected speech'], B2: ['discourse intonation', 'emphasis and contrast'], C1: ['formal oral register', 'rhetorical pacing'], C2: ['classical recitation rhythm', 'stylistic prosody'] },
+  EN: { B1: ['sentence stress', 'linking'], B2: ['discourse intonation', 'emphasis'], C1: ['academic prosody', 'hedging intonation'], C2: ['rhetorical delivery', 'stylistic rhythm'] },
+  AR: { B1: ['sentence stress', 'pausal forms'], B2: ['emphatic intonation', 'connected speech'], C1: ['formal register prosody', 'rhetorical emphasis'], C2: ['oratorical style', 'stylistic intonation'] },
+  RU: { B1: ['sentence intonation', 'phrasal stress'], B2: ['expressive intonation', 'connected speech'], C1: ['formal register prosody', 'argumentative intonation'], C2: ['oratorical style', 'stylistic rhythm'] }
+};
+
+const LEVEL_CULTURE = {
+  FR: { B1: 'société et médias francophones', B2: 'institutions et débats de société', C1: 'discours académique et professionnel', C2: 'patrimoine littéraire et variation linguistique' },
+  DE: { B1: 'Alltag und Gesellschaft', B2: 'Institutionen und gesellschaftliche Debatten', C1: 'akademischer und beruflicher Diskurs', C2: 'Literatur und Sprachvariation' },
+  ZH: { B1: 'daily life and media', B2: 'society and institutions', C1: 'academic and professional discourse', C2: 'classical and literary heritage' },
+  EN: { B1: 'society and media', B2: 'institutions and public debate', C1: 'academic and professional discourse', C2: 'literary and stylistic heritage' },
+  AR: { B1: 'المجتمع ووسائل الإعلام', B2: 'المؤسسات والنقاش العام', C1: 'الخطاب الأكاديمي والمهني', C2: 'التراث الأدبي والبلاغي' },
+  RU: { B1: 'общество и средства массовой информации', B2: 'институты и общественные дискуссии', C1: 'академический и профессиональный дискурс', C2: 'литературное и стилистическое наследие' }
+};
+
+/* Durées de production nivelées (corrige H-003). */
+const BAND_TASK = {
+  A1: { speak: '30–45 s', write: '40–60' },
+  A2: { speak: '45–60 s', write: '60–90' },
+  B1: { speak: '1–2 min', write: '120–180' },
+  B2: { speak: '2–3 min', write: '180–250' },
+  C1: { speak: '3–4 min', write: '250–350' },
+  C2: { speak: '4–5 min', write: '350–450' }
+};
+
+/* Dialogues authentiques nivelés pour les niveaux B1–C2 (corrige H-004 :
+   les leçons d'interaction n'utilisent plus 4 phrases d'exemple). */
+const LEVEL_DIALOGUES = {
+  FR: {
+    B1: ["Tu as voyagé l'année dernière ?", "Oui, je suis allé à Dakar pour le travail.", "Tu as eu le temps de visiter la ville ?", "Un peu, le week-end. J'ai adoré l'île de Gorée."],
+    B2: ["À ton avis, le télétravail est-il un progrès ?", "D'un côté, il offre plus de liberté ; de l'autre, il isole les équipes.", "Comment trouver un équilibre ?", "Il faut sans doute alterner présence et distance."],
+    C1: ["Peux-tu synthétiser les conclusions de l'étude ?", "L'étude souligne une tendance de fond, bien que les données restent partielles.", "Quelles réserves faut-il émettre ?", "La taille de l'échantillon limite la portée des résultats."],
+    C2: ["Cet argument vous paraît-il recevable ?", "À y regarder de plus près, il ne résiste pas à l'analyse.", "Pourtant, sa rhétorique est séduisante.", "Certes, mais la forme ne saurait tenir lieu de fond."]
+  },
+  DE: {
+    B1: ['Bist du letztes Jahr verreist?', 'Ja, ich war beruflich in Berlin.', 'Hattest du Zeit, die Stadt zu sehen?', 'Ein bisschen, am Wochenende. Es hat mir gut gefallen.'],
+    B2: ['Ist Homeoffice deiner Meinung nach ein Fortschritt?', 'Einerseits bietet es mehr Freiheit, andererseits isoliert es die Teams.', 'Wie findet man ein Gleichgewicht?', 'Man sollte wohl Präsenz und Distanz abwechseln.'],
+    C1: ['Kannst du die Ergebnisse der Studie zusammenfassen?', 'Die Studie zeigt einen klaren Trend, obwohl die Daten unvollständig sind.', 'Welche Vorbehalte muss man anbringen?', 'Die Stichprobengröße schränkt die Aussagekraft ein.'],
+    C2: ['Erscheint Ihnen dieses Argument stichhaltig?', 'Bei näherer Betrachtung hält es der Analyse nicht stand.', 'Die Rhetorik ist dennoch verführerisch.', 'Gewiss, aber die Form kann den Inhalt nicht ersetzen.']
+  },
+  ZH: {
+    B1: ['你去年去旅行了吗？ (Nǐ qùnián qù lǚxíng le ma?)', '去了，我因为工作去了上海。 (Qù le, wǒ yīnwèi gōngzuò qù le Shànghǎi.)', '你有时间参观城市吗？ (Nǐ yǒu shíjiān cānguān chéngshì ma?)', '有一点，周末去了。我很喜欢。 (Yǒu yìdiǎn, zhōumò qù le. Wǒ hěn xǐhuan.)'],
+    B2: ['你认为远程办公是进步吗？ (Nǐ rènwéi yuǎnchéng bàngōng shì jìnbù ma?)', '一方面，它提供更多自由；另一方面，它让团队孤立。 (Yì fāngmiàn, tā tígōng gèng duō zìyóu; lìng yì fāngmiàn, tā ràng tuánduì gūlì.)', '怎么找到平衡？ (Zěnme zhǎodào pínghéng?)', '也许应该交替使用办公室和远程。 (Yěxǔ yīnggāi jiāotì shǐyòng bàngōngshì hé yuǎnchéng.)'],
+    C1: ['你能总结一下研究的结论吗？ (Nǐ néng zǒngjié yíxià yánjiū de jiélùn ma?)', '研究强调了一个基本趋势，尽管数据还不完整。 (Yánjiū qiángdiào le yí ge jīběn qūshì, jǐnguǎn shùjù hái bù wánzhěng.)', '需要提出什么保留意见？ (Xūyào tíchū shénme bǎoliú yìjiàn?)', '样本量限制了结果的适用范围。 (Yàngběn liàng xiànzhì le jiéguǒ de shìyòng fànwéi.)'],
+    C2: ['这个论点您认为站得住脚吗？ (Zhège lùndiǎn nín rènwéi zhàn de zhù jiǎo ma?)', '仔细一看，它经不起分析。 (Zǐxì yí kàn, tā jīng bu qǐ fēnxī.)', '但它的修辞很吸引人。 (Dàn tā de xiūcí hěn xīyǐn rén.)', '的确，但形式不能代替内容。 (Díquè, dàn xíngshì bù néng dàitì nèiróng.)']
+  },
+  EN: {
+    B1: ['Did you travel last year?', 'Yes, I went to London for work.', 'Did you have time to see the city?', 'A bit, at the weekend. I really enjoyed it.'],
+    B2: ['Is remote work progress, in your view?', 'On the one hand it offers freedom; on the other it isolates teams.', 'How do you find a balance?', 'We should probably alternate presence and distance.'],
+    C1: ['Can you summarise the findings of the study?', 'The study points to a clear trend, although the data remain partial.', 'What reservations should be raised?', 'The sample size limits the scope of the results.'],
+    C2: ['Would you regard this argument as sound?', 'On closer inspection, it does not withstand analysis.', 'Its rhetoric is nonetheless appealing.', 'Granted, but form cannot substitute for substance.']
+  },
+  AR: {
+    B1: ['هل سافرت العام الماضي؟ (Hal sāfarta al-ʿāma l-māḍī?)', 'نعم، سافرت إلى القاهرة للعمل. (Naʿam, sāfartu ilā l-Qāhira lil-ʿamal.)', 'هل كان لديك وقت لزيارة المدينة؟ (Hal kāna ladayka waqt liziyārati l-madīna?)', 'قليلا، في نهاية الأسبوع. أعجبتني كثيرا. (Qalīlan, fī nihāyati l-usbūʿ. Aʿjabatnī kathīran.)'],
+    B2: ['هل العمل عن بعد تقدّم برأيك؟ (Hal al-ʿamal ʿan buʿd taqaddum bi-raʾyik?)', 'من جهة يوفر حرية أكبر، ومن جهة أخرى يعزل الفرق. (Min jiha yuwaqqir ḥurriyya akbar, wa-min jiha ukhrā yaʿzilu l-firaq.)', 'كيف نجد التوازن؟ (Kayfa najidu t-tawāzun?)', 'ربما نتبادل بين الحضور والبعد. (Rubamā natabādalu bayna l-ḥuḍūr wa-l-buʿd.)'],
+    C1: ['هل يمكنك تلخيص نتائج الدراسة؟ (Hal yumkinuka talkhīṣ natāʾiji d-dirāsa?)', 'تشير الدراسة إلى اتجاه واضح، رغم أن البيانات غير مكتملة. (Tushīru d-dirāsa ilā ittijāh wāḍiḥ, raghma anna l-bayānāt ghayr mukmila.)', 'ما التحفظات التي يجب إبداؤها؟ (Mā t-taḥaffuẓāt allatī yajibu ibdāʾuhā?)', 'حجم العينة يحدّ من نطاق النتائج. (Ḥajmu l-ʿayyina yuḥaddidu min niṭāqi n-natāʾij.)'],
+    C2: ['هل ترى أن هذه الحجة مقنعة؟ (Hal tarā anna hādhihi l-ḥujja muqniʿa?)', 'عند التدقيق، لا تصمد أمام التحليل. (ʿInda t-tadqīq, lā taṣmudu amāma t-taḥlīl.)', 'لكن بلاغتها جذابة. (Lakinna balāghatahā jadhdhāba.)', 'صحيح، لكن الشكل لا يغني عن المضمون. (Ṣaḥīḥ, lakinna sh-shakl lā yughnī ʿan al-maḍmūn.)']
+  },
+  RU: {
+    B1: ['Ты путешествовал в прошлом году? (Ty puteshestvoval v proshlom godu?)', 'Да, я ездил в Москву по работе. (Da, ya yezdil v Moskvu po rabote.)', 'У тебя было время посмотреть город? (U tebya bylo vremya posmotret\u2019 gorod?)', 'Немного, в выходные. Мне очень понравилось. (Nemnogo, v vykhodnyye. Mne ochen\u2019 ponravilos\u2019.)'],
+    B2: ['Удалённая работа — это прогресс? (Udalyonnaya rabota — eto progress?)', 'С одной стороны, больше свободы; с другой — команды изолированы. (S odnoy storony, bol\u2019she svobody; s drugoy — komandy izolirovany.)', 'Как найти баланс? (Kak nayti balans?)', 'Наверное, чередовать офис и удалёнку. (Navernoye, cheredovat\u2019 ofis i udalyonku.)'],
+    C1: ['Можете обобщить выводы исследования? (Mozhete obobshchit\u2019 vyvody issledovaniya?)', 'Исследование выявляет устойчивую тенденцию, хотя данные неполны. (Issledovaniye vyyavlyayet ustoychivuyu tendentsiyu, khotya dannyye nepolny.)', 'Какие оговорки следует сделать? (Kakiye ogovorki sleduyet sdelat\u2019?)', 'Размер выборки ограничивает выводы. (Razmer vyborki ogranichivayet vyvody.)'],
+    C2: ['Считаете ли вы этот довод убедительным? (Schitayete li vy etot dovod ubeditel\u2019nym?)', 'При ближайшем рассмотрении он не выдерживает анализа. (Pri blizhayshem rassmotrenii on ne vyderzhivayet analiza.)', 'Однако его риторика привлекательна. (Odnako yego ritorika privlekatel\u2019na.)', 'Верно, но форма не заменит содержания. (Verno, no forma ne zamenit soderzhaniya.)']
+  }
+};
+
 /* Progression grammaticale réelle par niveau. */
 const GRAMMAR_BY_LEVEL = {
   FR: { A1: ['présent des verbes en -er', 'être et avoir', 'articles définis/indéfinis', 'genre et nombre des noms', 'négation ne… pas', 'questions avec est-ce que'], A2: ['passé composé', 'imparfait', 'futur proche', 'comparatif', 'pronoms COD/COI', 'adjectifs possessifs'], B1: ['futur simple', 'conditionnel présent', 'subjonctif présent (introduction)', 'pronoms relatifs qui/que', 'discours indirect', 'gérondif'], B2: ['plus-que-parfait', 'conditionnel passé', 'subjonctif (approfondi)', 'voix passive', 'connecteurs logiques', 'nominalisation'], C1: ['concordance des temps', 'subjonctif avancé', 'style indirect libre', 'registres de langue', 'expressions idiomatiques', 'cohésion avancée'], C2: ['nuances aspectuelles', 'stylistique', 'rhétorique', 'expressions figées', 'variation régionale', 'maîtrise idiomatique'] },
@@ -506,9 +702,13 @@ function levelContentState(level) {
   return 'DRAFT';
 }
 
-function pickExamples(L, band, mi, g) {
+function isAdvancedBand(band) {
+  return band === 'B1' || band === 'B2' || band === 'C1' || band === 'C2';
+}
+
+function pickExamples(L, academy, band, mi, g) {
   if (band === 'A1' || band === 'A2') {
-    const base = L.modules[mi];
+    const base = band === 'A2' ? A2_MODULES[academy][mi] : L.modules[mi];
     const e1 = base.examples[g % base.examples.length];
     const e2 = base.dialogue[g % base.dialogue.length];
     return [e1, e2];
@@ -518,11 +718,14 @@ function pickExamples(L, band, mi, g) {
   return [adv[g % adv.length], adv[(g + 1) % adv.length]];
 }
 
-/** Vocabulaire ciblé adapté au niveau : A1/A2 → banque de base,
+/** Vocabulaire ciblé adapté au niveau : A1 → banque A1, A2 → banque A2,
     B1–C2 → vocabulaire thématique spécifique (LEVEL_VOCAB). */
 function levelVocab(L, academy, band, moduleIndex, unitIndex) {
-  if (band === 'A1' || band === 'A2') {
+  if (band === 'A1') {
     return (L.modules[moduleIndex].vocab || []).slice(unitIndex * 2, unitIndex * 2 + 3).map((v) => v[0]);
+  }
+  if (band === 'A2') {
+    return (A2_MODULES[academy][moduleIndex].vocab || []).slice(unitIndex * 2, unitIndex * 2 + 3).map((v) => v[0]);
   }
   const themeKey = (LEVEL_THEMES[band] && LEVEL_THEMES[band][moduleIndex]) || '';
   const words = (LEVEL_VOCAB[band] && LEVEL_VOCAB[band][themeKey] && LEVEL_VOCAB[band][themeKey][academy]) || [];
@@ -531,16 +734,19 @@ function levelVocab(L, academy, band, moduleIndex, unitIndex) {
 
 function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, globalIndex, L, grammarPoint, theme, state) {
   const type = LESSON_TYPES[globalIndex % LESSON_TYPES.length];
-  const pair = pickExamples(L, band, moduleIndex, globalIndex);
+  const pair = pickExamples(L, academy, band, moduleIndex, globalIndex);
   const e1 = pair[0];
   const e2 = pair[1];
   const vocabSlice = levelVocab(L, academy, band, moduleIndex, unitIndex);
-  const dialogue = (band === 'A1' || band === 'A2')
+  const dialogue = (band === 'A1')
     ? L.modules[moduleIndex].dialogue
-    : ((L.advancedExamples && L.advancedExamples[band]) || []).slice(0, 4);
+    : (band === 'A2')
+      ? A2_MODULES[academy][moduleIndex].dialogue
+      : (LEVEL_DIALOGUES[academy][band] || []);
   const isInteraction = type.key === 'speaking' || type.key === 'listening';
   const fr = academy === 'FR';
   const vocabList = vocabSlice.join(', ');
+  const advanced = isAdvancedBand(band);
 
   const explanation = fr
     ? '[' + type.name + '] ' + theme + '. Focus grammatical : ' + grammarPoint + '. ' +
@@ -571,15 +777,15 @@ function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, 
     vocab: 'Produis cinq phrases originales avec le vocabulaire cible.',
     grammar: 'Rédige trois phrases personnelles utilisant « ' + grammarPoint + ' ».',
     listening: 'Réécoute et résume le dialogue en trois phrases.',
-    speaking: 'Présente oralement une situation personnelle liée au thème (30–45 s).',
-    writing: (band === 'A1' || band === 'A2') ? 'Écris un paragraphe de 40–60 mots sur le thème.' : 'Produis un texte structuré de 120–180 mots sur le thème.'
+    speaking: 'Présente oralement une situation personnelle liée au thème (' + BAND_TASK[band].speak + ').',
+    writing: 'Rédige un texte sur le thème de ' + BAND_TASK[band].write + ' mots.'
   } : {
     input: 'Note two new occurrences of the structure in a short authentic text.',
     vocab: 'Produce five original sentences using the target vocabulary.',
     grammar: 'Write three personal sentences using "' + grammarPoint + '".',
     listening: 'Listen again and summarise the dialogue in three sentences.',
-    speaking: 'Present a personal situation related to the topic orally (30–45 s).',
-    writing: (band === 'A1' || band === 'A2') ? 'Write a 40–60 word paragraph on the topic.' : 'Write a structured 120–180 word text on the topic.'
+    speaking: 'Present a personal situation related to the topic orally (' + BAND_TASK[band].speak + ').',
+    writing: 'Write a text on the topic of ' + BAND_TASK[band].write + ' words.'
   })[type.key];
 
   const assessment = (fr ? {
@@ -614,7 +820,7 @@ function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, 
     writing: 'Produces a coherent text respecting the target structure.'
   })[type.key];
 
-  const lessonId = academy + '-' + level + '-M' + String(moduleIndex + 1).padStart(2, '0') +
+  const lessonId = 'prog_' + academy + '_' + level + '-M' + String(moduleIndex + 1).padStart(2, '0') +
     '-U' + String(unitIndex + 1).padStart(2, '0') + '-L' + String(lessonIndex + 1).padStart(2, '0');
 
   return {
@@ -623,7 +829,7 @@ function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, 
     objective: fr
       ? '[' + type.name + '] ' + theme + ': ' + (isInteraction ? 'interagir' : 'maîtriser') + ' la structure cible au niveau ' + level + '.'
       : '[' + type.name + '] ' + theme + ': ' + (isInteraction ? 'interact using' : 'master') + ' the target structure at ' + level + ' level.',
-    prerequisites: lessonIndex === 0 ? [] : [academy + '-' + level + '-M' + String(moduleIndex + 1).padStart(2, '0') + '-U' + String(unitIndex + 1).padStart(2, '0') + '-L01'],
+    prerequisites: lessonIndex === 0 ? [] : ['prog_' + academy + '_' + level + '-M' + String(moduleIndex + 1).padStart(2, '0') + '-U' + String(unitIndex + 1).padStart(2, '0') + '-L01'],
     estimatedDuration: 45,
     explanation: explanation,
     languageContent: vocabSlice,
@@ -638,12 +844,15 @@ function buildLesson(academy, level, band, moduleIndex, unitIndex, lessonIndex, 
     masteryCriteria: mastery,
     vocabularyFocus: vocabSlice,
     grammarFocus: [grammarPoint],
-    pronunciationFocus: L.pronunciation.slice(0, 2),
-    culturalContext: L.culture[moduleIndex % L.culture.length],
+    pronunciationFocus: advanced ? (LEVEL_PRONUNCIATION[academy][band] || L.pronunciation.slice(0, 2)) : L.pronunciation.slice(0, 2),
+    culturalContext: advanced ? (LEVEL_CULTURE[academy][band] || theme) : L.culture[moduleIndex % L.culture.length],
+    culturalReflection: fr
+      ? 'Réflexion interculturelle : compare les conventions culturelles de « ' + (advanced ? (LEVEL_CULTURE[academy][band] || theme) : L.culture[moduleIndex % L.culture.length]) + ' » avec celles de ta propre culture.'
+      : 'Intercultural reflection: compare the cultural conventions of "' + (advanced ? (LEVEL_CULTURE[academy][band] || theme) : L.culture[moduleIndex % L.culture.length]) + '" with those of your own culture.',
     activities: type.act,
     outcomeIds: [
-      academy + '-' + level + '-LO-0' + ((globalIndex % 8) + 1),
-      academy + '-' + level + '-LO-0' + (((globalIndex + 1) % 8) + 1)
+      academy + '-' + level + '-LO-0' + ((globalIndex % 9) + 1),
+      academy + '-' + level + '-LO-0' + (((globalIndex + 1) % 9) + 1)
     ],
     competencyIds: type.comps,
     status: state, contentState: state
@@ -656,16 +865,17 @@ function buildLevelContent(academy, level) {
   const band = LEVEL_BAND[level] || 'A1';
   const grammar = (GRAMMAR_BY_LEVEL[academy] && GRAMMAR_BY_LEVEL[academy][band]) || [];
   const useCore = band === 'A1' || band === 'A2';
+  const advanced = isAdvancedBand(band);
   const state = levelContentState(level);
   const themes = LEVEL_THEMES[band] || LEVEL_THEMES.B1;
   const modules = [];
   let programmeIndex = 0;
 
   for (let mi = 0; mi < 6; mi++) {
-    const base = L.modules[mi];
+    const base = useCore ? (band === 'A2' ? A2_MODULES[academy][mi] : L.modules[mi]) : null;
     const theme = useCore ? base.theme : (themes[mi] + ' — ' + L.language);
     const grammarPoint = grammar[mi] || '';
-    const moduleId = academy + '-' + level + '-M' + String(mi + 1).padStart(2, '0');
+    const moduleId = 'prog_' + academy + '_' + level + '-M' + String(mi + 1).padStart(2, '0');
     const units = [];
 
     for (let ui = 0; ui < 3; ui++) {
@@ -677,27 +887,29 @@ function buildLevelContent(academy, level) {
         programmeIndex++;
       }
       const fr = academy === 'FR';
+      const unitOutcomeIds = Array.from(new Set(lessons.reduce((a, l) => a.concat(l.outcomeIds), [])));
       units.push({
         id: unitId, type: 'unit', title: theme + (fr ? ' — unité ' : ' — unit ') + (ui + 1),
         theme: theme, communicativeContext: (fr ? 'Usage courant et institutionnel de ' : 'Everyday and institutional use of ') + L.language,
         vocabularyFocus: vocabSlice, grammarFocus: [grammarPoint],
-        pronunciationFocus: L.pronunciation.slice(0, 2),
-        culturalContext: L.culture[mi % L.culture.length],
-        outcomeIds: [academy + '-' + level + '-LO-01', academy + '-' + level + '-LO-03'],
+        pronunciationFocus: advanced ? (LEVEL_PRONUNCIATION[academy][band] || L.pronunciation.slice(0, 2)) : L.pronunciation.slice(0, 2),
+        culturalContext: advanced ? (LEVEL_CULTURE[academy][band] || theme) : L.culture[mi % L.culture.length],
+        outcomeIds: unitOutcomeIds,
         competencyIds: ['C-LIS', 'C-REA', 'C-WRI', 'C-SPE', 'C-GRA', 'C-VOC', 'C-INT', 'C-ICU'],
         lessons: lessons, status: state, contentState: state
       });
     }
 
+    const moduleOutcomes = Array.from(new Set(units.reduce((a, u) => a.concat(u.outcomeIds), [])));
     modules.push({
       id: moduleId, type: 'module', title: theme, description: theme + ' — ' + L.language,
-      outcomes: [1, 2, 3, 4, 5].map((n) => academy + '-' + level + '-LO-0' + n),
+      outcomes: moduleOutcomes,
       competencyIds: ['C-LIS', 'C-REA', 'C-WRI', 'C-SPE', 'C-GRA', 'C-VOC', 'C-PRO', 'C-INT', 'C-ICU'],
       units: units, status: state, contentState: state
     });
   }
 
-  return {
+  const result = {
     programmeId: 'prog_' + academy + '_' + level,
     academyCode: academy, level: level, band: band,
     structure: 'Foundation → Development → Practice → Application → Integration → Assessment',
@@ -706,6 +918,13 @@ function buildLevelContent(academy, level) {
       ? 'ELA-authored draft curriculum (' + L.language + ' ' + level + '): real language-specific vocabulary, examples, dialogue, grammar progression and tasks. Pending ELA academic review before APPROVED/PUBLISHED.'
       : 'Advanced-level ELA draft (' + L.language + ' ' + level + '): themes, advanced examples, grammar and outcomes authored; full lesson bodies require specialist academic review.'
   };
+
+  // Consolidation FR-A1 : fusionne le blueprint humain (titres/objectifs/
+  // activités) avec le contenu réel, SANS modifier les IDs ni le contenu.
+  if (academy === 'FR' && level === 'A1') {
+    return require('./fr-a1-blueprint.js').enrichFrA1Curriculum(result);
+  }
+  return result;
 }
 
 module.exports = { LANGUAGES, GRAMMAR_BY_LEVEL, LEVEL_THEMES, LEVEL_BAND, LESSON_TYPES, levelContentState, buildLevelContent };

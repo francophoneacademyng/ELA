@@ -21,6 +21,7 @@ const admin = require('firebase-admin');
 const inst = require('./institution.js');
 const authz = require('./authz.js');
 const ratelimit = require('./ratelimit.js');
+const academyScope = require('./academy-scope.js');
 
 const REGION = 'africa-south1';
 const EXAMS = 'examinations';
@@ -98,8 +99,10 @@ exports.publishExaminationVersion = callable({ region: REGION }, async (request)
     passMark: Number(d.passMark) || 60,
     retakePolicy: {
       allowed: !!(d.retakePolicy && d.retakePolicy.allowed),
-      maxAttempts: Number(d.retakePolicy && d.retakePolicy.maxAttempts) || 1,
-      cooldownDays: Number(d.retakePolicy && d.retakePolicy.cooldownDays) || 0
+      // Aligné sur le blueprint (academic-framework.buildExaminationBlueprint) :
+      // retakeRules { allowed: true, maxAttempts: 2, cooldownDays: 30 }.
+      maxAttempts: Number(d.retakePolicy && d.retakePolicy.maxAttempts) || 2,
+      cooldownDays: Number(d.retakePolicy && d.retakePolicy.cooldownDays) || 30
     },
     moderationRequired: d.moderationRequired !== false,
     sections: sections.map((s) => ({
@@ -107,7 +110,9 @@ exports.publishExaminationVersion = callable({ region: REGION }, async (request)
       skill: String(s.skill),
       type: s.type === 'subjective' ? 'subjective' : 'objective',
       weight: Number(s.weight) || 25,
-      passMark: Number(s.passMark) || 60,
+      // Minimum par compétence = 50 (blueprint allSkillsMinimum: 50),
+      // distinct du pass mark global (60).
+      passMark: Number(s.passMark) || 50,
       rubric: s.type === 'subjective' ? (s.rubric || []) : [],
       // Answer keys: SERVER ONLY (never returned to client).
       questions: s.type === 'subjective' ? [] : (s.questions || []).map((q) => ({ id: String(q.id), correctIndex: Number(q.correctIndex) }))
@@ -144,6 +149,40 @@ exports.getExamination = callable({ region: REGION }, async (request) => {
   const version = Number(d.version) || examSnap.data().currentVersion;
   const vSnap = await admin.firestore().collection(EXAM_VERSIONS).doc(examId + '_v' + version).get();
   return { examination: examSnap.data(), version: vSnap.exists ? publicExamVersion(vSnap.data()) : null };
+});
+
+/* ---------- Listing (staff only, academy-scoped pour les teachers) ---------- */
+
+exports.listExaminations = callable({ region: REGION }, async (request) => {
+  const uid = uidOf(request);
+  const role = await authz.getUserRole(uid);
+  const isStaff = ['teacher', 'examiner', 'admin', 'system'].indexOf(role) >= 0;
+  if (!isStaff) fail('permission-denied', 'Staff only.');
+
+  const snap = await admin.firestore().collection(EXAMS).limit(200).get();
+  let exams = snap.docs.map((x) => {
+    const v = x.data() || {};
+    return {
+      id: x.id,
+      title: v.title || '',
+      academyCode: String(v.academyCode || '').toUpperCase(),
+      level: String(v.level || '').toUpperCase(),
+      programmeId: v.programmeId || null,
+      status: v.status || 'draft',
+      currentVersion: Number(v.currentVersion) || 0,
+      createdAt: v.createdAt || null
+    };
+  });
+
+  // Un enseignant ne voit QUE les examens de SA académie.
+  if (role === 'teacher') {
+    const callerSnap = await admin.firestore().collection('users').doc(uid).get();
+    const callerAcademy = callerSnap.exists ? academyScope.normalizeAcademyKey(callerSnap.data().academy) : null;
+    exams = exams.filter((e) => callerAcademy && e.academyCode === callerAcademy);
+  }
+
+  exams.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+  return { examinations: exams };
 });
 
 /* ---------- Registration & attempts ---------- */
@@ -191,7 +230,7 @@ exports.startExaminationAttempt = callable({ region: REGION }, async (request) =
   const attempts = attemptsSnap.docs.map((x) => x.data());
   const finalized = attempts.filter((a) => a.status === 'finalized');
   if (finalized.length && !(version.retakePolicy && version.retakePolicy.allowed)) fail('failed-precondition', 'No retake allowed.');
-  if (attempts.length >= ((version.retakePolicy && version.retakePolicy.maxAttempts) || 1)) fail('failed-precondition', 'Maximum attempts reached.');
+  if (attempts.length >= ((version.retakePolicy && version.retakePolicy.maxAttempts) || 2)) fail('failed-precondition', 'Maximum attempts reached.');
   const active = attempts.filter((a) => a.status === 'in_progress');
   if (active.length) return { ok: true, attemptId: active[0].id, resumed: true, expiresAt: active[0].expiresAt };
   const attemptNumber = attempts.length + 1;
@@ -295,7 +334,38 @@ exports.getExaminationQueue = callable({ region: REGION }, async (request) => {
   const auth = await requireExaminer(uid);
   const snap = await admin.firestore().collection(SUBMISSIONS).where('graded', '==', false).limit(200).get();
   const mine = snap.docs.map((x) => x.data()).filter((s) => (auth.skills || []).indexOf(s.skill) >= 0);
-  return { queue: mine.map((s) => ({ attemptId: s.attemptId, sectionId: s.sectionId, skill: s.skill, candidateUid: s.candidateUid, submittedAt: s.submittedAt })) };
+
+  // Enrichit chaque copie avec l'examen/version/rubrique nécessaires au
+  // formulaire de notation (aucun corrigé d'objectif n'est exposé).
+  const versionsCache = {};
+  const queue = [];
+  for (const s of mine) {
+    const key = String(s.examinationId || '') + '_v' + String(s.version || '');
+    let rubric = [];
+    if (!versionsCache[key]) {
+      try {
+        const vSnap = await admin.firestore().collection(EXAM_VERSIONS).doc(key).get();
+        versionsCache[key] = vSnap.exists ? vSnap.data() : null;
+      } catch (e) { versionsCache[key] = null; }
+    }
+    const version = versionsCache[key];
+    if (version) {
+      const section = (version.sections || []).filter((x) => x.id === s.sectionId)[0] || {};
+      rubric = Array.isArray(section.rubric) ? section.rubric : [];
+    }
+    queue.push({
+      attemptId: s.attemptId,
+      sectionId: s.sectionId,
+      skill: s.skill,
+      candidateUid: s.candidateUid,
+      examinationId: s.examinationId || null,
+      version: s.version || null,
+      response: s.response || null,
+      rubric: rubric,
+      submittedAt: s.submittedAt
+    });
+  }
+  return { queue };
 });
 
 exports.gradeExaminationSection = callable({ region: REGION }, async (request) => {

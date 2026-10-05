@@ -206,4 +206,38 @@ exports.getAttendanceReport = callable({ region: REGION }, async (request) => {
   };
 });
 
+/* ---------- Listing des sessions (staff only, scoping propriétaire) ---------- */
+
+exports.listClassSessions = callable({ region: REGION }, async (request) => {
+  const uid = uidOf(request);
+  const role = await authz.getUserRole(uid);
+  const isStaff = ['teacher', 'admin', 'system'].indexOf(role) >= 0;
+  if (!isStaff) fail('permission-denied', 'Staff only.');
+
+  const snap = await admin.firestore().collection(SESSIONS).limit(200).get();
+  let sessions = snap.docs.map((x) => {
+    const s = x.data() || {};
+    return {
+      id: x.id,
+      title: s.title || '',
+      academyCode: String(s.academyCode || '').toUpperCase(),
+      level: String(s.level || '').toUpperCase(),
+      programmeId: s.programmeId || null,
+      teacherUid: s.teacherUid || null,
+      scheduledAt: s.scheduledAt || null,
+      status: s.status || 'scheduled',
+      startedAt: s.startedAt || null,
+      endedAt: s.endedAt || null,
+      meetingLink: s.meetingLink || null,
+      joinCode: s.joinCode || null
+    };
+  });
+
+  // Un enseignant ne voit QUE ses propres sessions.
+  if (role === 'teacher') sessions = sessions.filter((s) => s.teacherUid === uid);
+
+  sessions.sort((a, b) => String(b.scheduledAt || '').localeCompare(String(a.scheduledAt || '')));
+  return { sessions };
+});
+
 exports._collections = { SESSIONS, ATTENDANCE, CORRECTIONS };
